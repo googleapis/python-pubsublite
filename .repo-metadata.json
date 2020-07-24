@@ -1,0 +1,13 @@
+{
+    "name": "accessapproval",
+    "name_pretty": "Pub/Sub Lite",
+    "product_documentation": "https://https://cloud.google.com/pubsub/lite",
+    "client_documentation": "https://googleapis.dev/python/pubsublite/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-pubsublite",
+    "distribution_name": "google-cloud-pubsublite",
+    "api_id": "pubsublite.googleapis.com"
+  }
+  
