@@ -5,6 +5,7 @@ from google.cloud.pubsublite_v1.types.common import PubSubMessage
 
 
 class RoutingPolicy(ABC):
+  """A policy for how to route messages."""
   @abstractmethod
   def route(self, message: PubSubMessage) -> Partition:
     """
