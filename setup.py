@@ -27,6 +27,11 @@ readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
+dependencies = [
+    "google-api-core >= 1.22.0",
+    "absl-py >= 0.9.0",
+    "proto-plus >= 0.4.0",
+]
 
 setuptools.setup(
     name="google-cloud-pubsublite",
@@ -40,10 +45,9 @@ setuptools.setup(
     namespace_packages=("google", "google.cloud"),
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
-    install_requires=(
-        "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
-        "proto-plus >= 0.4.0",
-    ),
+    install_requires=dependencies,
+    setup_requires=('pytest-runner',),
+    tests_require=['pytest', 'pytest-asyncio'],
     python_requires=">=3.6",
     classifiers=[
         "Development Status :: 4 - Beta",
