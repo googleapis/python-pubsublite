@@ -7,6 +7,7 @@ from google.api_core.exceptions import InternalServerError, InvalidArgument
 from google.cloud.pubsublite.internal.wire.connection import Connection, ConnectionFactory
 from google.cloud.pubsublite.internal.wire.connection_reinitializer import ConnectionReinitializer
 from google.cloud.pubsublite.internal.wire.retrying_connection import RetryingConnection, _MIN_BACKOFF_SECS
+from google.cloud.pubsublite.testing.test_utils import make_queue_waiter
 
 # All test coroutines will be treated as marked.
 pytestmark = pytest.mark.asyncio
@@ -98,14 +99,7 @@ async def test_reinitialize_after_retryable(retrying_connection: Connection[int,
   reinit_called = asyncio.Queue()
   reinit_results: "asyncio.Queue[Union[None, Exception]]" = asyncio.Queue()
 
-  async def reinit_action(conn):
-    assert conn == default_connection
-    await reinit_called.put(None)
-    result = await reinit_results.get()
-    if isinstance(result, Exception):
-      raise result
-
-  reinitializer.reinitialize.side_effect = reinit_action
+  reinitializer.reinitialize.side_effect = make_queue_waiter(reinit_called, reinit_results)
   async with retrying_connection as _:
     await reinit_called.get()
     reinitializer.reinitialize.assert_called_once()

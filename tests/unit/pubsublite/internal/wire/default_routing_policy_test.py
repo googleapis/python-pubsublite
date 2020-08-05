@@ -2,7 +2,6 @@ import json
 import os
 
 from google.cloud.pubsublite.partition import Partition
-
 from google.cloud.pubsublite.internal.wire.default_routing_policy import DefaultRoutingPolicy
 from google.cloud.pubsublite_v1 import PubSubMessage
 
