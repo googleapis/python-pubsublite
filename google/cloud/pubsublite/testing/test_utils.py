@@ -1,8 +1,4 @@
-from abc import abstractmethod
-from typing import List, Union, Any, Generic
-from unittest.mock import Mock
-
-from google.cloud.pubsublite.internal.wire.connection import Connection, Request, Response
+from typing import List, Union, Any
 
 
 async def async_iterable(elts: List[Union[Any, Exception]]):

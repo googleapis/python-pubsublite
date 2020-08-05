@@ -7,6 +7,7 @@ T = TypeVar('T')
 
 
 class PermanentFailable:
+  """A class that can experience permanent failures, with helpers for forwarding these to client actions."""
   _failure_task: asyncio.Future
 
   def __init__(self):

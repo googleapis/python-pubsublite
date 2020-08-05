@@ -5,6 +5,7 @@ T = TypeVar('T')
 
 
 class WorkItem(Generic[T]):
+  """An item of work and a future to complete when it is finished."""
   request: T
   response_future: "asyncio.Future[None]"
 

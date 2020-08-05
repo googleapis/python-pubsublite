@@ -13,6 +13,7 @@ _MAX_BACKOFF_SECS = 10
 
 
 class RetryingConnection(Connection[Request, Response], PermanentFailable):
+  """A connection which performs retries on an underlying stream when experiencing retryable errors."""
   _connection_factory: ConnectionFactory[Request, Response]
   _reinitializer: ConnectionReinitializer[Request, Response]
 

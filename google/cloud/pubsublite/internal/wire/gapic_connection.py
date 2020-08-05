@@ -9,6 +9,7 @@ T = TypeVar('T')
 
 
 class GapicConnection(Connection[Request, Response], AsyncIterator[Request], PermanentFailable):
+  """A Connection wrapping a gapic AsyncIterator[Request/Response] pair."""
   _write_queue: 'asyncio.Queue[WorkItem[Request]]'
   _response_it: Optional[AsyncIterator[Response]]
 
@@ -43,6 +44,7 @@ class GapicConnection(Connection[Request, Response], AsyncIterator[Request], Per
 
 
 class GapicConnectionFactory(ConnectionFactory[Request, Response]):
+  """A ConnectionFactory that produces GapicConnections."""
   _producer = Callable[[AsyncIterator[Request]], AsyncIterable[Response]]
 
   def New(self) -> Connection[Request, Response]:
