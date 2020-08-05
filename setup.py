@@ -47,7 +47,7 @@ setuptools.setup(
     include_package_data=True,
     install_requires=dependencies,
     setup_requires=('pytest-runner',),
-    tests_require=['pytest', 'pytest-asyncio'],
+    tests_require=['asynctest', 'pytest', 'pytest-asyncio'],
     python_requires=">=3.6",
     classifiers=[
         "Development Status :: 4 - Beta",
