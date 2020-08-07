@@ -48,14 +48,14 @@ class Aggregator(Generic[Request, Response]):
   async def __aexit__(self, exc_type, exc_val, exc_tb):
     self._loop_future.cancel()
     await self._loop_future
-    await self._send()
+    self._send()
     await asyncio.gather(*self._outstanding_states.values())
 
   async def _run_loop(self) -> None:
     """Run a loop to process futures. When any exception is thrown, aborts."""
     try:
       while True:
-        await self._send()
+        self._send()
         await asyncio.sleep(self._period_secs)
     except asyncio.CancelledError:
       return
@@ -65,7 +65,7 @@ class Aggregator(Generic[Request, Response]):
     self._state = self._AggregatorState(gen=state.gen + 1)
     return state
 
-  async def _send(self):
+  def _send(self):
     if not self._state.items:
       return
     state = self._next_state()
@@ -87,10 +87,10 @@ class Aggregator(Generic[Request, Response]):
     """Resends all outstanding requests in order."""
     # Cancel looping
     self._loop_future.cancel()
-    await self._loop_future
     # Cancel all outstanding requests
     for fut in self._outstanding_states.values():
       fut.cancel()
+    await self._loop_future
     # Handle the existing request
     if self._state.items:
       self._outstanding_states[self._next_state()] = asyncio.Future()

@@ -12,21 +12,26 @@ pytestmark = pytest.mark.asyncio
 
 SLEEP_SECS = 1000
 
+
 @pytest.fixture()
 def sender():
   return MagicMock(spec=RequestSender[int, int])
+
 
 @pytest.fixture()
 def aggregator(sender):
   return Aggregator[int, int](sender, SLEEP_SECS)
 
+
 @pytest.fixture
 def sleep_called():
   return asyncio.Queue()
 
+
 @pytest.fixture()
 def sleep_results():
   return asyncio.Queue()
+
 
 @pytest.fixture
 def asyncio_sleep(monkeypatch, sleep_called, sleep_results):
@@ -57,6 +62,7 @@ async def test_sends_batches(asyncio_sleep, sleep_called, sleep_results, sender,
     assert await fut3 == 7
     assert await fut4 == 8
 
+
 async def test_restart(asyncio_sleep, sleep_called, sleep_results, sender, aggregator):
   async with aggregator:
     await sleep_called.get()  # Wait for the aggregator to sleep
@@ -74,6 +80,7 @@ async def test_restart(asyncio_sleep, sleep_called, sleep_results, sender, aggre
     sender.send.assert_has_calls([call([1]), call([1]), call([2])])
     assert await fut1 == 3
     assert await fut2 == 4
+
 
 async def test_aexit_sends(asyncio_sleep, sleep_called, sleep_results, sender, aggregator):
   fut1 = Box[asyncio.Future]()
