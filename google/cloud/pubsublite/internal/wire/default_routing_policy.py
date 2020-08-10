@@ -7,7 +7,10 @@ from google.cloud.pubsublite_v1.types import PubSubMessage
 
 
 class DefaultRoutingPolicy(RoutingPolicy):
-  """The default routing policy which routes based on sha256 % num_partitions."""
+  """
+  The default routing policy which routes based on sha256 % num_partitions using the key if set or round robin if
+  unset.
+  """
   _num_partitions: int
   _current_round_robin: Partition
 
@@ -16,6 +19,7 @@ class DefaultRoutingPolicy(RoutingPolicy):
     self._current_round_robin = Partition(random.randint(0, num_partitions))
 
   def route(self, message: PubSubMessage) -> Partition:
+    """Route the message using the key if set or round robin if unset."""
     if not message.key:
       result = Partition(self._current_round_robin.value)
       self._current_round_robin.value = (self._current_round_robin.value + 1) % self._num_partitions
