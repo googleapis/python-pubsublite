@@ -21,7 +21,7 @@ class BatchTester(Generic[Request], ABC):
 
 class SerialBatcher(Generic[Request, Response]):
   _tester: BatchTester[Request]
-  _requests: List[WorkItem[Request]]  # A list of outstanding requests
+  _requests: List[WorkItem[Request, Response]]  # A list of outstanding requests
 
   def __init__(self, tester: BatchTester[Request]):
     self._tester = tester
@@ -37,14 +37,14 @@ class SerialBatcher(Generic[Request, Response]):
     Returns:
       A future that will resolve to the response or a GoogleAPICallError.
     """
-    item = WorkItem[Request](request)
+    item = WorkItem[Request, Response](request)
     self._requests.append(item)
     return item.response_future
 
   def should_flush(self) -> bool:
     return self._tester.test(item.request for item in self._requests)
 
-  def flush(self) -> Iterable[WorkItem[Request]]:
+  def flush(self) -> List[WorkItem[Request, Response]]:
     requests = self._requests
     self._requests = []
     return requests

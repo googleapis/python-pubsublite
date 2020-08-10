@@ -1,14 +1,14 @@
 import asyncio
-from typing import Generic, TypeVar
+from typing import Generic
 
-T = TypeVar('T')
+from google.cloud.pubsublite.internal.wire.connection import Request, Response
 
 
-class WorkItem(Generic[T]):
+class WorkItem(Generic[Request, Response]):
   """An item of work and a future to complete when it is finished."""
-  request: T
-  response_future: "asyncio.Future[None]"
+  request: Request
+  response_future: "asyncio.Future[Response]"
 
-  def __init__(self, request: T):
+  def __init__(self, request: Request):
     self.request = request
     self.response_future = asyncio.Future()

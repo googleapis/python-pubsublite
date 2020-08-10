@@ -1,5 +1,5 @@
 import asyncio
-from typing import Awaitable, TypeVar
+from typing import Awaitable, TypeVar, Optional
 
 from google.api_core.exceptions import GoogleAPICallError
 
@@ -29,3 +29,8 @@ class PermanentFailable:
   def fail(self, err: GoogleAPICallError):
     if not self._failure_task.done():
       self._failure_task.set_exception(err)
+
+  def error(self) -> Optional[GoogleAPICallError]:
+    if not self._failure_task.done():
+      return None
+    return self._failure_task.exception()
