@@ -47,7 +47,10 @@ class GapicConnectionFactory(ConnectionFactory[Request, Response]):
   """A ConnectionFactory that produces GapicConnections."""
   _producer = Callable[[AsyncIterator[Request]], AsyncIterable[Response]]
 
-  def New(self) -> Connection[Request, Response]:
+  def __init__(self, producer: Callable[[AsyncIterator[Request]], AsyncIterable[Response]]):
+    self._producer = producer
+
+  def new(self) -> Connection[Request, Response]:
     conn = GapicConnection[Request, Response]()
     response_iterable = self._producer(conn)
     conn.set_response_it(response_iterable.__aiter__())
