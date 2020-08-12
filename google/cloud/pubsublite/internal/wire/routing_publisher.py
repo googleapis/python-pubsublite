@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Mapping
 
 from google.cloud.pubsublite.internal.wire.publisher import Publisher
 from google.cloud.pubsublite.internal.wire.routing_policy import RoutingPolicy
@@ -9,9 +9,9 @@ from google.cloud.pubsublite_v1 import PubSubMessage
 
 class RoutingPublisher(Publisher):
   _routing_policy: RoutingPolicy
-  _publishers: Dict[Partition, Publisher]
+  _publishers: Mapping[Partition, Publisher]
 
-  def __init__(self, routing_policy: RoutingPolicy, publishers: Dict[Partition, Publisher]):
+  def __init__(self, routing_policy: RoutingPolicy, publishers: Mapping[Partition, Publisher]):
     self._routing_policy = routing_policy
     self._publishers = publishers
 

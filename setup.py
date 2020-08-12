@@ -31,6 +31,7 @@ dependencies = [
     "google-api-core >= 1.22.0",
     "absl-py >= 0.9.0",
     "proto-plus >= 0.4.0",
+    "setuptools"
 ]
 
 setuptools.setup(

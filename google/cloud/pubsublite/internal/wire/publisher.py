@@ -4,6 +4,9 @@ from google.cloud.pubsublite.publish_metadata import PublishMetadata
 
 
 class Publisher(ABC):
+  """
+  A Pub/Sub Lite asynchronous wire protocol publisher.
+  """
   @abstractmethod
   async def __aenter__(self):
     raise NotImplementedError()
