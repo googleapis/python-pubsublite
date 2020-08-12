@@ -24,6 +24,22 @@ def make_publisher(
     credentials: Optional[Credentials] = None,
     client_options: Optional[ClientOptions] = None,
     metadata: Optional[Mapping[str, str]] = None) -> Publisher:
+  """
+  Make a new publisher for the given topic.
+
+  Args:
+    topic: The topic to publish to.
+    batching_delay_secs: The delay in seconds to batch messages. The default is reasonable for most cases.
+    credentials: The credentials to use to connect. GOOGLE_DEFAULT_CREDENTIALS is used if None.
+    client_options: Other options to pass to the client. Note that if you pass any you must set api_endpoint.
+    metadata: Additional metadata to send with the RPC.
+
+  Returns:
+    A new Publisher.
+
+  Throws:
+    GoogleApiCallException on any error determining topic structure.
+  """
   if client_options is None:
     client_options = ClientOptions(api_endpoint=regional_endpoint(topic.location.region))
   client = async_client.PublisherServiceAsyncClient(

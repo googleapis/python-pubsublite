@@ -21,6 +21,7 @@ def _version() -> _Semver:
 
 
 def pubsub_context(framework: Optional[str] = None) -> Mapping[str, str]:
+  """Construct the pubsub context mapping for the given framework."""
   context = struct_pb2.Struct()
   context.fields["language"] = struct_pb2.Value(string_value="PYTHON")
   if framework:
