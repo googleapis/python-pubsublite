@@ -1,17 +1,10 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+from typing import AsyncContextManager
 from google.cloud.pubsublite_v1.types import PubSubMessage
 from google.cloud.pubsublite.publish_metadata import PublishMetadata
 
 
-class Publisher(ABC):
-  @abstractmethod
-  async def __aenter__(self):
-    raise NotImplementedError()
-
-  @abstractmethod
-  async def __aexit__(self, exc_type, exc_val, exc_tb):
-    raise NotImplementedError()
-
+class Publisher(AsyncContextManager):
   @abstractmethod
   async def publish(self, message: PubSubMessage) -> PublishMetadata:
     """
