@@ -53,8 +53,6 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
       bad_retries = 0
       while True:
         try:
-          self._read_queue = asyncio.Queue(maxsize=1)
-          self._write_queue = asyncio.Queue(maxsize=1)
           async with self._connection_factory.new() as connection:
             # Needs to happen prior to reinitialization to clear outstanding waiters.
             while not self._write_queue.empty():
