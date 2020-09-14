@@ -48,6 +48,7 @@ class SinglePartitionPublisher(Publisher, ConnectionReinitializer[PublishRequest
 
   async def __aenter__(self):
     await self._connection.__aenter__()
+    return self
 
   def _start_loopers(self):
     assert self._receiver is None
@@ -82,7 +83,7 @@ class SinglePartitionPublisher(Publisher, ConnectionReinitializer[PublishRequest
       while True:
         response = await self._connection.read()
         self._handle_response(response)
-    except asyncio.CancelledError:
+    except (asyncio.CancelledError, GoogleAPICallError):
       return
 
   async def _flush_loop(self):
@@ -98,6 +99,7 @@ class SinglePartitionPublisher(Publisher, ConnectionReinitializer[PublishRequest
       self._fail_if_retrying_failed()
     else:
       await self._flush()
+    await self._stop_loopers()
     await self._connection.__aexit__(exc_type, exc_val, exc_tb)
 
   def _fail_if_retrying_failed(self):

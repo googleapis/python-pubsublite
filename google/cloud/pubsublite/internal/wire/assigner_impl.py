@@ -39,6 +39,7 @@ class AssignerImpl(Assigner, ConnectionReinitializer[PartitionAssignmentRequest,
 
   async def __aenter__(self):
     await self._connection.__aenter__()
+    return self
 
   def _start_receiver(self):
     assert self._receiver is None
@@ -63,10 +64,11 @@ class AssignerImpl(Assigner, ConnectionReinitializer[PartitionAssignmentRequest,
         for partition in response.partitions:
           partitions.add(Partition(partition))
         self._new_assignment.put_nowait(partitions)
-    except asyncio.CancelledError:
+    except (asyncio.CancelledError, GoogleAPICallError):
       return
 
   async def __aexit__(self, exc_type, exc_val, exc_tb):
+    await self._stop_receiver()
     await self._connection.__aexit__(exc_type, exc_val, exc_tb)
 
   async def reinitialize(self, connection: Connection[PartitionAssignmentRequest, PartitionAssignment]):
