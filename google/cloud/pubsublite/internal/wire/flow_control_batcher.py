@@ -59,7 +59,7 @@ class FlowControlBatcher:
 
   def should_expedite(self):
     pending_request = self._pending_tokens.request
-    client_request = self._pending_tokens.request
+    client_request = self._client_tokens.request
     if _exceeds_expedite_ratio(pending_request.allowed_bytes, client_request.allowed_bytes):
       return True
     if _exceeds_expedite_ratio(pending_request.allowed_messages, client_request.allowed_messages):
