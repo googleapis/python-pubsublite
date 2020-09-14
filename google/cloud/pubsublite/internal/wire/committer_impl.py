@@ -110,7 +110,8 @@ class CommitterImpl(Committer, ConnectionReinitializer[StreamingCommitCursorRequ
 
   async def commit(self, cursor: Cursor) -> None:
     future = self._batcher.add(cursor)
-    if self._batcher.should_flush():  # always returns false currently, here in case this changes in the future.
+    if self._batcher.should_flush():
+      # always returns false currently, here in case this changes in the future.
       await self._flush()
     await future
 
