@@ -1,5 +1,6 @@
 from typing import AsyncIterator, Mapping, Optional, MutableMapping
 
+from google.cloud.pubsublite.admin_client import make_admin_client
 from google.cloud.pubsublite.endpoints import regional_endpoint
 from google.cloud.pubsublite.internal.wire.default_routing_policy import DefaultRoutingPolicy
 from google.cloud.pubsublite.internal.wire.gapic_connection import GapicConnectionFactory
@@ -12,8 +13,6 @@ from google.cloud.pubsublite.paths import TopicPath
 from google.cloud.pubsublite.routing_metadata import topic_routing_metadata
 from google.cloud.pubsublite_v1 import InitialPublishRequest, PublishRequest
 from google.cloud.pubsublite_v1.services.publisher_service import async_client
-from google.cloud.pubsublite_v1.services.admin_service.client import AdminServiceClient
-from google.cloud.pubsublite_v1.types.admin import GetTopicPartitionsRequest
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
 
@@ -40,17 +39,16 @@ def make_publisher(
   Throws:
     GoogleApiCallException on any error determining topic structure.
   """
+  admin_client = make_admin_client(region=topic.location.region, credentials=credentials, client_options=client_options)
   if client_options is None:
     client_options = ClientOptions(api_endpoint=regional_endpoint(topic.location.region))
   client = async_client.PublisherServiceAsyncClient(
     credentials=credentials, client_options=client_options)  # type: ignore
 
-  admin_client = AdminServiceClient(credentials=credentials, client_options=client_options)
-  partitions = admin_client.get_topic_partitions(GetTopicPartitionsRequest(name=str(topic)))
-
   clients: MutableMapping[Partition, Publisher] = {}
 
-  for partition in range(partitions.partition_count):
+  partition_count = admin_client.get_topic_partition_count(topic)
+  for partition in range(partition_count):
     partition = Partition(partition)
 
     def connection_factory(requests: AsyncIterator[PublishRequest]):
@@ -59,4 +57,4 @@ def make_publisher(
 
     clients[partition] = SinglePartitionPublisher(InitialPublishRequest(topic=str(topic), partition=partition.value),
                                                   batching_delay_secs, GapicConnectionFactory(connection_factory))
-  return RoutingPublisher(DefaultRoutingPolicy(partitions.partition_count), clients)
+  return RoutingPublisher(DefaultRoutingPolicy(partition_count), clients)
