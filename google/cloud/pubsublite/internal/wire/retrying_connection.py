@@ -38,11 +38,11 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
 
   async def write(self, request: Request) -> None:
     item = WorkItem(request)
-    await self.await_or_fail(self._write_queue.put(item))
-    return await self.await_or_fail(item.response_future)
+    await self.await_unless_failed(self._write_queue.put(item))
+    return await self.await_unless_failed(item.response_future)
 
   async def read(self) -> Response:
-    return await self.await_or_fail(self._read_queue.get())
+    return await self.await_unless_failed(self._read_queue.get())
 
   async def _run_loop(self):
     """
