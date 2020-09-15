@@ -19,7 +19,7 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
 
   _loop_task: asyncio.Future
 
-  _write_queue: 'asyncio.Queue[WorkItem[Request]]'
+  _write_queue: 'asyncio.Queue[WorkItem[Request, None]]'
   _read_queue: 'asyncio.Queue[Response]'
 
   def __init__(self, connection_factory: ConnectionFactory[Request, Response], reinitializer: ConnectionReinitializer[Request, Response]):
@@ -38,25 +38,32 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
 
   async def write(self, request: Request) -> None:
     item = WorkItem(request)
-    await self.await_or_fail(self._write_queue.put(item))
-    return await self.await_or_fail(item.response_future)
+    await self.await_unless_failed(self._write_queue.put(item))
+    return await self.await_unless_failed(item.response_future)
 
   async def read(self) -> Response:
-    return await self.await_or_fail(self._read_queue.get())
+    return await self.await_unless_failed(self._read_queue.get())
 
   async def _run_loop(self):
     """
     Processes actions on this connection and handles retries until cancelled.
     """
+    last_failure: GoogleAPICallError
     try:
       bad_retries = 0
       while True:
         try:
           async with self._connection_factory.new() as connection:
+            # Needs to happen prior to reinitialization to clear outstanding waiters.
+            while not self._write_queue.empty():
+              self._write_queue.get_nowait().response_future.set_exception(last_failure)
+            self._read_queue = asyncio.Queue(maxsize=1)
+            self._write_queue = asyncio.Queue(maxsize=1)
             await self._reinitializer.reinitialize(connection)
             bad_retries = 0
             await self._loop_connection(connection)
-        except (Exception, GoogleAPICallError) as e:
+        except GoogleAPICallError as e:
+          last_failure = e
           if not is_retryable(e):
             self.fail(e)
             return
@@ -79,7 +86,7 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
         read_task = asyncio.ensure_future(connection.read())
 
   @staticmethod
-  async def _handle_write(connection: Connection[Request, Response], to_write: WorkItem[Request]):
+  async def _handle_write(connection: Connection[Request, Response], to_write: WorkItem[Request, Response]):
     try:
       await connection.write(to_write.request)
       to_write.response_future.set_result(None)

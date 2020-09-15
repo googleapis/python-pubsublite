@@ -7,7 +7,8 @@ class ConnectionReinitializer(Generic[Request, Response], metaclass=ABCMeta):
     """A class capable of reinitializing a connection after a new one has been created."""
     @abstractmethod
     def reinitialize(self, connection: Connection[Request, Response]):
-        """Reinitialize a connection.
+        """Reinitialize a connection. Must ensure no calls to the associated RetryingConnection
+        occur until this completes.
 
         Args:
             connection: The connection to reinitialize

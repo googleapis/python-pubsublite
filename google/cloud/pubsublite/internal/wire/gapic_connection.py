@@ -1,6 +1,8 @@
 from typing import AsyncIterator, TypeVar, Optional, Callable, AsyncIterable
 import asyncio
 
+from google.api_core.exceptions import GoogleAPICallError, FailedPrecondition
+
 from google.cloud.pubsublite.internal.wire.connection import Connection, Request, Response, ConnectionFactory
 from google.cloud.pubsublite.internal.wire.work_item import WorkItem
 from google.cloud.pubsublite.internal.wire.permanent_failable import PermanentFailable
@@ -22,11 +24,17 @@ class GapicConnection(Connection[Request, Response], AsyncIterator[Request], Per
 
   async def write(self, request: Request) -> None:
     item = WorkItem(request)
-    await self.await_or_fail(self._write_queue.put(item))
-    await self.await_or_fail(item.response_future)
+    await self.await_unless_failed(self._write_queue.put(item))
+    await self.await_unless_failed(item.response_future)
 
   async def read(self) -> Response:
-    return await self.await_or_fail(self._response_it.__anext__())
+    try:
+      return await self.await_unless_failed(self._response_it.__anext__())
+    except StopAsyncIteration:
+      self.fail(FailedPrecondition("Server sent unprompted half close."))
+    except GoogleAPICallError as e:
+      self.fail(e)
+    raise self.error()
 
   def __aenter__(self):
     return self
@@ -35,7 +43,7 @@ class GapicConnection(Connection[Request, Response], AsyncIterator[Request], Per
     pass
 
   async def __anext__(self) -> Request:
-    item: WorkItem[Request] = await self.await_or_fail(self._write_queue.get())
+    item: WorkItem[Request] = await self.await_unless_failed(self._write_queue.get())
     item.response_future.set_result(None)
     return item.request
 
@@ -47,7 +55,10 @@ class GapicConnectionFactory(ConnectionFactory[Request, Response]):
   """A ConnectionFactory that produces GapicConnections."""
   _producer = Callable[[AsyncIterator[Request]], AsyncIterable[Response]]
 
-  def New(self) -> Connection[Request, Response]:
+  def __init__(self, producer: Callable[[AsyncIterator[Request]], AsyncIterable[Response]]):
+    self._producer = producer
+
+  def new(self) -> Connection[Request, Response]:
     conn = GapicConnection[Request, Response]()
     response_iterable = self._producer(conn)
     conn.set_response_it(response_iterable.__aiter__())
