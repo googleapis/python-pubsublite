@@ -10,11 +10,13 @@ from google.cloud.pubsublite.internal.wire.connection_reinitializer import Conne
 from google.cloud.pubsublite.internal.wire.connection import Connection
 from google.cloud.pubsublite.internal.wire.serial_batcher import SerialBatcher, BatchTester
 from google.cloud.pubsublite_v1 import Cursor
-from google.cloud.pubsublite_v1.types import StreamingCommitCursorRequest, StreamingCommitCursorResponse, InitialCommitCursorRequest
+from google.cloud.pubsublite_v1.types import StreamingCommitCursorRequest, StreamingCommitCursorResponse, \
+  InitialCommitCursorRequest
 from google.cloud.pubsublite.internal.wire.work_item import WorkItem
 
 
-class CommitterImpl(Committer, ConnectionReinitializer[StreamingCommitCursorRequest, StreamingCommitCursorResponse], BatchTester[Cursor]):
+class CommitterImpl(Committer, ConnectionReinitializer[StreamingCommitCursorRequest, StreamingCommitCursorResponse],
+                    BatchTester[Cursor]):
   _initial: InitialCommitCursorRequest
   _flush_seconds: float
   _connection: RetryingConnection[StreamingCommitCursorRequest, StreamingCommitCursorResponse]
@@ -38,6 +40,7 @@ class CommitterImpl(Committer, ConnectionReinitializer[StreamingCommitCursorRequ
 
   async def __aenter__(self):
     await self._connection.__aenter__()
+    return self
 
   def _start_loopers(self):
     assert self._receiver is None
@@ -71,7 +74,7 @@ class CommitterImpl(Committer, ConnectionReinitializer[StreamingCommitCursorRequ
       while True:
         response = await self._connection.read()
         self._handle_response(response)
-    except asyncio.CancelledError:
+    except (asyncio.CancelledError, GoogleAPICallError):
       return
 
   async def _flush_loop(self):
@@ -83,6 +86,7 @@ class CommitterImpl(Committer, ConnectionReinitializer[StreamingCommitCursorRequ
       return
 
   async def __aexit__(self, exc_type, exc_val, exc_tb):
+    await self._stop_loopers()
     if self._connection.error():
       self._fail_if_retrying_failed()
     else:

@@ -18,6 +18,7 @@ class RoutingPublisher(Publisher):
   async def __aenter__(self):
     for publisher in self._publishers.values():
       await publisher.__aenter__()
+    return self
 
   async def __aexit__(self, exc_type, exc_val, exc_tb):
     for publisher in self._publishers.values():
