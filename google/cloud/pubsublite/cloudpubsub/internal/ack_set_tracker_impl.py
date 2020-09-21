@@ -21,13 +21,14 @@ class AckSetTrackerImpl(AckSetTracker):
 
   def track(self, offset: int):
     if len(self._receipts) > 0:
-      last = self._receipts.pop()
+      last = self._receipts[0]
       if last >= offset:
         raise FailedPrecondition(f"Tried to track message {offset} which is before last tracked message {last}.")
-      self._receipts.append(last)
     self._receipts.append(offset)
 
   async def ack(self, offset: int):
+    # Note: put_nowait is used here and below to ensure that the below logic is executed without yielding
+    # to another coroutine in the event loop. The queue is unbounded so it will never throw.
     self._acks.put_nowait(offset)
     prefix_acked_offset: Optional[int] = None
     while len(self._receipts) != 0 and not self._acks.empty():

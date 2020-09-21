@@ -1,4 +1,4 @@
-from asynctest.mock import MagicMock, CoroutineMock, call
+from asynctest.mock import MagicMock, call
 import pytest
 
 # All test coroutines will be treated as marked.

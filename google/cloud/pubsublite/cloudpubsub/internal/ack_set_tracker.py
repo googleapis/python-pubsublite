@@ -4,7 +4,8 @@ from typing import AsyncContextManager
 
 class AckSetTracker(AsyncContextManager):
   """
-  An AckSetTracker tracks disjoint acknowledged messages and commits them when necessary.
+  An AckSetTracker tracks disjoint acknowledged messages and commits them when a contiguous prefix of tracked offsets
+  is aggregated.
   """
   @abstractmethod
   def track(self, offset: int):
