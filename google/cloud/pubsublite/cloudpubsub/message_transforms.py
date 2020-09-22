@@ -1,11 +1,9 @@
 import datetime
-from typing import cast
 
 from google.api_core.exceptions import InvalidArgument
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.pubsub_v1 import PubsubMessage
 
-from google.cloud.pubsublite.internal.b64_utils import to_b64_string, from_b64_string
 from google.cloud.pubsublite_v1 import AttributeValues, SequencedMessage, PubSubMessage
 
 PUBSUB_LITE_EVENT_TIME = "x-goog-pubsublite-event-time"
@@ -14,12 +12,13 @@ PUBSUB_LITE_EVENT_TIME = "x-goog-pubsublite-event-time"
 def encode_attribute_event_time(dt: datetime.datetime) -> str:
   ts = Timestamp()
   ts.FromDatetime(dt)
-  return to_b64_string(ts)
+  return ts.ToJsonString()
 
 
 def decode_attribute_event_time(attr: str) -> datetime.datetime:
   try:
-    ts = cast(Timestamp, from_b64_string(attr))
+    ts = Timestamp()
+    ts.FromJsonString(attr)
     return ts.ToDatetime()
   except ValueError:
     raise InvalidArgument("Invalid value for event time attribute.")

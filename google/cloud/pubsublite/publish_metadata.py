@@ -1,6 +1,6 @@
-from typing import NamedTuple, cast
+from typing import NamedTuple
+import json
 
-from google.cloud.pubsublite.internal.b64_utils import to_b64_string, from_b64_string
 from google.cloud.pubsublite_v1.types.common import Cursor
 from google.cloud.pubsublite.partition import Partition
 
@@ -10,8 +10,12 @@ class PublishMetadata(NamedTuple):
   cursor: Cursor
 
   def encode(self) -> str:
-    return to_b64_string(self)
+    return json.dumps({
+      'partition': self.partition.value,
+      'offset': self.cursor.offset
+    })
 
   @staticmethod
   def decode(source: str) -> 'PublishMetadata':
-    return cast(PublishMetadata, from_b64_string(source))
+    loaded = json.loads(source)
+    return PublishMetadata(partition=Partition(loaded['partition']), cursor=Cursor(offset=loaded['offset']))
