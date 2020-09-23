@@ -9,7 +9,7 @@ from google.cloud.pubsublite.internal.wire.assigner import Assigner
 from google.cloud.pubsublite.internal.wire.permanent_failable import PermanentFailable
 from google.cloud.pubsublite.partition import Partition
 
-_PartitionSubscriberFactory = Callable[[Partition], AsyncSubscriber]
+PartitionSubscriberFactory = Callable[[Partition], AsyncSubscriber]
 
 
 class _RunningSubscriber(NamedTuple):
@@ -19,13 +19,13 @@ class _RunningSubscriber(NamedTuple):
 
 class AssigningSubscriber(AsyncSubscriber, PermanentFailable):
   _assigner: Assigner
-  _subscriber_factory: _PartitionSubscriberFactory
+  _subscriber_factory: PartitionSubscriberFactory
 
   _subscribers: Dict[Partition, _RunningSubscriber]
   _messages: "Queue[Message]"
   _assign_poller: Future
 
-  def __init__(self, assigner: Assigner, subscriber_factory: _PartitionSubscriberFactory):
+  def __init__(self, assigner: Assigner, subscriber_factory: PartitionSubscriberFactory):
     super().__init__()
     self._assigner = assigner
     self._subscriber_factory = subscriber_factory

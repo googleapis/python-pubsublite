@@ -1,5 +1,4 @@
-import asyncio
-from typing import Callable, Set
+from typing import Set
 
 from asynctest.mock import MagicMock, call
 import pytest
@@ -7,11 +6,12 @@ from google.api_core.exceptions import FailedPrecondition
 from google.cloud.pubsub_v1.subscriber.message import Message
 from google.pubsub_v1 import PubsubMessage
 
-from google.cloud.pubsublite.cloudpubsub.internal.assigning_subscriber import AssigningSubscriber
+from google.cloud.pubsublite.cloudpubsub.internal.assigning_subscriber import AssigningSubscriber, \
+  PartitionSubscriberFactory
 from google.cloud.pubsublite.cloudpubsub.subscriber import AsyncSubscriber
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
 from google.cloud.pubsublite.partition import Partition
-from google.cloud.pubsublite.testing.test_utils import make_queue_waiter, wire_queues
+from google.cloud.pubsublite.testing.test_utils import wire_queues
 
 # All test coroutines will be treated as marked.
 pytestmark = pytest.mark.asyncio
@@ -29,7 +29,7 @@ def assigner():
 
 @pytest.fixture()
 def subscriber_factory():
-  return MagicMock(spec=Callable[[Partition], AsyncSubscriber])
+  return MagicMock(spec=PartitionSubscriberFactory)
 
 
 @pytest.fixture()
