@@ -1,5 +1,5 @@
 import asyncio
-from typing import Awaitable, TypeVar, Optional
+from typing import Awaitable, TypeVar, Optional, Callable
 
 from google.api_core.exceptions import GoogleAPICallError
 
@@ -30,6 +30,19 @@ class PermanentFailable:
       return await task
     task.cancel()
     raise self._failure_task.exception()
+
+  async def run_poller(self, poll_action: Callable[[], Awaitable[None]]):
+    """
+    Run a polling loop, which runs poll_action forever unless this is failed.
+    Args:
+      poll_action: A callable returning an awaitable to run in a loop. Note that async functions which return once
+      satisfy this.
+    """
+    try:
+      while True:
+        await self.await_unless_failed(poll_action())
+    except GoogleAPICallError as e:
+      self.fail(e)
 
   def fail(self, err: GoogleAPICallError):
     if not self._failure_task.done():

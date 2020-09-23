@@ -1,6 +1,8 @@
 import asyncio
 from typing import List, Union, Any, TypeVar, Generic, Optional
 
+from asynctest import CoroutineMock
+
 T = TypeVar("T")
 
 
@@ -25,6 +27,21 @@ def make_queue_waiter(started_q: "asyncio.Queue[None]", result_q: "asyncio.Queue
     return result
 
   return waiter
+
+
+class QueuePair:
+  called: asyncio.Queue
+  results: asyncio.Queue
+
+  def __init__(self):
+    self.called = asyncio.Queue()
+    self.results = asyncio.Queue()
+
+
+def wire_queues(mock: CoroutineMock) -> QueuePair:
+  queues = QueuePair()
+  mock.side_effect = make_queue_waiter(queues.called, queues.results)
+  return queues
 
 
 class Box(Generic[T]):
