@@ -15,7 +15,7 @@
 
 set -eo pipefail
 
-cd github/python-pubsublite
+cd .
 
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
