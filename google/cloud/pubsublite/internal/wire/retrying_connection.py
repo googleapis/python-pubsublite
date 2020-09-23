@@ -48,7 +48,6 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
     """
     Processes actions on this connection and handles retries until cancelled.
     """
-    last_failure: GoogleAPICallError
     try:
       bad_retries = 0
       while True:
@@ -56,14 +55,13 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
           async with self._connection_factory.new() as connection:
             # Needs to happen prior to reinitialization to clear outstanding waiters.
             while not self._write_queue.empty():
-              self._write_queue.get_nowait().response_future.set_exception(last_failure)
+              self._write_queue.get_nowait().response_future.set_exception(GoogleAPICallError)
             self._read_queue = asyncio.Queue(maxsize=1)
             self._write_queue = asyncio.Queue(maxsize=1)
             await self._reinitializer.reinitialize(connection)
             bad_retries = 0
             await self._loop_connection(connection)
         except GoogleAPICallError as e:
-          last_failure = e
           if not is_retryable(e):
             self.fail(e)
             return
