@@ -11,6 +11,7 @@ class AsyncPublisherImpl(AsyncPublisher):
   _publisher: Publisher
 
   def __init__(self, publisher: Publisher):
+    super().__init__()
     self._publisher = publisher
 
   async def publish(self, data: bytes, ordering_key: str = "", **attrs: Mapping[str, str]) -> str:

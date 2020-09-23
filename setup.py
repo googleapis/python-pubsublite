@@ -31,7 +31,7 @@ dependencies = [
     "google-api-core >= 1.22.0",
     "absl-py >= 0.9.0",
     "proto-plus >= 0.4.0",
-    "google-cloud-pubsub >= 1.7.0",
+    "google-cloud-pubsub >= 2.1.0",
     "grpcio",
     "setuptools"
 ]
