@@ -14,6 +14,7 @@ class FixedSetAssigner(Assigner):
     self._returned_set = False
 
   async def get_assignment(self) -> Set[Partition]:
+    """Only returns an assignment the first iteration."""
     if self._returned_set:
       await asyncio.sleep(float('inf'))
       raise RuntimeError('Should never happen.')
