@@ -72,6 +72,7 @@ class SinglePartitionSubscriber(PermanentFailable, AsyncSubscriber):
     offset = int(message.ack_id)
     sized_message = self._messages_by_offset[offset]
     try:
+      # Put the ack request back into the queue since the callback may be called from another thread.
       self._nack_handler.on_nack(sized_message.message,
                                  lambda: self._queue.put(requests.AckRequest(
                                    ack_id=message.ack_id,
@@ -95,6 +96,9 @@ class SinglePartitionSubscriber(PermanentFailable, AsyncSubscriber):
   async def _looper(self):
     while True:
       try:
+        # This is not an asyncio.Queue, and therefore we cannot do `await self._queue.get()`.
+        # A blocking wait would block the event loop, this needs to be a queue.Queue for
+        # compatibility with the Cloud Pub/Sub Message's requirements.
         queue_message = self._queue.get_nowait()
         await self._handle_queue_message(queue_message)
       except queue.Empty:

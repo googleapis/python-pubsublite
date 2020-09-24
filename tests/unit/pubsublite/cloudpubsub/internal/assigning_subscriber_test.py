@@ -1,4 +1,5 @@
-from typing import Set
+import asyncio
+from typing import Callable, Set
 
 from asynctest.mock import MagicMock, call
 import pytest
