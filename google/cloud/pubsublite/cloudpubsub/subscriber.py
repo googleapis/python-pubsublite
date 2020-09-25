@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import AsyncContextManager
+from typing import AsyncContextManager, Callable
 
 from google.cloud.pubsub_v1.subscriber.message import Message
 
@@ -23,3 +23,6 @@ class AsyncSubscriber(AsyncContextManager):
       GoogleAPICallError: On a permanent error.
     """
     raise NotImplementedError()
+
+
+MessageCallback = Callable[[Message], None]
