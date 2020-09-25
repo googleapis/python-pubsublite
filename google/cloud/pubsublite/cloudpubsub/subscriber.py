@@ -5,12 +5,13 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 
 
 class AsyncSubscriber(AsyncContextManager):
-  """
+    """
   A Cloud Pub/Sub asynchronous subscriber.
   """
-  @abstractmethod
-  async def read(self) -> Message:
-    """
+
+    @abstractmethod
+    async def read(self) -> Message:
+        """
     Read the next message off of the stream.
 
     Returns:
@@ -22,7 +23,7 @@ class AsyncSubscriber(AsyncContextManager):
     Raises:
       GoogleAPICallError: On a permanent error.
     """
-    raise NotImplementedError()
+        raise NotImplementedError()
 
 
 MessageCallback = Callable[[Message], None]

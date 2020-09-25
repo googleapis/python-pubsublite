@@ -5,12 +5,13 @@ from google.cloud.pubsublite.publish_metadata import PublishMetadata
 
 
 class Publisher(AsyncContextManager):
-  """
+    """
   A Pub/Sub Lite asynchronous wire protocol publisher.
   """
-  @abstractmethod
-  async def publish(self, message: PubSubMessage) -> PublishMetadata:
-    """
+
+    @abstractmethod
+    async def publish(self, message: PubSubMessage) -> PublishMetadata:
+        """
     Publish the provided message.
 
     Args:
@@ -22,4 +23,4 @@ class Publisher(AsyncContextManager):
     Raises:
       GoogleAPICallError: On a permanent error.
     """
-    raise NotImplementedError()
+        raise NotImplementedError()
