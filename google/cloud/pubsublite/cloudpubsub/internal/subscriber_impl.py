@@ -33,6 +33,11 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
     self._closed = False
 
   def add_close_callback(self, close_callback: CloseCallback):
+    """
+    A close callback must be set exactly once by the StreamingPullFuture managing this subscriber.
+    
+    This two-phase init model is made necessary by the requirements of StreamingPullFuture.
+    """
     with self._close_lock:
       assert self._close_callback is None
       self._close_callback = close_callback
