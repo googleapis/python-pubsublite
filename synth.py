@@ -29,14 +29,13 @@ library = gapic.py_library(
     service="pubsublite",
     version="v1",
     bazel_target="//google/cloud/pubsublite/v1:pubsublite-v1-py",
-
 )
 
 excludes = [
     "scripts/fixup*.py",  # new libraries do not need the keyword fixup script
     "setup.py",
     "README.rst",
-    "docs/index.rst"
+    "docs/index.rst",
 ]
 s.move(library, excludes=excludes)
 
@@ -51,5 +50,3 @@ s.move(
 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
-
-

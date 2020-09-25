@@ -29,8 +29,10 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 
 dependencies = [
     "google-api-core >= 1.22.0",
+    "google-api-core >= 1.22.0",
     "absl-py >= 0.9.0",
     "proto-plus >= 0.4.0",
+    "grpcio >= 1.31.0",
 ]
 
 setuptools.setup(
@@ -46,8 +48,6 @@ setuptools.setup(
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
     install_requires=dependencies,
-    setup_requires=('pytest-runner',),
-    tests_require=['asynctest', 'pytest', 'pytest-asyncio'],
     python_requires=">=3.6",
     classifiers=[
         "Development Status :: 4 - Beta",

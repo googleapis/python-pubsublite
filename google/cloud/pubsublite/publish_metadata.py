@@ -4,5 +4,5 @@ from google.cloud.pubsublite.partition import Partition
 
 
 class PublishMetadata(NamedTuple):
-  partition: Partition
-  cursor: Cursor
+    partition: Partition
+    cursor: Cursor

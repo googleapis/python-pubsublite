@@ -4,26 +4,26 @@ from google.cloud.pubsublite.publish_metadata import PublishMetadata
 
 
 class Publisher(ABC):
-  @abstractmethod
-  async def __aenter__(self):
-    raise NotImplementedError()
+    @abstractmethod
+    async def __aenter__(self):
+        raise NotImplementedError()
 
-  @abstractmethod
-  async def __aexit__(self, exc_type, exc_val, exc_tb):
-    raise NotImplementedError()
+    @abstractmethod
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        raise NotImplementedError()
 
-  @abstractmethod
-  async def publish(self, message: PubSubMessage) -> PublishMetadata:
-    """
-    Publish the provided message.
+    @abstractmethod
+    async def publish(self, message: PubSubMessage) -> PublishMetadata:
+        """
+        Publish the provided message.
 
-    Args:
-      message: The message to be published.
+        Args:
+          message: The message to be published.
 
-    Returns:
-      Metadata about the published message.
+        Returns:
+          Metadata about the published message.
 
-    Raises:
-      GoogleAPICallError: On a permanent error.
-    """
-    raise NotImplementedError()
+        Raises:
+          GoogleAPICallError: On a permanent error.
+        """
+        raise NotImplementedError()
