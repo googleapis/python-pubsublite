@@ -15,7 +15,7 @@ class ManagedEventLoop(ContextManager):
   def __enter__(self):
     self._thread.start()
 
-  def __exit__(self, __exc_type, __exc_value, __traceback):
+  def __exit__(self, exc_type, exc_value, traceback):
     self._loop.call_soon_threadsafe(self._loop.stop)
     self._thread.join()
 

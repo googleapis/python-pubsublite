@@ -10,6 +10,7 @@ class PublisherImpl(Publisher):
   _underlying: AsyncPublisher
 
   def __init__(self, underlying: AsyncPublisher):
+    super().__init__()
     self._managed_loop = ManagedEventLoop()
     self._underlying = underlying
 

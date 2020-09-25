@@ -19,7 +19,7 @@ from google.auth.credentials import Credentials
 
 def make_publisher(
     topic: TopicPath,
-    batching_delay_secs: float = .05,
+    batching_delay_secs: Optional[float] = None,
     credentials: Optional[Credentials] = None,
     client_options: Optional[ClientOptions] = None,
     metadata: Optional[Mapping[str, str]] = None) -> Publisher:
@@ -39,6 +39,7 @@ def make_publisher(
   Throws:
     GoogleApiCallException on any error determining topic structure.
   """
+  batching_delay_secs = batching_delay_secs if batching_delay_secs is not None else .05
   admin_client = make_admin_client(region=topic.location.region, credentials=credentials, client_options=client_options)
   if client_options is None:
     client_options = ClientOptions(api_endpoint=regional_endpoint(topic.location.region))

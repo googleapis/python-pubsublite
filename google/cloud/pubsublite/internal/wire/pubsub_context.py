@@ -29,6 +29,6 @@ def pubsub_context(framework: Optional[str] = None) -> Mapping[str, str]:
   version = _version()
   context.fields["major_version"] = struct_pb2.Value(number_value=version.major)
   context.fields["minor_version"] = struct_pb2.Value(number_value=version.minor)
-  encoded = b64encode(context.SerializeToString())
+  encoded = b64encode(context.SerializeToString()).decode("utf-8")
   return {"x-goog-pubsub-context": encoded}
 

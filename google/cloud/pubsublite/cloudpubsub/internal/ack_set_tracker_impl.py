@@ -15,6 +15,7 @@ class AckSetTrackerImpl(AckSetTracker):
   _acks: "queue.PriorityQueue[int]"
 
   def __init__(self, committer: Committer):
+    super().__init__()
     self._committer = committer
     self._receipts = deque()
     self._acks = queue.PriorityQueue()
