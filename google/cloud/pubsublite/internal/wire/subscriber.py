@@ -4,12 +4,13 @@ from google.cloud.pubsublite_v1.types import SequencedMessage, FlowControlReques
 
 
 class Subscriber(AsyncContextManager):
-  """
+    """
   A Pub/Sub Lite asynchronous wire protocol subscriber.
   """
-  @abstractmethod
-  async def read(self) -> SequencedMessage:
-    """
+
+    @abstractmethod
+    async def read(self) -> SequencedMessage:
+        """
     Read the next message off of the stream.
 
     Returns:
@@ -18,11 +19,11 @@ class Subscriber(AsyncContextManager):
     Raises:
       GoogleAPICallError: On a permanent error.
     """
-    raise NotImplementedError()
+        raise NotImplementedError()
 
-  @abstractmethod
-  async def allow_flow(self, request: FlowControlRequest):
-    """
+    @abstractmethod
+    async def allow_flow(self, request: FlowControlRequest):
+        """
     Allow an additional amount of messages and bytes to be sent to this client.
     """
-    raise NotImplementedError()
+        raise NotImplementedError()

@@ -4,14 +4,16 @@ from concurrent import futures
 
 
 class AsyncPublisher(AsyncContextManager):
-  """
+    """
   An AsyncPublisher publishes messages similar to Google Pub/Sub, but must be used in an
   async context. Any publish failures are permanent.
   """
 
-  @abstractmethod
-  async def publish(self, data: bytes, ordering_key: str = "", **attrs: Mapping[str, str]) -> str:
-    """
+    @abstractmethod
+    async def publish(
+        self, data: bytes, ordering_key: str = "", **attrs: Mapping[str, str]
+    ) -> str:
+        """
     Publish a message.
 
     Args:
@@ -28,13 +30,15 @@ class AsyncPublisher(AsyncContextManager):
 
 
 class Publisher(ContextManager):
-  """
+    """
   A Publisher publishes messages similar to Google Pub/Sub. Any publish failures are permanent.
   """
 
-  @abstractmethod
-  def publish(self, data: bytes, ordering_key: str = "", **attrs: Mapping[str, str]) -> 'futures.Future[str]':
-    """
+    @abstractmethod
+    def publish(
+        self, data: bytes, ordering_key: str = "", **attrs: Mapping[str, str]
+    ) -> "futures.Future[str]":
+        """
     Publish a message.
 
     Args:

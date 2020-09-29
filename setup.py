@@ -25,7 +25,7 @@ package_root = os.path.abspath(os.path.dirname(__file__))
 
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
-  readme = readme_file.read()
+    readme = readme_file.read()
 
 dependencies = [
     "google-api-core >= 1.22.0",
@@ -33,39 +33,32 @@ dependencies = [
     "proto-plus >= 0.4.0",
     "google-cloud-pubsub >= 2.1.0",
     "grpcio",
-    "setuptools"
-]
-
-test_dependencies = [
-    "asynctest",
-    "pytest",
-    "pytest-asyncio"
+    "setuptools",
 ]
 
 setuptools.setup(
-  name="google-cloud-pubsublite",
-  version=version,
-  long_description=readme,
-  author="Google LLC",
-  author_email="googleapis-packages@google.com",
-  license="Apache 2.0",
-  url="https://github.com/googleapis/python-pubsublite",
-  packages=setuptools.PEP420PackageFinder.find(),
-  namespace_packages=("google", "google.cloud"),
-  platforms="Posix; MacOS X; Windows",
-  include_package_data=True,
-  install_requires=dependencies,
-  extras_require={"tests": test_dependencies},
-  python_requires=">=3.6",
-  classifiers=[
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Topic :: Internet",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-  ],
-  zip_safe=False,
+    name="google-cloud-pubsublite",
+    version=version,
+    long_description=readme,
+    author="Google LLC",
+    author_email="googleapis-packages@google.com",
+    license="Apache 2.0",
+    url="https://github.com/googleapis/python-pubsublite",
+    packages=setuptools.PEP420PackageFinder.find(),
+    namespace_packages=("google", "google.cloud"),
+    platforms="Posix; MacOS X; Windows",
+    include_package_data=True,
+    install_requires=dependencies,
+    python_requires=">=3.6",
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Topic :: Internet",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
+    zip_safe=False,
 )

@@ -3,10 +3,14 @@ from typing import Optional, Mapping
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
 
-from google.cloud.pubsublite.cloudpubsub.internal.async_publisher_impl import AsyncPublisherImpl
+from google.cloud.pubsublite.cloudpubsub.internal.async_publisher_impl import (
+    AsyncPublisherImpl,
+)
 from google.cloud.pubsublite.cloudpubsub.internal.publisher_impl import PublisherImpl
 from google.cloud.pubsublite.cloudpubsub.publisher import AsyncPublisher, Publisher
-from google.cloud.pubsublite.internal.wire.make_publisher import make_publisher as make_wire_publisher
+from google.cloud.pubsublite.internal.wire.make_publisher import (
+    make_publisher as make_wire_publisher,
+)
 from google.cloud.pubsublite.internal.wire.merge_metadata import merge_metadata
 from google.cloud.pubsublite.internal.wire.pubsub_context import pubsub_context
 from google.cloud.pubsublite.paths import TopicPath
@@ -17,9 +21,9 @@ def make_async_publisher(
     batching_delay_secs: Optional[float] = None,
     credentials: Optional[Credentials] = None,
     client_options: Optional[ClientOptions] = None,
-    metadata: Optional[Mapping[str, str]] = None
+    metadata: Optional[Mapping[str, str]] = None,
 ) -> AsyncPublisher:
-  """
+    """
   Make a new publisher for the given topic.
 
   Args:
@@ -35,9 +39,11 @@ def make_async_publisher(
   Throws:
     GoogleApiCallException on any error determining topic structure.
   """
-  metadata = merge_metadata(pubsub_context(framework="CLOUD_PUBSUB_SHIM"), metadata)
-  underlying = make_wire_publisher(topic, batching_delay_secs, credentials, client_options, metadata)
-  return AsyncPublisherImpl(underlying)
+    metadata = merge_metadata(pubsub_context(framework="CLOUD_PUBSUB_SHIM"), metadata)
+    underlying = make_wire_publisher(
+        topic, batching_delay_secs, credentials, client_options, metadata
+    )
+    return AsyncPublisherImpl(underlying)
 
 
 def make_publisher(
@@ -45,9 +51,9 @@ def make_publisher(
     batching_delay_secs: Optional[float] = None,
     credentials: Optional[Credentials] = None,
     client_options: Optional[ClientOptions] = None,
-    metadata: Optional[Mapping[str, str]] = None
+    metadata: Optional[Mapping[str, str]] = None,
 ) -> Publisher:
-  """
+    """
   Make a new publisher for the given topic.
 
   Args:
@@ -63,4 +69,8 @@ def make_publisher(
   Throws:
     GoogleApiCallException on any error determining topic structure.
   """
-  return PublisherImpl(make_async_publisher(topic, batching_delay_secs, credentials, client_options, metadata))
+    return PublisherImpl(
+        make_async_publisher(
+            topic, batching_delay_secs, credentials, client_options, metadata
+        )
+    )

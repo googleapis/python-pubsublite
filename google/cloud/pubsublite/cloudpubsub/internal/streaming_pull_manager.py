@@ -8,11 +8,12 @@ CloseCallback = Callable[["StreamingPullManager", Optional[GoogleAPICallError]],
 
 
 class StreamingPullManager(ABC):
-  """The API expected by StreamingPullFuture."""
-  @abstractmethod
-  def add_close_callback(self, close_callback: CloseCallback):
-    pass
+    """The API expected by StreamingPullFuture."""
 
-  @abstractmethod
-  def close(self):
-    pass
+    @abstractmethod
+    def add_close_callback(self, close_callback: CloseCallback):
+        pass
+
+    @abstractmethod
+    def close(self):
+        pass

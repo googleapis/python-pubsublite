@@ -5,10 +5,11 @@ from google.cloud.pubsublite_v1.types.common import PubSubMessage
 
 
 class RoutingPolicy(ABC):
-  """A policy for how to route messages."""
-  @abstractmethod
-  def route(self, message: PubSubMessage) -> Partition:
-    """
+    """A policy for how to route messages."""
+
+    @abstractmethod
+    def route(self, message: PubSubMessage) -> Partition:
+        """
     Route a message to a given partition.
     Args:
       message: The message to route
@@ -16,4 +17,4 @@ class RoutingPolicy(ABC):
     Returns: The partition to route to
 
     """
-    raise NotImplementedError()
+        raise NotImplementedError()
