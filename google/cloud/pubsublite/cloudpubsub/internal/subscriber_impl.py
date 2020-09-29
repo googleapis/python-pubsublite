@@ -1,6 +1,5 @@
 import concurrent.futures
 import threading
-from asyncio import CancelledError
 from concurrent.futures.thread import ThreadPoolExecutor
 from typing import ContextManager, Optional
 from google.api_core.exceptions import GoogleAPICallError
@@ -84,7 +83,7 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
         try:
             self._poller_future.cancel()
             self._poller_future.result()
-        except CancelledError:
+        except concurrent.futures.CancelledError:
             pass
         self._event_loop.submit(
             self._underlying.__aexit__(exc_type, exc_value, traceback)

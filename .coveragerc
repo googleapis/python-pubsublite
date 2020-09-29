@@ -29,8 +29,7 @@ exclude_lines =
     # Ignore abstract methods
     raise NotImplementedError
     @abstractmethod
-    # Ignore lines with type hints
-     ->
+
 omit =
   */pubsublite_v1/*.py
   */site-packages/*.py
