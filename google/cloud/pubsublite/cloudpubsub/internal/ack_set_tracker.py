@@ -3,13 +3,14 @@ from typing import AsyncContextManager
 
 
 class AckSetTracker(AsyncContextManager):
-  """
+    """
   An AckSetTracker tracks disjoint acknowledged messages and commits them when a contiguous prefix of tracked offsets
   is aggregated.
   """
-  @abstractmethod
-  def track(self, offset: int):
-    """
+
+    @abstractmethod
+    def track(self, offset: int):
+        """
     Track the provided offset.
 
     Args:
@@ -19,9 +20,9 @@ class AckSetTracker(AsyncContextManager):
       GoogleAPICallError: On an invalid offset to track.
     """
 
-  @abstractmethod
-  async def ack(self, offset: int):
-    """
+    @abstractmethod
+    async def ack(self, offset: int):
+        """
     Acknowledge the message with the provided offset. The offset must have previously been tracked.
 
     Args:

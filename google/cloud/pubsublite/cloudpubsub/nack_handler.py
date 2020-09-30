@@ -6,13 +6,13 @@ from google.pubsub_v1 import PubsubMessage
 
 
 class NackHandler(ABC):
-  """
+    """
   A NackHandler handles calls to the nack() method which is not expressible in Pub/Sub Lite.
   """
 
-  @abstractmethod
-  def on_nack(self, message: PubsubMessage, ack: Callable[[], None]):
-    """Handle a negative acknowledgement. ack must eventually be called.
+    @abstractmethod
+    def on_nack(self, message: PubsubMessage, ack: Callable[[], None]):
+        """Handle a negative acknowledgement. ack must eventually be called.
 
     Args:
       message: The nacked message.
@@ -21,11 +21,12 @@ class NackHandler(ABC):
     Raises:
       GoogleAPICallError: To fail the client if raised inline.
     """
-    pass
+        pass
 
 
 class DefaultNackHandler(NackHandler):
-  def on_nack(self, message: PubsubMessage, ack: Callable[[], None]):
-    raise FailedPrecondition(
-      "You may not nack messages by default when using a PubSub Lite client. See NackHandler for how to customize"
-      " this.")
+    def on_nack(self, message: PubsubMessage, ack: Callable[[], None]):
+        raise FailedPrecondition(
+            "You may not nack messages by default when using a PubSub Lite client. See NackHandler for how to customize"
+            " this."
+        )

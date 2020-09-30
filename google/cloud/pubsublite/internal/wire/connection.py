@@ -1,12 +1,11 @@
-from typing import Generic, TypeVar, Coroutine, Any, AsyncContextManager
-from abc import ABCMeta, abstractmethod
-from google.api_core.exceptions import GoogleAPICallError
+from typing import Generic, TypeVar, AsyncContextManager
+from abc import abstractmethod
 
-Request = TypeVar('Request')
-Response = TypeVar('Response')
+Request = TypeVar("Request")
+Response = TypeVar("Response")
 
 
-class Connection(Generic[Request, Response], AsyncContextManager):
+class Connection(Generic[Request, Response], AsyncContextManager["Connection"]):
     """
     A connection to an underlying stream. Only one call to 'read' may be outstanding at a time.
     """
@@ -34,5 +33,6 @@ class Connection(Generic[Request, Response], AsyncContextManager):
 
 class ConnectionFactory(Generic[Request, Response]):
     """A factory for producing Connections."""
+
     def new(self) -> Connection[Request, Response]:
         raise NotImplementedError()

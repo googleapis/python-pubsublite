@@ -3,63 +3,76 @@ import asyncio
 
 from google.api_core.exceptions import GoogleAPICallError, FailedPrecondition
 
-from google.cloud.pubsublite.internal.wire.connection import Connection, Request, Response, ConnectionFactory
+from google.cloud.pubsublite.internal.wire.connection import (
+    Connection,
+    Request,
+    Response,
+    ConnectionFactory,
+)
 from google.cloud.pubsublite.internal.wire.work_item import WorkItem
 from google.cloud.pubsublite.internal.wire.permanent_failable import PermanentFailable
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
-class GapicConnection(Connection[Request, Response], AsyncIterator[Request], PermanentFailable):
-  """A Connection wrapping a gapic AsyncIterator[Request/Response] pair."""
-  _write_queue: 'asyncio.Queue[WorkItem[Request]]'
-  _response_it: Optional[AsyncIterator[Response]]
+class GapicConnection(
+    Connection[Request, Response], AsyncIterator[Request], PermanentFailable
+):
+    """A Connection wrapping a gapic AsyncIterator[Request/Response] pair."""
 
-  def __init__(self):
-    super().__init__()
-    self._write_queue = asyncio.Queue(maxsize=1)
+    _write_queue: "asyncio.Queue[WorkItem[Request]]"
+    _response_it: Optional[AsyncIterator[Response]]
 
-  def set_response_it(self, response_it: AsyncIterator[Response]):
-    self._response_it = response_it
+    def __init__(self):
+        super().__init__()
+        self._write_queue = asyncio.Queue(maxsize=1)
 
-  async def write(self, request: Request) -> None:
-    item = WorkItem(request)
-    await self.await_unless_failed(self._write_queue.put(item))
-    await self.await_unless_failed(item.response_future)
+    def set_response_it(self, response_it: AsyncIterator[Response]):
+        self._response_it = response_it
 
-  async def read(self) -> Response:
-    try:
-      return await self.await_unless_failed(self._response_it.__anext__())
-    except StopAsyncIteration:
-      self.fail(FailedPrecondition("Server sent unprompted half close."))
-    except GoogleAPICallError as e:
-      self.fail(e)
-    raise self.error()
+    async def write(self, request: Request) -> None:
+        item = WorkItem(request)
+        await self.await_unless_failed(self._write_queue.put(item))
+        await self.await_unless_failed(item.response_future)
 
-  def __aenter__(self):
-    return self
+    async def read(self) -> Response:
+        try:
+            return await self.await_unless_failed(self._response_it.__anext__())
+        except StopAsyncIteration:
+            self.fail(FailedPrecondition("Server sent unprompted half close."))
+        except GoogleAPICallError as e:
+            self.fail(e)
+        raise self.error()
 
-  def __aexit__(self, exc_type, exc_value, traceback) -> None:
-    pass
+    def __aenter__(self):
+        return self
 
-  async def __anext__(self) -> Request:
-    item: WorkItem[Request] = await self.await_unless_failed(self._write_queue.get())
-    item.response_future.set_result(None)
-    return item.request
+    def __aexit__(self, exc_type, exc_value, traceback) -> None:
+        pass
 
-  def __aiter__(self) -> AsyncIterator[Response]:
-    return self
+    async def __anext__(self) -> Request:
+        item: WorkItem[Request] = await self.await_unless_failed(
+            self._write_queue.get()
+        )
+        item.response_future.set_result(None)
+        return item.request
+
+    def __aiter__(self) -> AsyncIterator[Response]:
+        return self
 
 
 class GapicConnectionFactory(ConnectionFactory[Request, Response]):
-  """A ConnectionFactory that produces GapicConnections."""
-  _producer = Callable[[AsyncIterator[Request]], AsyncIterable[Response]]
+    """A ConnectionFactory that produces GapicConnections."""
 
-  def __init__(self, producer: Callable[[AsyncIterator[Request]], AsyncIterable[Response]]):
-    self._producer = producer
+    _producer = Callable[[AsyncIterator[Request]], AsyncIterable[Response]]
 
-  def new(self) -> Connection[Request, Response]:
-    conn = GapicConnection[Request, Response]()
-    response_iterable = self._producer(conn)
-    conn.set_response_it(response_iterable.__aiter__())
-    return conn
+    def __init__(
+        self, producer: Callable[[AsyncIterator[Request]], AsyncIterable[Response]]
+    ):
+        self._producer = producer
+
+    def new(self) -> Connection[Request, Response]:
+        conn = GapicConnection[Request, Response]()
+        response_iterable = self._producer(conn)
+        conn.set_response_it(response_iterable.__aiter__())
+        return conn
