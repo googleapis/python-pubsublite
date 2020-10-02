@@ -85,8 +85,7 @@ IGNORED_VERSIONS = TEST_CONFIG["ignored_versions"]
 
 TESTED_VERSIONS = sorted([v for v in ALL_VERSIONS if v not in IGNORED_VERSIONS])
 
-# TODO: change the default to False when this repo is public.
-INSTALL_LIBRARY_FROM_SOURCE = bool(os.environ.get("INSTALL_LIBRARY_FROM_SOURCE", True))
+INSTALL_LIBRARY_FROM_SOURCE = bool(os.environ.get("INSTALL_LIBRARY_FROM_SOURCE", False))
 #
 # Style Checks
 #
