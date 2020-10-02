@@ -1,6 +1,6 @@
 from typing import AsyncIterator, Mapping, Optional, MutableMapping
 
-from google.cloud.pubsublite.admin_client import make_admin_client
+from google.cloud.pubsublite.make_admin_client import make_admin_client
 from google.cloud.pubsublite.endpoints import regional_endpoint
 from google.cloud.pubsublite.internal.wire.default_routing_policy import (
     DefaultRoutingPolicy,

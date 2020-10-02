@@ -1,15 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import List
 
-from google.api_core.client_options import ClientOptions
-from google.protobuf.field_mask_pb2 import FieldMask
-
-from google.cloud.pubsublite.endpoints import regional_endpoint
-from google.cloud.pubsublite.internal.wire.admin_client_impl import AdminClientImpl
 from google.cloud.pubsublite.location import CloudRegion
 from google.cloud.pubsublite.paths import TopicPath, LocationPath, SubscriptionPath
-from google.cloud.pubsublite_v1 import Topic, Subscription, AdminServiceClient
-from google.auth.credentials import Credentials
+from google.cloud.pubsublite_v1 import Topic, Subscription
+from google.protobuf.field_mask_pb2 import FieldMask
 
 
 class AdminClient(ABC):
@@ -66,16 +61,3 @@ class AdminClient(ABC):
     @abstractmethod
     def delete_subscription(self, subscription_path: SubscriptionPath):
         """Delete a subscription and all associated messages."""
-
-
-def make_admin_client(
-    region: CloudRegion,
-    credentials: Optional[Credentials] = None,
-    client_options: Optional[ClientOptions] = None,
-) -> AdminClient:
-    if client_options is None:
-        client_options = ClientOptions(api_endpoint=regional_endpoint(region))
-    return AdminClientImpl(
-        AdminServiceClient(client_options=client_options, credentials=credentials),
-        region,
-    )
