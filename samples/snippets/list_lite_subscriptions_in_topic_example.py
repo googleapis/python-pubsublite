@@ -14,35 +14,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This application demonstrates how to get a topic with the Pub/Sub
-Lite API. For more information, see the root level README.md and the
-documentation at https://cloud.google.com/pubsub/lite/docs/topics.
+"""This application demonstrates how to list subscriptions in your topic with
+the Pub/Sub Lite API. For more information, see the root level README.md and the
+documentation at https://cloud.google.com/pubsub/lite/docs/subscriptions.
 """
 
 import argparse
 
 
-def get_lite_topic(project_number, cloud_region, zone_id, topic_id):
-    # [START pubsublite_get_topic]
+def list_lite_subscriptions_in_topic(project_number, cloud_region, zone_id, topic_id):
+    # [START pubsublite_list_subscriptions_in_topic]
     from google.cloud.pubsublite.location import CloudRegion, CloudZone
     from google.cloud.pubsublite.make_admin_client import make_admin_client
-    from google.cloud.pubsublite.paths import TopicPath
+    from google.cloud.pubsublite.paths import LocationPath, TopicPath
 
     # TODO(developer):
     # project_number = 1122334455
     # cloud_region = "us-central1"
     # zone_id = "a"
-    # toic_id = "your-topic-id"
+    # topic_id = "your-topic-id"
 
     client = make_admin_client(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     topic_path = str(TopicPath(project_number, location, topic_id))
 
-    response = client.get_topic(topic_path)
-    num_partitions = client.get_topic_partition_count(topic_path)
-    print(f"{response}\nhas {num_partitions} partition(s).")
-    # [END pubsublite_get_topic]
+    response = client.list_topic_subscriptions(topic_path)
+    for subscription_path in response:
+        print(subscription_path)
+    print(f"{len(response)} subscription(s) listed in {topic_path}.")
+    # [END pubsublite_list_subscriptions_in_topic]
 
 
 if __name__ == "__main__":
@@ -56,6 +57,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    get_lite_topic(
+    list_lite_subscriptions_in_topic(
         args.project_number, args.cloud_region, args.zone_id, args.topic_id,
     )

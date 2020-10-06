@@ -24,9 +24,9 @@ import argparse
 
 def list_lite_topics(project_number, cloud_region, zone_id):
     # [START pubsublite_list_topics]
+    from google.cloud.pubsublite.location import CloudRegion, CloudZone
     from google.cloud.pubsublite.make_admin_client import make_admin_client
     from google.cloud.pubsublite.paths import LocationPath
-    from google.cloud.pubsublite.location import CloudRegion, CloudZone
 
     # TODO(developer):
     # project_number = 1122334455
