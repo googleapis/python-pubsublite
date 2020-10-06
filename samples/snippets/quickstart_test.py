@@ -50,7 +50,7 @@ num_partitions = 1
 @pytest.fixture(scope="module")
 def client():
     yield make_admin_client(cloud_region)
-    
+
 
 @pytest.fixture(scope="module")
 def topic_path(client):
@@ -77,11 +77,11 @@ def subscription_path(client):
 def test_create_lite_topic_example(topic_path, capsys):
     topic_path_object = TopicPath.parse(topic_path)
     create_lite_topic_example.create_lite_topic(
-        topic_path_object.project_number, 
-        topic_path_object.location.region.name, 
+        topic_path_object.project_number,
+        topic_path_object.location.region.name,
         topic_path_object.location.zone_id,
-        topic_path_object.name, 
-        num_partitions
+        topic_path_object.name,
+        num_partitions,
     )
     out, _ = capsys.readouterr()
     assert "created successfully." in out
@@ -90,8 +90,8 @@ def test_create_lite_topic_example(topic_path, capsys):
 def test_update_lite_topic_example(topic_path, capsys):
     topic_path_object = TopicPath.parse(topic_path)
     update_lite_topic_example.update_lite_topic(
-        topic_path_object.project_number, 
-        topic_path_object.location.region.name, 
+        topic_path_object.project_number,
+        topic_path_object.location.region.name,
         topic_path_object.location.zone_id,
         topic_path_object.name,
     )
@@ -102,8 +102,8 @@ def test_update_lite_topic_example(topic_path, capsys):
 def test_get_lite_topic_example(topic_path, capsys):
     topic_path_object = TopicPath.parse(topic_path)
     get_lite_topic_example.get_lite_topic(
-        topic_path_object.project_number, 
-        topic_path_object.location.region.name, 
+        topic_path_object.project_number,
+        topic_path_object.location.region.name,
         topic_path_object.location.zone_id,
         topic_path_object.name,
     )
@@ -114,8 +114,8 @@ def test_get_lite_topic_example(topic_path, capsys):
 def test_list_lite_topics_example(topic_path, capsys):
     topic_path_object = TopicPath.parse(topic_path)
     list_lite_topics_example.list_lite_topics(
-        topic_path_object.project_number, 
-        topic_path_object.location.region.name, 
+        topic_path_object.project_number,
+        topic_path_object.location.region.name,
         topic_path_object.location.zone_id,
     )
     out, _ = capsys.readouterr()
@@ -137,7 +137,7 @@ def test_create_lite_subscription(subscription_path, topic_path, capsys):
         )
         out, _ = capsys.readouterr()
         assert "created successfully." in out
-    
+
     eventually_consistent_test()
 
 
@@ -154,7 +154,7 @@ def test_update_lite_subscription_example(subscription_path, capsys):
         )
         out, _ = capsys.readouterr()
         assert "updated successfully." in out
-    
+
     eventually_consistent_test()
 
 
@@ -171,7 +171,7 @@ def test_get_lite_subscription(subscription_path, capsys):
         )
         out, _ = capsys.readouterr()
         assert "exists." in out
-    
+
     eventually_consistent_test()
 
 
@@ -198,14 +198,14 @@ def test_list_lite_subscriptions_in_topic(topic_path, subscription_path, capsys)
     @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
     def eventually_consistent_test():
         list_lite_subscriptions_in_topic_example.list_lite_subscriptions_in_topic(
-                subscription_path_object.project_number, 
-                subscription_path_object.location.region.name,
-                subscription_path_object.location.zone_id,
-                topic_path_object.name,
+            subscription_path_object.project_number,
+            subscription_path_object.location.region.name,
+            subscription_path_object.location.zone_id,
+            topic_path_object.name,
         )
         out, _ = capsys.readouterr()
         assert "subscription(s) listed" in out
-    
+
     eventually_consistent_test()
 
 
@@ -222,7 +222,7 @@ def test_delete_lite_subscription_example(subscription_path, capsys):
         )
         out, _ = capsys.readouterr()
         assert "deleted successfully." in out
-    
+
     eventually_consistent_test()
 
 
@@ -232,12 +232,12 @@ def test_delete_lite_topic_example(topic_path, capsys):
     @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
     def eventually_consistent_test():
         delete_lite_topic_example.delete_lite_topic(
-            topic_path_object.project_number, 
-            topic_path_object.location.region.name, 
+            topic_path_object.project_number,
+            topic_path_object.location.region.name,
             topic_path_object.location.zone_id,
             topic_path_object.name,
         )
         out, _ = capsys.readouterr()
         assert "deleted successfully." in out
-    
+
     eventually_consistent_test()
