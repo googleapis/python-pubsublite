@@ -23,11 +23,11 @@ def _version() -> _Semver:
 def pubsub_context(framework: Optional[str] = None) -> Mapping[str, str]:
     """Construct the pubsub context mapping for the given framework."""
     context = struct_pb2.Struct()
-    context.fields["language"] = struct_pb2.Value(string_value="PYTHON")
+    context.fields["language"].string_value = "PYTHON"
     if framework:
-        context.fields["framework"] = struct_pb2.Value(string_value=framework)
+        context.fields["framework"].string_value = framework
     version = _version()
-    context.fields["major_version"] = struct_pb2.Value(number_value=version.major)
-    context.fields["minor_version"] = struct_pb2.Value(number_value=version.minor)
+    context.fields["major_version"].number_value = version.major
+    context.fields["minor_version"].number_value = version.minor
     encoded = b64encode(context.SerializeToString()).decode("utf-8")
     return {"x-goog-pubsub-context": encoded}
