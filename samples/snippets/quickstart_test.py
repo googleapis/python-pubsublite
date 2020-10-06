@@ -18,7 +18,12 @@ import os
 import random
 import uuid
 
-import create_lite_topic_example
+from google.cloud.pubsublite.make_admin_client import make_admin_client
+from google.cloud.pubsublite.paths import LocationPath, TopicPath
+from google.cloud.pubsublite.location import CloudRegion, CloudZone
+import pytest
+
+import create_lite_topic_example, update_lite_topic_example, get_lite_topic_example, list_lite_topics_example, delete_lite_topic_example
 
 uuid_hex = uuid.uuid4().hex
 project_number = os.environ["GOOGLE_CLOUD_PROJECT_NUMBER"]
@@ -28,9 +33,53 @@ zone_id = ["a", "b", "c"][random.randint(0, 2)]
 num_partitions = 1
 
 
-def test_create_lite_topic(capsys):
+@pytest.fixture(scope="module")
+def client():
+    yield make_admin_client(cloud_region)
+
+
+@pytest.topic(scope="module")
+def topic_path(client):
+    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    location_path = LocationPath(project_number, location)
+    topic_path = str(TopicPath(project_number, location, topic_id))
+    yield topic_path
+    client.delete_topic(location_path)
+
+
+def test_create_lite_topic_example(client, capsys):
     create_lite_topic_example.create_lite_topic(
         project_number, cloud_region, zone_id, topic_id, num_partitions
     )
     out, _ = capsys.readouterr()
     assert "created successfully." in out
+
+
+def test_update_lite_topic_example(client, capsys):
+    update_lite_topic_example.update_lite_topic(
+        project_number, cloud_region, zone_id, topic_id
+    )
+    out, _ = capsys.readouterr()
+    assert "updated successfully." in out
+
+
+def test_get_lite_topic_example(client, capsys):
+    get_lite_topic_example.get_lite_topic(
+        project_number, cloud_region, zone_id, topic_id
+    )
+    out, _ = capsys.readouterr()
+    assert f"has {num_partitions} partition(s)." in out
+
+
+def test_list_lite_topics_example(client, capsys):
+    list_lite_topics_example.list_lite_topics(project_number, cloud_region, zone_id)
+    out, _ = capsys.readouterr()
+    assert "topic(s) listed." in out
+
+
+def test_delete_lite_topic_example(client, capsys):
+    delete_lite_topic_example.delete_lite_topic(
+        project_number, cloud_region, zone_id, topic_id
+    )
+    out, _ = capsys.readouterr()
+    assert "deleted successfully." in out
