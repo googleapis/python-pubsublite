@@ -14,15 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This application demonstrates basic administrative operations with the
-Cloud Pub/Sub Lite API. For more information, see the root level README.md
-and the documentation at https://cloud.google.com/pubsub/lite/docs.
+"""This application demonstrates how to create a topic with the Pub/Sub
+Lite API. For more information, see the root level README.md and the
+documentation at https://cloud.google.com/pubsub/lite/docs/topics.
 """
 
 import argparse
 
 
-def create_lite_topic(project_number, topic_id, cloud_region, zone_id, num_partitions):
+def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_partitions):
     # [START pubsublite_create_topic]
     from google.cloud.pubsublite.make_admin_client import make_admin_client
     from google.cloud.pubsublite_v1 import Topic
@@ -46,20 +46,20 @@ def create_lite_topic(project_number, topic_id, cloud_region, zone_id, num_parti
             "name": topic_path,
             "partition_config": Topic.PartitionConfig(
                 {
-                    # The product of the partition count and the scaling factor equals the number of
-                    # partitions that your topic is charged.
+                    # This must be greater than 1.
                     "count": num_partitions,
-                    # Set publishing throughput to 1x standard partition throughput of 4 MiB per second.
-                    # This vlaue must in the range [1,4].
+                    # Set publishing throughput to 1x standard partition throughput of 4 MiB
+                    # per second. This must in the range [1,4]. A topic with `scale` of 2 and
+                    # `count` of 10 is charged for 20 partitions.
                     "scale": 1,
                 }
             ),
             "retention_config": Topic.RetentionConfig(
                 {
-                    # Set storage per partition to 30 GiB. This must be in the range 30 GiB-10TiB. If the
-                    # number of byptes stored in any of the topic's partitions grows beyond this value,
-                    # older messages will be dropped to make room for newer ones, regardless of the value
-                    # of `period`.
+                    # Set storage per partition to 30 GiB. This must be in the range 30 GiB-10TiB.
+                    # If the number of byptes stored in any of the topic's partitions grows beyond
+                    # this value, older messages will be dropped to make room for newer ones,
+                    # regardless of the value of `period`.
                     "per_partition_bytes": 30 * 1024 * 1024 * 1024,
                     # How long messages are retained.
                     "period": Duration(seconds=60 * 60 * 24 * 7),
@@ -78,23 +78,19 @@ if __name__ == "__main__":
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("project_number", help="Your Google Cloud Project Number")
-
-    subparsers = parser.add_subparsers(dest="command")
-
-    create_lite_topic_parser = subparsers.add_parser(
-        "create-topic", help=create_lite_topic.__doc__
-    )
-    create_lite_topic_parser.add_argument(
-        "topic_id", "cloud_region", "zone_id", "num_partitions"
+    parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
+    parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
+    parser.add_argument("topic_id", help="Your topic ID")
+    parser.add_argument(
+        "num_partitions", type=int, help="Number of partitions in the topic"
     )
 
     args = parser.parse_args()
 
-    if args.command == "create-topic":
-        create_lite_topic(
-            args.project_number,
-            args.topic_id,
-            args.cloud_region,
-            args.zone_id,
-            args.num_partitions,
-        )
+    create_lite_topic(
+        args.project_number,
+        args.cloud_region,
+        args.zone_id,
+        args.topic_id,
+        args.num_partitions,
+    )

@@ -18,7 +18,7 @@ import os
 import random
 import uuid
 
-import admin
+import create_lite_topic_example
 
 uuid_hex = uuid.uuid4().hex
 project_number = os.environ["GOOGLE_CLOUD_PROJECT_NUMBER"]
@@ -29,8 +29,8 @@ num_partitions = 1
 
 
 def test_create_lite_topic(capsys):
-    admin.create_lite_topic(
-        project_number, topic_id, cloud_region, zone_id, num_partitions
+    create_lite_topic_example.create_lite_topic(
+        project_number, cloud_region, zone_id, topic_id, num_partitions
     )
     out, _ = capsys.readouterr()
     assert "created successfully." in out
