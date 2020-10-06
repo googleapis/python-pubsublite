@@ -27,6 +27,8 @@ def create_lite_topic(project_number, topic_id, cloud_region, zone_id, num_parti
     from google.cloud.pubsublite.make_admin_client import make_admin_client
     from google.cloud.pubsublite_v1 import Topic
     from google.protobuf.duration_pb2 import Duration
+    from google.cloud.pubsublite.paths import TopicPath
+    from google.cloud.pubsublite.location import CloudRegion, CloudZone
 
     # TODO(developer):
     # project_number = 1122334455
@@ -37,9 +39,11 @@ def create_lite_topic(project_number, topic_id, cloud_region, zone_id, num_parti
 
     client = make_admin_client(cloud_region)
 
+    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    topic_path = str(TopicPath(project_number, location, topic_id))
     topic = Topic(
         {
-            "name": f"projects/{project_number}/locations/{cloud_region}-{zone_id}/topics/{topic_id}",
+            "name": topic_path,
             "partition_config": Topic.PartitionConfig(
                 {
                     # The product of the partition count and the scaling factor equals the number of
