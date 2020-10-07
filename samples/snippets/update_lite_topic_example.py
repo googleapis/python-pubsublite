@@ -53,28 +53,22 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
 
     # Defines how to update the topic fields.
     topic = Topic(
-        {
-            "name": topic_path,
-            "partition_config": Topic.PartitionConfig(
-                {
-                    # Set publishing throughput to 4x standard partition throughput of 4 MiB
-                    # per second. This must in the range [1,4]. A topic with `scale` of 2 and
-                    # `count` of 10 is charged for 20 partitions.
-                    "scale": 4,
-                }
-            ),
-            "retention_config": Topic.RetentionConfig(
-                {
-                    # Set storage per partition to 200 GiB. This must be in the range 30 GiB-10TiB.
-                    # If the number of byptes stored in any of the topic's partitions grows beyond
-                    # this value, older messages will be dropped to make room for newer ones,
-                    # regardless of the value of `period`.
-                    # Be careful when decreasing storage per partition as it may cuase lost messages.
-                    "per_partition_bytes": 200 * 1024 * 1024 * 1024,
-                    "period": Duration(seconds=60 * 60 * 24 * 14),
-                }
-            ),
-        }
+        name=topic_path,
+        partition_config=Topic.PartitionConfig(
+            # Set publishing throughput to 4x standard partition throughput of 4 MiB
+            # per second. This must in the range [1,4]. A topic with `scale` of 2 and
+            # `count` of 10 is charged for 20 partitions.
+            scale=4,
+        ),
+        retention_config=Topic.RetentionConfig(
+            # Set storage per partition to 200 GiB. This must be in the range 30 GiB-10TiB.
+            # If the number of byptes stored in any of the topic's partitions grows beyond
+            # this value, older messages will be dropped to make room for newer ones,
+            # regardless of the value of `period`.
+            # Be careful when decreasing storage per partition as it may cuase lost messages.
+            per_partition_bytes=200 * 1024 * 1024 * 1024,
+            period=Duration(seconds=60 * 60 * 24 * 14),
+        ),
     )
 
     response = client.update_topic(topic, field_mask)

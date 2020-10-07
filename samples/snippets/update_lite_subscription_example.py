@@ -44,16 +44,12 @@ def update_lite_subscription(project_number, cloud_region, zone_id, subscription
     field_mask = FieldMask(paths=["delivery_config.delivery_requirement"])
 
     subscription = Subscription(
-        {
-            "name": subscription_path,
-            "delivery_config": Subscription.DeliveryConfig(
-                {
-                    # DELIVER_AFTER_STORED ensures that the server won't deliver a published message
-                    # to subscribers until the message has been written to storage successfully.
-                    "delivery_requirement": Subscription.DeliveryConfig.DeliveryRequirement.DELIVER_AFTER_STORED,
-                },
-            ),
-        }
+        name=subscription_path,
+        delivery_config=Subscription.DeliveryConfig(
+            # DELIVER_AFTER_STORED ensures that the server won't deliver a published message
+            # to subscribers until the message has been written to storage successfully.
+            delivery_requirement=Subscription.DeliveryConfig.DeliveryRequirement.DELIVER_AFTER_STORED,
+        ),
     )
 
     response = client.update_subscription(subscription, field_mask)

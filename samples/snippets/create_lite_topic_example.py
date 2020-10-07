@@ -42,30 +42,24 @@ def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_parti
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     topic_path = str(TopicPath(project_number, location, topic_id))
     topic = Topic(
-        {
-            "name": topic_path,
-            "partition_config": Topic.PartitionConfig(
-                {
-                    # This must be greater than 1.
-                    "count": num_partitions,
-                    # Set publishing throughput to 1x standard partition throughput of 4 MiB
-                    # per second. This must in the range [1,4]. A topic with `scale` of 2 and
-                    # `count` of 10 is charged for 20 partitions.
-                    "scale": 1,
-                }
-            ),
-            "retention_config": Topic.RetentionConfig(
-                {
-                    # Set storage per partition to 30 GiB. This must be in the range 30 GiB-10TiB.
-                    # If the number of byptes stored in any of the topic's partitions grows beyond
-                    # this value, older messages will be dropped to make room for newer ones,
-                    # regardless of the value of `period`.
-                    "per_partition_bytes": 30 * 1024 * 1024 * 1024,
-                    # How long messages are retained.
-                    "period": Duration(seconds=60 * 60 * 24 * 7),
-                }
-            ),
-        }
+        name=topic_path,
+        partition_config=Topic.PartitionConfig(
+            # This must be greater than 1.
+            count=num_partitions,
+            # Set publishing throughput to 1x standard partition throughput of 4 MiB
+            # per second. This must in the range [1,4]. A topic with `scale` of 2 and
+            # `count` of 10 is charged for 20 partitions.
+            scale=1,
+        ),
+        retention_config=Topic.RetentionConfig(
+            # Set storage per partition to 30 GiB. This must be in the range 30 GiB-10TiB.
+            # If the number of byptes stored in any of the topic's partitions grows beyond
+            # this value, older messages will be dropped to make room for newer ones,
+            # regardless of the value of `period`.
+            per_partition_bytes=30 * 1024 * 1024 * 1024,
+            # How long messages are retained.
+            period=Duration(seconds=60 * 60 * 24 * 7),
+        ),
     )
 
     response = client.create_topic(topic)

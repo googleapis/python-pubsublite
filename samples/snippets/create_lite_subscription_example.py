@@ -45,19 +45,15 @@ def create_lite_subscription(
     subscription_path = str(SubscriptionPath(project_number, location, subscription_id))
 
     subscription = Subscription(
-        {
-            "name": subscription_path,
-            "topic": topic_path,
-            "delivery_config": Subscription.DeliveryConfig(
-                {
-                    # The server does not wait for a published message to be successfully
-                    # written to storage before delivering it to subscribers. As such, a subscriber
-                    # may receive a message for which the write to storage failed. If the subscriber
-                    # re-reads the offset of that mesage later on, there may be a gap at that offset.
-                    "delivery_requirement": Subscription.DeliveryConfig.DeliveryRequirement.DELIVER_IMMEDIATELY,
-                },
-            ),
-        }
+        name=subscription_path,
+        topic=topic_path,
+        delivery_config=Subscription.DeliveryConfig(
+            # The server does not wait for a published message to be successfully
+            # written to storage before delivering it to subscribers. As such, a subscriber
+            # may receive a message for which the write to storage failed. If the subscriber
+            # re-reads the offset of that mesage later on, there may be a gap at that offset.
+            delivery_requirement=Subscription.DeliveryConfig.DeliveryRequirement.DELIVER_IMMEDIATELY,
+        ),
     )
 
     response = client.create_subscription(subscription)
