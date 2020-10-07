@@ -16,7 +16,7 @@ timeout: 1800s # 30 minutes
 steps:
   - name: gcr.io/cloud-devrel-public-resources/python-multi
     entrypoint: /bin/bash
-    args: ['./scripts/test-script.sh']
+    args: ['.test-script.sh']
 
 images:
   - gcr.io/cloud-devrel-public-resources/python-multi
