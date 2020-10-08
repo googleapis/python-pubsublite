@@ -15,8 +15,18 @@
 timeout: 1800s # 30 minutes
 steps:
   - name: gcr.io/cloud-devrel-public-resources/python-multi
+    id: library
     entrypoint: /bin/bash
-    args: ['./test-script.sh']
+    args:
+      - '-c'	
+       - |
+         python3.6 -m pip uninstall --yes --quiet nox-automation && python3.6 -m pip install --upgrade --quiet nox && python3.6 -m nox
+  - name: gcr.io/cloud-devrel-public-resources/python-multi
+    id: samples
+    entrypoint: /bin/bash
+    args: ['./samples-test-script.sh']
+    waitFor:
+      - library
 
 images:
   - gcr.io/cloud-devrel-public-resources/python-multi
