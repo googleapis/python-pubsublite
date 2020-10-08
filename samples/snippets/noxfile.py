@@ -197,7 +197,7 @@ def _get_repo_root():
     for i in range(10):
         if p is None:
             break
-        if Path(p / "synth.py").exists():
+        if Path(p / ".github").exists():
             return str(p)
         p = p.parent
     raise Exception("Unable to detect repository root.")
