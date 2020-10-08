@@ -1,4 +1,4 @@
-from typing import AsyncIterator, TypeVar, Optional, Callable, AsyncIterable
+from typing import AsyncIterator, TypeVar, Optional, Callable, AsyncIterable, Awaitable
 import asyncio
 
 from google.api_core.exceptions import GoogleAPICallError, FailedPrecondition
@@ -44,10 +44,10 @@ class GapicConnection(
             self.fail(e)
         raise self.error()
 
-    def __aenter__(self):
+    async def __aenter__(self):
         return self
 
-    def __aexit__(self, exc_type, exc_value, traceback) -> None:
+    async def __aexit__(self, exc_type, exc_value, traceback) -> None:
         pass
 
     async def __anext__(self) -> Request:
@@ -64,15 +64,19 @@ class GapicConnection(
 class GapicConnectionFactory(ConnectionFactory[Request, Response]):
     """A ConnectionFactory that produces GapicConnections."""
 
-    _producer = Callable[[AsyncIterator[Request]], AsyncIterable[Response]]
+    _producer = Callable[[AsyncIterator[Request]], Awaitable[AsyncIterable[Response]]]
 
     def __init__(
-        self, producer: Callable[[AsyncIterator[Request]], AsyncIterable[Response]]
+        self,
+        producer: Callable[
+            [AsyncIterator[Request]], Awaitable[AsyncIterable[Response]]
+        ],
     ):
         self._producer = producer
 
-    def new(self) -> Connection[Request, Response]:
+    async def new(self) -> Connection[Request, Response]:
         conn = GapicConnection[Request, Response]()
-        response_iterable = self._producer(conn)
+        response_fut = self._producer(conn)
+        response_iterable = await response_fut
         conn.set_response_it(response_iterable.__aiter__())
         return conn

@@ -1,5 +1,5 @@
 from asyncio import Future, Queue, ensure_future
-from typing import Callable, NamedTuple, Dict, Set
+from typing import Callable, NamedTuple, Dict, Set, Optional
 
 from google.cloud.pubsub_v1.subscriber.message import Message
 
@@ -18,21 +18,31 @@ class _RunningSubscriber(NamedTuple):
 
 
 class AssigningSubscriber(AsyncSubscriber, PermanentFailable):
-    _assigner: Assigner
+    _assigner_factory: Callable[[], Assigner]
     _subscriber_factory: PartitionSubscriberFactory
 
     _subscribers: Dict[Partition, _RunningSubscriber]
-    _messages: "Queue[Message]"
+
+    # Lazily initialized to ensure they are initialized on the thread where __aenter__ is called.
+    _assigner: Optional[Assigner]
+    _messages: Optional["Queue[Message]"]
     _assign_poller: Future
 
     def __init__(
-        self, assigner: Assigner, subscriber_factory: PartitionSubscriberFactory
+        self,
+        assigner_factory: Callable[[], Assigner],
+        subscriber_factory: PartitionSubscriberFactory,
     ):
+        """
+        Accepts a factory for an Assigner instead of an Assigner because GRPC asyncio uses the current thread's event
+        loop.
+        """
         super().__init__()
-        self._assigner = assigner
+        self._assigner_factory = assigner_factory
+        self._assigner = None
         self._subscriber_factory = subscriber_factory
         self._subscribers = {}
-        self._messages = Queue()
+        self._messages = None
 
     async def read(self) -> Message:
         return await self.await_unless_failed(self._messages.get())
@@ -65,6 +75,8 @@ class AssigningSubscriber(AsyncSubscriber, PermanentFailable):
             del self._subscribers[partition]
 
     async def __aenter__(self):
+        self._messages = Queue()
+        self._assigner = self._assigner_factory()
         await self._assigner.__aenter__()
         self._assign_poller = ensure_future(self.run_poller(self._assign_action))
         return self

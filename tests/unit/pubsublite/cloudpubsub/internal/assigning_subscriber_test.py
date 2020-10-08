@@ -1,6 +1,7 @@
 from typing import Set
 
 from asynctest.mock import MagicMock, call
+import threading
 import pytest
 from google.api_core.exceptions import FailedPrecondition
 from google.cloud.pubsub_v1.subscriber.message import Message
@@ -13,7 +14,7 @@ from google.cloud.pubsublite.cloudpubsub.internal.assigning_subscriber import (
 from google.cloud.pubsublite.cloudpubsub.subscriber import AsyncSubscriber
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
 from google.cloud.pubsublite.partition import Partition
-from google.cloud.pubsublite.testing.test_utils import wire_queues
+from google.cloud.pubsublite.testing.test_utils import wire_queues, Box
 
 # All test coroutines will be treated as marked.
 pytestmark = pytest.mark.asyncio
@@ -36,7 +37,16 @@ def subscriber_factory():
 
 @pytest.fixture()
 def subscriber(assigner, subscriber_factory):
-    return AssigningSubscriber(assigner, subscriber_factory)
+    box = Box()
+
+    def set_box():
+        box.val = AssigningSubscriber(lambda: assigner, subscriber_factory)
+
+    # Initialize AssigningSubscriber on another thread with a different event loop.
+    thread = threading.Thread(target=set_box)
+    thread.start()
+    thread.join()
+    return box.val
 
 
 async def test_init(subscriber, assigner):
