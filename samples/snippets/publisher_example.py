@@ -36,16 +36,15 @@ def publish(project_number, cloud_region, zone_id, topic_id, num_messages):
     # num_messages = 100
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
-    topic_path_object = str(TopicPath(project_number, location, topic_id))
+    topic_path_object = TopicPath(project_number, location, topic_id)
 
-    publisher_client = make_publisher(topic_path_object)
-
-    for message in range(num_messages):
-        data = f"{message}"
-        api_future = publisher_client.publish(data.encode("utf-8"))
-        # result() blocks. You may use add_done_callback() to resolve api futures asynchronously.
-        message_id = api_future.result()
-        print(f"Published message {message} has message ID {message_id}.")
+    with make_publisher(topic_path_object) as publisher_client:
+        for message in range(num_messages):
+            data = f"{message}"
+            api_future = publisher_client.publish(data.encode("utf-8"))
+            # result() blocks. To resolve api futures asynchronously, use add_done_callback(). 
+            message_id = api_future.result()
+            print(f"Published message {message} has message ID {message_id}.")
 
     print(f"Published {num_messages} messages.")
     # [END pubsublite_quickstart_publisher]

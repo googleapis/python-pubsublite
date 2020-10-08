@@ -40,10 +40,13 @@ def make_async_publisher(
     GoogleApiCallException on any error determining topic structure.
   """
     metadata = merge_metadata(pubsub_context(framework="CLOUD_PUBSUB_SHIM"), metadata)
-    underlying = make_wire_publisher(
-        topic, batching_delay_secs, credentials, client_options, metadata
-    )
-    return AsyncPublisherImpl(underlying)
+
+    def underlying_factory():
+        return make_wire_publisher(
+            topic, batching_delay_secs, credentials, client_options, metadata
+        )
+
+    return AsyncPublisherImpl(underlying_factory)
 
 
 def make_publisher(
