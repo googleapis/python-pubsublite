@@ -85,8 +85,7 @@ IGNORED_VERSIONS = TEST_CONFIG["ignored_versions"]
 
 TESTED_VERSIONS = sorted([v for v in ALL_VERSIONS if v not in IGNORED_VERSIONS])
 
-# TODO: change the default to False when this repo is public.
-INSTALL_LIBRARY_FROM_SOURCE = bool(os.environ.get("INSTALL_LIBRARY_FROM_SOURCE", True))
+INSTALL_LIBRARY_FROM_SOURCE = bool(os.environ.get("INSTALL_LIBRARY_FROM_SOURCE", False))
 #
 # Style Checks
 #
@@ -198,7 +197,7 @@ def _get_repo_root():
     for i in range(10):
         if p is None:
             break
-        if Path(p / ".git").exists():
+        if Path(p / ".github").exists():
             return str(p)
         p = p.parent
     raise Exception("Unable to detect repository root.")
