@@ -18,8 +18,8 @@ steps:
     id: library
     entrypoint: /bin/bash
     args:
-      - '-c'	
-       - |
+      - '-c'
+      - |
          python3.6 -m pip uninstall --yes --quiet nox-automation && python3.6 -m pip install --upgrade --quiet nox && python3.6 -m nox
   - name: gcr.io/cloud-devrel-public-resources/python-multi
     id: samples
