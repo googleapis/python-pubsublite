@@ -194,10 +194,10 @@ def _get_repo_root():
     """ Returns the root folder of the project. """
     # Get root of this repository. Assume we don't have directories nested deeper than 10 items.
     p = Path(os.getcwd())
-    for i in range(20):
+    for i in range(10):
         if p is None:
             break
-        if Path(p / ".git").exists():
+        if Path(p / "synth.py").exists():
             return str(p)
         p = p.parent
     raise Exception("Unable to detect repository root.")
