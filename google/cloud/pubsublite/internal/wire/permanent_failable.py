@@ -8,6 +8,7 @@ T = TypeVar("T")
 
 class PermanentFailable:
     """A class that can experience permanent failures, with helpers for forwarding these to client actions."""
+
     _maybe_failure_task: Optional[asyncio.Future]
 
     def __init__(self):
@@ -17,7 +18,7 @@ class PermanentFailable:
     def _failure_task(self) -> asyncio.Future:
         """Get the failure task, initializing it lazily, since it needs to be initialized in the event loop."""
         if self._maybe_failure_task is None:
-          self._maybe_failure_task = asyncio.Future()
+            self._maybe_failure_task = asyncio.Future()
         return self._maybe_failure_task
 
     async def await_unless_failed(self, awaitable: Awaitable[T]) -> T:
