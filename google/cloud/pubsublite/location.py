@@ -6,6 +6,9 @@ from google.api_core.exceptions import InvalidArgument
 class CloudRegion(NamedTuple):
     name: str
 
+    def __str__(self):
+        return self.name
+
 
 class CloudZone(NamedTuple):
     region: CloudRegion
