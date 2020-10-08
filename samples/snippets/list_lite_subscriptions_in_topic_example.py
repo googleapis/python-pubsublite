@@ -26,7 +26,7 @@ def list_lite_subscriptions_in_topic(project_number, cloud_region, zone_id, topi
     # [START pubsublite_list_subscriptions_in_topic]
     from google.cloud.pubsublite.location import CloudRegion, CloudZone
     from google.cloud.pubsublite.make_admin_client import make_admin_client
-    from google.cloud.pubsublite.paths import LocationPath, TopicPath
+    from google.cloud.pubsublite.paths import TopicPath
 
     # TODO(developer):
     # project_number = 1122334455

@@ -19,11 +19,11 @@ import random
 import uuid
 
 import backoff
-import pytest
 from google.api_core.exceptions import NotFound
 from google.cloud.pubsublite.location import CloudRegion, CloudZone
 from google.cloud.pubsublite.make_admin_client import make_admin_client
 from google.cloud.pubsublite.paths import SubscriptionPath, TopicPath
+import pytest
 
 import create_lite_subscription_example
 import create_lite_topic_example
@@ -36,7 +36,6 @@ import list_lite_subscriptions_in_topic_example
 import list_lite_topics_example
 import update_lite_subscription_example
 import update_lite_topic_example
-
 
 project_number = os.environ["GOOGLE_CLOUD_PROJECT_NUMBER"]
 cloud_region = "us-central1"
