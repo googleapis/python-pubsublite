@@ -1,5 +1,5 @@
 from concurrent.futures.thread import ThreadPoolExecutor
-from typing import Optional, Mapping, Set, AsyncIterator
+from typing import Optional, Mapping, Set, AsyncIterator, Callable
 from uuid import uuid4
 
 from google.api_core.client_options import ClientOptions
@@ -170,14 +170,16 @@ def make_async_subscriber(
         client_options = ClientOptions(
             api_endpoint=regional_endpoint(subscription.location.region)
         )
-    assigner: Assigner
+    assigner_factory: Callable[[], Assigner]
     if fixed_partitions:
-        assigner = FixedSetAssigner(fixed_partitions)
+        assigner_factory = lambda: FixedSetAssigner(fixed_partitions)  # noqa: E731
     else:
         assignment_client = PartitionAssignmentServiceAsyncClient(
             credentials=credentials, client_options=client_options
         )  # type: ignore
-        assigner = _make_dynamic_assigner(subscription, assignment_client, metadata)
+        assigner_factory = lambda: _make_dynamic_assigner(  # noqa: E731
+            subscription, assignment_client, metadata
+        )
 
     subscribe_client = SubscriberServiceAsyncClient(
         credentials=credentials, client_options=client_options
@@ -196,7 +198,7 @@ def make_async_subscriber(
         nack_handler,
         message_transformer,
     )
-    return AssigningSubscriber(assigner, partition_subscriber_factory)
+    return AssigningSubscriber(assigner_factory, partition_subscriber_factory)
 
 
 def make_subscriber(

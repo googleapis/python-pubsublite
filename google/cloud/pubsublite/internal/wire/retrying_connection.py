@@ -65,7 +65,8 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
             bad_retries = 0
             while True:
                 try:
-                    async with self._connection_factory.new() as connection:
+                    conn_fut = self._connection_factory.new()
+                    async with (await conn_fut) as connection:
                         # Needs to happen prior to reinitialization to clear outstanding waiters.
                         if last_failure is not None:
                             while not self._write_queue.empty():
@@ -89,6 +90,11 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
 
         except asyncio.CancelledError:
             return
+        except Exception as e:
+            import traceback
+
+            traceback.print_exc()
+            print(e)
 
     async def _loop_connection(self, connection: Connection[Request, Response]):
         read_task: Awaitable[Response] = asyncio.ensure_future(connection.read())

@@ -18,7 +18,16 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, AsyncIterable, AsyncIterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    AsyncIterable,
+    Awaitable,
+    AsyncIterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -103,7 +112,7 @@ class CursorServiceAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> AsyncIterable[cursor.StreamingCommitCursorResponse]:
+    ) -> Awaitable[AsyncIterable[cursor.StreamingCommitCursorResponse]]:
         r"""Establishes a stream with the server for managing
         committed cursors.
 

@@ -18,7 +18,16 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, AsyncIterable, AsyncIterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    AsyncIterable,
+    Awaitable,
+    AsyncIterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -103,7 +112,7 @@ class PublisherServiceAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> AsyncIterable[publisher.PublishResponse]:
+    ) -> Awaitable[AsyncIterable[publisher.PublishResponse]]:
         r"""Establishes a stream with the server for publishing
         messages. Once the stream is initialized, the client
         publishes messages by sending publish requests on the
@@ -125,7 +134,7 @@ class PublisherServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.publisher.PublishResponse]:
+            Awaitable[AsyncIterable[~.publisher.PublishResponse]]:
                 Response to a PublishRequest.
         """
 

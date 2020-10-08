@@ -34,5 +34,5 @@ class Connection(Generic[Request, Response], AsyncContextManager["Connection"]):
 class ConnectionFactory(Generic[Request, Response]):
     """A factory for producing Connections."""
 
-    def new(self) -> Connection[Request, Response]:
+    async def new(self) -> Connection[Request, Response]:
         raise NotImplementedError()
