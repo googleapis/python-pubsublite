@@ -6,4 +6,5 @@ cd ./samples/snippets
 
 python3.6 -m pip install --quiet nox-automation
 python3.6 -m pip install --upgrade --quiet nox
+python3.6 -m pip install -r requirements-test.txt
 python3.6 -m nox
