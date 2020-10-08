@@ -172,12 +172,12 @@ def make_async_subscriber(
         )
     assigner_factory: Callable[[], Assigner]
     if fixed_partitions:
-        assigner_factory = lambda: FixedSetAssigner(fixed_partitions)
+        assigner_factory = lambda: FixedSetAssigner(fixed_partitions)  # noqa: E731
     else:
         assignment_client = PartitionAssignmentServiceAsyncClient(
             credentials=credentials, client_options=client_options
         )  # type: ignore
-        assigner_factory = lambda: _make_dynamic_assigner(
+        assigner_factory = lambda: _make_dynamic_assigner(  # noqa: E731
             subscription, assignment_client, metadata
         )
 

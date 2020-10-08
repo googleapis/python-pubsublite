@@ -1,5 +1,5 @@
 from concurrent.futures import Future
-from typing import Mapping, Callable, Optional
+from typing import Mapping
 
 from google.cloud.pubsublite.cloudpubsub.internal.managed_event_loop import (
     ManagedEventLoop,
