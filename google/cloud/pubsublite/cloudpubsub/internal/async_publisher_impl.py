@@ -25,9 +25,9 @@ class AsyncPublisherImpl(AsyncPublisher):
         psl_message = from_cps_publish_message(cps_message)
         return (await self._publisher.publish(psl_message)).encode()
 
-    def __aenter__(self):
-        self._publisher.__aenter__()
+    async def __aenter__(self):
+        await self._publisher.__aenter__()
         return self
 
-    def __aexit__(self, exc_type, exc_value, traceback):
-        self._publisher.__aexit__(exc_type, exc_value, traceback)
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        await self._publisher.__aexit__(exc_type, exc_value, traceback)
