@@ -34,10 +34,8 @@ topic_id = "py-lite-topic-" + uuid_hex
 subscription_id = "py-lite-subscription-" + uuid_hex
 num_partitions = 1
 num_messages = 10
-# Allow 120s for tests to run. The same topic and subscription are
-# used for testing in different runtimes, this prevents them from
-# geting torn down too early.
-max_time = 120
+# Allow 90s for tests to finish.
+max_time = 90
 
 
 @pytest.fixture(scope="module")
@@ -230,24 +228,34 @@ def test_publisher_example(capsys):
     assert f"Finished publishing {num_messages} messages." in out
 
 
-# def test_publish_with_custom_attributes_example(capsys):
-#     import publish_with_custom_attributes_example
+def test_publish_with_custom_attributes_example(capsys):
+    import publish_with_custom_attributes_example
 
-#     publish_with_custom_attributes_example.publish_with_custom_attributes(
-#         project_number, cloud_region, zone_id, topic_id, num_messages
-#     )
-#     out, _ = capsys.readouterr()
-#     assert f"Finished publishing {num_messages} messages with custom attributes." in out
+    publish_with_custom_attributes_example.publish_with_custom_attributes(
+        project_number, cloud_region, zone_id, topic_id, num_messages
+    )
+    out, _ = capsys.readouterr()
+    assert f"Finished publishing {num_messages} messages with custom attributes." in out
 
 
-# def test_publish_with_odering_key_example(capsys):
-#     import publish_with_ordering_key_example
+def test_publish_with_odering_key_example(capsys):
+    import publish_with_ordering_key_example
 
-#     publish_with_ordering_key_example.publish_with_odering_key(
-#         project_number, cloud_region, zone_id, topic_id, num_messages
-#     )
-#     out, _ = capsys.readouterr()
-#     assert f"Finished publishing {num_messages} messages with an ordering key." in out
+    publish_with_ordering_key_example.publish_with_odering_key(
+        project_number, cloud_region, zone_id, topic_id, num_messages
+    )
+    out, _ = capsys.readouterr()
+    assert f"Finished publishing {num_messages} messages with an ordering key." in out
+
+
+def test_publish_with_batch_settings_example(capsys):
+    import publish_with_batch_settings_example
+
+    publish_with_batch_settings_example.publish_with_batch_settings(
+        project_number, cloud_region, zone_id, topic_id, num_messages
+    )
+    out, _ = capsys.readouterr()
+    assert f"Finished publishing {num_messages} messages with batch settings." in out
 
 
 def test_delete_lite_subscription_example(subscription_path, capsys):
