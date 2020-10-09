@@ -2,6 +2,8 @@ import asyncio
 from typing import Optional, List, Iterable
 
 from absl import logging
+from google.cloud.pubsub_v1.types import BatchSettings
+
 from google.cloud.pubsublite.internal.wire.publisher import Publisher
 from google.cloud.pubsublite.internal.wire.retrying_connection import (
     RetryingConnection,
@@ -40,7 +42,7 @@ class SinglePartitionPublisher(
     BatchTester[PubSubMessage],
 ):
     _initial: InitialPublishRequest
-    _flush_seconds: float
+    _batching_settings: BatchSettings
     _connection: RetryingConnection[PublishRequest, PublishResponse]
 
     _batcher: SerialBatcher[PubSubMessage, Cursor]
@@ -52,11 +54,11 @@ class SinglePartitionPublisher(
     def __init__(
         self,
         initial: InitialPublishRequest,
-        flush_seconds: float,
+        batching_settings: BatchSettings,
         factory: ConnectionFactory[PublishRequest, PublishResponse],
     ):
         self._initial = initial
-        self._flush_seconds = flush_seconds
+        self._batching_settings = batching_settings
         self._connection = RetryingConnection(factory, self)
         self._batcher = SerialBatcher(self)
         self._outstanding_writes = []
@@ -117,7 +119,7 @@ class SinglePartitionPublisher(
     async def _flush_loop(self):
         try:
             while True:
-                await asyncio.sleep(self._flush_seconds)
+                await asyncio.sleep(self._batching_settings.max_latency)
                 await self._flush()
         except asyncio.CancelledError:
             return

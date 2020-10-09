@@ -1,5 +1,7 @@
 from typing import AsyncIterator, Mapping, Optional, MutableMapping
 
+from google.cloud.pubsub_v1.types import BatchSettings
+
 from google.cloud.pubsublite.make_admin_client import make_admin_client
 from google.cloud.pubsublite.endpoints import regional_endpoint
 from google.cloud.pubsublite.internal.wire.default_routing_policy import (
@@ -23,9 +25,18 @@ from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
 
 
+DEFAULT_BATCHING_SETTINGS = BatchSettings(
+    max_bytes=3
+    * 1024
+    * 1024,  # 3 MiB to stay 1 MiB below GRPC's 4 MiB per-message limit.
+    max_messages=1000,
+    max_latency=0.05,  # 50 ms
+)
+
+
 def make_publisher(
     topic: TopicPath,
-    batching_delay_secs: Optional[float] = None,
+    per_partition_batching_settings: Optional[BatchSettings] = None,
     credentials: Optional[Credentials] = None,
     client_options: Optional[ClientOptions] = None,
     metadata: Optional[Mapping[str, str]] = None,
@@ -35,7 +46,7 @@ def make_publisher(
 
   Args:
     topic: The topic to publish to.
-    batching_delay_secs: The delay in seconds to batch messages. The default is reasonable for most cases.
+    per_partition_batching_settings: Settings for batching messages on each partition. The default is reasonable for most cases.
     credentials: The credentials to use to connect. GOOGLE_DEFAULT_CREDENTIALS is used if None.
     client_options: Other options to pass to the client. Note that if you pass any you must set api_endpoint.
     metadata: Additional metadata to send with the RPC.
@@ -46,9 +57,8 @@ def make_publisher(
   Throws:
     GoogleApiCallException on any error determining topic structure.
   """
-    batching_delay_secs = (
-        batching_delay_secs if batching_delay_secs is not None else 0.05
-    )
+    if per_partition_batching_settings is None:
+        per_partition_batching_settings = DEFAULT_BATCHING_SETTINGS
     admin_client = make_admin_client(
         region=topic.location.region,
         credentials=credentials,
@@ -76,7 +86,7 @@ def make_publisher(
 
         clients[partition] = SinglePartitionPublisher(
             InitialPublishRequest(topic=str(topic), partition=partition.value),
-            batching_delay_secs,
+            per_partition_batching_settings,
             GapicConnectionFactory(connection_factory),
         )
     return RoutingPublisher(DefaultRoutingPolicy(partition_count), clients)
