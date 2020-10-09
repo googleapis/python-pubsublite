@@ -26,9 +26,9 @@ from google.auth.credentials import Credentials
 
 
 DEFAULT_BATCHING_SETTINGS = BatchSettings(
-    max_bytes=3
-    * 1024
-    * 1024,  # 3 MiB to stay 1 MiB below GRPC's 4 MiB per-message limit.
+    max_bytes=(
+        3 * 1024 * 1024
+    ),  # 3 MiB to stay 1 MiB below GRPC's 4 MiB per-message limit.
     max_messages=1000,
     max_latency=0.05,  # 50 ms
 )
