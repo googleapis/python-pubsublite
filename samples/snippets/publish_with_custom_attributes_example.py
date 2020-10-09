@@ -14,16 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This application demonstrates how to publish messages with the Pub/Sub
-Lite API. For more information, see the root level README.md and the
-documentation at https://cloud.google.com/pubsub/lite/docs/publishing.
+"""This application demonstrates how to publish messages with custom attributes
+with the Pub/Sub Lite API. For more information, see the root level README.md and
+the documentation at https://cloud.google.com/pubsub/lite/docs/publishing.
 """
 
 import argparse
 
 
-def publish_messages(project_number, cloud_region, zone_id, topic_id, num_messages):
-    # [START pubsublite_quickstart_publisher]
+def publish_with_custom_attributes(
+    project_number, cloud_region, zone_id, topic_id, num_messages
+):
+    # [START pubsublite_publish_custom_attributes]
     from google.cloud.pubsublite.cloudpubsub.make_publisher import make_publisher
     from google.cloud.pubsublite.location import CloudRegion, CloudZone
     from google.cloud.pubsublite.paths import TopicPath
@@ -42,7 +44,9 @@ def publish_messages(project_number, cloud_region, zone_id, topic_id, num_messag
     with make_publisher(topic_path) as publisher_client:
         for message in range(num_messages):
             data = f"{message}"
-            api_future = publisher_client.publish(data.encode("utf-8"))
+            api_future = publisher_client.publish(
+                data.encode("utf-8"), year="2020", author="unknown",
+            )
             # result() blocks. To resolve api futures asynchronously, use add_done_callback().
             ack_id = api_future.result()
             publish_metadata = PublishMetadata.decode(ack_id)
@@ -50,8 +54,9 @@ def publish_messages(project_number, cloud_region, zone_id, topic_id, num_messag
                 f"Published {data} to partition {publish_metadata.partition.value} and offset {publish_metadata.cursor.offset}."
             )
 
-    print(f"Finished publishing {num_messages} messages.")
-    # [END pubsublite_quickstart_publisher]
+    print(f"Finished publishing {num_messages} messages with custom attributes.")
+
+    # [END pubsublite_publish_custom_attributes]
 
 
 if __name__ == "__main__":
@@ -66,7 +71,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    publish_messages(
+    publish_with_custom_attributes(
         args.project_number,
         args.cloud_region,
         args.zone_id,

@@ -25,17 +25,6 @@ from google.cloud.pubsublite.make_admin_client import make_admin_client
 from google.cloud.pubsublite.paths import SubscriptionPath, TopicPath
 import pytest
 
-import create_lite_subscription_example
-import create_lite_topic_example
-import delete_lite_subscription_example
-import delete_lite_topic_example
-import get_lite_subscription_example
-import get_lite_topic_example
-import list_lite_subscriptions_in_project_example
-import list_lite_subscriptions_in_topic_example
-import list_lite_topics_example
-import update_lite_subscription_example
-import update_lite_topic_example
 
 project_number = os.environ["GOOGLE_CLOUD_PROJECT_NUMBER"]
 cloud_region = "us-central1"
@@ -44,6 +33,11 @@ uuid_hex = uuid.uuid4().hex
 topic_id = "py-lite-topic-" + uuid_hex
 subscription_id = "py-lite-subscription-" + uuid_hex
 num_partitions = 1
+num_messages = 10
+# Allow 120s for tests to run. The same topic and subscription are
+# used for testing in different runtimes, this prevents them from
+# geting torn down too early.
+max_time = 120
 
 
 @pytest.fixture(scope="module")
@@ -74,6 +68,8 @@ def subscription_path(client):
 
 
 def test_create_lite_topic_example(topic_path, capsys):
+    import create_lite_topic_example
+
     topic_path_object = TopicPath.parse(topic_path)
     create_lite_topic_example.create_lite_topic(
         topic_path_object.project_number,
@@ -87,6 +83,8 @@ def test_create_lite_topic_example(topic_path, capsys):
 
 
 def test_update_lite_topic_example(topic_path, capsys):
+    import update_lite_topic_example
+
     topic_path_object = TopicPath.parse(topic_path)
     update_lite_topic_example.update_lite_topic(
         topic_path_object.project_number,
@@ -99,6 +97,8 @@ def test_update_lite_topic_example(topic_path, capsys):
 
 
 def test_get_lite_topic_example(topic_path, capsys):
+    import get_lite_topic_example
+
     topic_path_object = TopicPath.parse(topic_path)
     get_lite_topic_example.get_lite_topic(
         topic_path_object.project_number,
@@ -111,6 +111,8 @@ def test_get_lite_topic_example(topic_path, capsys):
 
 
 def test_list_lite_topics_example(topic_path, capsys):
+    import list_lite_topics_example
+
     topic_path_object = TopicPath.parse(topic_path)
     list_lite_topics_example.list_lite_topics(
         topic_path_object.project_number,
@@ -122,10 +124,12 @@ def test_list_lite_topics_example(topic_path, capsys):
 
 
 def test_create_lite_subscription(subscription_path, topic_path, capsys):
+    import create_lite_subscription_example
+
     subscription_path_object = SubscriptionPath.parse(subscription_path)
     topic_path_object = TopicPath.parse(topic_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
     def eventually_consistent_test():
         create_lite_subscription_example.create_lite_subscription(
             subscription_path_object.project_number,
@@ -141,9 +145,11 @@ def test_create_lite_subscription(subscription_path, topic_path, capsys):
 
 
 def test_update_lite_subscription_example(subscription_path, capsys):
+    import update_lite_subscription_example
+
     subscription_path_object = SubscriptionPath.parse(subscription_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
     def eventually_consistent_test():
         update_lite_subscription_example.update_lite_subscription(
             subscription_path_object.project_number,
@@ -158,9 +164,11 @@ def test_update_lite_subscription_example(subscription_path, capsys):
 
 
 def test_get_lite_subscription(subscription_path, capsys):
+    import get_lite_subscription_example
+
     subscription_path_object = SubscriptionPath.parse(subscription_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
     def eventually_consistent_test():
         get_lite_subscription_example.get_lite_subscription(
             subscription_path_object.project_number,
@@ -175,9 +183,11 @@ def test_get_lite_subscription(subscription_path, capsys):
 
 
 def test_list_lite_subscriptions_in_project(subscription_path, capsys):
+    import list_lite_subscriptions_in_project_example
+
     subscription_path_object = SubscriptionPath.parse(subscription_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
     def eventually_consistent_test():
         list_lite_subscriptions_in_project_example.list_lite_subscriptions_in_project(
             subscription_path_object.project_number,
@@ -191,10 +201,12 @@ def test_list_lite_subscriptions_in_project(subscription_path, capsys):
 
 
 def test_list_lite_subscriptions_in_topic(topic_path, subscription_path, capsys):
+    import list_lite_subscriptions_in_topic_example
+
     subscription_path_object = SubscriptionPath.parse(subscription_path)
     topic_path_object = TopicPath.parse(topic_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
     def eventually_consistent_test():
         list_lite_subscriptions_in_topic_example.list_lite_subscriptions_in_topic(
             subscription_path_object.project_number,
@@ -208,10 +220,42 @@ def test_list_lite_subscriptions_in_topic(topic_path, subscription_path, capsys)
     eventually_consistent_test()
 
 
+def test_publisher_example(capsys):
+    import publisher_example
+
+    publisher_example.publish_messages(
+        project_number, cloud_region, zone_id, topic_id, num_messages
+    )
+    out, _ = capsys.readouterr()
+    assert f"Finished publishing {num_messages} messages." in out
+
+
+# def test_publish_with_custom_attributes_example(capsys):
+#     import publish_with_custom_attributes_example
+
+#     publish_with_custom_attributes_example.publish_with_custom_attributes(
+#         project_number, cloud_region, zone_id, topic_id, num_messages
+#     )
+#     out, _ = capsys.readouterr()
+#     assert f"Finished publishing {num_messages} messages with custom attributes." in out
+
+
+# def test_publish_with_odering_key_example(capsys):
+#     import publish_with_ordering_key_example
+
+#     publish_with_ordering_key_example.publish_with_odering_key(
+#         project_number, cloud_region, zone_id, topic_id, num_messages
+#     )
+#     out, _ = capsys.readouterr()
+#     assert f"Finished publishing {num_messages} messages with an ordering key." in out
+
+
 def test_delete_lite_subscription_example(subscription_path, capsys):
+    import delete_lite_subscription_example
+
     subscription_path_object = SubscriptionPath.parse(subscription_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
     def eventually_consistent_test():
         delete_lite_subscription_example.delete_lite_subscription(
             subscription_path_object.project_number,
@@ -226,9 +270,11 @@ def test_delete_lite_subscription_example(subscription_path, capsys):
 
 
 def test_delete_lite_topic_example(topic_path, capsys):
+    import delete_lite_topic_example
+
     topic_path_object = TopicPath.parse(topic_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
     def eventually_consistent_test():
         delete_lite_topic_example.delete_lite_topic(
             topic_path_object.project_number,
