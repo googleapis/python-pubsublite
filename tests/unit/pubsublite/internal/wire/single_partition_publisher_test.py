@@ -5,6 +5,8 @@ from typing import Dict, List
 
 from asynctest.mock import MagicMock, CoroutineMock
 import pytest
+from google.cloud.pubsub_v1.types import BatchSettings
+
 from google.cloud.pubsublite.internal.wire.connection import (
     Connection,
     ConnectionFactory,
@@ -25,6 +27,9 @@ from google.cloud.pubsublite.testing.test_utils import make_queue_waiter
 from google.cloud.pubsublite.internal.wire.retrying_connection import _MIN_BACKOFF_SECS
 
 FLUSH_SECONDS = 100000
+BATCHING_SETTINGS = BatchSettings(
+    max_bytes=3 * 1024 * 1024, max_messages=1000, max_latency=FLUSH_SECONDS
+)
 
 # All test coroutines will be treated as marked.
 pytestmark = pytest.mark.asyncio
@@ -81,7 +86,7 @@ def asyncio_sleep(monkeypatch, sleep_queues):
 @pytest.fixture()
 def publisher(connection_factory, initial_request):
     return SinglePartitionPublisher(
-        initial_request.initial_request, FLUSH_SECONDS, connection_factory
+        initial_request.initial_request, BATCHING_SETTINGS, connection_factory
     )
 
 
