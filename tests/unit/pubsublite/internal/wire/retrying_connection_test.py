@@ -1,5 +1,4 @@
 import asyncio
-from typing import Union
 
 from asynctest.mock import MagicMock, CoroutineMock
 import pytest
@@ -15,10 +14,9 @@ from google.cloud.pubsublite.internal.wire.retrying_connection import (
     RetryingConnection,
     _MIN_BACKOFF_SECS,
 )
-
-# All test coroutines will be treated as marked.
 from google.cloud.pubsublite.testing.test_utils import wire_queues
 
+# All test coroutines will be treated as marked.
 pytestmark = pytest.mark.asyncio
 
 
