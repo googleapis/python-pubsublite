@@ -32,7 +32,7 @@ def delete_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # project_number = 1122334455
     # cloud_region = "us-central1"
     # zone_id = "a"
-    # toic_id = "your-topic-id"
+    # topic_id = "your-topic-id"
 
     client = make_admin_client(cloud_region)
 
@@ -40,7 +40,7 @@ def delete_lite_topic(project_number, cloud_region, zone_id, topic_id):
     topic_path = str(TopicPath(project_number, location, topic_id))
 
     client.delete_topic(topic_path)
-    print(f"{topic_path}\ndeleted successfully.")
+    print(f"{topic_path} deleted successfully.")
     # [END pubsublite_delete_topic]
 
 

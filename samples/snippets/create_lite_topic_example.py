@@ -34,7 +34,7 @@ def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_parti
     # project_number = 1122334455
     # cloud_region = "us-central1"
     # zone_id = "a"
-    # toic_id = "your-topic-id"
+    # topic_id = "your-topic-id"
     # num_partitions = 1
 
     client = make_admin_client(cloud_region)

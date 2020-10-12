@@ -22,8 +22,9 @@ documentation at https://cloud.google.com/pubsub/lite/docs/subscribing.
 import argparse
 
 
-def receive_messages(project_number, cloud_region, zone_id, subscription_id):
+def receive_messages(project_number, cloud_region, zone_id, subscription_id, timeout=90):
     # [START pubsublite_quickstart_subscriber]
+    from concurrent.futures._base import TimeoutError
     from google.cloud.pubsublite.cloudpubsub.flow_control_settings import (
         FlowControlSettings,
     )
@@ -36,6 +37,7 @@ def receive_messages(project_number, cloud_region, zone_id, subscription_id):
     # cloud_region = "us-central1"
     # zone_id = "a"
     # subscription_id = "your-subscription-id"
+    # timeout = 90
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
@@ -44,7 +46,8 @@ def receive_messages(project_number, cloud_region, zone_id, subscription_id):
     )
 
     def callback(message):
-        print(f"Received {message} of message.")
+        message_data = message.data.decode("utf-8")
+        print(f"Received {message_data} of ordering key {message.ordering_key}.")
         message.ack()
 
     streaming_pull_future = make_subscriber(
@@ -56,9 +59,10 @@ def receive_messages(project_number, cloud_region, zone_id, subscription_id):
     print(f"Listening for messages on {str(subscription_path)}...")
 
     try:
-        streaming_pull_future.result(timeout=30)
-    except TimeoutError:
+        streaming_pull_future.result(timeout=timeout)
+    except TimeoutError or KeyboardInterrupt:
         streaming_pull_future.cancel()
+        assert streaming_pull_future.done()
     # [END pubsublite_quickstart_subscriber]
 
 
@@ -70,9 +74,16 @@ if __name__ == "__main__":
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("subscription_id", help="Your subscription ID")
+    parser.add_argument(
+        "timeout", nargs="?", default=90, type=int, help="Timeout in second"
+    )
 
     args = parser.parse_args()
 
     receive_messages(
-        args.project_number, args.cloud_region, args.zone_id, args.subscription_id,
+        args.project_number,
+        args.cloud_region,
+        args.zone_id,
+        args.subscription_id,
+        args.timeout,
     )

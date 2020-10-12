@@ -33,7 +33,7 @@ def publish_messages(project_number, cloud_region, zone_id, topic_id, num_messag
     # project_number = 1122334455
     # cloud_region = "us-central1"
     # zone_id = "a"
-    # toic_id = "your-topic-id"
+    # topic_id = "your-topic-id"
     # num_messages = 100
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
@@ -50,7 +50,7 @@ def publish_messages(project_number, cloud_region, zone_id, topic_id, num_messag
                 f"Published {data} to partition {publish_metadata.partition.value} and offset {publish_metadata.cursor.offset}."
             )
 
-    print(f"Finished publishing {num_messages} messages.")
+    print(f"Finished publishing {num_messages} messages to {str(topic_path)}.")
     # [END pubsublite_quickstart_publisher]
 
 

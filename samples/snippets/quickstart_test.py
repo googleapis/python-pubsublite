@@ -127,19 +127,15 @@ def test_create_lite_subscription(subscription_path, topic_path, capsys):
     subscription_path_object = SubscriptionPath.parse(subscription_path)
     topic_path_object = TopicPath.parse(topic_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
-    def eventually_consistent_test():
-        create_lite_subscription_example.create_lite_subscription(
-            subscription_path_object.project_number,
-            subscription_path_object.location.region.name,
-            subscription_path_object.location.zone_id,
-            topic_path_object.name,
-            subscription_path_object.name,
-        )
-        out, _ = capsys.readouterr()
-        assert "created successfully." in out
-
-    eventually_consistent_test()
+    create_lite_subscription_example.create_lite_subscription(
+        subscription_path_object.project_number,
+        subscription_path_object.location.region.name,
+        subscription_path_object.location.zone_id,
+        topic_path_object.name,
+        subscription_path_object.name,
+    )
+    out, _ = capsys.readouterr()
+    assert "created successfully." in out
 
 
 def test_update_lite_subscription_example(subscription_path, capsys):
@@ -147,18 +143,14 @@ def test_update_lite_subscription_example(subscription_path, capsys):
 
     subscription_path_object = SubscriptionPath.parse(subscription_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
-    def eventually_consistent_test():
-        update_lite_subscription_example.update_lite_subscription(
-            subscription_path_object.project_number,
-            subscription_path_object.location.region.name,
-            subscription_path_object.location.zone_id,
-            subscription_path_object.name,
-        )
-        out, _ = capsys.readouterr()
-        assert "updated successfully." in out
-
-    eventually_consistent_test()
+    update_lite_subscription_example.update_lite_subscription(
+        subscription_path_object.project_number,
+        subscription_path_object.location.region.name,
+        subscription_path_object.location.zone_id,
+        subscription_path_object.name,
+    )
+    out, _ = capsys.readouterr()
+    assert "updated successfully." in out
 
 
 def test_get_lite_subscription(subscription_path, capsys):
@@ -166,18 +158,14 @@ def test_get_lite_subscription(subscription_path, capsys):
 
     subscription_path_object = SubscriptionPath.parse(subscription_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
-    def eventually_consistent_test():
-        get_lite_subscription_example.get_lite_subscription(
-            subscription_path_object.project_number,
-            subscription_path_object.location.region.name,
-            subscription_path_object.location.zone_id,
-            subscription_path_object.name,
-        )
-        out, _ = capsys.readouterr()
-        assert "exists." in out
-
-    eventually_consistent_test()
+    get_lite_subscription_example.get_lite_subscription(
+        subscription_path_object.project_number,
+        subscription_path_object.location.region.name,
+        subscription_path_object.location.zone_id,
+        subscription_path_object.name,
+    )
+    out, _ = capsys.readouterr()
+    assert "exists." in out
 
 
 def test_list_lite_subscriptions_in_project(subscription_path, capsys):
@@ -185,17 +173,13 @@ def test_list_lite_subscriptions_in_project(subscription_path, capsys):
 
     subscription_path_object = SubscriptionPath.parse(subscription_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
-    def eventually_consistent_test():
-        list_lite_subscriptions_in_project_example.list_lite_subscriptions_in_project(
-            subscription_path_object.project_number,
-            subscription_path_object.location.region.name,
-            subscription_path_object.location.zone_id,
-        )
-        out, _ = capsys.readouterr()
-        assert "subscription(s) listed in your project and location." in out
-
-    eventually_consistent_test()
+    list_lite_subscriptions_in_project_example.list_lite_subscriptions_in_project(
+        subscription_path_object.project_number,
+        subscription_path_object.location.region.name,
+        subscription_path_object.location.zone_id,
+    )
+    out, _ = capsys.readouterr()
+    assert "subscription(s) listed in your project and location." in out
 
 
 def test_list_lite_subscriptions_in_topic(topic_path, subscription_path, capsys):
@@ -204,58 +188,64 @@ def test_list_lite_subscriptions_in_topic(topic_path, subscription_path, capsys)
     subscription_path_object = SubscriptionPath.parse(subscription_path)
     topic_path_object = TopicPath.parse(topic_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
-    def eventually_consistent_test():
-        list_lite_subscriptions_in_topic_example.list_lite_subscriptions_in_topic(
-            subscription_path_object.project_number,
-            subscription_path_object.location.region.name,
-            subscription_path_object.location.zone_id,
-            topic_path_object.name,
-        )
-        out, _ = capsys.readouterr()
-        assert "subscription(s) listed" in out
-
-    eventually_consistent_test()
+    list_lite_subscriptions_in_topic_example.list_lite_subscriptions_in_topic(
+        subscription_path_object.project_number,
+        subscription_path_object.location.region.name,
+        subscription_path_object.location.zone_id,
+        topic_path_object.name,
+    )
+    out, _ = capsys.readouterr()
+    assert "subscription(s) listed" in out
 
 
-def test_publisher_example(capsys):
+def test_publisher_example(topic_path, capsys):
     import publisher_example
 
     publisher_example.publish_messages(
         project_number, cloud_region, zone_id, topic_id, num_messages
     )
     out, _ = capsys.readouterr()
-    assert f"Finished publishing {num_messages} messages." in out
+    assert f"Finished publishing {num_messages} messages to {topic_path}." in out
 
 
-def test_publish_with_custom_attributes_example(capsys):
+def test_publish_with_custom_attributes_example(topic_path, capsys):
     import publish_with_custom_attributes_example
 
     publish_with_custom_attributes_example.publish_with_custom_attributes(
         project_number, cloud_region, zone_id, topic_id, num_messages
     )
     out, _ = capsys.readouterr()
-    assert f"Finished publishing {num_messages} messages with custom attributes." in out
+    assert f"Finished publishing {num_messages} messages with custom attributes to {topic_path}." in out
 
 
-def test_publish_with_odering_key_example(capsys):
+def test_publish_with_odering_key_example(topic_path, capsys):
     import publish_with_ordering_key_example
 
     publish_with_ordering_key_example.publish_with_odering_key(
         project_number, cloud_region, zone_id, topic_id, num_messages
     )
     out, _ = capsys.readouterr()
-    assert f"Finished publishing {num_messages} messages with an ordering key." in out
+    assert f"Finished publishing {num_messages} messages with an ordering key to {topic_path}." in out
 
 
-def test_publish_with_batch_settings_example(capsys):
+def test_publish_with_batch_settings_example(topic_path, capsys):
     import publish_with_batch_settings_example
 
     publish_with_batch_settings_example.publish_with_batch_settings(
         project_number, cloud_region, zone_id, topic_id, num_messages
     )
     out, _ = capsys.readouterr()
-    assert f"Finished publishing {num_messages} messages with batch settings." in out
+    assert f"Finished publishing {num_messages} messages with batch settings to {topic_path}." in out
+
+
+def test_subscriber_example(topic_path, subscription_path, capsys):
+    import subscriber_example
+
+    subscriber_example.receive_messages(project_number, cloud_region, zone_id, subscription_id, 45)
+    out, _ = capsys.readouterr()
+    assert f"Listening for messages on {subscription_path}..." in out
+    for message in range(num_messages):
+        assert f"Received {message}" in out
 
 
 def test_delete_lite_subscription_example(subscription_path, capsys):
@@ -272,7 +262,7 @@ def test_delete_lite_subscription_example(subscription_path, capsys):
             subscription_path_object.name,
         )
         out, _ = capsys.readouterr()
-        assert "deleted successfully." in out
+        assert f"{subscription_path} deleted successfully." in out
 
     eventually_consistent_test()
 
@@ -291,6 +281,6 @@ def test_delete_lite_topic_example(topic_path, capsys):
             topic_path_object.name,
         )
         out, _ = capsys.readouterr()
-        assert "deleted successfully." in out
+        assert f"{topic_path} deleted successfully." in out
 
     eventually_consistent_test()

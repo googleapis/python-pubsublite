@@ -34,7 +34,7 @@ def update_lite_subscription(project_number, cloud_region, zone_id, subscription
     # project_number = 1122334455
     # cloud_region = "us-central1"
     # zone_id = "a"
-    # toic_id = "your-topic-id"
+    # topic_id = "your-topic-id"
     # subscription_id = "your-subscription-id"
 
     client = make_admin_client(cloud_region)

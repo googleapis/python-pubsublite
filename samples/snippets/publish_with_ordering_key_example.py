@@ -35,7 +35,7 @@ def publish_with_odering_key(
     # project_number = 1122334455
     # cloud_region = "us-central1"
     # zone_id = "a"
-    # toic_id = "your-topic-id"
+    # topic_id = "your-topic-id"
     # num_messages = 100
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
@@ -57,7 +57,7 @@ def publish_with_odering_key(
                 f"Published {data} to partition {publish_metadata.partition.value} and offset {publish_metadata.cursor.offset}."
             )
 
-    print(f"Finished publishing {num_messages} messages with an ordering key.")
+    print(f"Finished publishing {num_messages} messages with an ordering key to {str(topic_path)}.")
     # [END pubsublite_publish_ordering_key]
 
 
