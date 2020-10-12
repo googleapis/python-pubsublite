@@ -44,7 +44,7 @@ def publish_with_batch_settings(
     batch_setttings = BatchSettings(
         # 2 MiB. Default to 3 MiB. Must be less than 4 MiB gRPC's per-message limit.
         max_bytes=2 * 1024 * 1024,
-        # 100ms. Default to 50 ms.
+        # 100 ms. Default to 50 ms.
         max_latency=0.1,
         # Default to 1000.
         max_messages=100,

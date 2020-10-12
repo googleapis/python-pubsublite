@@ -55,7 +55,6 @@ def publish_with_custom_attributes(
             )
 
     print(f"Finished publishing {num_messages} messages with custom attributes.")
-
     # [END pubsublite_publish_custom_attributes]
 
 
