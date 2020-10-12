@@ -88,14 +88,18 @@ def _make_dynamic_assigner(
 
 def _make_partition_subscriber_factory(
     subscription: SubscriptionPath,
-    subscribe_client: SubscriberServiceAsyncClient,
-    cursor_client: CursorServiceAsyncClient,
+    client_options: ClientOptions,
+    credentials: Optional[Credentials],
     base_metadata: Optional[Mapping[str, str]],
     flow_control_settings: FlowControlSettings,
     nack_handler: NackHandler,
     message_transformer: MessageTransformer,
 ) -> PartitionSubscriberFactory:
     def factory(partition: Partition) -> AsyncSubscriber:
+        subscribe_client = SubscriberServiceAsyncClient(
+            credentials=credentials, client_options=client_options
+        )  # type: ignore
+        cursor_client = CursorServiceAsyncClient(credentials=credentials, client_options=client_options)  # type: ignore
         final_metadata = merge_metadata(
             base_metadata, subscription_routing_metadata(subscription, partition)
         )
@@ -174,25 +178,22 @@ def make_async_subscriber(
     if fixed_partitions:
         assigner_factory = lambda: FixedSetAssigner(fixed_partitions)  # noqa: E731
     else:
-        assignment_client = PartitionAssignmentServiceAsyncClient(
-            credentials=credentials, client_options=client_options
-        )  # type: ignore
         assigner_factory = lambda: _make_dynamic_assigner(  # noqa: E731
-            subscription, assignment_client, metadata
+            subscription,
+            PartitionAssignmentServiceAsyncClient(
+                credentials=credentials, client_options=client_options
+            ),
+            metadata,
         )
 
-    subscribe_client = SubscriberServiceAsyncClient(
-        credentials=credentials, client_options=client_options
-    )  # type: ignore
-    cursor_client = CursorServiceAsyncClient(credentials=credentials, client_options=client_options)  # type: ignore
     if nack_handler is None:
         nack_handler = DefaultNackHandler()
     if message_transformer is None:
         message_transformer = DefaultMessageTransformer()
     partition_subscriber_factory = _make_partition_subscriber_factory(
         subscription,
-        subscribe_client,
-        cursor_client,
+        client_options,
+        credentials,
         metadata,
         per_partition_flow_control_settings,
         nack_handler,
