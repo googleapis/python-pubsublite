@@ -2,7 +2,7 @@ from typing import NamedTuple
 import json
 
 from google.cloud.pubsublite_v1.types.common import Cursor
-from google.cloud.pubsublite.partition import Partition
+from google.cloud.pubsublite.types.partition import Partition
 
 
 class PublishMetadata(NamedTuple):

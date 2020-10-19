@@ -13,7 +13,7 @@ from google.cloud.pubsublite.cloudpubsub.internal.assigning_subscriber import (
 )
 from google.cloud.pubsublite.cloudpubsub.subscriber import AsyncSubscriber
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
-from google.cloud.pubsublite.partition import Partition
+from google.cloud.pubsublite.types import Partition
 from google.cloud.pubsublite.testing.test_utils import wire_queues, Box
 
 # All test coroutines will be treated as marked.

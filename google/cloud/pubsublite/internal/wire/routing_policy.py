@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from google.cloud.pubsublite.partition import Partition
+from google.cloud.pubsublite.types import Partition
 from google.cloud.pubsublite_v1.types.common import PubSubMessage
 
 

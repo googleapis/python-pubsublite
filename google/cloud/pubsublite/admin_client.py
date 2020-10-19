@@ -1,8 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from google.cloud.pubsublite.location import CloudRegion
-from google.cloud.pubsublite.paths import TopicPath, LocationPath, SubscriptionPath
+from google.cloud.pubsublite.types import (
+    CloudRegion,
+    TopicPath,
+    LocationPath,
+    SubscriptionPath,
+)
 from google.cloud.pubsublite_v1 import Topic, Subscription
 from google.protobuf.field_mask_pb2 import FieldMask
 

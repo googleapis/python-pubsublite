@@ -7,7 +7,7 @@ from google.cloud.pubsublite.cloudpubsub.subscriber import AsyncSubscriber
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_cancelled
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
 from google.cloud.pubsublite.internal.wire.permanent_failable import PermanentFailable
-from google.cloud.pubsublite.partition import Partition
+from google.cloud.pubsublite.types import Partition
 
 PartitionSubscriberFactory = Callable[[Partition], AsyncSubscriber]
 
