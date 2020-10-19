@@ -15,7 +15,7 @@ from google.cloud.pubsublite.internal.wire.make_publisher import (
 )
 from google.cloud.pubsublite.internal.wire.merge_metadata import merge_metadata
 from google.cloud.pubsublite.internal.wire.pubsub_context import pubsub_context
-from google.cloud.pubsublite.paths import TopicPath
+from google.cloud.pubsublite.types import TopicPath
 
 
 DEFAULT_BATCHING_SETTINGS = WIRE_DEFAULT_BATCHING

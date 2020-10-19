@@ -3,8 +3,12 @@ from typing import List
 from google.protobuf.field_mask_pb2 import FieldMask
 
 from google.cloud.pubsublite.admin_client import AdminClient
-from google.cloud.pubsublite.location import CloudRegion
-from google.cloud.pubsublite.paths import SubscriptionPath, LocationPath, TopicPath
+from google.cloud.pubsublite.types import (
+    CloudRegion,
+    SubscriptionPath,
+    LocationPath,
+    TopicPath,
+)
 from google.cloud.pubsublite_v1 import (
     Subscription,
     Topic,

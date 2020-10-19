@@ -2,7 +2,7 @@ import asyncio
 
 from typing import Awaitable, Optional
 from google.api_core.exceptions import GoogleAPICallError, Cancelled
-from google.cloud.pubsublite.status_codes import is_retryable
+from google.cloud.pubsublite.internal.status_codes import is_retryable
 from google.cloud.pubsublite.internal.wire.connection_reinitializer import (
     ConnectionReinitializer,
 )

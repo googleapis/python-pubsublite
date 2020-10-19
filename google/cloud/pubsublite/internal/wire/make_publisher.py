@@ -3,7 +3,7 @@ from typing import AsyncIterator, Mapping, Optional, MutableMapping
 from google.cloud.pubsub_v1.types import BatchSettings
 
 from google.cloud.pubsublite.make_admin_client import make_admin_client
-from google.cloud.pubsublite.endpoints import regional_endpoint
+from google.cloud.pubsublite.internal.endpoints import regional_endpoint
 from google.cloud.pubsublite.internal.wire.default_routing_policy import (
     DefaultRoutingPolicy,
 )
@@ -16,9 +16,8 @@ from google.cloud.pubsublite.internal.wire.routing_publisher import RoutingPubli
 from google.cloud.pubsublite.internal.wire.single_partition_publisher import (
     SinglePartitionPublisher,
 )
-from google.cloud.pubsublite.partition import Partition
-from google.cloud.pubsublite.paths import TopicPath
-from google.cloud.pubsublite.routing_metadata import topic_routing_metadata
+from google.cloud.pubsublite.types import Partition, TopicPath
+from google.cloud.pubsublite.internal.routing_metadata import topic_routing_metadata
 from google.cloud.pubsublite_v1 import InitialPublishRequest, PublishRequest
 from google.cloud.pubsublite_v1.services.publisher_service import async_client
 from google.api_core.client_options import ClientOptions

@@ -31,7 +31,7 @@ from google.cloud.pubsublite.cloudpubsub.subscriber import (
     AsyncSubscriber,
     MessageCallback,
 )
-from google.cloud.pubsublite.endpoints import regional_endpoint
+from google.cloud.pubsublite.internal.endpoints import regional_endpoint
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
 from google.cloud.pubsublite.internal.wire.assigner_impl import AssignerImpl
 from google.cloud.pubsublite.internal.wire.committer_impl import CommitterImpl
@@ -42,9 +42,10 @@ from google.cloud.pubsublite.internal.wire.gapic_connection import (
 from google.cloud.pubsublite.internal.wire.merge_metadata import merge_metadata
 from google.cloud.pubsublite.internal.wire.pubsub_context import pubsub_context
 import google.cloud.pubsublite.internal.wire.subscriber_impl as wire_subscriber
-from google.cloud.pubsublite.partition import Partition
-from google.cloud.pubsublite.paths import SubscriptionPath
-from google.cloud.pubsublite.routing_metadata import subscription_routing_metadata
+from google.cloud.pubsublite.types import Partition, SubscriptionPath
+from google.cloud.pubsublite.internal.routing_metadata import (
+    subscription_routing_metadata,
+)
 from google.cloud.pubsublite_v1 import (
     SubscribeRequest,
     InitialSubscribeRequest,
