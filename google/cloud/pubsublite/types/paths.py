@@ -2,7 +2,7 @@ from typing import NamedTuple
 
 from google.api_core.exceptions import InvalidArgument
 
-from google.cloud.pubsublite.location import CloudZone
+from google.cloud.pubsublite.types.location import CloudZone
 
 
 class LocationPath(NamedTuple):

@@ -2,7 +2,7 @@ import asyncio
 from typing import Set
 
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
-from google.cloud.pubsublite.partition import Partition
+from google.cloud.pubsublite.types import Partition
 
 
 class FixedSetAssigner(Assigner):

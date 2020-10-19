@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import AsyncContextManager, Set
 
-from google.cloud.pubsublite.partition import Partition
+from google.cloud.pubsublite.types import Partition
 
 
 class Assigner(AsyncContextManager):

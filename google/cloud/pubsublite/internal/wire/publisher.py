@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import AsyncContextManager
 from google.cloud.pubsublite_v1.types import PubSubMessage
-from google.cloud.pubsublite.publish_metadata import PublishMetadata
+from google.cloud.pubsublite.types import PublishMetadata
 
 
 class Publisher(AsyncContextManager):

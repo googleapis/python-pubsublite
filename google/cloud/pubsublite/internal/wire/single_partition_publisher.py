@@ -18,8 +18,7 @@ from google.cloud.pubsublite.internal.wire.serial_batcher import (
     SerialBatcher,
     BatchTester,
 )
-from google.cloud.pubsublite.partition import Partition
-from google.cloud.pubsublite.publish_metadata import PublishMetadata
+from google.cloud.pubsublite.types import Partition, PublishMetadata
 from google.cloud.pubsublite_v1.types import (
     PubSubMessage,
     Cursor,
