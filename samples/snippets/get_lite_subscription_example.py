@@ -37,7 +37,7 @@ def get_lite_subscription(project_number, cloud_region, zone_id, subscription_id
     client = make_admin_client(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
-    subscription_path = str(SubscriptionPath(project_number, location, subscription_id))
+    subscription_path = SubscriptionPath(project_number, location, subscription_id)
 
     response = client.get_subscription(subscription_path)
     print(f"{response}\nexists.")

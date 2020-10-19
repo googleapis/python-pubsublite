@@ -25,9 +25,7 @@ import argparse
 def receive_messages(project_number, cloud_region, zone_id, subscription_id, timeout=90):
     # [START pubsublite_quickstart_subscriber]
     from concurrent.futures._base import TimeoutError
-    from google.cloud.pubsublite.cloudpubsub.flow_control_settings import (
-        FlowControlSettings,
-    )
+    from google.cloud.pubsublite.cloudpubsub.flow_control_settings import FlowControlSettings
     from google.cloud.pubsublite.cloudpubsub.make_subscriber import make_subscriber
     from google.cloud.pubsublite.location import CloudRegion, CloudZone
     from google.cloud.pubsublite.paths import SubscriptionPath

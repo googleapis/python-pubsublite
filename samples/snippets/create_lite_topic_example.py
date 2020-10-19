@@ -40,9 +40,9 @@ def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_parti
     client = make_admin_client(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
-    topic_path = str(TopicPath(project_number, location, topic_id))
+    topic_path = TopicPath(project_number, location, topic_id)
     topic = Topic(
-        name=topic_path,
+        name=str(topic_path),
         partition_config=Topic.PartitionConfig(
             # This must be greater than 1.
             count=num_partitions,

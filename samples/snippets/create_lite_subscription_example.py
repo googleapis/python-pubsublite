@@ -41,12 +41,12 @@ def create_lite_subscription(
     client = make_admin_client(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
-    topic_path = str(TopicPath(project_number, location, topic_id))
-    subscription_path = str(SubscriptionPath(project_number, location, subscription_id))
+    topic_path = TopicPath(project_number, location, topic_id)
+    subscription_path = SubscriptionPath(project_number, location, subscription_id)
 
     subscription = Subscription(
-        name=subscription_path,
-        topic=topic_path,
+        name=str(subscription_path),
+        topic=str(topic_path),
         delivery_config=Subscription.DeliveryConfig(
             # The server does not wait for a published message to be successfully
             # written to storage before delivering it to subscribers. As such, a subscriber

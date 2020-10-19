@@ -37,7 +37,7 @@ def delete_lite_topic(project_number, cloud_region, zone_id, topic_id):
     client = make_admin_client(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
-    topic_path = str(TopicPath(project_number, location, topic_id))
+    topic_path = TopicPath(project_number, location, topic_id)
 
     client.delete_topic(topic_path)
     print(f"{topic_path} deleted successfully.")

@@ -40,11 +40,11 @@ def update_lite_subscription(project_number, cloud_region, zone_id, subscription
     client = make_admin_client(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
-    subscription_path = str(SubscriptionPath(project_number, location, subscription_id))
+    subscription_path = SubscriptionPath(project_number, location, subscription_id)
     field_mask = FieldMask(paths=["delivery_config.delivery_requirement"])
 
     subscription = Subscription(
-        name=subscription_path,
+        name=str(subscription_path),
         delivery_config=Subscription.DeliveryConfig(
             # DELIVER_AFTER_STORED ensures that the server won't deliver a published message
             # to subscribers until the message has been written to storage successfully.

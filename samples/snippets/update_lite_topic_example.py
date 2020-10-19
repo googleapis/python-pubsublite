@@ -40,7 +40,7 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
     client = make_admin_client(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
-    topic_path = str(TopicPath(project_number, location, topic_id))
+    topic_path = TopicPath(project_number, location, topic_id)
 
     # Defines which topic fields to update.
     field_mask = FieldMask(
@@ -53,7 +53,7 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
 
     # Defines how to update the topic fields.
     topic = Topic(
-        name=topic_path,
+        name=str(topic_path),
         partition_config=Topic.PartitionConfig(
             # Set publishing throughput to 4x standard partition throughput of 4 MiB
             # per second. This must in the range [1,4]. A topic with `scale` of 2 and
