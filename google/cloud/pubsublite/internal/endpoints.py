@@ -1,4 +1,4 @@
-from google.cloud.pubsublite.location import CloudRegion
+from google.cloud.pubsublite.types import CloudRegion
 
 
 def regional_endpoint(region: CloudRegion):
