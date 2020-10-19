@@ -1,8 +1,7 @@
 from typing import Mapping
 from urllib.parse import urlencode
 
-from google.cloud.pubsublite.partition import Partition
-from google.cloud.pubsublite.paths import TopicPath, SubscriptionPath
+from google.cloud.pubsublite.types import Partition, TopicPath, SubscriptionPath
 
 _PARAMS_HEADER = "x-goog-request-params"
 

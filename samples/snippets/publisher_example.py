@@ -25,9 +25,12 @@ import argparse
 def publish_messages(project_number, cloud_region, zone_id, topic_id, num_messages):
     # [START pubsublite_quickstart_publisher]
     from google.cloud.pubsublite.cloudpubsub.make_publisher import make_publisher
-    from google.cloud.pubsublite.location import CloudRegion, CloudZone
-    from google.cloud.pubsublite.paths import TopicPath
-    from google.cloud.pubsublite.publish_metadata import PublishMetadata
+    from google.cloud.pubsublite.types import (
+        CloudRegion,
+        CloudZone,
+        PublishMetadata,
+        TopicPath,
+    )
 
     # TODO(developer):
     # project_number = 1122334455

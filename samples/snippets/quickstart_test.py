@@ -20,11 +20,9 @@ import uuid
 
 import backoff
 from google.api_core.exceptions import NotFound
-from google.cloud.pubsublite.location import CloudRegion, CloudZone
 from google.cloud.pubsublite.make_admin_client import make_admin_client
-from google.cloud.pubsublite.paths import SubscriptionPath, TopicPath
+from google.cloud.pubsublite.types import CloudRegion, CloudZone, SubscriptionPath, TopicPath
 import pytest
-
 
 project_number = os.environ["GOOGLE_CLOUD_PROJECT_NUMBER"]
 cloud_region = "us-central1"
@@ -215,7 +213,10 @@ def test_publish_with_custom_attributes_example(topic_path, capsys):
         project_number, cloud_region, zone_id, topic_id, num_messages
     )
     out, _ = capsys.readouterr()
-    assert f"Finished publishing {num_messages} messages with custom attributes to {topic_path}." in out
+    assert (
+        f"Finished publishing {num_messages} messages with custom attributes to {topic_path}."
+        in out
+    )
 
 
 def test_publish_with_odering_key_example(topic_path, capsys):
@@ -225,7 +226,10 @@ def test_publish_with_odering_key_example(topic_path, capsys):
         project_number, cloud_region, zone_id, topic_id, num_messages
     )
     out, _ = capsys.readouterr()
-    assert f"Finished publishing {num_messages} messages with an ordering key to {topic_path}." in out
+    assert (
+        f"Finished publishing {num_messages} messages with an ordering key to {topic_path}."
+        in out
+    )
 
 
 def test_publish_with_batch_settings_example(topic_path, capsys):
@@ -235,13 +239,18 @@ def test_publish_with_batch_settings_example(topic_path, capsys):
         project_number, cloud_region, zone_id, topic_id, num_messages
     )
     out, _ = capsys.readouterr()
-    assert f"Finished publishing {num_messages} messages with batch settings to {topic_path}." in out
+    assert (
+        f"Finished publishing {num_messages} messages with batch settings to {topic_path}."
+        in out
+    )
 
 
 def test_subscriber_example(topic_path, subscription_path, capsys):
     import subscriber_example
 
-    subscriber_example.receive_messages(project_number, cloud_region, zone_id, subscription_id, 45)
+    subscriber_example.receive_messages(
+        project_number, cloud_region, zone_id, subscription_id, 45
+    )
     out, _ = capsys.readouterr()
     assert f"Listening for messages on {subscription_path}..." in out
     for message in range(num_messages):

@@ -24,9 +24,8 @@ import argparse
 
 def delete_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # [START pubsublite_delete_topic]
-    from google.cloud.pubsublite.location import CloudRegion, CloudZone
     from google.cloud.pubsublite.make_admin_client import make_admin_client
-    from google.cloud.pubsublite.paths import TopicPath
+    from google.cloud.pubsublite.types import CloudRegion, CloudZone, TopicPath
 
     # TODO(developer):
     # project_number = 1122334455
