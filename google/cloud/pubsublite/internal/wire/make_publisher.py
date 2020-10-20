@@ -1,4 +1,4 @@
-from typing import AsyncIterator, Mapping, Optional, MutableMapping, Union
+from typing import AsyncIterator, Mapping, Optional, MutableMapping
 
 from google.cloud.pubsub_v1.types import BatchSettings
 
@@ -22,10 +22,6 @@ from google.cloud.pubsublite_v1 import InitialPublishRequest, PublishRequest
 from google.cloud.pubsublite_v1.services.publisher_service import async_client
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
-
-from google.cloud.pubsublite_v1.services.subscriber_service.transports import (
-    SubscriberServiceTransport,
-)
 
 DEFAULT_BATCHING_SETTINGS = BatchSettings(
     max_bytes=(

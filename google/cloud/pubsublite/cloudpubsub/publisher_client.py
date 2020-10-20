@@ -1,4 +1,4 @@
-from typing import Optional, Union, Mapping
+from typing import Optional, Mapping
 
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
