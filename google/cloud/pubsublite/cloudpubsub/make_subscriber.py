@@ -5,9 +5,7 @@ from uuid import uuid4
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
 from google.cloud.pubsub_v1.subscriber.futures import StreamingPullFuture
-from google.cloud.pubsublite.cloudpubsub.flow_control_settings import (
-    FlowControlSettings,
-)
+from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker_impl import (
     AckSetTrackerImpl,
 )

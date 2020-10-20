@@ -6,9 +6,7 @@ from google.api_core.exceptions import FailedPrecondition, GoogleAPICallError
 from google.cloud.pubsub_v1.subscriber.message import Message
 from google.pubsub_v1 import PubsubMessage
 
-from google.cloud.pubsublite.cloudpubsub.flow_control_settings import (
-    FlowControlSettings,
-)
+from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker import AckSetTracker
 from google.cloud.pubsublite.cloudpubsub.message_transformer import MessageTransformer
 from google.cloud.pubsublite.cloudpubsub.nack_handler import NackHandler
