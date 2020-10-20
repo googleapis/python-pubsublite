@@ -7,9 +7,7 @@ from google.api_core.exceptions import FailedPrecondition
 from google.cloud.pubsub_v1.subscriber.message import Message
 from google.pubsub_v1 import PubsubMessage
 
-from google.cloud.pubsublite.cloudpubsub.flow_control_settings import (
-    FlowControlSettings,
-)
+from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker import AckSetTracker
 from google.cloud.pubsublite.cloudpubsub.internal.single_partition_subscriber import (
     SinglePartitionSubscriber,
