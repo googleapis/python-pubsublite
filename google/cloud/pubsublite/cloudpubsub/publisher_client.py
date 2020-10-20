@@ -9,7 +9,6 @@ from google.cloud.pubsublite.cloudpubsub.internal.async_publisher_impl import (
     AsyncPublisherImpl,
 )
 from google.cloud.pubsublite.cloudpubsub.internal.publisher_impl import PublisherImpl
-from google.cloud.pubsublite.cloudpubsub.make_publisher import make_async_publisher
 from google.cloud.pubsublite.cloudpubsub.publisher import AsyncPublisher, Publisher
 from google.cloud.pubsublite.internal.wire.make_publisher import (
     make_publisher as make_wire_publisher,
@@ -113,5 +112,5 @@ class PublisherClient:
         GoogleApiCallException on any error determining topic structure.
       """
         return PublisherImpl(
-            make_async_publisher(topic, per_partition_batching_settings, metadata,)
+            self.make_async_publisher(topic, per_partition_batching_settings, metadata,)
         )
