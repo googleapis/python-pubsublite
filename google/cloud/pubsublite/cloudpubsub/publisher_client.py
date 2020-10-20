@@ -18,14 +18,10 @@ from google.cloud.pubsublite.internal.wire.merge_metadata import merge_metadata
 from google.cloud.pubsublite.internal.wire.pubsub_context import pubsub_context
 from google.cloud.pubsublite.types import TopicPath
 
-from google.cloud.pubsublite_v1.services.subscriber_service.transports import (
-    SubscriberServiceTransport,
-)
-
 
 class PublisherClient:
     _credentials: Optional[Credentials]
-    _transport: Union[str, SubscriberServiceTransport]
+    _transport: str
     _client_options: Optional[ClientOptions]
 
     DEFAULT_BATCHING_SETTINGS = WIRE_DEFAULT_BATCHING
@@ -33,7 +29,7 @@ class PublisherClient:
     def __init__(
         self,
         credentials: Optional[Credentials] = None,
-        transport: Union[str, SubscriberServiceTransport] = "grpc_asyncio",
+        transport: str = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
     ):
         self._credentials = credentials

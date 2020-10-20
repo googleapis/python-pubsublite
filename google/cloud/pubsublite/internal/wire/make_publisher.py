@@ -1,4 +1,4 @@
-from typing import AsyncIterator, Mapping, Optional, MutableMapping
+from typing import AsyncIterator, Mapping, Optional, MutableMapping, Union
 
 from google.cloud.pubsub_v1.types import BatchSettings
 
@@ -23,6 +23,9 @@ from google.cloud.pubsublite_v1.services.publisher_service import async_client
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
 
+from google.cloud.pubsublite_v1.services.subscriber_service.transports import (
+    SubscriberServiceTransport,
+)
 
 DEFAULT_BATCHING_SETTINGS = BatchSettings(
     max_bytes=(
@@ -35,6 +38,7 @@ DEFAULT_BATCHING_SETTINGS = BatchSettings(
 
 def make_publisher(
     topic: TopicPath,
+    transport: str,
     per_partition_batching_settings: Optional[BatchSettings] = None,
     credentials: Optional[Credentials] = None,
     client_options: Optional[ClientOptions] = None,
@@ -45,6 +49,7 @@ def make_publisher(
 
   Args:
     topic: The topic to publish to.
+    transport: The transport type to use.
     per_partition_batching_settings: Settings for batching messages on each partition. The default is reasonable for most cases.
     credentials: The credentials to use to connect. GOOGLE_DEFAULT_CREDENTIALS is used if None.
     client_options: Other options to pass to the client. Note that if you pass any you must set api_endpoint.
@@ -60,6 +65,7 @@ def make_publisher(
         per_partition_batching_settings = DEFAULT_BATCHING_SETTINGS
     admin_client = make_admin_client(
         region=topic.location.region,
+        transport=transport,
         credentials=credentials,
         client_options=client_options,
     )
@@ -68,7 +74,7 @@ def make_publisher(
             api_endpoint=regional_endpoint(topic.location.region)
         )
     client = async_client.PublisherServiceAsyncClient(
-        credentials=credentials, client_options=client_options
+        credentials=credentials, transport=transport, client_options=client_options
     )  # type: ignore
 
     clients: MutableMapping[Partition, Publisher] = {}
