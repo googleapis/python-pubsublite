@@ -78,11 +78,12 @@ class PublisherClient:
 
         def underlying_factory():
             return make_wire_publisher(
-                topic,
-                per_partition_batching_settings,
-                self._credentials,
-                self._client_options,
-                metadata,
+                topic=topic,
+                transport=self._transport,
+                per_partition_batching_settings=per_partition_batching_settings,
+                credentials=self._credentials,
+                client_options=self._client_options,
+                metadata=metadata,
             )
 
         return AsyncPublisherImpl(underlying_factory)
