@@ -7,6 +7,8 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 class AsyncSubscriber(AsyncContextManager):
     """
   A Cloud Pub/Sub asynchronous subscriber.
+
+  Must be used in an `async with` block or have __aenter__() awaited before use.
   """
 
     @abstractmethod
