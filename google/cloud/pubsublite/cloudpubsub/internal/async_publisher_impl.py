@@ -5,11 +5,13 @@ from google.pubsub_v1 import PubsubMessage
 from google.cloud.pubsublite.cloudpubsub.message_transforms import (
     from_cps_publish_message,
 )
-from google.cloud.pubsublite.cloudpubsub.publisher import AsyncPublisher
+from google.cloud.pubsublite.cloudpubsub.internal.single_publisher import (
+    AsyncSinglePublisher,
+)
 from google.cloud.pubsublite.internal.wire.publisher import Publisher
 
 
-class AsyncPublisherImpl(AsyncPublisher):
+class AsyncSinglePublisherImpl(AsyncSinglePublisher):
     _publisher_factory: Callable[[], Publisher]
     _publisher: Optional[Publisher]
 

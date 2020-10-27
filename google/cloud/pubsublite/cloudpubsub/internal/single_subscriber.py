@@ -3,8 +3,10 @@ from typing import AsyncContextManager, Callable
 
 from google.cloud.pubsub_v1.subscriber.message import Message
 
+from google.cloud.pubsublite.types import SubscriptionPath, FlowControlSettings
 
-class AsyncSubscriber(AsyncContextManager):
+
+class AsyncSingleSubscriber(AsyncContextManager):
     """
   A Cloud Pub/Sub asynchronous subscriber.
 
@@ -28,4 +30,6 @@ class AsyncSubscriber(AsyncContextManager):
         raise NotImplementedError()
 
 
-MessageCallback = Callable[[Message], None]
+AsyncSubscriberFactory = Callable[
+    [SubscriptionPath, FlowControlSettings], AsyncSingleSubscriber
+]

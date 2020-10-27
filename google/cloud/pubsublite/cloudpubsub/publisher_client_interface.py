@@ -1,11 +1,13 @@
 from abc import abstractmethod
-from typing import AsyncContextManager, Mapping, ContextManager
-from concurrent import futures
+from concurrent.futures import Future
+from typing import ContextManager, Mapping, Union, AsyncContextManager
+
+from google.cloud.pubsublite.types import TopicPath
 
 
-class AsyncPublisher(AsyncContextManager):
+class AsyncPublisherClientInterface(AsyncContextManager):
     """
-  An AsyncPublisher publishes messages similar to Google Pub/Sub, but must be used in an
+  An AsyncPublisherClientInterface publishes messages similar to Google Pub/Sub, but must be used in an
   async context. Any publish failures are permanent.
 
   Must be used in an `async with` block or have __aenter__() awaited before use.
@@ -13,12 +15,17 @@ class AsyncPublisher(AsyncContextManager):
 
     @abstractmethod
     async def publish(
-        self, data: bytes, ordering_key: str = "", **attrs: Mapping[str, str]
+        self,
+        topic: Union[TopicPath, str],
+        data: bytes,
+        ordering_key: str = "",
+        **attrs: Mapping[str, str]
     ) -> str:
         """
     Publish a message.
 
     Args:
+      topic: The topic to publish to. Publishes to new topics may have nontrivial startup latency.
       data: The bytestring payload of the message
       ordering_key: The key to enforce ordering on, or "" for no ordering.
       **attrs: Additional attributes to send.
@@ -31,21 +38,26 @@ class AsyncPublisher(AsyncContextManager):
     """
 
 
-class Publisher(ContextManager):
+class PublisherClientInterface(ContextManager):
     """
-  A Publisher publishes messages similar to Google Pub/Sub. Any publish failures are permanent.
+  A PublisherClientInterface publishes messages similar to Google Pub/Sub.
 
   Must be used in a `with` block or have __enter__() called before use.
   """
 
     @abstractmethod
     def publish(
-        self, data: bytes, ordering_key: str = "", **attrs: Mapping[str, str]
-    ) -> "futures.Future[str]":
+        self,
+        topic: Union[TopicPath, str],
+        data: bytes,
+        ordering_key: str = "",
+        **attrs: Mapping[str, str]
+    ) -> "Future[str]":
         """
     Publish a message.
 
     Args:
+      topic: The topic to publish to. Publishes to new topics may have nontrivial startup latency.
       data: The bytestring payload of the message
       ordering_key: The key to enforce ordering on, or "" for no ordering.
       **attrs: Additional attributes to send.

@@ -3,21 +3,23 @@ from typing import Callable, NamedTuple, Dict, Set, Optional
 
 from google.cloud.pubsub_v1.subscriber.message import Message
 
-from google.cloud.pubsublite.cloudpubsub.subscriber import AsyncSubscriber
+from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
+    AsyncSingleSubscriber,
+)
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_cancelled
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
 from google.cloud.pubsublite.internal.wire.permanent_failable import PermanentFailable
 from google.cloud.pubsublite.types import Partition
 
-PartitionSubscriberFactory = Callable[[Partition], AsyncSubscriber]
+PartitionSubscriberFactory = Callable[[Partition], AsyncSingleSubscriber]
 
 
 class _RunningSubscriber(NamedTuple):
-    subscriber: AsyncSubscriber
+    subscriber: AsyncSingleSubscriber
     poller: Future
 
 
-class AssigningSubscriber(AsyncSubscriber, PermanentFailable):
+class AssigningSingleSubscriber(AsyncSingleSubscriber, PermanentFailable):
     _assigner_factory: Callable[[], Assigner]
     _subscriber_factory: PartitionSubscriberFactory
 
@@ -47,7 +49,7 @@ class AssigningSubscriber(AsyncSubscriber, PermanentFailable):
     async def read(self) -> Message:
         return await self.await_unless_failed(self._messages.get())
 
-    async def _subscribe_action(self, subscriber: AsyncSubscriber):
+    async def _subscribe_action(self, subscriber: AsyncSingleSubscriber):
         message = await subscriber.read()
         await self._messages.put(message)
 

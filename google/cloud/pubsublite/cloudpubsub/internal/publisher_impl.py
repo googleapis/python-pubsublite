@@ -4,14 +4,17 @@ from typing import Mapping
 from google.cloud.pubsublite.cloudpubsub.internal.managed_event_loop import (
     ManagedEventLoop,
 )
-from google.cloud.pubsublite.cloudpubsub.publisher import Publisher, AsyncPublisher
+from google.cloud.pubsublite.cloudpubsub.internal.single_publisher import (
+    SinglePublisher,
+    AsyncSinglePublisher,
+)
 
 
-class PublisherImpl(Publisher):
+class SinglePublisherImpl(SinglePublisher):
     _managed_loop: ManagedEventLoop
-    _underlying: AsyncPublisher
+    _underlying: AsyncSinglePublisher
 
-    def __init__(self, underlying: AsyncPublisher):
+    def __init__(self, underlying: AsyncSinglePublisher):
         super().__init__()
         self._managed_loop = ManagedEventLoop()
         self._underlying = underlying
