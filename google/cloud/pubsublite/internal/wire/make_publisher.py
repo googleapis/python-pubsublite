@@ -62,7 +62,6 @@ def make_publisher(
         per_partition_batching_settings = DEFAULT_BATCHING_SETTINGS
     admin_client = make_admin_client(
         region=topic.location.region,
-        transport=transport,
         credentials=credentials,
         client_options=client_options,
     )

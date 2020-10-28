@@ -55,11 +55,12 @@ def make_async_publisher(
 
     def underlying_factory():
         return make_wire_publisher(
-            topic,
-            per_partition_batching_settings,
-            credentials,
-            client_options,
-            metadata,
+            topic=topic,
+            transport=transport,
+            per_partition_batching_settings=per_partition_batching_settings,
+            credentials=credentials,
+            client_options=client_options,
+            metadata=metadata,
         )
 
     return AsyncSinglePublisherImpl(underlying_factory)
@@ -92,10 +93,11 @@ def make_publisher(
   """
     return SinglePublisherImpl(
         make_async_publisher(
-            topic,
-            per_partition_batching_settings,
-            credentials,
-            client_options,
-            metadata,
+            topic=topic,
+            transport=transport,
+            per_partition_batching_settings=per_partition_batching_settings,
+            credentials=credentials,
+            client_options=client_options,
+            metadata=metadata,
         )
     )

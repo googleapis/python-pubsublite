@@ -49,8 +49,8 @@ class MultiplexedSubscriberClient(SubscriberClientInterface):
                 subscription, per_partition_flow_control_settings
             )
             subscriber = SubscriberImpl(underlying, callback, self._executor)
-            subscriber.__enter__()
             future = StreamingPullFuture(subscriber)
+            subscriber.__enter__()
             self._live_subscribers[subscription] = future
         future.add_done_callback(lambda fut: self._on_future_failure(subscription, fut))
         return future

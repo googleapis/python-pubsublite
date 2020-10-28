@@ -42,10 +42,10 @@ class MultiplexedAsyncPublisherClient(AsyncPublisherClientInterface):
                 data=data, ordering_key=ordering_key, **attrs
             )
         except GoogleAPICallError as e:
-            self._on_failure(topic, publisher)
+            await self._on_failure(topic, publisher)
             raise e
 
-    def _on_failure(self, topic: TopicPath, publisher: AsyncSinglePublisher):
+    async def _on_failure(self, topic: TopicPath, publisher: AsyncSinglePublisher):
         if topic not in self._live_publishers:
             return
         current_publisher = self._live_publishers[topic]

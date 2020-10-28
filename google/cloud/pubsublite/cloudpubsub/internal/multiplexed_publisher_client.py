@@ -46,6 +46,7 @@ class MultiplexedPublisherClient(PublisherClientInterface):
         future.add_done_callback(
             lambda fut: self._on_future_completion(topic, publisher, fut)
         )
+        return future
 
     def _on_future_completion(
         self, topic: TopicPath, publisher: SinglePublisher, future: "Future[str]"
