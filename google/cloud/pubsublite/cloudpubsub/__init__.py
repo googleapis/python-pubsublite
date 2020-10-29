@@ -1,3 +1,4 @@
+# flake8: noqa
 from .message_transformer import MessageTransformer
 from .nack_handler import NackHandler
 from .publisher_client_interface import (

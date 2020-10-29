@@ -30,7 +30,9 @@ exclude_lines =
     raise NotImplementedError
     @abstractmethod
     # Ignore delegating methods
-    impl_.
+    self._impl.
+    # Ignore __exit__ "return self"
+    return self
 
 omit =
   */pubsublite_v1/*.py
