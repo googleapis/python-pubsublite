@@ -1,9 +1,13 @@
 from abc import abstractmethod
-from typing import AsyncContextManager, Callable
+from typing import AsyncContextManager, Callable, Set, Optional
 
 from google.cloud.pubsub_v1.subscriber.message import Message
 
-from google.cloud.pubsublite.types import SubscriptionPath, FlowControlSettings
+from google.cloud.pubsublite.types import (
+    SubscriptionPath,
+    FlowControlSettings,
+    Partition,
+)
 
 
 class AsyncSingleSubscriber(AsyncContextManager):
@@ -31,5 +35,6 @@ class AsyncSingleSubscriber(AsyncContextManager):
 
 
 AsyncSubscriberFactory = Callable[
-    [SubscriptionPath, FlowControlSettings], AsyncSingleSubscriber
+    [SubscriptionPath, Optional[Set[Partition]], FlowControlSettings],
+    AsyncSingleSubscriber,
 ]

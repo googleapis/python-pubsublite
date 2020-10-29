@@ -1,9 +1,11 @@
 from concurrent.futures import Future
-from threading import Lock
-from typing import Callable, Dict, Union, Mapping
+from typing import Callable, Union, Mapping
 
 from google.api_core.exceptions import GoogleAPICallError
 
+from google.cloud.pubsublite.cloudpubsub.internal.client_multiplexer import (
+    ClientMultiplexer,
+)
 from google.cloud.pubsublite.cloudpubsub.internal.single_publisher import (
     SinglePublisher,
 )
@@ -11,21 +13,20 @@ from google.cloud.pubsublite.cloudpubsub.publisher_client_interface import (
     PublisherClientInterface,
 )
 from google.cloud.pubsublite.types import TopicPath
+from overrides import overrides
 
 PublisherFactory = Callable[[TopicPath], SinglePublisher]
 
 
 class MultiplexedPublisherClient(PublisherClientInterface):
     _publisher_factory: PublisherFactory
-
-    _lock: Lock
-    _live_publishers: Dict[TopicPath, SinglePublisher]
+    _multiplexer: ClientMultiplexer[TopicPath, SinglePublisher]
 
     def __init__(self, publisher_factory: PublisherFactory):
         self._publisher_factory = publisher_factory
-        self._lock = Lock()
-        self._live_publishers = {}
+        self._multiplexer = ClientMultiplexer()
 
+    @overrides
     def publish(
         self,
         topic: Union[TopicPath, str],
@@ -35,13 +36,9 @@ class MultiplexedPublisherClient(PublisherClientInterface):
     ) -> "Future[str]":
         if isinstance(topic, str):
             topic = TopicPath.parse(topic)
-        publisher: SinglePublisher
-        with self._lock:
-            if topic not in self._live_publishers:
-                publisher = self._publisher_factory(topic)
-                publisher.__enter__()
-                self._live_publishers[topic] = publisher
-            publisher = self._live_publishers[topic]
+        publisher = self._multiplexer.get_or_create(
+            topic, lambda: self._publisher_factory(topic).__enter__()
+        )
         future = publisher.publish(data=data, ordering_key=ordering_key, **attrs)
         future.add_done_callback(
             lambda fut: self._on_future_completion(topic, publisher, fut)
@@ -54,22 +51,13 @@ class MultiplexedPublisherClient(PublisherClientInterface):
         try:
             future.result()
         except GoogleAPICallError:
-            with self._lock:
-                if topic not in self._live_publishers:
-                    return
-                current_publisher = self._live_publishers[topic]
-                if current_publisher is not publisher:
-                    return
-                del self._live_publishers[topic]
-            publisher.__exit__(None, None, None)
+            self._multiplexer.try_erase(topic, publisher)
 
+    @overrides
     def __enter__(self):
+        self._multiplexer.__enter__()
         return self
 
+    @overrides
     def __exit__(self, exc_type, exc_value, traceback):
-        live_publishers: Dict[TopicPath, SinglePublisher]
-        with self._lock:
-            live_publishers = self._live_publishers
-            self._live_publishers = {}
-        for topic, pub in live_publishers.items():
-            pub.__exit__(exc_type, exc_value, traceback)
+        self._multiplexer.__exit__(exc_type, exc_value, traceback)

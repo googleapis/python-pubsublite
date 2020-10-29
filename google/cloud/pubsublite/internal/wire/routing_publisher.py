@@ -1,3 +1,4 @@
+import asyncio
 from typing import Mapping
 
 from google.cloud.pubsublite.internal.wire.publisher import Publisher
@@ -17,8 +18,10 @@ class RoutingPublisher(Publisher):
         self._publishers = publishers
 
     async def __aenter__(self):
-        for publisher in self._publishers.values():
-            await publisher.__aenter__()
+        enter_futures = [
+            publisher.__aenter__() for publisher in self._publishers.values()
+        ]
+        await asyncio.gather(*enter_futures)
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):

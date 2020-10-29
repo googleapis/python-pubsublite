@@ -34,6 +34,7 @@ dependencies = [
     "google-cloud-pubsub >= 2.1.0",
     "grpcio",
     "setuptools",
+    "overrides",
 ]
 
 setuptools.setup(

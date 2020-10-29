@@ -7,11 +7,11 @@ from google.cloud.pubsublite.types import TopicPath
 
 class AsyncPublisherClientInterface(AsyncContextManager):
     """
-  An AsyncPublisherClientInterface publishes messages similar to Google Pub/Sub, but must be used in an
-  async context. Any publish failures are permanent.
+    An AsyncPublisherClientInterface publishes messages similar to Google Pub/Sub, but must be used in an
+    async context. Any publish failures are unlikely to succeed if retried.
 
-  Must be used in an `async with` block or have __aenter__() awaited before use.
-  """
+    Must be used in an `async with` block or have __aenter__() awaited before use.
+    """
 
     @abstractmethod
     async def publish(
@@ -19,7 +19,7 @@ class AsyncPublisherClientInterface(AsyncContextManager):
         topic: Union[TopicPath, str],
         data: bytes,
         ordering_key: str = "",
-        **attrs: Mapping[str, str]
+        **attrs: Mapping[str, str],
     ) -> str:
         """
     Publish a message.
@@ -40,10 +40,11 @@ class AsyncPublisherClientInterface(AsyncContextManager):
 
 class PublisherClientInterface(ContextManager):
     """
-  A PublisherClientInterface publishes messages similar to Google Pub/Sub.
+    A PublisherClientInterface publishes messages similar to Google Pub/Sub.
+    Any publish failures are unlikely to succeed if retried.
 
-  Must be used in a `with` block or have __enter__() called before use.
-  """
+    Must be used in a `with` block or have __enter__() called before use.
+    """
 
     @abstractmethod
     def publish(
@@ -51,7 +52,7 @@ class PublisherClientInterface(ContextManager):
         topic: Union[TopicPath, str],
         data: bytes,
         ordering_key: str = "",
-        **attrs: Mapping[str, str]
+        **attrs: Mapping[str, str],
     ) -> "Future[str]":
         """
     Publish a message.

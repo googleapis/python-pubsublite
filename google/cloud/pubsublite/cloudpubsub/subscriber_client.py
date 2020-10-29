@@ -5,7 +5,6 @@ from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
 from google.cloud.pubsub_v1.subscriber.futures import StreamingPullFuture
 from google.cloud.pubsub_v1.subscriber.message import Message
-from google.oauth2 import service_account
 
 from google.cloud.pubsublite.cloudpubsub.internal.make_subscriber import (
     make_async_subscriber,
@@ -23,14 +22,25 @@ from google.cloud.pubsublite.cloudpubsub.subscriber_client_interface import (
     MessageCallback,
     AsyncSubscriberClientInterface,
 )
+from google.cloud.pubsublite.internal.constructable_from_service_account import (
+    ConstructableFromServiceAccount,
+)
 from google.cloud.pubsublite.types import (
     FlowControlSettings,
     Partition,
     SubscriptionPath,
 )
+from overrides import overrides
 
 
-class SubscriberClient(SubscriberClientInterface):
+class SubscriberClient(SubscriberClientInterface, ConstructableFromServiceAccount):
+    """
+    A SubscriberClient reads messages similar to Google Pub/Sub.
+    Any subscribe failures are unlikely to succeed if retried.
+
+    Must be used in a `with` block or have __enter__() called before use.
+    """
+
     _impl: SubscriberClientInterface
 
     def __init__(
@@ -38,51 +48,49 @@ class SubscriberClient(SubscriberClientInterface):
         executor: Optional[ThreadPoolExecutor] = None,
         nack_handler: Optional[NackHandler] = None,
         message_transformer: Optional[MessageTransformer] = None,
-        fixed_partitions: Optional[Set[Partition]] = None,
         credentials: Optional[Credentials] = None,
         transport: str = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
     ):
+        """
+        Create a new SubscriberClient.
+
+        Args:
+            executor: A ThreadPoolExecutor to use. The client will shut it down on __exit__. If provided a single threaded executor, messages will be ordered per-partition, but take care that the callback does not block for too long as it will impede forward progress on all subscriptions.
+            nack_handler: A handler for when `nack()` is called. The default NackHandler raises an exception and fails the subscribe stream.
+            message_transformer: A transformer from Pub/Sub Lite messages to Cloud Pub/Sub messages.
+            credentials: If provided, the credentials to use when connecting.
+            transport: The transport to use. Must correspond to an asyncio transport.
+            client_options: The client options to use when connecting. If used, must explicitly set `api_endpoint`.
+        """
         if executor is None:
             executor = ThreadPoolExecutor()
         self._impl = MultiplexedSubscriberClient(
             executor,
-            lambda subscription, settings: make_async_subscriber(
+            lambda subscription, partitions, settings: make_async_subscriber(
                 subscription=subscription,
                 transport=transport,
                 per_partition_flow_control_settings=settings,
                 nack_handler=nack_handler,
                 message_transformer=message_transformer,
-                fixed_partitions=fixed_partitions,
+                fixed_partitions=partitions,
                 credentials=credentials,
                 client_options=client_options,
             ),
         )
-
-    @classmethod
-    def from_service_account_file(cls, filename, **kwargs):
-        """Creates an instance of this client using the provided credentials
-        file.
-        Args:
-            filename (str): The path to the service account private key json
-                file.
-            kwargs: Additional arguments to pass to the constructor.
-        Returns:
-            A PublisherClient.
-        """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        return cls(credentials=credentials, **kwargs)
-
-    from_service_account_json = from_service_account_file
 
     def subscribe(
         self,
         subscription: Union[SubscriptionPath, str],
         callback: MessageCallback,
         per_partition_flow_control_settings: FlowControlSettings,
+        fixed_partitions: Optional[Set[Partition]] = None,
     ) -> StreamingPullFuture:
         return self._impl.subscribe(
-            subscription, callback, per_partition_flow_control_settings
+            subscription,
+            callback,
+            per_partition_flow_control_settings,
+            fixed_partitions,
         )
 
     def __enter__(self):
@@ -93,59 +101,66 @@ class SubscriberClient(SubscriberClientInterface):
         self._impl.__exit__(exc_type, exc_value, traceback)
 
 
-class AsyncSubscriberClient(AsyncSubscriberClientInterface):
+class AsyncSubscriberClient(
+    AsyncSubscriberClientInterface, ConstructableFromServiceAccount
+):
+    """
+    An AsyncSubscriberClient reads messages similar to Google Pub/Sub, but must be used in an
+    async context.
+    Any subscribe failures are unlikely to succeed if retried.
+
+    Must be used in an `async with` block or have __aenter__() awaited before use.
+    """
+
     _impl: AsyncSubscriberClientInterface
 
     def __init__(
         self,
         nack_handler: Optional[NackHandler] = None,
         message_transformer: Optional[MessageTransformer] = None,
-        fixed_partitions: Optional[Set[Partition]] = None,
         credentials: Optional[Credentials] = None,
         transport: str = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
     ):
+        """
+        Create a new AsyncSubscriberClient.
+
+        Args:
+            nack_handler: A handler for when `nack()` is called. The default NackHandler raises an exception and fails the subscribe stream.
+            message_transformer: A transformer from Pub/Sub Lite messages to Cloud Pub/Sub messages.
+            credentials: If provided, the credentials to use when connecting.
+            transport: The transport to use. Must correspond to an asyncio transport.
+            client_options: The client options to use when connecting. If used, must explicitly set `api_endpoint`.
+        """
         self._impl = MultiplexedAsyncSubscriberClient(
-            lambda subscription, settings: make_async_subscriber(
+            lambda subscription, partitions, settings: make_async_subscriber(
                 subscription=subscription,
                 transport=transport,
                 per_partition_flow_control_settings=settings,
                 nack_handler=nack_handler,
                 message_transformer=message_transformer,
-                fixed_partitions=fixed_partitions,
+                fixed_partitions=partitions,
                 credentials=credentials,
                 client_options=client_options,
             )
         )
 
-    @classmethod
-    def from_service_account_file(cls, filename, **kwargs):
-        """Creates an instance of this client using the provided credentials
-        file.
-        Args:
-            filename (str): The path to the service account private key json
-                file.
-            kwargs: Additional arguments to pass to the constructor.
-        Returns:
-            A PublisherClient.
-        """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        return cls(credentials=credentials, **kwargs)
-
-    from_service_account_json = from_service_account_file
-
+    @overrides
     async def subscribe(
         self,
         subscription: Union[SubscriptionPath, str],
         per_partition_flow_control_settings: FlowControlSettings,
+        fixed_partitions: Optional[Set[Partition]] = None,
     ) -> AsyncIterator[Message]:
         return await self._impl.subscribe(
-            subscription, per_partition_flow_control_settings
+            subscription, per_partition_flow_control_settings, fixed_partitions
         )
 
+    @overrides
     async def __aenter__(self):
         await self._impl.__aenter__()
         return self
 
+    @overrides
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._impl.__aexit__(exc_type, exc_value, traceback)

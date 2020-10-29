@@ -1,14 +1,8 @@
-from concurrent.futures.thread import ThreadPoolExecutor
 from typing import Optional, Mapping, Set, AsyncIterator, Callable
 from uuid import uuid4
 
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
-from google.cloud.pubsub_v1.subscriber.futures import StreamingPullFuture
-
-from google.cloud.pubsublite.cloudpubsub.subscriber_client_interface import (
-    MessageCallback,
-)
 from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker_impl import (
     AckSetTrackerImpl,
@@ -20,7 +14,6 @@ from google.cloud.pubsublite.cloudpubsub.internal.assigning_subscriber import (
 from google.cloud.pubsublite.cloudpubsub.internal.single_partition_subscriber import (
     SinglePartitionSingleSubscriber,
 )
-import google.cloud.pubsublite.cloudpubsub.internal.subscriber_impl as cps_subscriber
 from google.cloud.pubsublite.cloudpubsub.message_transformer import (
     MessageTransformer,
     DefaultMessageTransformer,
@@ -205,57 +198,3 @@ def make_async_subscriber(
         message_transformer,
     )
     return AssigningSingleSubscriber(assigner_factory, partition_subscriber_factory)
-
-
-def make_subscriber(
-    subscription: SubscriptionPath,
-    transport: str,
-    per_partition_flow_control_settings: FlowControlSettings,
-    callback: MessageCallback,
-    nack_handler: Optional[NackHandler] = None,
-    message_transformer: Optional[MessageTransformer] = None,
-    fixed_partitions: Optional[Set[Partition]] = None,
-    executor: Optional[ThreadPoolExecutor] = None,
-    credentials: Optional[Credentials] = None,
-    client_options: Optional[ClientOptions] = None,
-    metadata: Optional[Mapping[str, str]] = None,
-) -> StreamingPullFuture:
-    """
-  Make a Pub/Sub Lite Subscriber.
-
-  Args:
-    subscription: The subscription to subscribe to.
-    transport: The transport type to use.
-    per_partition_flow_control_settings: The flow control settings for each partition subscribed to. Note that these
-      settings apply to each partition individually, not in aggregate.
-    callback: The callback to call with each message.
-    nack_handler: An optional handler for when nack() is called on a Message. The default will fail the client.
-    message_transformer: An optional transformer from Pub/Sub Lite messages to Cloud Pub/Sub messages.
-    fixed_partitions: A fixed set of partitions to subscribe to. If not present, will instead use auto-assignment.
-    executor: The executor to use for user callbacks. If not provided, will use the default constructed
-      ThreadPoolExecutor. If provided a single threaded executor, messages will be ordered per-partition, but take care
-      that the callback does not block for too long as it will impede forward progress on all partitions.
-    credentials: The credentials to use to connect. GOOGLE_DEFAULT_CREDENTIALS is used if None.
-    client_options: Other options to pass to the client. Note that if you pass any you must set api_endpoint.
-    metadata: Additional metadata to send with the RPC.
-
-  Returns:
-    A StreamingPullFuture, managing the subscriber's lifetime.
-  """
-    underlying = make_async_subscriber(
-        subscription,
-        transport,
-        per_partition_flow_control_settings,
-        nack_handler,
-        message_transformer,
-        fixed_partitions,
-        credentials,
-        client_options,
-        metadata,
-    )
-    if executor is None:
-        executor = ThreadPoolExecutor()
-    subscriber = cps_subscriber.SubscriberImpl(underlying, callback, executor)
-    future = StreamingPullFuture(subscriber)
-    subscriber.__enter__()
-    return future

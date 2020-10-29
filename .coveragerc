@@ -29,6 +29,8 @@ exclude_lines =
     # Ignore abstract methods
     raise NotImplementedError
     @abstractmethod
+    # Ignore delegating methods
+    impl_.
 
 omit =
   */pubsublite_v1/*.py

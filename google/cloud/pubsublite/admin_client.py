@@ -1,67 +1,109 @@
-from abc import ABC, abstractmethod
-from typing import List
+from typing import Optional, List
 
-from google.cloud.pubsublite.types import (
-    CloudRegion,
-    TopicPath,
-    LocationPath,
-    SubscriptionPath,
-)
-from google.cloud.pubsublite_v1 import Topic, Subscription
+from overrides import overrides
+from google.api_core.client_options import ClientOptions
+from google.auth.credentials import Credentials
 from google.protobuf.field_mask_pb2 import FieldMask
 
+from google.cloud.pubsublite.admin_client_interface import AdminClientInterface
+from google.cloud.pubsublite.internal.constructable_from_service_account import (
+    ConstructableFromServiceAccount,
+)
+from google.cloud.pubsublite.internal.endpoints import regional_endpoint
+from google.cloud.pubsublite.internal.wire.admin_client_impl import AdminClientImpl
+from google.cloud.pubsublite.types import (
+    CloudRegion,
+    SubscriptionPath,
+    LocationPath,
+    TopicPath,
+)
+from google.cloud.pubsublite_v1 import AdminServiceClient, Subscription, Topic
 
-class AdminClient(ABC):
-    @abstractmethod
+
+class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
+    """
+    An admin client for Pub/Sub Lite. Only operates on a single region.
+    """
+
+    _impl: AdminClientInterface
+
+    def __init__(
+        self,
+        region: CloudRegion,
+        credentials: Optional[Credentials] = None,
+        transport: Optional[str] = None,
+        client_options: Optional[ClientOptions] = None,
+    ):
+        """
+        Create a new AdminClient.
+
+        Args:
+            region: The cloud region to connect to.
+            credentials: The credentials to use when connecting.
+            transport: The transport to use.
+            client_options: The client options to use when connecting. If used, must explicitly set `api_endpoint`.
+        """
+        if client_options is None:
+            client_options = ClientOptions(api_endpoint=regional_endpoint(region))
+        self._impl = AdminClientImpl(
+            AdminServiceClient(
+                client_options=client_options,
+                transport=transport,
+                credentials=credentials,
+            ),
+            region,
+        )
+
+    @overrides
     def region(self) -> CloudRegion:
-        """The region this client is for."""
+        return self._impl.region()
 
-    @abstractmethod
+    @overrides
     def create_topic(self, topic: Topic) -> Topic:
-        """Create a topic, returns the created topic."""
+        return self._impl.create_topic(topic)
 
-    @abstractmethod
+    @overrides
     def get_topic(self, topic_path: TopicPath) -> Topic:
-        """Get the topic object from the server."""
+        return self._impl.get_topic(topic_path)
 
-    @abstractmethod
+    @overrides
     def get_topic_partition_count(self, topic_path: TopicPath) -> int:
-        """Get the number of partitions in the provided topic."""
+        return self._impl.get_topic_partition_count(topic_path)
 
-    @abstractmethod
+    @overrides
     def list_topics(self, location_path: LocationPath) -> List[Topic]:
-        """List the Pub/Sub lite topics that exist for a project in a given location."""
+        return self._impl.list_topics(location_path)
 
-    @abstractmethod
+    @overrides
     def update_topic(self, topic: Topic, update_mask: FieldMask) -> Topic:
-        """Update the masked fields of the provided topic."""
+        return self._impl.update_topic(topic, update_mask)
 
-    @abstractmethod
+    @overrides
     def delete_topic(self, topic_path: TopicPath):
-        """Delete a topic and all associated messages."""
+        return self._impl.delete_topic(topic_path)
 
-    @abstractmethod
+    @overrides
     def list_topic_subscriptions(self, topic_path: TopicPath):
-        """List the subscriptions that exist for a given topic."""
+        return self._impl.list_topic_subscriptions(topic_path)
 
-    @abstractmethod
+    @overrides
     def create_subscription(self, subscription: Subscription) -> Subscription:
-        """Create a subscription, returns the created subscription."""
+        return self._impl.create_subscription(subscription)
 
-    @abstractmethod
+    @overrides
     def get_subscription(self, subscription_path: SubscriptionPath) -> Subscription:
-        """Get the subscription object from the server."""
+        return self._impl.get_subscription(subscription_path)
 
-    @abstractmethod
+    @overrides
     def list_subscriptions(self, location_path: LocationPath) -> List[Subscription]:
-        """List the Pub/Sub lite subscriptions that exist for a project in a given location."""
+        return self._impl.list_subscriptions(location_path)
 
-    @abstractmethod
+    @overrides
     def update_subscription(
         self, subscription: Subscription, update_mask: FieldMask
     ) -> Subscription:
-        """Update the masked fields of the provided subscription."""
+        return self._impl.update_subscription(subscription, update_mask)
 
-    @abstractmethod
+    @overrides
     def delete_subscription(self, subscription_path: SubscriptionPath):
-        """Delete a subscription and all associated messages."""
+        return self._impl.delete_subscription(subscription_path)

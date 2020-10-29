@@ -2,13 +2,16 @@ from typing import (
     Union,
     AsyncIterator,
     Awaitable,
-    Dict,
     Callable,
+    Optional,
+    Set,
 )
 
-from google.api_core.exceptions import FailedPrecondition
 from google.cloud.pubsub_v1.subscriber.message import Message
 
+from google.cloud.pubsublite.cloudpubsub.internal.client_multiplexer import (
+    AsyncClientMultiplexer,
+)
 from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
     AsyncSubscriberFactory,
     AsyncSingleSubscriber,
@@ -16,7 +19,12 @@ from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
 from google.cloud.pubsublite.cloudpubsub.subscriber_client_interface import (
     AsyncSubscriberClientInterface,
 )
-from google.cloud.pubsublite.types import SubscriptionPath, FlowControlSettings
+from google.cloud.pubsublite.types import (
+    SubscriptionPath,
+    FlowControlSettings,
+    Partition,
+)
+from overrides import overrides
 
 
 class _SubscriberAsyncIterator(AsyncIterator):
@@ -44,48 +52,41 @@ class _SubscriberAsyncIterator(AsyncIterator):
 
 class MultiplexedAsyncSubscriberClient(AsyncSubscriberClientInterface):
     _underlying_factory: AsyncSubscriberFactory
-    _live_subscribers: Dict[SubscriptionPath, AsyncSingleSubscriber]
+    _multiplexer: AsyncClientMultiplexer[SubscriptionPath, AsyncSingleSubscriber]
 
     def __init__(self, underlying_factory: AsyncSubscriberFactory):
         self._underlying_factory = underlying_factory
-        self._live_subscribers = {}
+        self._multiplexer = AsyncClientMultiplexer()
 
+    @overrides
     async def subscribe(
         self,
         subscription: Union[SubscriptionPath, str],
         per_partition_flow_control_settings: FlowControlSettings,
+        fixed_partitions: Optional[Set[Partition]] = None,
     ) -> AsyncIterator[Message]:
         if isinstance(subscription, str):
             subscription = SubscriptionPath.parse(subscription)
-        if subscription in self._live_subscribers:
-            raise FailedPrecondition(
-                f"Cannot subscribe to the same subscription twice. {subscription}"
+
+        async def create_and_open():
+            client = self._underlying_factory(
+                subscription, fixed_partitions, per_partition_flow_control_settings
             )
-        subscriber = self._underlying_factory(
-            subscription, per_partition_flow_control_settings
+            await client.__aenter__()
+            return client
+
+        subscriber = await self._multiplexer.get_or_create(
+            subscription, create_and_open
         )
-        self._live_subscribers[subscription] = subscriber
-        await subscriber.__aenter__()
         return _SubscriberAsyncIterator(
-            subscriber, lambda: self._on_subscriber_failure(subscription, subscriber)
+            subscriber, lambda: self._multiplexer.try_erase(subscription, subscriber)
         )
 
-    async def _on_subscriber_failure(
-        self, subscription: SubscriptionPath, subscriber: AsyncSingleSubscriber
-    ):
-        if subscription not in self._live_subscribers:
-            return
-        current_subscriber = self._live_subscribers[subscription]
-        if current_subscriber is not subscriber:
-            return
-        del self._live_subscribers[subscription]
-        await subscriber.__aexit__(None, None, None)
-
+    @overrides
     async def __aenter__(self):
+        await self._multiplexer.__aenter__()
         return self
 
+    @overrides
     async def __aexit__(self, exc_type, exc_value, traceback):
-        live_subscribers = self._live_subscribers
-        self._live_subscribers = {}
-        for topic, sub in live_subscribers.items():
-            await sub.__aexit__(exc_type, exc_value, traceback)
+        await self._multiplexer.__aexit__(exc_type, exc_value, traceback)

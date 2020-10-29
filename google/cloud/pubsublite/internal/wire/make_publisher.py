@@ -2,7 +2,7 @@ from typing import AsyncIterator, Mapping, Optional, MutableMapping
 
 from google.cloud.pubsub_v1.types import BatchSettings
 
-from google.cloud.pubsublite.make_admin_client import make_admin_client
+from google.cloud.pubsublite.admin_client import AdminClient
 from google.cloud.pubsublite.internal.endpoints import regional_endpoint
 from google.cloud.pubsublite.internal.wire.default_routing_policy import (
     DefaultRoutingPolicy,
@@ -60,7 +60,7 @@ def make_publisher(
   """
     if per_partition_batching_settings is None:
         per_partition_batching_settings = DEFAULT_BATCHING_SETTINGS
-    admin_client = make_admin_client(
+    admin_client = AdminClient(
         region=topic.location.region,
         credentials=credentials,
         client_options=client_options,
