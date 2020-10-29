@@ -79,6 +79,7 @@ class SubscriberClient(SubscriberClientInterface, ConstructableFromServiceAccoun
             ),
         )
 
+    @overrides
     def subscribe(
         self,
         subscription: Union[SubscriptionPath, str],
@@ -93,10 +94,12 @@ class SubscriberClient(SubscriberClientInterface, ConstructableFromServiceAccoun
             fixed_partitions,
         )
 
+    @overrides
     def __enter__(self):
         self._impl.__enter__()
         return self
 
+    @overrides
     def __exit__(self, exc_type, exc_value, traceback):
         self._impl.__exit__(exc_type, exc_value, traceback)
 

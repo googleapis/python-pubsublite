@@ -70,6 +70,7 @@ class PublisherClient(PublisherClientInterface, ConstructableFromServiceAccount)
             )
         )
 
+    @overrides
     def publish(
         self,
         topic: Union[TopicPath, str],
@@ -81,10 +82,12 @@ class PublisherClient(PublisherClientInterface, ConstructableFromServiceAccount)
             topic=topic, data=data, ordering_key=ordering_key, **attrs
         )
 
+    @overrides
     def __enter__(self):
         self._impl.__enter__()
         return self
 
+    @overrides
     def __exit__(self, exc_type, exc_value, traceback):
         self._impl.__exit__(exc_type, exc_value, traceback)
 
