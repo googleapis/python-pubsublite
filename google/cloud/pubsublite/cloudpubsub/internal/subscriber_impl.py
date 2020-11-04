@@ -58,9 +58,10 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
 
     def close(self):
         with self._close_lock:
-            if not self._closed:
-                self._closed = True
-                self.__exit__(None, None, None)
+            if self._closed:
+                return
+            self._closed = True
+        self.__exit__(None, None, None)
 
     def _fail(self, error: GoogleAPICallError):
         self._failure = error
