@@ -24,7 +24,8 @@ import argparse
 
 def get_lite_subscription(project_number, cloud_region, zone_id, subscription_id):
     # [START pubsublite_get_subscription]
-    from google.cloud.pubsublite.make_admin_client import make_admin_client
+    from google.api_core.exceptions import NotFound
+    from google.cloud.pubsublite import AdminClient
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, SubscriptionPath
 
     # TODO(developer):
@@ -33,13 +34,16 @@ def get_lite_subscription(project_number, cloud_region, zone_id, subscription_id
     # zone_id = "a"
     # subscription_id = "your-subscription-id"
 
-    client = make_admin_client(cloud_region)
+    client = AdminClient(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
 
-    response = client.get_subscription(subscription_path)
-    print(f"{response}\nexists.")
+    try:
+        response = client.get_subscription(subscription_path)
+        print(f"{response.name} exists.")
+    except NotFound:
+        print(f"{subscription_path} not found.")
     # [END pubsublite_get_subscription]
 
 

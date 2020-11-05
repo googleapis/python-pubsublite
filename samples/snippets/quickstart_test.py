@@ -20,31 +20,36 @@ import uuid
 
 import backoff
 from google.api_core.exceptions import NotFound
-from google.cloud.pubsublite.make_admin_client import make_admin_client
-from google.cloud.pubsublite.types import CloudRegion, CloudZone, SubscriptionPath, TopicPath
+from google.cloud.pubsublite import AdminClient
+from google.cloud.pubsublite.types import (
+    CloudRegion,
+    CloudZone,
+    SubscriptionPath,
+    TopicPath,
+)
 import pytest
 
-project_number = os.environ["GOOGLE_CLOUD_PROJECT_NUMBER"]
-cloud_region = "us-central1"
-zone_id = ["a", "b", "c"][random.randint(0, 2)]
-uuid_hex = uuid.uuid4().hex
-topic_id = "py-lite-topic-" + uuid_hex
-subscription_id = "py-lite-subscription-" + uuid_hex
-num_partitions = 1
-num_messages = 10
+PROJECT_NUMBER = os.environ["GOOGLE_CLOUD_PROJECT_NUMBER"]
+CLOUD_REGION = "us-central1"
+ZONE_ID = ["a", "b", "c"][random.randint(0, 2)]
+UUID = uuid.uuid4().hex
+TOPIC_ID = "py-lite-topic-" + UUID
+SUBSCRIPTION_ID = "py-lite-subscription-" + UUID
+NUM_PARTITIONS = 1
+NUM_MESSAGES = 10
 # Allow 90s for tests to finish.
-max_time = 90
+MAX_TIME = 90
 
 
 @pytest.fixture(scope="module")
 def client():
-    yield make_admin_client(cloud_region)
+    yield AdminClient(CLOUD_REGION)
 
 
 @pytest.fixture(scope="module")
 def topic_path(client):
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
-    topic_path = str(TopicPath(project_number, location, topic_id))
+    location = CloudZone(CloudRegion(CLOUD_REGION), ZONE_ID)
+    topic_path = str(TopicPath(PROJECT_NUMBER, location, TOPIC_ID))
     yield topic_path
     try:
         client.delete_topic(topic_path)
@@ -54,8 +59,8 @@ def topic_path(client):
 
 @pytest.fixture(scope="module")
 def subscription_path(client):
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
-    subscription_path = str(SubscriptionPath(project_number, location, subscription_id))
+    location = CloudZone(CloudRegion(CLOUD_REGION), ZONE_ID)
+    subscription_path = str(SubscriptionPath(PROJECT_NUMBER, location, SUBSCRIPTION_ID))
     yield subscription_path
     try:
         client.delete_subscription(subscription_path)
@@ -72,10 +77,10 @@ def test_create_lite_topic_example(topic_path, capsys):
         topic_path_object.location.region.name,
         topic_path_object.location.zone_id,
         topic_path_object.name,
-        num_partitions,
+        NUM_PARTITIONS,
     )
     out, _ = capsys.readouterr()
-    assert "created successfully." in out
+    assert f"{topic_path} created successfully." in out
 
 
 def test_update_lite_topic_example(topic_path, capsys):
@@ -89,7 +94,7 @@ def test_update_lite_topic_example(topic_path, capsys):
         topic_path_object.name,
     )
     out, _ = capsys.readouterr()
-    assert "updated successfully." in out
+    assert f"{topic_path} updated successfully." in out
 
 
 def test_get_lite_topic_example(topic_path, capsys):
@@ -103,7 +108,7 @@ def test_get_lite_topic_example(topic_path, capsys):
         topic_path_object.name,
     )
     out, _ = capsys.readouterr()
-    assert f"has {num_partitions} partition(s)." in out
+    assert f"{topic_path} has {NUM_PARTITIONS} partition(s)." in out
 
 
 def test_list_lite_topics_example(topic_path, capsys):
@@ -116,7 +121,7 @@ def test_list_lite_topics_example(topic_path, capsys):
         topic_path_object.location.zone_id,
     )
     out, _ = capsys.readouterr()
-    assert "topic(s) listed." in out
+    assert "topic(s) listed in your project and location." in out
 
 
 def test_create_lite_subscription(subscription_path, topic_path, capsys):
@@ -133,7 +138,7 @@ def test_create_lite_subscription(subscription_path, topic_path, capsys):
         subscription_path_object.name,
     )
     out, _ = capsys.readouterr()
-    assert "created successfully." in out
+    assert f"{subscription_path} created successfully." in out
 
 
 def test_update_lite_subscription_example(subscription_path, capsys):
@@ -148,7 +153,7 @@ def test_update_lite_subscription_example(subscription_path, capsys):
         subscription_path_object.name,
     )
     out, _ = capsys.readouterr()
-    assert "updated successfully." in out
+    assert f"{subscription_path} updated successfully." in out
 
 
 def test_get_lite_subscription(subscription_path, capsys):
@@ -163,7 +168,7 @@ def test_get_lite_subscription(subscription_path, capsys):
         subscription_path_object.name,
     )
     out, _ = capsys.readouterr()
-    assert "exists." in out
+    assert f"{subscription_path} exists." in out
 
 
 def test_list_lite_subscriptions_in_project(subscription_path, capsys):
@@ -193,29 +198,26 @@ def test_list_lite_subscriptions_in_topic(topic_path, subscription_path, capsys)
         topic_path_object.name,
     )
     out, _ = capsys.readouterr()
-    assert "subscription(s) listed" in out
+    assert "subscription(s) listed in your topic." in out
 
 
 def test_publisher_example(topic_path, capsys):
     import publisher_example
 
-    publisher_example.publish_messages(
-        project_number, cloud_region, zone_id, topic_id, num_messages
-    )
+    publisher_example.publish_messages(PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID)
     out, _ = capsys.readouterr()
-    assert f"Finished publishing {num_messages} messages to {topic_path}." in out
+    assert "Published a message" in out
 
 
 def test_publish_with_custom_attributes_example(topic_path, capsys):
     import publish_with_custom_attributes_example
 
     publish_with_custom_attributes_example.publish_with_custom_attributes(
-        project_number, cloud_region, zone_id, topic_id, num_messages
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID
     )
     out, _ = capsys.readouterr()
     assert (
-        f"Finished publishing {num_messages} messages with custom attributes to {topic_path}."
-        in out
+        f"Finished publishing a message with custom attributes to {topic_path}." in out
     )
 
 
@@ -223,11 +225,11 @@ def test_publish_with_odering_key_example(topic_path, capsys):
     import publish_with_ordering_key_example
 
     publish_with_ordering_key_example.publish_with_odering_key(
-        project_number, cloud_region, zone_id, topic_id, num_messages
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, NUM_MESSAGES
     )
     out, _ = capsys.readouterr()
     assert (
-        f"Finished publishing {num_messages} messages with an ordering key to {topic_path}."
+        f"Finished publishing {NUM_MESSAGES} messages with an ordering key to {topic_path}."
         in out
     )
 
@@ -236,11 +238,11 @@ def test_publish_with_batch_settings_example(topic_path, capsys):
     import publish_with_batch_settings_example
 
     publish_with_batch_settings_example.publish_with_batch_settings(
-        project_number, cloud_region, zone_id, topic_id, num_messages
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, NUM_MESSAGES
     )
     out, _ = capsys.readouterr()
     assert (
-        f"Finished publishing {num_messages} messages with batch settings to {topic_path}."
+        f"Finished publishing {NUM_MESSAGES} messages with batch settings to {topic_path}."
         in out
     )
 
@@ -249,11 +251,11 @@ def test_subscriber_example(topic_path, subscription_path, capsys):
     import subscriber_example
 
     subscriber_example.receive_messages(
-        project_number, cloud_region, zone_id, subscription_id, 45
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, 45
     )
     out, _ = capsys.readouterr()
     assert f"Listening for messages on {subscription_path}..." in out
-    for message in range(num_messages):
+    for message in range(NUM_MESSAGES):
         assert f"Received {message}" in out
 
 
@@ -262,7 +264,7 @@ def test_delete_lite_subscription_example(subscription_path, capsys):
 
     subscription_path_object = SubscriptionPath.parse(subscription_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
+    @backoff.on_exception(backoff.expo, AssertionError, max_time=MAX_TIME)
     def eventually_consistent_test():
         delete_lite_subscription_example.delete_lite_subscription(
             subscription_path_object.project_number,
@@ -281,7 +283,7 @@ def test_delete_lite_topic_example(topic_path, capsys):
 
     topic_path_object = TopicPath.parse(topic_path)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=max_time)
+    @backoff.on_exception(backoff.expo, AssertionError, max_time=MAX_TIME)
     def eventually_consistent_test():
         delete_lite_topic_example.delete_lite_topic(
             topic_path_object.project_number,

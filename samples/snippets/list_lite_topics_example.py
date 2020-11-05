@@ -24,7 +24,7 @@ import argparse
 
 def list_lite_topics(project_number, cloud_region, zone_id):
     # [START pubsublite_list_topics]
-    from google.cloud.pubsublite.make_admin_client import make_admin_client
+    from google.cloud.pubsublite import AdminClient
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, LocationPath
 
     # TODO(developer):
@@ -32,7 +32,7 @@ def list_lite_topics(project_number, cloud_region, zone_id):
     # cloud_region = "us-central1"
     # zone_id = "a"
 
-    client = make_admin_client(cloud_region)
+    client = AdminClient(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     location_path = LocationPath(project_number, location)
@@ -42,7 +42,7 @@ def list_lite_topics(project_number, cloud_region, zone_id):
     for topic in response:
         print(topic)
 
-    print(f"{len(response)} topic(s) listed.")
+    print(f"{len(response)} topic(s) listed in your project and location.")
     # [END pubsublite_list_topics]
 
 

@@ -24,7 +24,8 @@ import argparse
 
 def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # [START pubsublite_update_topic]
-    from google.cloud.pubsublite.make_admin_client import make_admin_client
+    from google.api_core.exceptions import NotFound
+    from google.cloud.pubsublite import AdminClient
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, TopicPath
     from google.cloud.pubsublite_v1 import Topic
     from google.protobuf.duration_pb2 import Duration
@@ -36,7 +37,7 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # zone_id = "a"
     # topic_id = "your-topic-id"
 
-    client = make_admin_client(cloud_region)
+    client = AdminClient(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
@@ -54,24 +55,28 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
     topic = Topic(
         name=str(topic_path),
         partition_config=Topic.PartitionConfig(
-            # Set publishing throughput to 4x standard partition throughput of 4 MiB
+            # Set publishing throughput to 2x standard partition throughput of 4 MiB
             # per second. This must in the range [1,4]. A topic with `scale` of 2 and
             # `count` of 10 is charged for 20 partitions.
-            scale=4,
+            scale=2,
         ),
         retention_config=Topic.RetentionConfig(
-            # Set storage per partition to 200 GiB. This must be in the range 30 GiB-10TiB.
+            # Set storage per partition to 100 GiB. This must be in the range 30 GiB-10TiB.
             # If the number of byptes stored in any of the topic's partitions grows beyond
             # this value, older messages will be dropped to make room for newer ones,
             # regardless of the value of `period`.
             # Be careful when decreasing storage per partition as it may cuase lost messages.
-            per_partition_bytes=200 * 1024 * 1024 * 1024,
+            per_partition_bytes=100 * 1024 * 1024 * 1024,
+            # Allow messages to be stored for 14 days.
             period=Duration(seconds=60 * 60 * 24 * 14),
         ),
     )
 
-    response = client.update_topic(topic, field_mask)
-    print(f"{response}\nupdated successfully.")
+    try:
+        response = client.update_topic(topic, field_mask)
+        print(f"{response.name} updated successfully.")
+    except NotFound:
+        print(f"{topic_path} not found.")
     # [END pubsublite_update_topic]
 
 

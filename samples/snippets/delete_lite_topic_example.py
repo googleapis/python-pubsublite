@@ -24,7 +24,8 @@ import argparse
 
 def delete_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # [START pubsublite_delete_topic]
-    from google.cloud.pubsublite.make_admin_client import make_admin_client
+    from google.api_core.exceptions import NotFound
+    from google.cloud.pubsublite import AdminClient
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, TopicPath
 
     # TODO(developer):
@@ -33,13 +34,16 @@ def delete_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # zone_id = "a"
     # topic_id = "your-topic-id"
 
-    client = make_admin_client(cloud_region)
+    client = AdminClient(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
 
-    client.delete_topic(topic_path)
-    print(f"{topic_path} deleted successfully.")
+    try:
+        client.delete_topic(topic_path)
+        print(f"{topic_path} deleted successfully.")
+    except NotFound:
+        print(f"{topic_path} not found.")
     # [END pubsublite_delete_topic]
 
 

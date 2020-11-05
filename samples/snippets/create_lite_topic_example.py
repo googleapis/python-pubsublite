@@ -24,7 +24,8 @@ import argparse
 
 def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_partitions):
     # [START pubsublite_create_topic]
-    from google.cloud.pubsublite.make_admin_client import make_admin_client
+    from google.api_core.exceptions import AlreadyExists
+    from google.cloud.pubsublite import AdminClient
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, TopicPath
     from google.cloud.pubsublite_v1 import Topic
     from google.protobuf.duration_pb2 import Duration
@@ -36,14 +37,14 @@ def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_parti
     # topic_id = "your-topic-id"
     # num_partitions = 1
 
-    client = make_admin_client(cloud_region)
+    client = AdminClient(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
     topic = Topic(
         name=str(topic_path),
         partition_config=Topic.PartitionConfig(
-            # This must be greater than 1.
+            # A topic must have at least one partition.
             count=num_partitions,
             # Set publishing throughput to 1x standard partition throughput of 4 MiB
             # per second. This must in the range [1,4]. A topic with `scale` of 2 and
@@ -56,13 +57,16 @@ def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_parti
             # this value, older messages will be dropped to make room for newer ones,
             # regardless of the value of `period`.
             per_partition_bytes=30 * 1024 * 1024 * 1024,
-            # How long messages are retained.
+            # Allow messages to be retained for 7 days.
             period=Duration(seconds=60 * 60 * 24 * 7),
         ),
     )
 
-    response = client.create_topic(topic)
-    print(f"{response}\ncreated successfully.")
+    try:
+        response = client.create_topic(topic)
+        print(f"{response.name} created successfully.")
+    except AlreadyExists:
+        print(f"{topic_path} already exists.")
     # [END pubsublite_create_topic]
 
 

@@ -24,7 +24,7 @@ import argparse
 
 def list_lite_subscriptions_in_topic(project_number, cloud_region, zone_id, topic_id):
     # [START pubsublite_list_subscriptions_in_topic]
-    from google.cloud.pubsublite.make_admin_client import make_admin_client
+    from google.cloud.pubsublite import AdminClient
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, TopicPath
 
     # TODO(developer):
@@ -33,15 +33,17 @@ def list_lite_subscriptions_in_topic(project_number, cloud_region, zone_id, topi
     # zone_id = "a"
     # topic_id = "your-topic-id"
 
-    client = make_admin_client(cloud_region)
+    client = AdminClient(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     topic_path = str(TopicPath(project_number, location, topic_id))
 
     response = client.list_topic_subscriptions(topic_path)
+
     for subscription_path in response:
         print(subscription_path)
-    print(f"{len(response)} subscription(s) listed in {topic_path}.")
+
+    print(f"{len(response)} subscription(s) listed in your topic.")
     # [END pubsublite_list_subscriptions_in_topic]
 
 

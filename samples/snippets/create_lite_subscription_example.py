@@ -26,7 +26,8 @@ def create_lite_subscription(
     project_number, cloud_region, zone_id, topic_id, subscription_id
 ):
     # [START pubsublite_create_subscription]
-    from google.cloud.pubsublite.make_admin_client import make_admin_client
+    from google.api_core.exceptions import AlreadyExists
+    from google.cloud.pubsublite import AdminClient
     from google.cloud.pubsublite.types import (
         CloudRegion,
         CloudZone,
@@ -42,7 +43,7 @@ def create_lite_subscription(
     # topic_id = "your-topic-id"
     # subscription_id = "your-subscription-id"
 
-    client = make_admin_client(cloud_region)
+    client = AdminClient(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
@@ -52,16 +53,21 @@ def create_lite_subscription(
         name=str(subscription_path),
         topic=str(topic_path),
         delivery_config=Subscription.DeliveryConfig(
-            # The server does not wait for a published message to be successfully
-            # written to storage before delivering it to subscribers. As such, a subscriber
-            # may receive a message for which the write to storage failed. If the subscriber
-            # re-reads the offset of that mesage later on, there may be a gap at that offset.
+            # Possible values for delivery_requirement:
+            # - `DELIVER_IMMEDIATELY`
+            # - `DELIVER_AFTER_STORED`
+            # You may choose whether to wait for a published message to be successfully written
+            # to storage before the server delivers it to subscribers. `DELIVER_IMMEDIATELY` is
+            # suitable for applications that need higher throughput.
             delivery_requirement=Subscription.DeliveryConfig.DeliveryRequirement.DELIVER_IMMEDIATELY,
         ),
     )
 
-    response = client.create_subscription(subscription)
-    print(f"{response}\ncreated successfully.")
+    try:
+        response = client.create_subscription(subscription)
+        print(f"{response.name} created successfully.")
+    except AlreadyExists:
+        print(f"{subscription_path} already exists.")
     # [END pubsublite_create_subscription]
 
 

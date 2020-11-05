@@ -24,7 +24,8 @@ import argparse
 
 def update_lite_subscription(project_number, cloud_region, zone_id, subscription_id):
     # [START pubsublite_update_subscription]
-    from google.cloud.pubsublite.make_admin_client import make_admin_client
+    from google.api_core.exceptions import NotFound
+    from google.cloud.pubsublite import AdminClient
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, SubscriptionPath
     from google.cloud.pubsublite_v1 import Subscription
     from google.protobuf.field_mask_pb2 import FieldMask
@@ -36,7 +37,7 @@ def update_lite_subscription(project_number, cloud_region, zone_id, subscription
     # topic_id = "your-topic-id"
     # subscription_id = "your-subscription-id"
 
-    client = make_admin_client(cloud_region)
+    client = AdminClient(cloud_region)
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
@@ -45,14 +46,20 @@ def update_lite_subscription(project_number, cloud_region, zone_id, subscription
     subscription = Subscription(
         name=str(subscription_path),
         delivery_config=Subscription.DeliveryConfig(
-            # DELIVER_AFTER_STORED ensures that the server won't deliver a published message
-            # to subscribers until the message has been written to storage successfully.
+            # Possible values for delivery_requirement:
+            # - `DELIVER_IMMEDIATELY`
+            # - `DELIVER_AFTER_STORED`
+            # `DELIVER_AFTER_STORED` requires a published message to be successfully written
+            # to storage before the server delivers it to subscribers.
             delivery_requirement=Subscription.DeliveryConfig.DeliveryRequirement.DELIVER_AFTER_STORED,
         ),
     )
 
-    response = client.update_subscription(subscription, field_mask)
-    print(f"{response}\nupdated successfully.")
+    try:
+        response = client.update_subscription(subscription, field_mask)
+        print(f"{response.name} updated successfully.")
+    except NotFound:
+        print(f"{subscription_path} not found.")
     # [END pubsublite_update_subscription]
 
 

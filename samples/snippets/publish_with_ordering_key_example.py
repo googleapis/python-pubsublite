@@ -26,7 +26,7 @@ def publish_with_odering_key(
     project_number, cloud_region, zone_id, topic_id, num_messages
 ):
     # [START pubsublite_publish_ordering_key]
-    from google.cloud.pubsublite.cloudpubsub.make_publisher import make_publisher
+    from google.cloud.pubsublite.cloudpubsub import PublisherClient
     from google.cloud.pubsublite.types import (
         CloudRegion,
         CloudZone,
@@ -44,18 +44,19 @@ def publish_with_odering_key(
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
 
-    with make_publisher(topic_path) as publisher_client:
+    # PublisherClient() must be used in a `with` block or have __enter__() called before use.
+    with PublisherClient() as publisher_client:
         for message in range(num_messages):
             data = f"{message}"
             # Messages of the same ordering key will always get published to the same partition.
             # When ordering_key is unset, messsages can get published ot different partitions if
             # more than one partition exists for the topic.
             api_future = publisher_client.publish(
-                data.encode("utf-8"), ordering_key="testing"
+                topic_path, data.encode("utf-8"), ordering_key="testing"
             )
             # result() blocks. To resolve api futures asynchronously, use add_done_callback().
-            ack_id = api_future.result()
-            publish_metadata = PublishMetadata.decode(ack_id)
+            message_id = api_future.result()
+            publish_metadata = PublishMetadata.decode(message_id)
             print(
                 f"Published {data} to partition {publish_metadata.partition.value} and offset {publish_metadata.cursor.offset}."
             )

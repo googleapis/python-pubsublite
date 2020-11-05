@@ -27,7 +27,7 @@ def publish_with_batch_settings(
 ):
     # [START pubsublite_publish_ordering_key]
     from google.cloud.pubsub_v1.types import BatchSettings
-    from google.cloud.pubsublite.cloudpubsub.make_publisher import make_publisher
+    from google.cloud.pubsublite.cloudpubsub import PublisherClient
     from google.cloud.pubsublite.types import (
         CloudRegion,
         CloudZone,
@@ -53,15 +53,16 @@ def publish_with_batch_settings(
         max_messages=100,
     )
 
-    with make_publisher(
-        topic_path, per_partition_batching_settings=batch_setttings,
+    # PublisherClient() must be used in a `with` block or have __enter__() called before use.
+    with PublisherClient(
+        per_partition_batching_settings=batch_setttings
     ) as publisher_client:
         for message in range(num_messages):
             data = f"{message}"
-            api_future = publisher_client.publish(data.encode("utf-8"))
-            # result() blocks. To resolve api futures asynchronously, use add_done_callback().
-            ack_id = api_future.result()
-            publish_metadata = PublishMetadata.decode(ack_id)
+            api_future = publisher_client.publish(topic_path, data.encode("utf-8"))
+            # result() blocks. To resolve API futures asynchronously, use add_done_callback().
+            message_id = api_future.result()
+            publish_metadata = PublishMetadata.decode(message_id)
             print(
                 f"Published {data} to partition {publish_metadata.partition.value} and offset {publish_metadata.cursor.offset}."
             )

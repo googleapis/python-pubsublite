@@ -27,9 +27,13 @@ def receive_messages(
 ):
     # [START pubsublite_quickstart_subscriber]
     from concurrent.futures._base import TimeoutError
-    from google.cloud.pubsublite.cloudpubsub.flow_control_settings import FlowControlSettings
-    from google.cloud.pubsublite.cloudpubsub.make_subscriber import make_subscriber
-    from google.cloud.pubsublite.types import CloudRegion, CloudZone, SubscriptionPath
+    from google.cloud.pubsublite.cloudpubsub import SubscriberClient
+    from google.cloud.pubsublite.types import (
+        CloudRegion,
+        CloudZone,
+        FlowControlSettings,
+        SubscriptionPath,
+    )
 
     # TODO(developer):
     # project_number = 1122334455
@@ -40,8 +44,14 @@ def receive_messages(
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
-    flow_control_settings = FlowControlSettings(
-        messages_outstanding=1000, bytes_outstanding=10 * 1024 * 1024
+    # Configure when to pause the message stream for more incoming messages based on the
+    # maximum size or number of messages that a single-partition subscriber has received,
+    # whichever condition is met first.
+    per_partition_flow_control_settings = FlowControlSettings(
+        # 1,000 outstanding messages. Must be >0.
+        messages_outstanding=1000,
+        # 10 MiB. Must be greater than the allowed size of the largest message (1 MiB).
+        bytes_outstanding=10 * 1024 * 1024,
     )
 
     def callback(message):
@@ -49,10 +59,12 @@ def receive_messages(
         print(f"Received {message_data} of ordering key {message.ordering_key}.")
         message.ack()
 
-    streaming_pull_future = make_subscriber(
+    subscriber_client = SubscriberClient()
+
+    streaming_pull_future = subscriber_client.subscribe(
         subscription_path,
-        per_partition_flow_control_settings=flow_control_settings,
         callback=callback,
+        per_partition_flow_control_settings=per_partition_flow_control_settings,
     )
 
     print(f"Listening for messages on {str(subscription_path)}...")
@@ -74,7 +86,11 @@ if __name__ == "__main__":
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("subscription_id", help="Your subscription ID")
     parser.add_argument(
-        "timeout", nargs="?", default=90, type=int, help="Timeout in second"
+        "timeout",
+        nargs="?",
+        default=90,
+        type=int,
+        help="Timeout in second (default to 90s)",
     )
 
     args = parser.parse_args()
