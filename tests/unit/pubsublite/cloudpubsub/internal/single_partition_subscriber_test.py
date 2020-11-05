@@ -10,11 +10,13 @@ from google.pubsub_v1 import PubsubMessage
 from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker import AckSetTracker
 from google.cloud.pubsublite.cloudpubsub.internal.single_partition_subscriber import (
-    SinglePartitionSubscriber,
+    SinglePartitionSingleSubscriber,
 )
 from google.cloud.pubsublite.cloudpubsub.message_transformer import MessageTransformer
 from google.cloud.pubsublite.cloudpubsub.nack_handler import NackHandler
-from google.cloud.pubsublite.cloudpubsub.subscriber import AsyncSubscriber
+from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
+    AsyncSingleSubscriber,
+)
 from google.cloud.pubsublite.internal.wire.subscriber import Subscriber
 from google.cloud.pubsublite.testing.test_utils import make_queue_waiter
 from google.cloud.pubsublite_v1 import Cursor, FlowControlRequest, SequencedMessage
@@ -69,7 +71,7 @@ def transformer():
 def subscriber(
     underlying, flow_control_settings, ack_set_tracker, nack_handler, transformer
 ):
-    return SinglePartitionSubscriber(
+    return SinglePartitionSingleSubscriber(
         underlying, flow_control_settings, ack_set_tracker, nack_handler, transformer
     )
 
@@ -92,7 +94,7 @@ async def test_failed_transform(subscriber, underlying, transformer):
 
 
 async def test_ack(
-    subscriber: AsyncSubscriber, underlying, transformer, ack_set_tracker
+    subscriber: AsyncSingleSubscriber, underlying, transformer, ack_set_tracker
 ):
     ack_called_queue = asyncio.Queue()
     ack_result_queue = asyncio.Queue()
@@ -121,7 +123,10 @@ async def test_ack(
 
 
 async def test_track_failure(
-    subscriber: SinglePartitionSubscriber, underlying, transformer, ack_set_tracker
+    subscriber: SinglePartitionSingleSubscriber,
+    underlying,
+    transformer,
+    ack_set_tracker,
 ):
     async with subscriber:
         ack_set_tracker.track.side_effect = FailedPrecondition("Bad track")
@@ -133,7 +138,10 @@ async def test_track_failure(
 
 
 async def test_ack_failure(
-    subscriber: SinglePartitionSubscriber, underlying, transformer, ack_set_tracker
+    subscriber: SinglePartitionSingleSubscriber,
+    underlying,
+    transformer,
+    ack_set_tracker,
 ):
     ack_called_queue = asyncio.Queue()
     ack_result_queue = asyncio.Queue()
@@ -159,7 +167,7 @@ async def test_ack_failure(
 
 
 async def test_nack_failure(
-    subscriber: SinglePartitionSubscriber,
+    subscriber: SinglePartitionSingleSubscriber,
     underlying,
     transformer,
     ack_set_tracker,
@@ -182,7 +190,7 @@ async def test_nack_failure(
 
 
 async def test_nack_calls_ack(
-    subscriber: SinglePartitionSubscriber,
+    subscriber: SinglePartitionSingleSubscriber,
     underlying,
     transformer,
     ack_set_tracker,

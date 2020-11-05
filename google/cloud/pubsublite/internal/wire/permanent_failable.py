@@ -21,6 +21,14 @@ class PermanentFailable:
             self._maybe_failure_task = asyncio.Future()
         return self._maybe_failure_task
 
+    @staticmethod
+    async def _fail_client_task(task: asyncio.Future):
+        task.cancel()
+        try:
+            await task
+        except:  # noqa: E722 intentionally broad except clause
+            pass
+
     async def await_unless_failed(self, awaitable: Awaitable[T]) -> T:
         """
     Await the awaitable, unless fail() is called first.
@@ -30,15 +38,17 @@ class PermanentFailable:
     Returns: The result of the awaitable
     Raises: The permanent error if fail() is called or the awaitable raises one.
     """
-        if self._failure_task.done():
-            raise self._failure_task.exception()
+
         task = asyncio.ensure_future(awaitable)
+        if self._failure_task.done():
+            await self._fail_client_task(task)
+            raise self._failure_task.exception()
         done, _ = await asyncio.wait(
             [task, self._failure_task], return_when=asyncio.FIRST_COMPLETED
         )
         if task in done:
             return await task
-        task.cancel()
+        await self._fail_client_task(task)
         raise self._failure_task.exception()
 
     async def run_poller(self, poll_action: Callable[[], Awaitable[None]]):

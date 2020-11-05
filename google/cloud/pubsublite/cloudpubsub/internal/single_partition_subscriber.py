@@ -10,7 +10,9 @@ from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker import AckSetTracker
 from google.cloud.pubsublite.cloudpubsub.message_transformer import MessageTransformer
 from google.cloud.pubsublite.cloudpubsub.nack_handler import NackHandler
-from google.cloud.pubsublite.cloudpubsub.subscriber import AsyncSubscriber
+from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
+    AsyncSingleSubscriber,
+)
 from google.cloud.pubsublite.internal.wire.permanent_failable import PermanentFailable
 from google.cloud.pubsublite.internal.wire.subscriber import Subscriber
 from google.cloud.pubsublite_v1 import FlowControlRequest, SequencedMessage
@@ -22,7 +24,7 @@ class _SizedMessage(NamedTuple):
     size_bytes: int
 
 
-class SinglePartitionSubscriber(PermanentFailable, AsyncSubscriber):
+class SinglePartitionSingleSubscriber(PermanentFailable, AsyncSingleSubscriber):
     _underlying: Subscriber
     _flow_control_settings: FlowControlSettings
     _ack_set_tracker: AckSetTracker

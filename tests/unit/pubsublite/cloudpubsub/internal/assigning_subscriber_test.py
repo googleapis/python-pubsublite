@@ -8,10 +8,12 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 from google.pubsub_v1 import PubsubMessage
 
 from google.cloud.pubsublite.cloudpubsub.internal.assigning_subscriber import (
-    AssigningSubscriber,
+    AssigningSingleSubscriber,
     PartitionSubscriberFactory,
 )
-from google.cloud.pubsublite.cloudpubsub.subscriber import AsyncSubscriber
+from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
+    AsyncSingleSubscriber,
+)
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
 from google.cloud.pubsublite.types import Partition
 from google.cloud.pubsublite.testing.test_utils import wire_queues, Box
@@ -40,7 +42,7 @@ def subscriber(assigner, subscriber_factory):
     box = Box()
 
     def set_box():
-        box.val = AssigningSubscriber(lambda: assigner, subscriber_factory)
+        box.val = AssigningSingleSubscriber(lambda: assigner, subscriber_factory)
 
     # Initialize AssigningSubscriber on another thread with a different event loop.
     thread = threading.Thread(target=set_box)
@@ -62,8 +64,8 @@ async def test_initial_assignment(subscriber, assigner, subscriber_factory):
     assign_queues = wire_queues(assigner.get_assignment)
     async with subscriber:
         await assign_queues.called.get()
-        sub1 = mock_async_context_manager(MagicMock(spec=AsyncSubscriber))
-        sub2 = mock_async_context_manager(MagicMock(spec=AsyncSubscriber))
+        sub1 = mock_async_context_manager(MagicMock(spec=AsyncSingleSubscriber))
+        sub2 = mock_async_context_manager(MagicMock(spec=AsyncSingleSubscriber))
         subscriber_factory.side_effect = (
             lambda partition: sub1 if partition == Partition(1) else sub2
         )
@@ -91,9 +93,9 @@ async def test_assignment_change(subscriber, assigner, subscriber_factory):
     assign_queues = wire_queues(assigner.get_assignment)
     async with subscriber:
         await assign_queues.called.get()
-        sub1 = mock_async_context_manager(MagicMock(spec=AsyncSubscriber))
-        sub2 = mock_async_context_manager(MagicMock(spec=AsyncSubscriber))
-        sub3 = mock_async_context_manager(MagicMock(spec=AsyncSubscriber))
+        sub1 = mock_async_context_manager(MagicMock(spec=AsyncSingleSubscriber))
+        sub2 = mock_async_context_manager(MagicMock(spec=AsyncSingleSubscriber))
+        sub3 = mock_async_context_manager(MagicMock(spec=AsyncSingleSubscriber))
         subscriber_factory.side_effect = (
             lambda partition: sub1
             if partition == Partition(1)
@@ -124,7 +126,7 @@ async def test_subscriber_failure(subscriber, assigner, subscriber_factory):
     assign_queues = wire_queues(assigner.get_assignment)
     async with subscriber:
         await assign_queues.called.get()
-        sub1 = mock_async_context_manager(MagicMock(spec=AsyncSubscriber))
+        sub1 = mock_async_context_manager(MagicMock(spec=AsyncSingleSubscriber))
         sub1_queues = wire_queues(sub1.read)
         subscriber_factory.return_value = sub1
         await assign_queues.results.put({Partition(1)})
@@ -138,8 +140,8 @@ async def test_delivery_from_multiple(subscriber, assigner, subscriber_factory):
     assign_queues = wire_queues(assigner.get_assignment)
     async with subscriber:
         await assign_queues.called.get()
-        sub1 = mock_async_context_manager(MagicMock(spec=AsyncSubscriber))
-        sub2 = mock_async_context_manager(MagicMock(spec=AsyncSubscriber))
+        sub1 = mock_async_context_manager(MagicMock(spec=AsyncSingleSubscriber))
+        sub2 = mock_async_context_manager(MagicMock(spec=AsyncSingleSubscriber))
         sub1_queues = wire_queues(sub1.read)
         sub2_queues = wire_queues(sub2.read)
         subscriber_factory.side_effect = (

@@ -10,16 +10,18 @@ from google.cloud.pubsublite.cloudpubsub.internal.streaming_pull_manager import 
     StreamingPullManager,
     CloseCallback,
 )
-from google.cloud.pubsublite.cloudpubsub.subscriber import (
-    AsyncSubscriber,
+from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
+    AsyncSingleSubscriber,
+)
+from google.cloud.pubsublite.cloudpubsub.subscriber_client_interface import (
     MessageCallback,
 )
 
 
 class SubscriberImpl(ContextManager, StreamingPullManager):
-    _underlying: AsyncSubscriber
+    _underlying: AsyncSingleSubscriber
     _callback: MessageCallback
-    _executor: ThreadPoolExecutor
+    _unowned_executor: ThreadPoolExecutor
 
     _event_loop: ManagedEventLoop
 
@@ -31,13 +33,13 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
 
     def __init__(
         self,
-        underlying: AsyncSubscriber,
+        underlying: AsyncSingleSubscriber,
         callback: MessageCallback,
-        executor: ThreadPoolExecutor,
+        unowned_executor: ThreadPoolExecutor,
     ):
         self._underlying = underlying
         self._callback = callback
-        self._executor = executor
+        self._unowned_executor = unowned_executor
         self._event_loop = ManagedEventLoop()
         self._close_lock = threading.Lock()
         self._failure = None
@@ -56,9 +58,10 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
 
     def close(self):
         with self._close_lock:
-            if not self._closed:
-                self._closed = True
-                self.__exit__(None, None, None)
+            if self._closed:
+                return
+            self._closed = True
+        self.__exit__(None, None, None)
 
     def _fail(self, error: GoogleAPICallError):
         self._failure = error
@@ -68,9 +71,9 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
         try:
             while True:
                 message = await self._underlying.read()
-                self._executor.submit(self._callback, message)
+                self._unowned_executor.submit(self._callback, message)
         except GoogleAPICallError as e:  # noqa: F841  Flake8 thinks e is unused
-            self._executor.submit(lambda: self._fail(e))  # noqa: F821
+            self._unowned_executor.submit(lambda: self._fail(e))  # noqa: F821
 
     def __enter__(self):
         assert self._close_callback is not None
@@ -90,5 +93,4 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
         ).result()
         self._event_loop.__exit__(exc_type, exc_value, traceback)
         assert self._close_callback is not None
-        self._executor.shutdown(wait=False)  # __exit__ may be called from the executor.
         self._close_callback(self, self._failure)
