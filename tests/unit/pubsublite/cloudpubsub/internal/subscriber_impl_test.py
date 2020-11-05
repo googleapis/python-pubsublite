@@ -13,8 +13,10 @@ from google.cloud.pubsublite.cloudpubsub.internal.streaming_pull_manager import 
     CloseCallback,
 )
 from google.cloud.pubsublite.cloudpubsub.internal.subscriber_impl import SubscriberImpl
-from google.cloud.pubsublite.cloudpubsub.subscriber import (
-    AsyncSubscriber,
+from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
+    AsyncSingleSubscriber,
+)
+from google.cloud.pubsublite.cloudpubsub.subscriber_client_interface import (
     MessageCallback,
 )
 from google.cloud.pubsublite.testing.test_utils import Box
@@ -22,7 +24,7 @@ from google.cloud.pubsublite.testing.test_utils import Box
 
 @pytest.fixture()
 def async_subscriber():
-    subscriber = MagicMock(spec=AsyncSubscriber)
+    subscriber = MagicMock(spec=AsyncSingleSubscriber)
     subscriber.__aenter__.return_value = subscriber
     return subscriber
 

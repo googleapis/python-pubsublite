@@ -3,10 +3,12 @@ from typing import AsyncContextManager, Mapping, ContextManager
 from concurrent import futures
 
 
-class AsyncPublisher(AsyncContextManager):
+class AsyncSinglePublisher(AsyncContextManager):
     """
   An AsyncPublisher publishes messages similar to Google Pub/Sub, but must be used in an
   async context. Any publish failures are permanent.
+
+  Must be used in an `async with` block or have __aenter__() awaited before use.
   """
 
     @abstractmethod
@@ -29,9 +31,11 @@ class AsyncPublisher(AsyncContextManager):
     """
 
 
-class Publisher(ContextManager):
+class SinglePublisher(ContextManager):
     """
   A Publisher publishes messages similar to Google Pub/Sub. Any publish failures are permanent.
+
+  Must be used in a `with` block or have __enter__() called before use.
   """
 
     @abstractmethod

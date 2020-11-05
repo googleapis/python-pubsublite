@@ -1,12 +1,20 @@
 from abc import abstractmethod
-from typing import AsyncContextManager, Callable
+from typing import AsyncContextManager, Callable, Set, Optional
 
 from google.cloud.pubsub_v1.subscriber.message import Message
 
+from google.cloud.pubsublite.types import (
+    SubscriptionPath,
+    FlowControlSettings,
+    Partition,
+)
 
-class AsyncSubscriber(AsyncContextManager):
+
+class AsyncSingleSubscriber(AsyncContextManager):
     """
   A Cloud Pub/Sub asynchronous subscriber.
+
+  Must be used in an `async with` block or have __aenter__() awaited before use.
   """
 
     @abstractmethod
@@ -26,4 +34,7 @@ class AsyncSubscriber(AsyncContextManager):
         raise NotImplementedError()
 
 
-MessageCallback = Callable[[Message], None]
+AsyncSubscriberFactory = Callable[
+    [SubscriptionPath, Optional[Set[Partition]], FlowControlSettings],
+    AsyncSingleSubscriber,
+]

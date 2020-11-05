@@ -3,6 +3,7 @@ from typing import Optional, List, Iterable
 
 from absl import logging
 
+from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.committer import Committer
 from google.cloud.pubsublite.internal.wire.retrying_connection import (
     RetryingConnection,
@@ -75,11 +76,11 @@ class CommitterImpl(
     async def _stop_loopers(self):
         if self._receiver:
             self._receiver.cancel()
-            await self._receiver
+            await wait_ignore_errors(self._receiver)
             self._receiver = None
         if self._flusher:
             self._flusher.cancel()
-            await self._flusher
+            await wait_ignore_errors(self._flusher)
             self._flusher = None
 
     def _handle_response(self, response: StreamingCommitCursorResponse):
@@ -101,20 +102,14 @@ class CommitterImpl(
                 item.response_future.set_result(None)
 
     async def _receive_loop(self):
-        try:
-            while True:
-                response = await self._connection.read()
-                self._handle_response(response)
-        except (asyncio.CancelledError, GoogleAPICallError):
-            return
+        while True:
+            response = await self._connection.read()
+            self._handle_response(response)
 
     async def _flush_loop(self):
-        try:
-            while True:
-                await asyncio.sleep(self._flush_seconds)
-                await self._flush()
-        except asyncio.CancelledError:
-            return
+        while True:
+            await asyncio.sleep(self._flush_seconds)
+            await self._flush()
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self._stop_loopers()

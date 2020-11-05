@@ -6,13 +6,14 @@ from google.api_core.exceptions import FailedPrecondition, GoogleAPICallError
 from google.cloud.pubsub_v1.subscriber.message import Message
 from google.pubsub_v1 import PubsubMessage
 
-from google.cloud.pubsublite.cloudpubsub.flow_control_settings import (
-    FlowControlSettings,
-)
+from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_cancelled
+from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker import AckSetTracker
 from google.cloud.pubsublite.cloudpubsub.message_transformer import MessageTransformer
 from google.cloud.pubsublite.cloudpubsub.nack_handler import NackHandler
-from google.cloud.pubsublite.cloudpubsub.subscriber import AsyncSubscriber
+from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
+    AsyncSingleSubscriber,
+)
 from google.cloud.pubsublite.internal.wire.permanent_failable import PermanentFailable
 from google.cloud.pubsublite.internal.wire.subscriber import Subscriber
 from google.cloud.pubsublite_v1 import FlowControlRequest, SequencedMessage
@@ -24,7 +25,7 @@ class _SizedMessage(NamedTuple):
     size_bytes: int
 
 
-class SinglePartitionSubscriber(PermanentFailable, AsyncSubscriber):
+class SinglePartitionSingleSubscriber(PermanentFailable, AsyncSingleSubscriber):
     _underlying: Subscriber
     _flow_control_settings: FlowControlSettings
     _ack_set_tracker: AckSetTracker
@@ -54,10 +55,10 @@ class SinglePartitionSubscriber(PermanentFailable, AsyncSubscriber):
         self._messages_by_offset = {}
 
     async def read(self) -> Message:
-        message: SequencedMessage = await self.await_unless_failed(
-            self._underlying.read()
-        )
         try:
+            message: SequencedMessage = await self.await_unless_failed(
+                self._underlying.read()
+            )
             cps_message = self._transformer.transform(message)
             offset = message.cursor.offset
             self._ack_set_tracker.track(offset)
@@ -156,9 +157,6 @@ class SinglePartitionSubscriber(PermanentFailable, AsyncSubscriber):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         self._looper_future.cancel()
-        try:
-            await self._looper_future
-        except asyncio.CancelledError:
-            pass
+        await wait_ignore_cancelled(self._looper_future)
         await self._underlying.__aexit__(exc_type, exc_value, traceback)
         await self._ack_set_tracker.__aexit__(exc_type, exc_value, traceback)
