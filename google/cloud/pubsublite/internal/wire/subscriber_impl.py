@@ -3,6 +3,7 @@ from typing import Optional
 
 from google.api_core.exceptions import GoogleAPICallError, FailedPrecondition
 
+from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.connection import (
     Connection,
     ConnectionFactory,
@@ -72,11 +73,11 @@ class SubscriberImpl(
     async def _stop_loopers(self):
         if self._receiver:
             self._receiver.cancel()
-            await self._receiver
+            await wait_ignore_errors(self._receiver)
             self._receiver = None
         if self._flusher:
             self._flusher.cancel()
-            await self._flusher
+            await wait_ignore_errors(self._flusher)
             self._flusher = None
 
     def _handle_response(self, response: SubscribeResponse):
@@ -107,12 +108,9 @@ class SubscriberImpl(
             self._message_queue.put_nowait(message)
 
     async def _receive_loop(self):
-        try:
-            while True:
-                response = await self._connection.read()
-                self._handle_response(response)
-        except (asyncio.CancelledError, GoogleAPICallError):
-            return
+        while True:
+            response = await self._connection.read()
+            self._handle_response(response)
 
     async def _try_send_tokens(self):
         req = self._outstanding_flow_control.release_pending_request()
@@ -125,12 +123,9 @@ class SubscriberImpl(
             pass
 
     async def _flush_loop(self):
-        try:
-            while True:
-                await asyncio.sleep(self._token_flush_seconds)
-                await self._try_send_tokens()
-        except asyncio.CancelledError:
-            return
+        while True:
+            await asyncio.sleep(self._token_flush_seconds)
+            await self._try_send_tokens()
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self._stop_loopers()

@@ -73,8 +73,9 @@ class AssigningSingleSubscriber(AsyncSingleSubscriber, PermanentFailable):
         for partition in added_partitions:
             await self._start_subscriber(partition)
         for partition in removed_partitions:
-            await self._stop_subscriber(self._subscribers[partition])
+            subscriber = self._subscribers[partition]
             del self._subscribers[partition]
+            await self._stop_subscriber(subscriber)
 
     async def __aenter__(self):
         self._messages = Queue()
@@ -89,3 +90,4 @@ class AssigningSingleSubscriber(AsyncSingleSubscriber, PermanentFailable):
         await self._assigner.__aexit__(exc_type, exc_value, traceback)
         for running in self._subscribers.values():
             await self._stop_subscriber(running)
+        pass

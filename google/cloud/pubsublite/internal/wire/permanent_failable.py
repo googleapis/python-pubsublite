@@ -3,7 +3,22 @@ from typing import Awaitable, TypeVar, Optional, Callable
 
 from google.api_core.exceptions import GoogleAPICallError
 
+from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
+
 T = TypeVar("T")
+
+
+class _TaskWithCleanup:
+    def __init__(self, a: Awaitable):
+        self._task = asyncio.ensure_future(a)
+
+    async def __aenter__(self):
+        return self._task
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        if not self._task.done():
+            self._task.cancel()
+            await wait_ignore_errors(self._task)
 
 
 class PermanentFailable:
@@ -21,14 +36,6 @@ class PermanentFailable:
             self._maybe_failure_task = asyncio.Future()
         return self._maybe_failure_task
 
-    @staticmethod
-    async def _fail_client_task(task: asyncio.Future):
-        task.cancel()
-        try:
-            await task
-        except:  # noqa: E722 intentionally broad except clause
-            pass
-
     async def await_unless_failed(self, awaitable: Awaitable[T]) -> T:
         """
     Await the awaitable, unless fail() is called first.
@@ -38,18 +45,15 @@ class PermanentFailable:
     Returns: The result of the awaitable
     Raises: The permanent error if fail() is called or the awaitable raises one.
     """
-
-        task = asyncio.ensure_future(awaitable)
-        if self._failure_task.done():
-            await self._fail_client_task(task)
+        async with _TaskWithCleanup(awaitable) as task:
+            if self._failure_task.done():
+                raise self._failure_task.exception()
+            done, _ = await asyncio.wait(
+                [task, self._failure_task], return_when=asyncio.FIRST_COMPLETED
+            )
+            if task in done:
+                return await task
             raise self._failure_task.exception()
-        done, _ = await asyncio.wait(
-            [task, self._failure_task], return_when=asyncio.FIRST_COMPLETED
-        )
-        if task in done:
-            return await task
-        await self._fail_client_task(task)
-        raise self._failure_task.exception()
 
     async def run_poller(self, poll_action: Callable[[], Awaitable[None]]):
         """
