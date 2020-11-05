@@ -1,8 +1,10 @@
 import asyncio
+from asyncio import Future
 
 from typing import Awaitable, Optional
 from google.api_core.exceptions import GoogleAPICallError, Cancelled
 from google.cloud.pubsublite.internal.status_codes import is_retryable
+from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.connection_reinitializer import (
     ConnectionReinitializer,
 )
@@ -101,20 +103,26 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
             print(e)
 
     async def _loop_connection(self, connection: Connection[Request, Response]):
-        read_task: Awaitable[Response] = asyncio.ensure_future(connection.read())
-        write_task: Awaitable[WorkItem[Request]] = asyncio.ensure_future(
+        read_task: 'Future[Response]' = asyncio.ensure_future(connection.read())
+        write_task: 'Future[WorkItem[Request]]' = asyncio.ensure_future(
             self._write_queue.get()
         )
-        while True:
-            done, _ = await asyncio.wait(
-                [write_task, read_task], return_when=asyncio.FIRST_COMPLETED
-            )
-            if write_task in done:
-                await self._handle_write(connection, await write_task)
-                write_task = asyncio.ensure_future(self._write_queue.get())
-            if read_task in done:
-                await self._read_queue.put(await read_task)
-                read_task = asyncio.ensure_future(connection.read())
+        try:
+            while True:
+                done, _ = await asyncio.wait(
+                    [write_task, read_task], return_when=asyncio.FIRST_COMPLETED
+                )
+                if write_task in done:
+                    await self._handle_write(connection, await write_task)
+                    write_task = asyncio.ensure_future(self._write_queue.get())
+                if read_task in done:
+                    await self._read_queue.put(await read_task)
+                    read_task = asyncio.ensure_future(connection.read())
+        finally:
+            read_task.cancel()
+            write_task.cancel()
+            await wait_ignore_errors(read_task)
+            await wait_ignore_errors(write_task)
 
     @staticmethod
     async def _handle_write(

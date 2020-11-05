@@ -2,6 +2,8 @@ import asyncio
 from typing import Optional, Set
 
 from absl import logging
+
+from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
 from google.cloud.pubsublite.internal.wire.retrying_connection import (
     RetryingConnection,
@@ -62,27 +64,24 @@ class AssignerImpl(
     async def _stop_receiver(self):
         if self._receiver:
             self._receiver.cancel()
-            await self._receiver
+            await wait_ignore_errors(self._receiver)
             self._receiver = None
 
     async def _receive_loop(self):
-        try:
-            while True:
-                response = await self._connection.read()
-                if self._outstanding_assignment or not self._new_assignment.empty():
-                    self._connection.fail(
-                        FailedPrecondition(
-                            "Received a duplicate assignment on the stream while one was outstanding."
-                        )
+        while True:
+            response = await self._connection.read()
+            if self._outstanding_assignment or not self._new_assignment.empty():
+                self._connection.fail(
+                    FailedPrecondition(
+                        "Received a duplicate assignment on the stream while one was outstanding."
                     )
-                    return
-                self._outstanding_assignment = True
-                partitions = set()
-                for partition in response.partitions:
-                    partitions.add(Partition(partition))
-                self._new_assignment.put_nowait(partitions)
-        except (asyncio.CancelledError, GoogleAPICallError):
-            return
+                )
+                return
+            self._outstanding_assignment = True
+            partitions = set()
+            for partition in response.partitions:
+                partitions.add(Partition(partition))
+            self._new_assignment.put_nowait(partitions)
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self._stop_receiver()

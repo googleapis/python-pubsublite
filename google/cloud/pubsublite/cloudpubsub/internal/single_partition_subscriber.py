@@ -6,6 +6,7 @@ from google.api_core.exceptions import FailedPrecondition, GoogleAPICallError
 from google.cloud.pubsub_v1.subscriber.message import Message
 from google.pubsub_v1 import PubsubMessage
 
+from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_cancelled
 from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker import AckSetTracker
 from google.cloud.pubsublite.cloudpubsub.message_transformer import MessageTransformer
@@ -54,10 +55,10 @@ class SinglePartitionSingleSubscriber(PermanentFailable, AsyncSingleSubscriber):
         self._messages_by_offset = {}
 
     async def read(self) -> Message:
-        message: SequencedMessage = await self.await_unless_failed(
-            self._underlying.read()
-        )
         try:
+            message: SequencedMessage = await self.await_unless_failed(
+                self._underlying.read()
+            )
             cps_message = self._transformer.transform(message)
             offset = message.cursor.offset
             self._ack_set_tracker.track(offset)
@@ -156,9 +157,6 @@ class SinglePartitionSingleSubscriber(PermanentFailable, AsyncSingleSubscriber):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         self._looper_future.cancel()
-        try:
-            await self._looper_future
-        except asyncio.CancelledError:
-            pass
+        await wait_ignore_cancelled(self._looper_future)
         await self._underlying.__aexit__(exc_type, exc_value, traceback)
         await self._ack_set_tracker.__aexit__(exc_type, exc_value, traceback)

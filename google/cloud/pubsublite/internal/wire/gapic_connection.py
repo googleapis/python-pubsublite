@@ -42,7 +42,6 @@ class GapicConnection(
             self.fail(FailedPrecondition("Server sent unprompted half close."))
         except GoogleAPICallError as e:
             self.fail(e)
-        raise self.error()
 
     async def __aenter__(self):
         return self
