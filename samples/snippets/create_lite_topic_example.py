@@ -46,10 +46,13 @@ def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_parti
         partition_config=Topic.PartitionConfig(
             # A topic must have at least one partition.
             count=num_partitions,
-            # Set publishing throughput to 1x standard partition throughput of 4 MiB
-            # per second. This must in the range [1,4]. A topic with `scale` of 2 and
-            # `count` of 10 is charged for 20 partitions.
-            scale=1,
+            # Set throughput capacity per partition in MiB/s.
+            capacity=Topic.PartitionConfig.Capacity(
+                # Set publish throughput capacity per partition to 4 MiB/s. Must be >= 4 and <= 16.
+                publish_mib_per_sec=4,
+                # Set subscribe throughput capacity per partition to 4 MiB/s. Must be >= 4 and <= 32.
+                subscribe_mib_per_sec=8,
+            ),
         ),
         retention_config=Topic.RetentionConfig(
             # Set storage per partition to 30 GiB. This must be in the range 30 GiB-10TiB.
