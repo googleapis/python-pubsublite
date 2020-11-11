@@ -45,6 +45,17 @@ def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
 
+# If default endpoint is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint(client):
+    return (
+        "foo.googleapis.com"
+        if ("localhost" in client.DEFAULT_ENDPOINT)
+        else client.DEFAULT_ENDPOINT
+    )
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -84,12 +95,12 @@ def test_cursor_service_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "pubsublite.googleapis.com:443"
+        assert client.transport._host == "pubsublite.googleapis.com:443"
 
 
 def test_cursor_service_client_get_transport_class():
@@ -110,6 +121,16 @@ def test_cursor_service_client_get_transport_class():
             "grpc_asyncio",
         ),
     ],
+)
+@mock.patch.object(
+    CursorServiceClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(CursorServiceClient),
+)
+@mock.patch.object(
+    CursorServiceAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(CursorServiceAsyncClient),
 )
 def test_cursor_service_client_client_options(
     client_class, transport_class, transport_name
@@ -135,14 +156,14 @@ def test_cursor_service_client_client_options(
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "never".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "never"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -151,14 +172,14 @@ def test_cursor_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "always".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "always"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -167,74 +188,22 @@ def test_cursor_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
-        with mock.patch.object(transport_class, "__init__") as patched:
-            patched.return_value = None
-            client = client_class(client_options=options)
-            patched.assert_called_once_with(
-                credentials=None,
-                credentials_file=None,
-                host=client.DEFAULT_MTLS_ENDPOINT,
-                scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=client_cert_source_callback,
-                quota_project_id=None,
-            )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and default_client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_MTLS_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", but client_cert_source and default_client_cert_source are None.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                )
-
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "Unsupported"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
+            client = client_class()
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError):
             client = client_class()
 
     # Check the case quota_project_id is provided
@@ -247,10 +216,147 @@ def test_cursor_service_client_client_options(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id="octopus",
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,use_client_cert_env",
+    [
+        (CursorServiceClient, transports.CursorServiceGrpcTransport, "grpc", "true"),
+        (
+            CursorServiceAsyncClient,
+            transports.CursorServiceGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "true",
+        ),
+        (CursorServiceClient, transports.CursorServiceGrpcTransport, "grpc", "false"),
+        (
+            CursorServiceAsyncClient,
+            transports.CursorServiceGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "false",
+        ),
+    ],
+)
+@mock.patch.object(
+    CursorServiceClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(CursorServiceClient),
+)
+@mock.patch.object(
+    CursorServiceAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(CursorServiceAsyncClient),
+)
+@mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
+def test_cursor_service_client_mtls_env_auto(
+    client_class, transport_class, transport_name, use_client_cert_env
+):
+    # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
+    # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
+
+    # Check the case client_cert_source is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        options = client_options.ClientOptions(
+            client_cert_source=client_cert_source_callback
+        )
+        with mock.patch.object(transport_class, "__init__") as patched:
+            ssl_channel_creds = mock.Mock()
+            with mock.patch(
+                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
+            ):
+                patched.return_value = None
+                client = client_class(client_options=options)
+
+                if use_client_cert_env == "false":
+                    expected_ssl_channel_creds = None
+                    expected_host = client.DEFAULT_ENDPOINT
+                else:
+                    expected_ssl_channel_creds = ssl_channel_creds
+                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=expected_host,
+                    scopes=None,
+                    ssl_channel_credentials=expected_ssl_channel_creds,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
+
+    # Check the case ADC client cert is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    with mock.patch(
+                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
+                        new_callable=mock.PropertyMock,
+                    ) as ssl_credentials_mock:
+                        if use_client_cert_env == "false":
+                            is_mtls_mock.return_value = False
+                            ssl_credentials_mock.return_value = None
+                            expected_host = client.DEFAULT_ENDPOINT
+                            expected_ssl_channel_creds = None
+                        else:
+                            is_mtls_mock.return_value = True
+                            ssl_credentials_mock.return_value = mock.Mock()
+                            expected_host = client.DEFAULT_MTLS_ENDPOINT
+                            expected_ssl_channel_creds = (
+                                ssl_credentials_mock.return_value
+                            )
+
+                        patched.return_value = None
+                        client = client_class()
+                        patched.assert_called_once_with(
+                            credentials=None,
+                            credentials_file=None,
+                            host=expected_host,
+                            scopes=None,
+                            ssl_channel_credentials=expected_ssl_channel_creds,
+                            quota_project_id=None,
+                            client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        )
+
+    # Check the case client_cert_source and ADC client cert are not provided.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    is_mtls_mock.return_value = False
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=client.DEFAULT_ENDPOINT,
+                        scopes=None,
+                        ssl_channel_credentials=None,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
 
 @pytest.mark.parametrize(
@@ -277,9 +383,9 @@ def test_cursor_service_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -307,9 +413,9 @@ def test_cursor_service_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -326,26 +432,28 @@ def test_cursor_service_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
-def test_streaming_commit_cursor(transport: str = "grpc"):
+def test_streaming_commit_cursor(
+    transport: str = "grpc", request_type=cursor.StreamingCommitCursorRequest
+):
     client = CursorServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cursor.StreamingCommitCursorRequest()
+    request = request_type()
 
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.streaming_commit_cursor), "__call__"
+        type(client.transport.streaming_commit_cursor), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = iter([cursor.StreamingCommitCursorResponse()])
@@ -363,21 +471,27 @@ def test_streaming_commit_cursor(transport: str = "grpc"):
         assert isinstance(message, cursor.StreamingCommitCursorResponse)
 
 
+def test_streaming_commit_cursor_from_dict():
+    test_streaming_commit_cursor(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_streaming_commit_cursor_async(transport: str = "grpc_asyncio"):
+async def test_streaming_commit_cursor_async(
+    transport: str = "grpc_asyncio", request_type=cursor.StreamingCommitCursorRequest
+):
     client = CursorServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cursor.StreamingCommitCursorRequest()
+    request = request_type()
 
     requests = [request]
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.streaming_commit_cursor), "__call__"
+        type(client.transport.streaming_commit_cursor), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
@@ -398,17 +512,24 @@ async def test_streaming_commit_cursor_async(transport: str = "grpc_asyncio"):
     assert isinstance(message, cursor.StreamingCommitCursorResponse)
 
 
-def test_commit_cursor(transport: str = "grpc"):
+@pytest.mark.asyncio
+async def test_streaming_commit_cursor_async_from_dict():
+    await test_streaming_commit_cursor_async(request_type=dict)
+
+
+def test_commit_cursor(
+    transport: str = "grpc", request_type=cursor.CommitCursorRequest
+):
     client = CursorServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cursor.CommitCursorRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.commit_cursor), "__call__") as call:
+    with mock.patch.object(type(client.transport.commit_cursor), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = cursor.CommitCursorResponse()
 
@@ -418,26 +539,31 @@ def test_commit_cursor(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cursor.CommitCursorRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, cursor.CommitCursorResponse)
 
 
+def test_commit_cursor_from_dict():
+    test_commit_cursor(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_commit_cursor_async(transport: str = "grpc_asyncio"):
+async def test_commit_cursor_async(
+    transport: str = "grpc_asyncio", request_type=cursor.CommitCursorRequest
+):
     client = CursorServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cursor.CommitCursorRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.commit_cursor), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.commit_cursor), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             cursor.CommitCursorResponse()
@@ -449,24 +575,31 @@ async def test_commit_cursor_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cursor.CommitCursorRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cursor.CommitCursorResponse)
 
 
-def test_list_partition_cursors(transport: str = "grpc"):
+@pytest.mark.asyncio
+async def test_commit_cursor_async_from_dict():
+    await test_commit_cursor_async(request_type=dict)
+
+
+def test_list_partition_cursors(
+    transport: str = "grpc", request_type=cursor.ListPartitionCursorsRequest
+):
     client = CursorServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cursor.ListPartitionCursorsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_partition_cursors), "__call__"
+        type(client.transport.list_partition_cursors), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = cursor.ListPartitionCursorsResponse(
@@ -479,27 +612,34 @@ def test_list_partition_cursors(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cursor.ListPartitionCursorsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListPartitionCursorsPager)
 
     assert response.next_page_token == "next_page_token_value"
 
 
+def test_list_partition_cursors_from_dict():
+    test_list_partition_cursors(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_list_partition_cursors_async(transport: str = "grpc_asyncio"):
+async def test_list_partition_cursors_async(
+    transport: str = "grpc_asyncio", request_type=cursor.ListPartitionCursorsRequest
+):
     client = CursorServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cursor.ListPartitionCursorsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_partition_cursors), "__call__"
+        type(client.transport.list_partition_cursors), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -514,12 +654,17 @@ async def test_list_partition_cursors_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cursor.ListPartitionCursorsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPartitionCursorsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_partition_cursors_async_from_dict():
+    await test_list_partition_cursors_async(request_type=dict)
 
 
 def test_list_partition_cursors_field_headers():
@@ -532,7 +677,7 @@ def test_list_partition_cursors_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_partition_cursors), "__call__"
+        type(client.transport.list_partition_cursors), "__call__"
     ) as call:
         call.return_value = cursor.ListPartitionCursorsResponse()
 
@@ -559,7 +704,7 @@ async def test_list_partition_cursors_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_partition_cursors), "__call__"
+        type(client.transport.list_partition_cursors), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             cursor.ListPartitionCursorsResponse()
@@ -582,7 +727,7 @@ def test_list_partition_cursors_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_partition_cursors), "__call__"
+        type(client.transport.list_partition_cursors), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = cursor.ListPartitionCursorsResponse()
@@ -616,7 +761,7 @@ async def test_list_partition_cursors_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_partition_cursors), "__call__"
+        type(client.transport.list_partition_cursors), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = cursor.ListPartitionCursorsResponse()
@@ -653,7 +798,7 @@ def test_list_partition_cursors_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_partition_cursors), "__call__"
+        type(client.transport.list_partition_cursors), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -695,7 +840,7 @@ def test_list_partition_cursors_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_partition_cursors), "__call__"
+        type(client.transport.list_partition_cursors), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -719,8 +864,8 @@ def test_list_partition_cursors_pages():
             RuntimeError,
         )
         pages = list(client.list_partition_cursors(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -729,7 +874,7 @@ async def test_list_partition_cursors_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_partition_cursors),
+        type(client.transport.list_partition_cursors),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -770,7 +915,7 @@ async def test_list_partition_cursors_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_partition_cursors),
+        type(client.transport.list_partition_cursors),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -796,10 +941,10 @@ async def test_list_partition_cursors_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_partition_cursors(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_partition_cursors(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():
@@ -838,7 +983,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = CursorServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -856,10 +1001,25 @@ def test_transport_get_channel():
     assert channel
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.CursorServiceGrpcTransport,
+        transports.CursorServiceGrpcAsyncIOTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = CursorServiceClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.CursorServiceGrpcTransport,)
+    assert isinstance(client.transport, transports.CursorServiceGrpcTransport,)
 
 
 def test_cursor_service_base_transport_error():
@@ -873,9 +1033,13 @@ def test_cursor_service_base_transport_error():
 
 def test_cursor_service_base_transport():
     # Instantiate the base transport.
-    transport = transports.CursorServiceTransport(
-        credentials=credentials.AnonymousCredentials(),
-    )
+    with mock.patch(
+        "google.cloud.pubsublite_v1.services.cursor_service.transports.CursorServiceTransport.__init__"
+    ) as Transport:
+        Transport.return_value = None
+        transport = transports.CursorServiceTransport(
+            credentials=credentials.AnonymousCredentials(),
+        )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
@@ -891,7 +1055,12 @@ def test_cursor_service_base_transport():
 
 def test_cursor_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(auth, "load_credentials_from_file") as load_creds:
+    with mock.patch.object(
+        auth, "load_credentials_from_file"
+    ) as load_creds, mock.patch(
+        "google.cloud.pubsublite_v1.services.cursor_service.transports.CursorServiceTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
         load_creds.return_value = (credentials.AnonymousCredentials(), None)
         transport = transports.CursorServiceTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
@@ -901,6 +1070,17 @@ def test_cursor_service_base_transport_with_credentials_file():
             scopes=("https://www.googleapis.com/auth/cloud-platform",),
             quota_project_id="octopus",
         )
+
+
+def test_cursor_service_base_transport_with_adc():
+    # Test the default credentials are used if credentials and credentials_file are None.
+    with mock.patch.object(auth, "default") as adc, mock.patch(
+        "google.cloud.pubsublite_v1.services.cursor_service.transports.CursorServiceTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport = transports.CursorServiceTransport()
+        adc.assert_called_once()
 
 
 def test_cursor_service_auth_adc():
@@ -935,7 +1115,7 @@ def test_cursor_service_host_no_port():
             api_endpoint="pubsublite.googleapis.com"
         ),
     )
-    assert client._transport._host == "pubsublite.googleapis.com:443"
+    assert client.transport._host == "pubsublite.googleapis.com:443"
 
 
 def test_cursor_service_host_with_port():
@@ -945,182 +1125,261 @@ def test_cursor_service_host_with_port():
             api_endpoint="pubsublite.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "pubsublite.googleapis.com:8000"
+    assert client.transport._host == "pubsublite.googleapis.com:8000"
 
 
 def test_cursor_service_grpc_transport_channel():
     channel = grpc.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.CursorServiceGrpcTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
+    assert transport._ssl_channel_credentials == None
 
 
 def test_cursor_service_grpc_asyncio_transport_channel():
     channel = aio.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.CursorServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_cursor_service_grpc_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.CursorServiceGrpcTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_cursor_service_grpc_asyncio_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.CursorServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+    "transport_class",
+    [
+        transports.CursorServiceGrpcTransport,
+        transports.CursorServiceGrpcAsyncIOTransport,
+    ],
 )
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_cursor_service_grpc_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+def test_cursor_service_transport_channel_mtls_with_client_cert_source(transport_class):
+    with mock.patch(
+        "grpc.ssl_channel_credentials", autospec=True
+    ) as grpc_ssl_channel_cred:
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(auth, "default") as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.CursorServiceGrpcTransport,
+        transports.CursorServiceGrpcAsyncIOTransport,
+    ],
+)
+def test_cursor_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        mock_cred = mock.Mock()
-        transport = transports.CursorServiceGrpcTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+            mock_cred = mock.Mock()
+
+            with pytest.warns(DeprecationWarning):
+                transport = transport_class(
+                    host="squid.clam.whelk",
+                    credentials=mock_cred,
+                    api_mtls_endpoint="mtls.squid.clam.whelk",
+                    client_cert_source=None,
+                )
+
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=mock_cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
 
 
-@pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
-)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_cursor_service_grpc_asyncio_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+def test_subscription_path():
+    project = "squid"
+    location = "clam"
+    subscription = "whelk"
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
-    mock_ssl_cred = mock.Mock()
-    with mock.patch.multiple(
-        "google.auth.transport.grpc.SslCredentials",
-        __init__=mock.Mock(return_value=None),
-        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
-    ):
-        mock_cred = mock.Mock()
-        transport = transports.CursorServiceGrpcAsyncIOTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
+    expected = "projects/{project}/locations/{location}/subscriptions/{subscription}".format(
+        project=project, location=location, subscription=subscription,
+    )
+    actual = CursorServiceClient.subscription_path(project, location, subscription)
+    assert expected == actual
+
+
+def test_parse_subscription_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "subscription": "nudibranch",
+    }
+    path = CursorServiceClient.subscription_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CursorServiceClient.parse_subscription_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "cuttlefish"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = CursorServiceClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "mussel",
+    }
+    path = CursorServiceClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CursorServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "winkle"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = CursorServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "nautilus",
+    }
+    path = CursorServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CursorServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "scallop"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = CursorServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "abalone",
+    }
+    path = CursorServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CursorServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "squid"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = CursorServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "clam",
+    }
+    path = CursorServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CursorServiceClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "whelk"
+    location = "octopus"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = CursorServiceClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+    }
+    path = CursorServiceClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CursorServiceClient.parse_common_location_path(path)
+    assert expected == actual
+
+
+def test_client_withDEFAULT_CLIENT_INFO():
+    client_info = gapic_v1.client_info.ClientInfo()
+
+    with mock.patch.object(
+        transports.CursorServiceTransport, "_prep_wrapped_messages"
+    ) as prep:
+        client = CursorServiceClient(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
         )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
+        prep.assert_called_once_with(client_info)
+
+    with mock.patch.object(
+        transports.CursorServiceTransport, "_prep_wrapped_messages"
+    ) as prep:
+        transport_class = CursorServiceClient.get_transport_class()
+        transport = transport_class(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
         )
-        assert transport.grpc_channel == mock_grpc_channel
+        prep.assert_called_once_with(client_info)

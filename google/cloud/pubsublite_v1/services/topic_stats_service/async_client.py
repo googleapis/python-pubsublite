@@ -18,16 +18,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import (
-    Dict,
-    AsyncIterable,
-    Awaitable,
-    AsyncIterator,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -37,86 +28,81 @@ from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.pubsublite_v1.types import subscriber
+from google.cloud.pubsublite_v1.types import topic_stats
+from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
-from .transports.base import PartitionAssignmentServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import PartitionAssignmentServiceGrpcAsyncIOTransport
-from .client import PartitionAssignmentServiceClient
+from .transports.base import TopicStatsServiceTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc_asyncio import TopicStatsServiceGrpcAsyncIOTransport
+from .client import TopicStatsServiceClient
 
 
-class PartitionAssignmentServiceAsyncClient:
-    """The service that a subscriber client application uses to
-    determine which partitions it should connect to.
+class TopicStatsServiceAsyncClient:
+    """This service allows users to get stats about messages in
+    their topic.
     """
 
-    _client: PartitionAssignmentServiceClient
+    _client: TopicStatsServiceClient
 
-    DEFAULT_ENDPOINT = PartitionAssignmentServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = PartitionAssignmentServiceClient.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT = TopicStatsServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = TopicStatsServiceClient.DEFAULT_MTLS_ENDPOINT
+
+    topic_path = staticmethod(TopicStatsServiceClient.topic_path)
+    parse_topic_path = staticmethod(TopicStatsServiceClient.parse_topic_path)
 
     common_billing_account_path = staticmethod(
-        PartitionAssignmentServiceClient.common_billing_account_path
+        TopicStatsServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        PartitionAssignmentServiceClient.parse_common_billing_account_path
+        TopicStatsServiceClient.parse_common_billing_account_path
     )
 
-    common_folder_path = staticmethod(
-        PartitionAssignmentServiceClient.common_folder_path
-    )
+    common_folder_path = staticmethod(TopicStatsServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
-        PartitionAssignmentServiceClient.parse_common_folder_path
+        TopicStatsServiceClient.parse_common_folder_path
     )
 
     common_organization_path = staticmethod(
-        PartitionAssignmentServiceClient.common_organization_path
+        TopicStatsServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
-        PartitionAssignmentServiceClient.parse_common_organization_path
+        TopicStatsServiceClient.parse_common_organization_path
     )
 
-    common_project_path = staticmethod(
-        PartitionAssignmentServiceClient.common_project_path
-    )
+    common_project_path = staticmethod(TopicStatsServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
-        PartitionAssignmentServiceClient.parse_common_project_path
+        TopicStatsServiceClient.parse_common_project_path
     )
 
-    common_location_path = staticmethod(
-        PartitionAssignmentServiceClient.common_location_path
-    )
+    common_location_path = staticmethod(TopicStatsServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
-        PartitionAssignmentServiceClient.parse_common_location_path
+        TopicStatsServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = (
-        PartitionAssignmentServiceClient.from_service_account_file
-    )
+    from_service_account_file = TopicStatsServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> PartitionAssignmentServiceTransport:
+    def transport(self) -> TopicStatsServiceTransport:
         """Return the transport used by the client instance.
 
         Returns:
-            PartitionAssignmentServiceTransport: The transport used by the client instance.
+            TopicStatsServiceTransport: The transport used by the client instance.
         """
         return self._client.transport
 
     get_transport_class = functools.partial(
-        type(PartitionAssignmentServiceClient).get_transport_class,
-        type(PartitionAssignmentServiceClient),
+        type(TopicStatsServiceClient).get_transport_class, type(TopicStatsServiceClient)
     )
 
     def __init__(
         self,
         *,
         credentials: credentials.Credentials = None,
-        transport: Union[str, PartitionAssignmentServiceTransport] = "grpc_asyncio",
+        transport: Union[str, TopicStatsServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the partition assignment service client.
+        """Instantiate the topic stats service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -124,7 +110,7 @@ class PartitionAssignmentServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.PartitionAssignmentServiceTransport]): The
+            transport (Union[str, ~.TopicStatsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (ClientOptions): Custom options for the client. It
@@ -149,35 +135,29 @@ class PartitionAssignmentServiceAsyncClient:
                 creation failed for any reason.
         """
 
-        self._client = PartitionAssignmentServiceClient(
+        self._client = TopicStatsServiceClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
             client_info=client_info,
         )
 
-    def assign_partitions(
+    async def compute_message_stats(
         self,
-        requests: AsyncIterator[subscriber.PartitionAssignmentRequest] = None,
+        request: topic_stats.ComputeMessageStatsRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> Awaitable[AsyncIterable[subscriber.PartitionAssignment]]:
-        r"""Assign partitions for this client to handle for the
-        specified subscription.
-        The client must send an
-        InitialPartitionAssignmentRequest first. The server will
-        then send at most one unacknowledged PartitionAssignment
-        outstanding on the stream at a time.
-        The client should send a PartitionAssignmentAck after
-        updating the partitions it is connected to to reflect
-        the new assignment.
+    ) -> topic_stats.ComputeMessageStatsResponse:
+        r"""Compute statistics about a range of messages in a
+        given topic and partition.
 
         Args:
-            requests (AsyncIterator[`~.subscriber.PartitionAssignmentRequest`]):
-                The request object AsyncIterator. A request on the PartitionAssignment
-                stream.
+            request (:class:`~.topic_stats.ComputeMessageStatsRequest`):
+                The request object. Compute statistics about a range of
+                messages in a given topic and partition.
+
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -185,25 +165,44 @@ class PartitionAssignmentServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.subscriber.PartitionAssignment]:
-                PartitionAssignments should not race
-                with acknowledgements. There should be
-                exactly one unacknowledged
-                PartitionAssignment at a time. If not,
-                the client must break the stream.
+            ~.topic_stats.ComputeMessageStatsResponse:
+                Response containing stats for
+                messages in the requested topic and
+                partition.
 
         """
+        # Create or coerce a protobuf request object.
+
+        request = topic_stats.ComputeMessageStatsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.assign_partitions,
-            default_timeout=None,
+            self._client._transport.compute_message_stats,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.Aborted,
+                    exceptions.DeadlineExceeded,
+                    exceptions.InternalServerError,
+                    exceptions.ServiceUnavailable,
+                    exceptions.Unknown,
+                ),
+            ),
+            default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
+        )
+
         # Send the request.
-        response = rpc(requests, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -219,4 +218,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("PartitionAssignmentServiceAsyncClient",)
+__all__ = ("TopicStatsServiceAsyncClient",)

@@ -43,6 +43,12 @@ from google.cloud.pubsublite_v1.services.subscriber_service.async_client import 
 from google.cloud.pubsublite_v1.services.subscriber_service.client import (
     SubscriberServiceClient,
 )
+from google.cloud.pubsublite_v1.services.topic_stats_service.async_client import (
+    TopicStatsServiceAsyncClient,
+)
+from google.cloud.pubsublite_v1.services.topic_stats_service.client import (
+    TopicStatsServiceClient,
+)
 from google.cloud.pubsublite_v1.types.admin import CreateSubscriptionRequest
 from google.cloud.pubsublite_v1.types.admin import CreateTopicRequest
 from google.cloud.pubsublite_v1.types.admin import DeleteSubscriptionRequest
@@ -96,19 +102,17 @@ from google.cloud.pubsublite_v1.types.subscriber import SeekRequest
 from google.cloud.pubsublite_v1.types.subscriber import SeekResponse
 from google.cloud.pubsublite_v1.types.subscriber import SubscribeRequest
 from google.cloud.pubsublite_v1.types.subscriber import SubscribeResponse
-from google.cloud.pubsublite.admin_client_interface import AdminClientInterface
-from google.cloud.pubsublite.admin_client import AdminClient
+from google.cloud.pubsublite_v1.types.topic_stats import ComputeMessageStatsRequest
+from google.cloud.pubsublite_v1.types.topic_stats import ComputeMessageStatsResponse
 
 __all__ = (
-    # Manual files
-    "AdminClient",
-    "AdminClientInterface",
-    # Generated files
     "AdminServiceAsyncClient",
     "AdminServiceClient",
     "AttributeValues",
     "CommitCursorRequest",
     "CommitCursorResponse",
+    "ComputeMessageStatsRequest",
+    "ComputeMessageStatsResponse",
     "CreateSubscriptionRequest",
     "CreateTopicRequest",
     "Cursor",
@@ -163,6 +167,8 @@ __all__ = (
     "Subscription",
     "Topic",
     "TopicPartitions",
+    "TopicStatsServiceAsyncClient",
+    "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
 )

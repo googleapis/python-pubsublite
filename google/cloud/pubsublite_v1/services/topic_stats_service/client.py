@@ -19,17 +19,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Optional,
-    Iterable,
-    Iterator,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -42,15 +32,16 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.pubsublite_v1.types import publisher
+from google.cloud.pubsublite_v1.types import topic_stats
+from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
-from .transports.base import PublisherServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc import PublisherServiceGrpcTransport
-from .transports.grpc_asyncio import PublisherServiceGrpcAsyncIOTransport
+from .transports.base import TopicStatsServiceTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc import TopicStatsServiceGrpcTransport
+from .transports.grpc_asyncio import TopicStatsServiceGrpcAsyncIOTransport
 
 
-class PublisherServiceClientMeta(type):
-    """Metaclass for the PublisherService client.
+class TopicStatsServiceClientMeta(type):
+    """Metaclass for the TopicStatsService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
@@ -59,11 +50,13 @@ class PublisherServiceClientMeta(type):
 
     _transport_registry = (
         OrderedDict()
-    )  # type: Dict[str, Type[PublisherServiceTransport]]
-    _transport_registry["grpc"] = PublisherServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = PublisherServiceGrpcAsyncIOTransport
+    )  # type: Dict[str, Type[TopicStatsServiceTransport]]
+    _transport_registry["grpc"] = TopicStatsServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = TopicStatsServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[PublisherServiceTransport]:
+    def get_transport_class(
+        cls, label: str = None,
+    ) -> Type[TopicStatsServiceTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -82,12 +75,9 @@ class PublisherServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
-    """The service that a publisher client application uses to publish
-    messages to topics. Published messages are retained by the service
-    for the duration of the retention period configured for the
-    respective topic, and are delivered to subscriber clients upon
-    request (via the ``SubscriberService``).
+class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
+    """This service allows users to get stats about messages in
+    their topic.
     """
 
     @staticmethod
@@ -145,13 +135,29 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> PublisherServiceTransport:
+    def transport(self) -> TopicStatsServiceTransport:
         """Return the transport used by the client instance.
 
         Returns:
-            PublisherServiceTransport: The transport used by the client instance.
+            TopicStatsServiceTransport: The transport used by the client instance.
         """
         return self._transport
+
+    @staticmethod
+    def topic_path(project: str, location: str, topic: str,) -> str:
+        """Return a fully-qualified topic string."""
+        return "projects/{project}/locations/{location}/topics/{topic}".format(
+            project=project, location=location, topic=topic,
+        )
+
+    @staticmethod
+    def parse_topic_path(path: str) -> Dict[str, str]:
+        """Parse a topic path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/topics/(?P<topic>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
@@ -216,11 +222,11 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
         self,
         *,
         credentials: Optional[credentials.Credentials] = None,
-        transport: Union[str, PublisherServiceTransport, None] = None,
+        transport: Union[str, TopicStatsServiceTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the publisher service client.
+        """Instantiate the topic stats service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -228,7 +234,7 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.PublisherServiceTransport]): The
+            transport (Union[str, ~.TopicStatsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (client_options_lib.ClientOptions): Custom options for the
@@ -304,8 +310,8 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, PublisherServiceTransport):
-            # transport is a PublisherServiceTransport instance.
+        if isinstance(transport, TopicStatsServiceTransport):
+            # transport is a TopicStatsServiceTransport instance.
             if credentials or client_options.credentials_file:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -329,28 +335,22 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
                 client_info=client_info,
             )
 
-    def publish(
+    def compute_message_stats(
         self,
-        requests: Iterator[publisher.PublishRequest] = None,
+        request: topic_stats.ComputeMessageStatsRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> Iterable[publisher.PublishResponse]:
-        r"""Establishes a stream with the server for publishing
-        messages. Once the stream is initialized, the client
-        publishes messages by sending publish requests on the
-        stream. The server responds with a PublishResponse for
-        each PublishRequest sent by the client, in the same
-        order that the requests were sent. Note that multiple
-        PublishRequests can be in flight simultaneously, but
-        they will be processed by the server in the order that
-        they are sent by the client on a given stream.
+    ) -> topic_stats.ComputeMessageStatsResponse:
+        r"""Compute statistics about a range of messages in a
+        given topic and partition.
 
         Args:
-            requests (Iterator[`~.publisher.PublishRequest`]):
-                The request object iterator. Request sent from the client to the
-                server on a stream.
+            request (:class:`~.topic_stats.ComputeMessageStatsRequest`):
+                The request object. Compute statistics about a range of
+                messages in a given topic and partition.
+
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -358,16 +358,33 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[~.publisher.PublishResponse]:
-                Response to a PublishRequest.
+            ~.topic_stats.ComputeMessageStatsResponse:
+                Response containing stats for
+                messages in the requested topic and
+                partition.
+
         """
+        # Create or coerce a protobuf request object.
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a topic_stats.ComputeMessageStatsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, topic_stats.ComputeMessageStatsRequest):
+            request = topic_stats.ComputeMessageStatsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.publish]
+        rpc = self._transport._wrapped_methods[self._transport.compute_message_stats]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
+        )
 
         # Send the request.
-        response = rpc(requests, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -383,4 +400,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("PublisherServiceClient",)
+__all__ = ("TopicStatsServiceClient",)

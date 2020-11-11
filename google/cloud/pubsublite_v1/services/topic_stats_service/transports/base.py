@@ -25,7 +25,7 @@ from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
-from google.cloud.pubsublite_v1.types import subscriber
+from google.cloud.pubsublite_v1.types import topic_stats
 
 
 try:
@@ -38,8 +38,8 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-class PartitionAssignmentServiceTransport(abc.ABC):
-    """Abstract transport class for PartitionAssignmentService."""
+class TopicStatsServiceTransport(abc.ABC):
+    """Abstract transport class for TopicStatsService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -106,22 +106,36 @@ class PartitionAssignmentServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.assign_partitions: gapic_v1.method.wrap_method(
-                self.assign_partitions, default_timeout=None, client_info=client_info,
+            self.compute_message_stats: gapic_v1.method.wrap_method(
+                self.compute_message_stats,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.Aborted,
+                        exceptions.DeadlineExceeded,
+                        exceptions.InternalServerError,
+                        exceptions.ServiceUnavailable,
+                        exceptions.Unknown,
+                    ),
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
             ),
         }
 
     @property
-    def assign_partitions(
+    def compute_message_stats(
         self,
     ) -> typing.Callable[
-        [subscriber.PartitionAssignmentRequest],
+        [topic_stats.ComputeMessageStatsRequest],
         typing.Union[
-            subscriber.PartitionAssignment,
-            typing.Awaitable[subscriber.PartitionAssignment],
+            topic_stats.ComputeMessageStatsResponse,
+            typing.Awaitable[topic_stats.ComputeMessageStatsResponse],
         ],
     ]:
         raise NotImplementedError()
 
 
-__all__ = ("PartitionAssignmentServiceTransport",)
+__all__ = ("TopicStatsServiceTransport",)

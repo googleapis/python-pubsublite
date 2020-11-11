@@ -17,12 +17,25 @@
 
 import abc
 import typing
+import pkg_resources
 
-from google import auth
+from google import auth  # type: ignore
 from google.api_core import exceptions  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
 from google.cloud.pubsublite_v1.types import cursor
+
+
+try:
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-pubsublite",
+        ).version,
+    )
+except pkg_resources.DistributionNotFound:
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 class CursorServiceTransport(abc.ABC):
@@ -38,6 +51,7 @@ class CursorServiceTransport(abc.ABC):
         credentials_file: typing.Optional[str] = None,
         scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
         quota_project_id: typing.Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -55,6 +69,11 @@ class CursorServiceTransport(abc.ABC):
             scope (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -80,6 +99,53 @@ class CursorServiceTransport(abc.ABC):
 
         # Save the credentials.
         self._credentials = credentials
+
+        # Lifted into its own function so it can be stubbed out during tests.
+        self._prep_wrapped_messages(client_info)
+
+    def _prep_wrapped_messages(self, client_info):
+        # Precompute the wrapped methods.
+        self._wrapped_methods = {
+            self.streaming_commit_cursor: gapic_v1.method.wrap_method(
+                self.streaming_commit_cursor,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.commit_cursor: gapic_v1.method.wrap_method(
+                self.commit_cursor,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.Aborted,
+                        exceptions.DeadlineExceeded,
+                        exceptions.InternalServerError,
+                        exceptions.ServiceUnavailable,
+                        exceptions.Unknown,
+                    ),
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.list_partition_cursors: gapic_v1.method.wrap_method(
+                self.list_partition_cursors,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.Aborted,
+                        exceptions.DeadlineExceeded,
+                        exceptions.InternalServerError,
+                        exceptions.ServiceUnavailable,
+                        exceptions.Unknown,
+                    ),
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+        }
 
     @property
     def streaming_commit_cursor(

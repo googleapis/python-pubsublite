@@ -147,13 +147,13 @@ class SubscribeRequest(proto.Message):
     """
 
     initial = proto.Field(
-        proto.MESSAGE, number=1, oneof="request", message=InitialSubscribeRequest,
+        proto.MESSAGE, number=1, oneof="request", message="InitialSubscribeRequest",
     )
 
-    seek = proto.Field(proto.MESSAGE, number=2, oneof="request", message=SeekRequest,)
+    seek = proto.Field(proto.MESSAGE, number=2, oneof="request", message="SeekRequest",)
 
     flow_control = proto.Field(
-        proto.MESSAGE, number=3, oneof="request", message=FlowControlRequest,
+        proto.MESSAGE, number=3, oneof="request", message="FlowControlRequest",
     )
 
 
@@ -190,13 +190,15 @@ class SubscribeResponse(proto.Message):
     """
 
     initial = proto.Field(
-        proto.MESSAGE, number=1, oneof="response", message=InitialSubscribeResponse,
+        proto.MESSAGE, number=1, oneof="response", message="InitialSubscribeResponse",
     )
 
-    seek = proto.Field(proto.MESSAGE, number=2, oneof="response", message=SeekResponse,)
+    seek = proto.Field(
+        proto.MESSAGE, number=2, oneof="response", message="SeekResponse",
+    )
 
     messages = proto.Field(
-        proto.MESSAGE, number=3, oneof="response", message=MessageResponse,
+        proto.MESSAGE, number=3, oneof="response", message="MessageResponse",
     )
 
 
@@ -266,11 +268,11 @@ class PartitionAssignmentRequest(proto.Message):
         proto.MESSAGE,
         number=1,
         oneof="request",
-        message=InitialPartitionAssignmentRequest,
+        message="InitialPartitionAssignmentRequest",
     )
 
     ack = proto.Field(
-        proto.MESSAGE, number=2, oneof="request", message=PartitionAssignmentAck,
+        proto.MESSAGE, number=2, oneof="request", message="PartitionAssignmentAck",
     )
 
 

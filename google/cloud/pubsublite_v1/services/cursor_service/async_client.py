@@ -40,7 +40,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.pubsublite_v1.services.cursor_service import pagers
 from google.cloud.pubsublite_v1.types import cursor
 
-from .transports.base import CursorServiceTransport
+from .transports.base import CursorServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import CursorServiceGrpcAsyncIOTransport
 from .client import CursorServiceClient
 
@@ -57,8 +57,49 @@ class CursorServiceAsyncClient:
     DEFAULT_ENDPOINT = CursorServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = CursorServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    subscription_path = staticmethod(CursorServiceClient.subscription_path)
+    parse_subscription_path = staticmethod(CursorServiceClient.parse_subscription_path)
+
+    common_billing_account_path = staticmethod(
+        CursorServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        CursorServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(CursorServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        CursorServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        CursorServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        CursorServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(CursorServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        CursorServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(CursorServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        CursorServiceClient.parse_common_location_path
+    )
+
     from_service_account_file = CursorServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> CursorServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            CursorServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(CursorServiceClient).get_transport_class, type(CursorServiceClient)
@@ -70,6 +111,7 @@ class CursorServiceAsyncClient:
         credentials: credentials.Credentials = None,
         transport: Union[str, CursorServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the cursor service client.
 
@@ -85,16 +127,19 @@ class CursorServiceAsyncClient:
             client_options (ClientOptions): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -102,7 +147,10 @@ class CursorServiceAsyncClient:
         """
 
         self._client = CursorServiceClient(
-            credentials=credentials, transport=transport, client_options=client_options,
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
     def streaming_commit_cursor(
@@ -138,7 +186,7 @@ class CursorServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.streaming_commit_cursor,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Send the request.
@@ -179,8 +227,20 @@ class CursorServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.commit_cursor,
-            default_timeout=None,
-            client_info=_client_info,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.Aborted,
+                    exceptions.DeadlineExceeded,
+                    exceptions.InternalServerError,
+                    exceptions.ServiceUnavailable,
+                    exceptions.Unknown,
+                ),
+            ),
+            default_timeout=600.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Send the request.
@@ -229,7 +289,8 @@ class CursorServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -247,8 +308,20 @@ class CursorServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_partition_cursors,
-            default_timeout=None,
-            client_info=_client_info,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.Aborted,
+                    exceptions.DeadlineExceeded,
+                    exceptions.InternalServerError,
+                    exceptions.ServiceUnavailable,
+                    exceptions.Unknown,
+                ),
+            ),
+            default_timeout=600.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -271,13 +344,13 @@ class CursorServiceAsyncClient:
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
             "google-cloud-pubsublite",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("CursorServiceAsyncClient",)
