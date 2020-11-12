@@ -104,8 +104,14 @@ from google.cloud.pubsublite_v1.types.subscriber import SubscribeRequest
 from google.cloud.pubsublite_v1.types.subscriber import SubscribeResponse
 from google.cloud.pubsublite_v1.types.topic_stats import ComputeMessageStatsRequest
 from google.cloud.pubsublite_v1.types.topic_stats import ComputeMessageStatsResponse
+from google.cloud.pubsublite.admin_client_interface import AdminClientInterface
+from google.cloud.pubsublite.admin_client import AdminClient
 
 __all__ = (
+    # Manual files
+    "AdminClient",
+    "AdminClientInterface",
+    # Generated files
     "AdminServiceAsyncClient",
     "AdminServiceClient",
     "AttributeValues",
