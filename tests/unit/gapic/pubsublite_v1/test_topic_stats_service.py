@@ -32,15 +32,17 @@ from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.pubsublite_v1.services.partition_assignment_service import (
-    PartitionAssignmentServiceAsyncClient,
+from google.cloud.pubsublite_v1.services.topic_stats_service import (
+    TopicStatsServiceAsyncClient,
 )
-from google.cloud.pubsublite_v1.services.partition_assignment_service import (
-    PartitionAssignmentServiceClient,
+from google.cloud.pubsublite_v1.services.topic_stats_service import (
+    TopicStatsServiceClient,
 )
-from google.cloud.pubsublite_v1.services.partition_assignment_service import transports
-from google.cloud.pubsublite_v1.types import subscriber
+from google.cloud.pubsublite_v1.services.topic_stats_service import transports
+from google.cloud.pubsublite_v1.types import common
+from google.cloud.pubsublite_v1.types import topic_stats
 from google.oauth2 import service_account
+from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 
 def client_cert_source_callback():
@@ -65,36 +67,33 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert PartitionAssignmentServiceClient._get_default_mtls_endpoint(None) is None
+    assert TopicStatsServiceClient._get_default_mtls_endpoint(None) is None
     assert (
-        PartitionAssignmentServiceClient._get_default_mtls_endpoint(api_endpoint)
+        TopicStatsServiceClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        PartitionAssignmentServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        TopicStatsServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        PartitionAssignmentServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        TopicStatsServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        PartitionAssignmentServiceClient._get_default_mtls_endpoint(
-            sandbox_mtls_endpoint
-        )
+        TopicStatsServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        PartitionAssignmentServiceClient._get_default_mtls_endpoint(non_googleapi)
+        TopicStatsServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
     )
 
 
 @pytest.mark.parametrize(
-    "client_class",
-    [PartitionAssignmentServiceClient, PartitionAssignmentServiceAsyncClient],
+    "client_class", [TopicStatsServiceClient, TopicStatsServiceAsyncClient]
 )
-def test_partition_assignment_service_client_from_service_account_file(client_class):
+def test_topic_stats_service_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -109,54 +108,46 @@ def test_partition_assignment_service_client_from_service_account_file(client_cl
         assert client.transport._host == "pubsublite.googleapis.com:443"
 
 
-def test_partition_assignment_service_client_get_transport_class():
-    transport = PartitionAssignmentServiceClient.get_transport_class()
-    assert transport == transports.PartitionAssignmentServiceGrpcTransport
+def test_topic_stats_service_client_get_transport_class():
+    transport = TopicStatsServiceClient.get_transport_class()
+    assert transport == transports.TopicStatsServiceGrpcTransport
 
-    transport = PartitionAssignmentServiceClient.get_transport_class("grpc")
-    assert transport == transports.PartitionAssignmentServiceGrpcTransport
+    transport = TopicStatsServiceClient.get_transport_class("grpc")
+    assert transport == transports.TopicStatsServiceGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
+        (TopicStatsServiceClient, transports.TopicStatsServiceGrpcTransport, "grpc"),
         (
-            PartitionAssignmentServiceClient,
-            transports.PartitionAssignmentServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            PartitionAssignmentServiceAsyncClient,
-            transports.PartitionAssignmentServiceGrpcAsyncIOTransport,
+            TopicStatsServiceAsyncClient,
+            transports.TopicStatsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
 @mock.patch.object(
-    PartitionAssignmentServiceClient,
+    TopicStatsServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(PartitionAssignmentServiceClient),
+    modify_default_endpoint(TopicStatsServiceClient),
 )
 @mock.patch.object(
-    PartitionAssignmentServiceAsyncClient,
+    TopicStatsServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(PartitionAssignmentServiceAsyncClient),
+    modify_default_endpoint(TopicStatsServiceAsyncClient),
 )
-def test_partition_assignment_service_client_client_options(
+def test_topic_stats_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(
-        PartitionAssignmentServiceClient, "get_transport_class"
-    ) as gtc:
+    with mock.patch.object(TopicStatsServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(
-        PartitionAssignmentServiceClient, "get_transport_class"
-    ) as gtc:
+    with mock.patch.object(TopicStatsServiceClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -240,43 +231,43 @@ def test_partition_assignment_service_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (
-            PartitionAssignmentServiceClient,
-            transports.PartitionAssignmentServiceGrpcTransport,
+            TopicStatsServiceClient,
+            transports.TopicStatsServiceGrpcTransport,
             "grpc",
             "true",
         ),
         (
-            PartitionAssignmentServiceAsyncClient,
-            transports.PartitionAssignmentServiceGrpcAsyncIOTransport,
+            TopicStatsServiceAsyncClient,
+            transports.TopicStatsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
         (
-            PartitionAssignmentServiceClient,
-            transports.PartitionAssignmentServiceGrpcTransport,
+            TopicStatsServiceClient,
+            transports.TopicStatsServiceGrpcTransport,
             "grpc",
             "false",
         ),
         (
-            PartitionAssignmentServiceAsyncClient,
-            transports.PartitionAssignmentServiceGrpcAsyncIOTransport,
+            TopicStatsServiceAsyncClient,
+            transports.TopicStatsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    PartitionAssignmentServiceClient,
+    TopicStatsServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(PartitionAssignmentServiceClient),
+    modify_default_endpoint(TopicStatsServiceClient),
 )
 @mock.patch.object(
-    PartitionAssignmentServiceAsyncClient,
+    TopicStatsServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(PartitionAssignmentServiceAsyncClient),
+    modify_default_endpoint(TopicStatsServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_partition_assignment_service_client_mtls_env_auto(
+def test_topic_stats_service_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -386,19 +377,15 @@ def test_partition_assignment_service_client_mtls_env_auto(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
+        (TopicStatsServiceClient, transports.TopicStatsServiceGrpcTransport, "grpc"),
         (
-            PartitionAssignmentServiceClient,
-            transports.PartitionAssignmentServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            PartitionAssignmentServiceAsyncClient,
-            transports.PartitionAssignmentServiceGrpcAsyncIOTransport,
+            TopicStatsServiceAsyncClient,
+            transports.TopicStatsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
-def test_partition_assignment_service_client_client_options_scopes(
+def test_topic_stats_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -420,19 +407,15 @@ def test_partition_assignment_service_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
+        (TopicStatsServiceClient, transports.TopicStatsServiceGrpcTransport, "grpc"),
         (
-            PartitionAssignmentServiceClient,
-            transports.PartitionAssignmentServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            PartitionAssignmentServiceAsyncClient,
-            transports.PartitionAssignmentServiceGrpcAsyncIOTransport,
+            TopicStatsServiceAsyncClient,
+            transports.TopicStatsServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
-def test_partition_assignment_service_client_client_options_credentials_file(
+def test_topic_stats_service_client_client_options_credentials_file(
     client_class, transport_class, transport_name
 ):
     # Check the case credentials file is provided.
@@ -451,12 +434,12 @@ def test_partition_assignment_service_client_client_options_credentials_file(
         )
 
 
-def test_partition_assignment_service_client_client_options_from_dict():
+def test_topic_stats_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.pubsublite_v1.services.partition_assignment_service.transports.PartitionAssignmentServiceGrpcTransport.__init__"
+        "google.cloud.pubsublite_v1.services.topic_stats_service.transports.TopicStatsServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = PartitionAssignmentServiceClient(
+        client = TopicStatsServiceClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -470,10 +453,10 @@ def test_partition_assignment_service_client_client_options_from_dict():
         )
 
 
-def test_assign_partitions(
-    transport: str = "grpc", request_type=subscriber.PartitionAssignmentRequest
+def test_compute_message_stats(
+    transport: str = "grpc", request_type=topic_stats.ComputeMessageStatsRequest
 ):
-    client = PartitionAssignmentServiceClient(
+    client = TopicStatsServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -481,37 +464,41 @@ def test_assign_partitions(
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
 
-    requests = [request]
-
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.assign_partitions), "__call__"
+        type(client.transport.compute_message_stats), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = iter([subscriber.PartitionAssignment()])
+        call.return_value = topic_stats.ComputeMessageStatsResponse(
+            message_count=1389, message_bytes=1387,
+        )
 
-        response = client.assign_partitions(iter(requests))
+        response = client.compute_message_stats(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert next(args[0]) == request
+        assert args[0] == topic_stats.ComputeMessageStatsRequest()
 
     # Establish that the response is the type that we expect.
-    for message in response:
-        assert isinstance(message, subscriber.PartitionAssignment)
+
+    assert isinstance(response, topic_stats.ComputeMessageStatsResponse)
+
+    assert response.message_count == 1389
+
+    assert response.message_bytes == 1387
 
 
-def test_assign_partitions_from_dict():
-    test_assign_partitions(request_type=dict)
+def test_compute_message_stats_from_dict():
+    test_compute_message_stats(request_type=dict)
 
 
 @pytest.mark.asyncio
-async def test_assign_partitions_async(
-    transport: str = "grpc_asyncio", request_type=subscriber.PartitionAssignmentRequest
+async def test_compute_message_stats_async(
+    transport: str = "grpc_asyncio", request_type=topic_stats.ComputeMessageStatsRequest
 ):
-    client = PartitionAssignmentServiceAsyncClient(
+    client = TopicStatsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -519,84 +506,143 @@ async def test_assign_partitions_async(
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
 
-    requests = [request]
-
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.assign_partitions), "__call__"
+        type(client.transport.compute_message_stats), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
-        call.return_value.read = mock.AsyncMock(
-            side_effect=[subscriber.PartitionAssignment()]
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            topic_stats.ComputeMessageStatsResponse(
+                message_count=1389, message_bytes=1387,
+            )
         )
 
-        response = await client.assign_partitions(iter(requests))
+        response = await client.compute_message_stats(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert next(args[0]) == request
+        assert args[0] == topic_stats.ComputeMessageStatsRequest()
 
     # Establish that the response is the type that we expect.
-    message = await response.read()
-    assert isinstance(message, subscriber.PartitionAssignment)
+    assert isinstance(response, topic_stats.ComputeMessageStatsResponse)
+
+    assert response.message_count == 1389
+
+    assert response.message_bytes == 1387
 
 
 @pytest.mark.asyncio
-async def test_assign_partitions_async_from_dict():
-    await test_assign_partitions_async(request_type=dict)
+async def test_compute_message_stats_async_from_dict():
+    await test_compute_message_stats_async(request_type=dict)
+
+
+def test_compute_message_stats_field_headers():
+    client = TopicStatsServiceClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = topic_stats.ComputeMessageStatsRequest()
+    request.topic = "topic/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_message_stats), "__call__"
+    ) as call:
+        call.return_value = topic_stats.ComputeMessageStatsResponse()
+
+        client.compute_message_stats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "topic=topic/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_compute_message_stats_field_headers_async():
+    client = TopicStatsServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = topic_stats.ComputeMessageStatsRequest()
+    request.topic = "topic/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_message_stats), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            topic_stats.ComputeMessageStatsResponse()
+        )
+
+        await client.compute_message_stats(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "topic=topic/value",) in kw["metadata"]
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.PartitionAssignmentServiceGrpcTransport(
+    transport = transports.TopicStatsServiceGrpcTransport(
         credentials=credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = PartitionAssignmentServiceClient(
+        client = TopicStatsServiceClient(
             credentials=credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.PartitionAssignmentServiceGrpcTransport(
+    transport = transports.TopicStatsServiceGrpcTransport(
         credentials=credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = PartitionAssignmentServiceClient(
+        client = TopicStatsServiceClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.PartitionAssignmentServiceGrpcTransport(
+    transport = transports.TopicStatsServiceGrpcTransport(
         credentials=credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = PartitionAssignmentServiceClient(
+        client = TopicStatsServiceClient(
             client_options={"scopes": ["1", "2"]}, transport=transport,
         )
 
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.PartitionAssignmentServiceGrpcTransport(
+    transport = transports.TopicStatsServiceGrpcTransport(
         credentials=credentials.AnonymousCredentials(),
     )
-    client = PartitionAssignmentServiceClient(transport=transport)
+    client = TopicStatsServiceClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.PartitionAssignmentServiceGrpcTransport(
+    transport = transports.TopicStatsServiceGrpcTransport(
         credentials=credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.PartitionAssignmentServiceGrpcAsyncIOTransport(
+    transport = transports.TopicStatsServiceGrpcAsyncIOTransport(
         credentials=credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -606,8 +652,8 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.PartitionAssignmentServiceGrpcTransport,
-        transports.PartitionAssignmentServiceGrpcAsyncIOTransport,
+        transports.TopicStatsServiceGrpcTransport,
+        transports.TopicStatsServiceGrpcAsyncIOTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -620,51 +666,47 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = PartitionAssignmentServiceClient(
-        credentials=credentials.AnonymousCredentials(),
-    )
-    assert isinstance(
-        client.transport, transports.PartitionAssignmentServiceGrpcTransport,
-    )
+    client = TopicStatsServiceClient(credentials=credentials.AnonymousCredentials(),)
+    assert isinstance(client.transport, transports.TopicStatsServiceGrpcTransport,)
 
 
-def test_partition_assignment_service_base_transport_error():
+def test_topic_stats_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(exceptions.DuplicateCredentialArgs):
-        transport = transports.PartitionAssignmentServiceTransport(
+        transport = transports.TopicStatsServiceTransport(
             credentials=credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_partition_assignment_service_base_transport():
+def test_topic_stats_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.pubsublite_v1.services.partition_assignment_service.transports.PartitionAssignmentServiceTransport.__init__"
+        "google.cloud.pubsublite_v1.services.topic_stats_service.transports.TopicStatsServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.PartitionAssignmentServiceTransport(
+        transport = transports.TopicStatsServiceTransport(
             credentials=credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
-    methods = ("assign_partitions",)
+    methods = ("compute_message_stats",)
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
 
 
-def test_partition_assignment_service_base_transport_with_credentials_file():
+def test_topic_stats_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         auth, "load_credentials_from_file"
     ) as load_creds, mock.patch(
-        "google.cloud.pubsublite_v1.services.partition_assignment_service.transports.PartitionAssignmentServiceTransport._prep_wrapped_messages"
+        "google.cloud.pubsublite_v1.services.topic_stats_service.transports.TopicStatsServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (credentials.AnonymousCredentials(), None)
-        transport = transports.PartitionAssignmentServiceTransport(
+        transport = transports.TopicStatsServiceTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
@@ -674,34 +716,34 @@ def test_partition_assignment_service_base_transport_with_credentials_file():
         )
 
 
-def test_partition_assignment_service_base_transport_with_adc():
+def test_topic_stats_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(auth, "default") as adc, mock.patch(
-        "google.cloud.pubsublite_v1.services.partition_assignment_service.transports.PartitionAssignmentServiceTransport._prep_wrapped_messages"
+        "google.cloud.pubsublite_v1.services.topic_stats_service.transports.TopicStatsServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        transport = transports.PartitionAssignmentServiceTransport()
+        transport = transports.TopicStatsServiceTransport()
         adc.assert_called_once()
 
 
-def test_partition_assignment_service_auth_adc():
+def test_topic_stats_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(auth, "default") as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        PartitionAssignmentServiceClient()
+        TopicStatsServiceClient()
         adc.assert_called_once_with(
             scopes=("https://www.googleapis.com/auth/cloud-platform",),
             quota_project_id=None,
         )
 
 
-def test_partition_assignment_service_transport_auth_adc():
+def test_topic_stats_service_transport_auth_adc():
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(auth, "default") as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        transports.PartitionAssignmentServiceGrpcTransport(
+        transports.TopicStatsServiceGrpcTransport(
             host="squid.clam.whelk", quota_project_id="octopus"
         )
         adc.assert_called_once_with(
@@ -710,8 +752,8 @@ def test_partition_assignment_service_transport_auth_adc():
         )
 
 
-def test_partition_assignment_service_host_no_port():
-    client = PartitionAssignmentServiceClient(
+def test_topic_stats_service_host_no_port():
+    client = TopicStatsServiceClient(
         credentials=credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="pubsublite.googleapis.com"
@@ -720,8 +762,8 @@ def test_partition_assignment_service_host_no_port():
     assert client.transport._host == "pubsublite.googleapis.com:443"
 
 
-def test_partition_assignment_service_host_with_port():
-    client = PartitionAssignmentServiceClient(
+def test_topic_stats_service_host_with_port():
+    client = TopicStatsServiceClient(
         credentials=credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="pubsublite.googleapis.com:8000"
@@ -730,11 +772,11 @@ def test_partition_assignment_service_host_with_port():
     assert client.transport._host == "pubsublite.googleapis.com:8000"
 
 
-def test_partition_assignment_service_grpc_transport_channel():
+def test_topic_stats_service_grpc_transport_channel():
     channel = grpc.insecure_channel("http://localhost/")
 
     # Check that channel is used if provided.
-    transport = transports.PartitionAssignmentServiceGrpcTransport(
+    transport = transports.TopicStatsServiceGrpcTransport(
         host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
@@ -742,11 +784,11 @@ def test_partition_assignment_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_partition_assignment_service_grpc_asyncio_transport_channel():
+def test_topic_stats_service_grpc_asyncio_transport_channel():
     channel = aio.insecure_channel("http://localhost/")
 
     # Check that channel is used if provided.
-    transport = transports.PartitionAssignmentServiceGrpcAsyncIOTransport(
+    transport = transports.TopicStatsServiceGrpcAsyncIOTransport(
         host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
@@ -757,11 +799,11 @@ def test_partition_assignment_service_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.PartitionAssignmentServiceGrpcTransport,
-        transports.PartitionAssignmentServiceGrpcAsyncIOTransport,
+        transports.TopicStatsServiceGrpcTransport,
+        transports.TopicStatsServiceGrpcAsyncIOTransport,
     ],
 )
-def test_partition_assignment_service_transport_channel_mtls_with_client_cert_source(
+def test_topic_stats_service_transport_channel_mtls_with_client_cert_source(
     transport_class,
 ):
     with mock.patch(
@@ -805,11 +847,11 @@ def test_partition_assignment_service_transport_channel_mtls_with_client_cert_so
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.PartitionAssignmentServiceGrpcTransport,
-        transports.PartitionAssignmentServiceGrpcAsyncIOTransport,
+        transports.TopicStatsServiceGrpcTransport,
+        transports.TopicStatsServiceGrpcAsyncIOTransport,
     ],
 )
-def test_partition_assignment_service_transport_channel_mtls_with_adc(transport_class):
+def test_topic_stats_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -842,106 +884,129 @@ def test_partition_assignment_service_transport_channel_mtls_with_adc(transport_
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_topic_path():
+    project = "squid"
+    location = "clam"
+    topic = "whelk"
+
+    expected = "projects/{project}/locations/{location}/topics/{topic}".format(
+        project=project, location=location, topic=topic,
+    )
+    actual = TopicStatsServiceClient.topic_path(project, location, topic)
+    assert expected == actual
+
+
+def test_parse_topic_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "topic": "nudibranch",
+    }
+    path = TopicStatsServiceClient.topic_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TopicStatsServiceClient.parse_topic_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "cuttlefish"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = PartitionAssignmentServiceClient.common_billing_account_path(
-        billing_account
-    )
+    actual = TopicStatsServiceClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "mussel",
     }
-    path = PartitionAssignmentServiceClient.common_billing_account_path(**expected)
+    path = TopicStatsServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PartitionAssignmentServiceClient.parse_common_billing_account_path(path)
+    actual = TopicStatsServiceClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "winkle"
 
     expected = "folders/{folder}".format(folder=folder,)
-    actual = PartitionAssignmentServiceClient.common_folder_path(folder)
+    actual = TopicStatsServiceClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nautilus",
     }
-    path = PartitionAssignmentServiceClient.common_folder_path(**expected)
+    path = TopicStatsServiceClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PartitionAssignmentServiceClient.parse_common_folder_path(path)
+    actual = TopicStatsServiceClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "scallop"
 
     expected = "organizations/{organization}".format(organization=organization,)
-    actual = PartitionAssignmentServiceClient.common_organization_path(organization)
+    actual = TopicStatsServiceClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "abalone",
     }
-    path = PartitionAssignmentServiceClient.common_organization_path(**expected)
+    path = TopicStatsServiceClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PartitionAssignmentServiceClient.parse_common_organization_path(path)
+    actual = TopicStatsServiceClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "squid"
 
     expected = "projects/{project}".format(project=project,)
-    actual = PartitionAssignmentServiceClient.common_project_path(project)
+    actual = TopicStatsServiceClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "clam",
     }
-    path = PartitionAssignmentServiceClient.common_project_path(**expected)
+    path = TopicStatsServiceClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PartitionAssignmentServiceClient.parse_common_project_path(path)
+    actual = TopicStatsServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
 
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
-    actual = PartitionAssignmentServiceClient.common_location_path(project, location)
+    actual = TopicStatsServiceClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
-    path = PartitionAssignmentServiceClient.common_location_path(**expected)
+    path = TopicStatsServiceClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PartitionAssignmentServiceClient.parse_common_location_path(path)
+    actual = TopicStatsServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -949,17 +1014,17 @@ def test_client_withDEFAULT_CLIENT_INFO():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.PartitionAssignmentServiceTransport, "_prep_wrapped_messages"
+        transports.TopicStatsServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = PartitionAssignmentServiceClient(
+        client = TopicStatsServiceClient(
             credentials=credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.PartitionAssignmentServiceTransport, "_prep_wrapped_messages"
+        transports.TopicStatsServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = PartitionAssignmentServiceClient.get_transport_class()
+        transport_class = TopicStatsServiceClient.get_transport_class()
         transport = transport_class(
             credentials=credentials.AnonymousCredentials(), client_info=client_info,
         )

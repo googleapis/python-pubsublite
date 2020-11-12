@@ -20,6 +20,7 @@ from .services.cursor_service import CursorServiceClient
 from .services.partition_assignment_service import PartitionAssignmentServiceClient
 from .services.publisher_service import PublisherServiceClient
 from .services.subscriber_service import SubscriberServiceClient
+from .services.topic_stats_service import TopicStatsServiceClient
 from .types.admin import CreateSubscriptionRequest
 from .types.admin import CreateTopicRequest
 from .types.admin import DeleteSubscriptionRequest
@@ -71,6 +72,8 @@ from .types.subscriber import SeekRequest
 from .types.subscriber import SeekResponse
 from .types.subscriber import SubscribeRequest
 from .types.subscriber import SubscribeResponse
+from .types.topic_stats import ComputeMessageStatsRequest
+from .types.topic_stats import ComputeMessageStatsResponse
 
 
 __all__ = (
@@ -78,6 +81,8 @@ __all__ = (
     "AttributeValues",
     "CommitCursorRequest",
     "CommitCursorResponse",
+    "ComputeMessageStatsRequest",
+    "ComputeMessageStatsResponse",
     "CreateSubscriptionRequest",
     "CreateTopicRequest",
     "Cursor",
@@ -114,7 +119,6 @@ __all__ = (
     "PubSubMessage",
     "PublishRequest",
     "PublishResponse",
-    "PublisherServiceClient",
     "SeekRequest",
     "SeekResponse",
     "SequencedCommitCursorRequest",
@@ -124,10 +128,12 @@ __all__ = (
     "StreamingCommitCursorResponse",
     "SubscribeRequest",
     "SubscribeResponse",
+    "SubscriberServiceClient",
     "Subscription",
     "Topic",
     "TopicPartitions",
+    "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
-    "SubscriberServiceClient",
+    "PublisherServiceClient",
 )

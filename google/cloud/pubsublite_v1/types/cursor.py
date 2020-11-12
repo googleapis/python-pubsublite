@@ -101,11 +101,14 @@ class StreamingCommitCursorRequest(proto.Message):
     """
 
     initial = proto.Field(
-        proto.MESSAGE, number=1, oneof="request", message=InitialCommitCursorRequest,
+        proto.MESSAGE, number=1, oneof="request", message="InitialCommitCursorRequest",
     )
 
     commit = proto.Field(
-        proto.MESSAGE, number=2, oneof="request", message=SequencedCommitCursorRequest,
+        proto.MESSAGE,
+        number=2,
+        oneof="request",
+        message="SequencedCommitCursorRequest",
     )
 
 
@@ -120,11 +123,14 @@ class StreamingCommitCursorResponse(proto.Message):
     """
 
     initial = proto.Field(
-        proto.MESSAGE, number=1, oneof="request", message=InitialCommitCursorResponse,
+        proto.MESSAGE, number=1, oneof="request", message="InitialCommitCursorResponse",
     )
 
     commit = proto.Field(
-        proto.MESSAGE, number=2, oneof="request", message=SequencedCommitCursorResponse,
+        proto.MESSAGE,
+        number=2,
+        oneof="request",
+        message="SequencedCommitCursorResponse",
     )
 
 
@@ -216,7 +222,7 @@ class ListPartitionCursorsResponse(proto.Message):
         return self
 
     partition_cursors = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=PartitionCursor,
+        proto.MESSAGE, number=1, message="PartitionCursor",
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)

@@ -60,7 +60,7 @@ class MessagePublishRequest(proto.Message):
 
     Attributes:
         messages (Sequence[~.common.PubSubMessage]):
-
+            The messages to publish.
     """
 
     messages = proto.RepeatedField(
@@ -93,11 +93,11 @@ class PublishRequest(proto.Message):
     """
 
     initial_request = proto.Field(
-        proto.MESSAGE, number=1, oneof="request_type", message=InitialPublishRequest,
+        proto.MESSAGE, number=1, oneof="request_type", message="InitialPublishRequest",
     )
 
     message_publish_request = proto.Field(
-        proto.MESSAGE, number=2, oneof="request_type", message=MessagePublishRequest,
+        proto.MESSAGE, number=2, oneof="request_type", message="MessagePublishRequest",
     )
 
 
@@ -112,11 +112,17 @@ class PublishResponse(proto.Message):
     """
 
     initial_response = proto.Field(
-        proto.MESSAGE, number=1, oneof="response_type", message=InitialPublishResponse,
+        proto.MESSAGE,
+        number=1,
+        oneof="response_type",
+        message="InitialPublishResponse",
     )
 
     message_response = proto.Field(
-        proto.MESSAGE, number=2, oneof="response_type", message=MessagePublishResponse,
+        proto.MESSAGE,
+        number=2,
+        oneof="response_type",
+        message="MessagePublishResponse",
     )
 
 

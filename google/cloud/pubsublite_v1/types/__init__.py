@@ -76,6 +76,10 @@ from .subscriber import (
     PartitionAssignmentAck,
     PartitionAssignmentRequest,
 )
+from .topic_stats import (
+    ComputeMessageStatsRequest,
+    ComputeMessageStatsResponse,
+)
 
 
 __all__ = (
@@ -130,4 +134,6 @@ __all__ = (
     "PartitionAssignment",
     "PartitionAssignmentAck",
     "PartitionAssignmentRequest",
+    "ComputeMessageStatsRequest",
+    "ComputeMessageStatsResponse",
 )

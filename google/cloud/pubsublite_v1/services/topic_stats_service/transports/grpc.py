@@ -26,16 +26,16 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
-from google.cloud.pubsublite_v1.types import subscriber
+from google.cloud.pubsublite_v1.types import topic_stats
 
-from .base import PartitionAssignmentServiceTransport, DEFAULT_CLIENT_INFO
+from .base import TopicStatsServiceTransport, DEFAULT_CLIENT_INFO
 
 
-class PartitionAssignmentServiceGrpcTransport(PartitionAssignmentServiceTransport):
-    """gRPC backend transport for PartitionAssignmentService.
+class TopicStatsServiceGrpcTransport(TopicStatsServiceTransport):
+    """gRPC backend transport for TopicStatsService.
 
-    The service that a subscriber client application uses to
-    determine which partitions it should connect to.
+    This service allows users to get stats about messages in
+    their topic.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -231,26 +231,20 @@ class PartitionAssignmentServiceGrpcTransport(PartitionAssignmentServiceTranspor
         return self._grpc_channel
 
     @property
-    def assign_partitions(
+    def compute_message_stats(
         self,
     ) -> Callable[
-        [subscriber.PartitionAssignmentRequest], subscriber.PartitionAssignment
+        [topic_stats.ComputeMessageStatsRequest],
+        topic_stats.ComputeMessageStatsResponse,
     ]:
-        r"""Return a callable for the assign partitions method over gRPC.
+        r"""Return a callable for the compute message stats method over gRPC.
 
-        Assign partitions for this client to handle for the
-        specified subscription.
-        The client must send an
-        InitialPartitionAssignmentRequest first. The server will
-        then send at most one unacknowledged PartitionAssignment
-        outstanding on the stream at a time.
-        The client should send a PartitionAssignmentAck after
-        updating the partitions it is connected to to reflect
-        the new assignment.
+        Compute statistics about a range of messages in a
+        given topic and partition.
 
         Returns:
-            Callable[[~.PartitionAssignmentRequest],
-                    ~.PartitionAssignment]:
+            Callable[[~.ComputeMessageStatsRequest],
+                    ~.ComputeMessageStatsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -258,13 +252,13 @@ class PartitionAssignmentServiceGrpcTransport(PartitionAssignmentServiceTranspor
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "assign_partitions" not in self._stubs:
-            self._stubs["assign_partitions"] = self.grpc_channel.stream_stream(
-                "/google.cloud.pubsublite.v1.PartitionAssignmentService/AssignPartitions",
-                request_serializer=subscriber.PartitionAssignmentRequest.serialize,
-                response_deserializer=subscriber.PartitionAssignment.deserialize,
+        if "compute_message_stats" not in self._stubs:
+            self._stubs["compute_message_stats"] = self.grpc_channel.unary_unary(
+                "/google.cloud.pubsublite.v1.TopicStatsService/ComputeMessageStats",
+                request_serializer=topic_stats.ComputeMessageStatsRequest.serialize,
+                response_deserializer=topic_stats.ComputeMessageStatsResponse.deserialize,
             )
-        return self._stubs["assign_partitions"]
+        return self._stubs["compute_message_stats"]
 
 
-__all__ = ("PartitionAssignmentServiceGrpcTransport",)
+__all__ = ("TopicStatsServiceGrpcTransport",)

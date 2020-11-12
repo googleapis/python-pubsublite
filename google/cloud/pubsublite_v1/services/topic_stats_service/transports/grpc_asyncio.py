@@ -16,26 +16,28 @@
 #
 
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
+from google.api_core import grpc_helpers_async  # type: ignore
 from google import auth  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
-from google.cloud.pubsublite_v1.types import subscriber
+from google.cloud.pubsublite_v1.types import topic_stats
 
-from .base import PartitionAssignmentServiceTransport, DEFAULT_CLIENT_INFO
+from .base import TopicStatsServiceTransport, DEFAULT_CLIENT_INFO
+from .grpc import TopicStatsServiceGrpcTransport
 
 
-class PartitionAssignmentServiceGrpcTransport(PartitionAssignmentServiceTransport):
-    """gRPC backend transport for PartitionAssignmentService.
+class TopicStatsServiceGrpcAsyncIOTransport(TopicStatsServiceTransport):
+    """gRPC AsyncIO backend transport for TopicStatsService.
 
-    The service that a subscriber client application uses to
-    determine which partitions it should connect to.
+    This service allows users to get stats about messages in
+    their topic.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -45,20 +47,62 @@ class PartitionAssignmentServiceGrpcTransport(PartitionAssignmentServiceTranspor
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "pubsublite.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            address (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+        scopes = scopes or cls.AUTH_SCOPES
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes,
+            quota_project_id=quota_project_id,
+            **kwargs,
+        )
 
     def __init__(
         self,
         *,
         host: str = "pubsublite.googleapis.com",
         credentials: credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        channel: grpc.Channel = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: aio.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
         ssl_channel_credentials: grpc.ChannelCredentials = None,
-        quota_project_id: Optional[str] = None,
+        quota_project_id=None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the transport.
@@ -74,9 +118,10 @@ class PartitionAssignmentServiceGrpcTransport(PartitionAssignmentServiceTranspor
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
@@ -90,14 +135,14 @@ class PartitionAssignmentServiceGrpcTransport(PartitionAssignmentServiceTranspor
                 for grpc channel. It is ignored if ``channel`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you're developing
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
                 your own client library.
 
         Raises:
-          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -167,8 +212,6 @@ class PartitionAssignmentServiceGrpcTransport(PartitionAssignmentServiceTranspor
                 quota_project_id=quota_project_id,
             )
 
-        self._stubs = {}  # type: Dict[str, Callable]
-
         # Run the base constructor.
         super().__init__(
             host=host,
@@ -179,78 +222,33 @@ class PartitionAssignmentServiceGrpcTransport(PartitionAssignmentServiceTranspor
             client_info=client_info,
         )
 
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "pubsublite.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            address (Optionsl[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-
-        Raises:
-            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
-              and ``credentials_file`` are passed.
-        """
-        scopes = scopes or cls.AUTH_SCOPES
-        return grpc_helpers.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            scopes=scopes,
-            quota_project_id=quota_project_id,
-            **kwargs,
-        )
+        self._stubs = {}
 
     @property
-    def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service.
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
         """
+        # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def assign_partitions(
+    def compute_message_stats(
         self,
     ) -> Callable[
-        [subscriber.PartitionAssignmentRequest], subscriber.PartitionAssignment
+        [topic_stats.ComputeMessageStatsRequest],
+        Awaitable[topic_stats.ComputeMessageStatsResponse],
     ]:
-        r"""Return a callable for the assign partitions method over gRPC.
+        r"""Return a callable for the compute message stats method over gRPC.
 
-        Assign partitions for this client to handle for the
-        specified subscription.
-        The client must send an
-        InitialPartitionAssignmentRequest first. The server will
-        then send at most one unacknowledged PartitionAssignment
-        outstanding on the stream at a time.
-        The client should send a PartitionAssignmentAck after
-        updating the partitions it is connected to to reflect
-        the new assignment.
+        Compute statistics about a range of messages in a
+        given topic and partition.
 
         Returns:
-            Callable[[~.PartitionAssignmentRequest],
-                    ~.PartitionAssignment]:
+            Callable[[~.ComputeMessageStatsRequest],
+                    Awaitable[~.ComputeMessageStatsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -258,13 +256,13 @@ class PartitionAssignmentServiceGrpcTransport(PartitionAssignmentServiceTranspor
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "assign_partitions" not in self._stubs:
-            self._stubs["assign_partitions"] = self.grpc_channel.stream_stream(
-                "/google.cloud.pubsublite.v1.PartitionAssignmentService/AssignPartitions",
-                request_serializer=subscriber.PartitionAssignmentRequest.serialize,
-                response_deserializer=subscriber.PartitionAssignment.deserialize,
+        if "compute_message_stats" not in self._stubs:
+            self._stubs["compute_message_stats"] = self.grpc_channel.unary_unary(
+                "/google.cloud.pubsublite.v1.TopicStatsService/ComputeMessageStats",
+                request_serializer=topic_stats.ComputeMessageStatsRequest.serialize,
+                response_deserializer=topic_stats.ComputeMessageStatsResponse.deserialize,
             )
-        return self._stubs["assign_partitions"]
+        return self._stubs["compute_message_stats"]
 
 
-__all__ = ("PartitionAssignmentServiceGrpcTransport",)
+__all__ = ("TopicStatsServiceGrpcAsyncIOTransport",)

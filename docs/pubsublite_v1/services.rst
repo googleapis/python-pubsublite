@@ -16,3 +16,6 @@ Services for Google Cloud Pubsublite v1 API
 .. automodule:: google.cloud.pubsublite_v1.services.subscriber_service
     :members:
     :inherited-members:
+.. automodule:: google.cloud.pubsublite_v1.services.topic_stats_service
+    :members:
+    :inherited-members:

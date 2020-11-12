@@ -52,12 +52,12 @@ env/
 coverage.xml
 sponge_log.xml
 
-# Pycharm virtual environment
-venv/
-
 # System test environment variables.
 system_tests/local_test_setup
 
 # Make sure a generated file isn't accidentally committed.
 pylintrc
 pylintrc.test
+
+# Pycharm virtual environment
+venv/

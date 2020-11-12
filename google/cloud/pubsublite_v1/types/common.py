@@ -70,7 +70,7 @@ class PubSubMessage(proto.Message):
     data = proto.Field(proto.BYTES, number=2)
 
     attributes = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=3, message=AttributeValues,
+        proto.STRING, proto.MESSAGE, number=3, message="AttributeValues",
     )
 
     event_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
@@ -90,7 +90,8 @@ class Cursor(proto.Message):
 
 
 class SequencedMessage(proto.Message):
-    r"""
+    r"""A message that has been stored and sequenced by the Pub/Sub
+    Lite system.
 
     Attributes:
         cursor (~.common.Cursor):
@@ -106,11 +107,11 @@ class SequencedMessage(proto.Message):
             control and quota purposes.
     """
 
-    cursor = proto.Field(proto.MESSAGE, number=1, message=Cursor,)
+    cursor = proto.Field(proto.MESSAGE, number=1, message="Cursor",)
 
     publish_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
 
-    message = proto.Field(proto.MESSAGE, number=3, message=PubSubMessage,)
+    message = proto.Field(proto.MESSAGE, number=3, message="PubSubMessage",)
 
     size_bytes = proto.Field(proto.INT64, number=4)
 
@@ -137,6 +138,9 @@ class Topic(proto.Message):
                 The number of partitions in the topic. Must
                 be at least 1.
             scale (int):
+                DEPRECATED: Use capacity instead which can express a
+                superset of configurations.
+
                 Every partition in the topic is allocated throughput
                 equivalent to ``scale`` times the standard partition
                 throughput (4 MiB/s). This is also reflected in the cost of
