@@ -60,5 +60,5 @@ system_tests/local_test_setup
 pylintrc
 pylintrc.test
 
-# Pycharm virtual environment	
+# Pycharm virtual environment
 venv/

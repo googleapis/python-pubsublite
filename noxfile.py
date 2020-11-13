@@ -30,6 +30,9 @@ DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
 
+# TODO(dpcollins-google): Improve this number to 80
+MIN_COVERAGE_PERCENT = 70
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
@@ -143,7 +146,9 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=99")
+    session.run(
+        "coverage", "report", "--show-missing", f"--fail-under={MIN_COVERAGE_PERCENT}",
+    )
 
     session.run("coverage", "erase")
 
