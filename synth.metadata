@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-pubsublite.git",
-        "sha": "7cf1fc1fb3b53700a6963b2dc16ca2857bc31d5e"
+        "sha": "c65c3e00259389cb4471c95a864a020ced251c33"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "2686d7075fa456972bf4d08680d99617f5eb32b1"
+        "sha": "6542bd723403513626f61642fc02ddca528409aa"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "2686d7075fa456972bf4d08680d99617f5eb32b1"
+        "sha": "6542bd723403513626f61642fc02ddca528409aa"
       }
     }
   ],
@@ -49,12 +49,17 @@
     ".github/ISSUE_TEMPLATE/support_request.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
     ".github/release-please.yml",
+    ".github/snippet-bot.yml",
     ".gitignore",
     ".kokoro/build.sh",
     ".kokoro/continuous/common.cfg",
     ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
     ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
     ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
     ".kokoro/presubmit/common.cfg",
     ".kokoro/presubmit/presubmit.cfg",
     ".kokoro/publish-docs.sh",
@@ -79,6 +84,8 @@
     ".kokoro/samples/python3.8/presubmit.cfg",
     ".kokoro/test-samples.sh",
     ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".trampolinerc",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.rst",
     "LICENSE",
@@ -89,7 +96,6 @@
     "docs/multiprocessing.rst",
     "docs/pubsublite_v1/services.rst",
     "docs/pubsublite_v1/types.rst",
-    "google/cloud/pubsublite/__init__.py",
     "google/cloud/pubsublite/py.typed",
     "google/cloud/pubsublite_v1/__init__.py",
     "google/cloud/pubsublite_v1/py.typed",
