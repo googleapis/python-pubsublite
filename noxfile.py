@@ -81,7 +81,7 @@ def default(session):
     session.run(
         "py.test",
         "--quiet",
-        "--cov=google.cloud.accessapproval",
+        "--cov=google.cloud.pubsublite",
         "--cov=google.cloud",
         "--cov=tests.unit",
         "--cov-append",
