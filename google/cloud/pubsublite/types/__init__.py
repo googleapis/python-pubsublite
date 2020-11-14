@@ -23,10 +23,10 @@ from .flow_control_settings import FlowControlSettings, DISABLED_FLOW_CONTROL
 __all__ = (
     "CloudRegion",
     "CloudZone",
-    "Partition",
-    "LocationPath",
-    "TopicPath",
-    "SubscriptionPath",
-    "PublishMetadata",
     "FlowControlSettings",
+    "LocationPath",
+    "Partition",
+    "PublishMetadata",
+    "SubscriptionPath",
+    "TopicPath",
 )
