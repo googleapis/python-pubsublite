@@ -29,7 +29,6 @@ library = gapic.py_library(
     service="pubsublite",
     version="v1",
     bazel_target="//google/cloud/pubsublite/v1:pubsublite-v1-py",
-
 )
 
 excludes = [
@@ -44,7 +43,13 @@ s.move(library, excludes=excludes)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=99, microgenerator=True)
+templated_files = common.py_library(
+    unit_cov_level=80,
+    cov_level=99,
+    microgenerator=True,
+    system_test_external_dependencies = ['asynctest'],
+    unit_test_external_dependencies = ['asynctest'],
+)
 
 s.move(
     templated_files, excludes=[".coveragerc"]
