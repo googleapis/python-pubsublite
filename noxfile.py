@@ -72,9 +72,7 @@ def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("asyncmock", "pytest-asyncio")
 
-    session.install(
-        "mock", "pytest", "pytest-cov",
-    )
+    session.install("mock", "pytest", "pytest-cov", "asynctest")
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
@@ -123,9 +121,7 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install(
-        "mock", "pytest", "google-cloud-testutils",
-    )
+    session.install("mock", "pytest", "google-cloud-testutils", "asynctest")
     session.install("-e", ".")
 
     # Run py.test against the system tests.
@@ -143,9 +139,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run(
-        "coverage", "report", "--show-missing", "--fail-under=99",
-    )
+    session.run("coverage", "report", "--show-missing", "--fail-under=99")
 
     session.run("coverage", "erase")
 
