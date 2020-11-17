@@ -44,8 +44,7 @@ s.move(library, excludes=excludes)
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    unit_cov_level=80,
-    cov_level=99,
+    cov_level=70,
     microgenerator=True,
     system_test_external_dependencies = ['asynctest'],
     unit_test_external_dependencies = ['asynctest'],
