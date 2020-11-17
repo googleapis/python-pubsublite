@@ -1,5 +1,5 @@
 {
-    "name": "accessapproval",
+    "name": "pubsublite",
     "name_pretty": "Pub/Sub Lite",
     "product_documentation": "https://https://cloud.google.com/pubsub/lite",
     "client_documentation": "https://googleapis.dev/python/pubsublite/latest",

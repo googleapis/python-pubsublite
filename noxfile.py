@@ -30,9 +30,6 @@ DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
 
-# TODO(dpcollins-google): Improve this number to 80
-MIN_COVERAGE_PERCENT = 70
-
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
@@ -73,11 +70,9 @@ def lint_setup_py(session):
 
 def default(session):
     # Install all test dependencies, then install this package in-place.
-    session.install("asyncmock", "pytest-asyncio", "asynctest")
+    session.install("asyncmock", "pytest-asyncio")
 
-    session.install(
-        "mock", "pytest", "pytest-cov",
-    )
+    session.install("mock", "pytest", "pytest-cov", "asynctest")
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
@@ -126,9 +121,7 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install(
-        "mock", "pytest", "google-cloud-testutils",
-    )
+    session.install("mock", "pytest", "google-cloud-testutils", "asynctest")
     session.install("-e", ".")
 
     # Run py.test against the system tests.
@@ -146,9 +139,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run(
-        "coverage", "report", "--show-missing", f"--fail-under={MIN_COVERAGE_PERCENT}",
-    )
+    session.run("coverage", "report", "--show-missing", "--fail-under=70")
 
     session.run("coverage", "erase")
 
