@@ -39,6 +39,7 @@ from google.cloud.pubsublite.cloudpubsub.subscriber_client_interface import (
 from google.cloud.pubsublite.internal.constructable_from_service_account import (
     ConstructableFromServiceAccount,
 )
+from google.cloud.pubsublite.internal.require_started import RequireStarted
 from google.cloud.pubsublite.types import (
     FlowControlSettings,
     Partition,
@@ -56,6 +57,7 @@ class SubscriberClient(SubscriberClientInterface, ConstructableFromServiceAccoun
     """
 
     _impl: SubscriberClientInterface
+    _require_started: RequireStarted
 
     def __init__(
         self,
@@ -92,6 +94,7 @@ class SubscriberClient(SubscriberClientInterface, ConstructableFromServiceAccoun
                 client_options=client_options,
             ),
         )
+        self._require_started = RequireStarted()
 
     @overrides
     def subscribe(
@@ -101,6 +104,7 @@ class SubscriberClient(SubscriberClientInterface, ConstructableFromServiceAccoun
         per_partition_flow_control_settings: FlowControlSettings,
         fixed_partitions: Optional[Set[Partition]] = None,
     ) -> StreamingPullFuture:
+        self._require_started.require_started()
         return self._impl.subscribe(
             subscription,
             callback,
@@ -110,12 +114,14 @@ class SubscriberClient(SubscriberClientInterface, ConstructableFromServiceAccoun
 
     @overrides
     def __enter__(self):
+        self._require_started.__enter__()
         self._impl.__enter__()
         return self
 
     @overrides
     def __exit__(self, exc_type, exc_value, traceback):
         self._impl.__exit__(exc_type, exc_value, traceback)
+        self._require_started.__exit__(exc_type, exc_value, traceback)
 
 
 class AsyncSubscriberClient(
@@ -130,6 +136,7 @@ class AsyncSubscriberClient(
     """
 
     _impl: AsyncSubscriberClientInterface
+    _require_started: RequireStarted
 
     def __init__(
         self,
@@ -161,6 +168,7 @@ class AsyncSubscriberClient(
                 client_options=client_options,
             )
         )
+        self._require_started = RequireStarted()
 
     @overrides
     async def subscribe(
@@ -169,15 +177,18 @@ class AsyncSubscriberClient(
         per_partition_flow_control_settings: FlowControlSettings,
         fixed_partitions: Optional[Set[Partition]] = None,
     ) -> AsyncIterator[Message]:
+        self._require_started.require_started()
         return await self._impl.subscribe(
             subscription, per_partition_flow_control_settings, fixed_partitions
         )
 
     @overrides
     async def __aenter__(self):
+        self._require_started.__enter__()
         await self._impl.__aenter__()
         return self
 
     @overrides
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._impl.__aexit__(exc_type, exc_value, traceback)
+        self._require_started.__exit__(exc_type, exc_value, traceback)

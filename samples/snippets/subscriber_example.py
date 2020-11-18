@@ -59,21 +59,20 @@ def receive_messages(
         print(f"Received {message_data} of ordering key {message.ordering_key}.")
         message.ack()
 
-    subscriber_client = SubscriberClient()
+    with SubscriberClient() as subscriber_client:
+        streaming_pull_future = subscriber_client.subscribe(
+            subscription_path,
+            callback=callback,
+            per_partition_flow_control_settings=per_partition_flow_control_settings,
+        )
 
-    streaming_pull_future = subscriber_client.subscribe(
-        subscription_path,
-        callback=callback,
-        per_partition_flow_control_settings=per_partition_flow_control_settings,
-    )
+        print(f"Listening for messages on {str(subscription_path)}...")
 
-    print(f"Listening for messages on {str(subscription_path)}...")
-
-    try:
-        streaming_pull_future.result(timeout=timeout)
-    except TimeoutError or KeyboardInterrupt:
-        streaming_pull_future.cancel()
-        assert streaming_pull_future.done()
+        try:
+            streaming_pull_future.result(timeout=timeout)
+        except TimeoutError or KeyboardInterrupt:
+            streaming_pull_future.cancel()
+            assert streaming_pull_future.done()
     # [END pubsublite_quickstart_subscriber]
 
 
