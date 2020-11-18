@@ -36,9 +36,8 @@ def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_parti
     # topic_id = "your-topic-id"
     # num_partitions = 1
 
-    client = AdminClient(cloud_region)
-
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    cloud_region = CloudRegion(cloud_region)
+    location = CloudZone(cloud_region, zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
     topic = Topic(
         name=str(topic_path),
@@ -64,6 +63,7 @@ def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_parti
         ),
     )
 
+    client = AdminClient(cloud_region)
     try:
         response = client.create_topic(topic)
         print(f"{response.name} created successfully.")

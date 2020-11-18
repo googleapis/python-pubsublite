@@ -12,7 +12,7 @@ You should instantiate a subscriber client using a context manager:
     from google.cloud.pubsublite.cloudpubsub import SubscriberClient
 
     with SubscriberClient() as subscriber_client:
-        pass
+        # Use subscriber_client
 
 When not using a context manager, you need to call
 :meth:`~.pubsublite.cloudpubsub.subscriber_client.SubscriberClient.__enter__`.
@@ -30,12 +30,12 @@ Receiving messages looks like:
 
 .. code-block:: python
 
-    from concurrent.futures._base import TimeoutError
+    from google.cloud.pubsublite.cloudpubsub import SubscriberClient
     from google.cloud.pubsublite.types import (
         CloudRegion,
         CloudZone,
-        FlowControlSettings,
         SubscriptionPath,
+        DISABLED_FLOW_CONTROL,
     )
 
     project_number = 1122334455
@@ -46,13 +46,14 @@ Receiving messages looks like:
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
 
-    streaming_pull_future = subscriber_client.subscribe(
-        subscription_path,
-        callback=callback,
-        per_partition_flow_control_settings=flow_control_settings,
-    )
+    with SubscriberClient() as subscriber_client:
+        streaming_pull_future = subscriber_client.subscribe(
+            subscription_path,
+            callback=callback,
+            per_partition_flow_control_settings=DISABLED_FLOW_CONTROL,
+        )
 
-    streaming_pull_future.result()
+        streaming_pull_future.result()
 
 Subscriber Callbacks
 --------------------
@@ -81,6 +82,7 @@ You can configure flow control settings by setting the maximum number and size o
 outstanding messages. The message stream is paused when either condition is met.
 
 .. code-block:: python
+    from google.cloud.pubsublite.types import FlowControlSettings
 
     flow_control_settings = FlowControlSettings(
         # 1,000 outstanding messages. Must be >0.

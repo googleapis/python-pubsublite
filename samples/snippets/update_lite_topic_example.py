@@ -36,9 +36,8 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # zone_id = "a"
     # topic_id = "your-topic-id"
 
-    client = AdminClient(cloud_region)
-
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    cloud_region = CloudRegion(cloud_region)
+    location = CloudZone(cloud_region, zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
 
     # Defines which topic fields to update.
@@ -71,6 +70,7 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
         ),
     )
 
+    client = AdminClient(cloud_region)
     try:
         response = client.update_topic(topic, field_mask)
         print(f"{response.name} updated successfully.")

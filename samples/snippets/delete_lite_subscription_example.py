@@ -34,11 +34,11 @@ def delete_lite_subscription(project_number, cloud_region, zone_id, subscription
     # zone_id = "a"
     # subscription_id = "your-subscription-id"
 
-    client = AdminClient(cloud_region)
-
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    cloud_region = CloudRegion(cloud_region)
+    location = CloudZone(cloud_region, zone_id)
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
 
+    client = AdminClient(cloud_region)
     try:
         client.delete_subscription(subscription_path)
         print(f"{subscription_path} deleted successfully.")

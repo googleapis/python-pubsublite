@@ -12,7 +12,7 @@ You should instantiate a publisher client using a context manager:
     from google.cloud.pubsublite.cloudpubsub import PublisherClient
 
     with PublisherClient() as publisher_client:
-        pass
+        # Use publisher_client
 
 When not using a context manager, you need to call
 :meth:`~.pubsublite.cloudpubsub.publisher_client.PublisherClient.__enter__`.
@@ -29,7 +29,7 @@ and a message in byte string.
 A call to publish a message looks like:
 
 .. code-block:: python
-
+    from google.cloud.pubsublite.cloudpubsub import PublisherClient
     from google.cloud.pubsublite.types import (
         CloudRegion, CloudZone, TopicPath,
     )

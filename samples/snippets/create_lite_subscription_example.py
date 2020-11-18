@@ -42,12 +42,10 @@ def create_lite_subscription(
     # topic_id = "your-topic-id"
     # subscription_id = "your-subscription-id"
 
-    client = AdminClient(cloud_region)
-
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    cloud_region = CloudRegion(cloud_region)
+    location = CloudZone(cloud_region, zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
-
     subscription = Subscription(
         name=str(subscription_path),
         topic=str(topic_path),
@@ -62,6 +60,7 @@ def create_lite_subscription(
         ),
     )
 
+    client = AdminClient(cloud_region)
     try:
         response = client.create_subscription(subscription)
         print(f"{response.name} created successfully.")

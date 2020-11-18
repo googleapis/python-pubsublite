@@ -33,11 +33,11 @@ def list_lite_subscriptions_in_topic(project_number, cloud_region, zone_id, topi
     # zone_id = "a"
     # topic_id = "your-topic-id"
 
-    client = AdminClient(cloud_region)
-
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    cloud_region = CloudRegion(cloud_region)
+    location = CloudZone(cloud_region, zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
 
+    client = AdminClient(cloud_region)
     response = client.list_topic_subscriptions(topic_path)
 
     for subscription_path in response:

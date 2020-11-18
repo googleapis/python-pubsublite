@@ -11,7 +11,7 @@ for the Pub/Sub Lite service:
 .. code-block:: python
 
     from google.cloud.pubsublite import AdminClient
-    cloud_region = "us-central1"
+    cloud_region = CloudRegion("us-central1")
     admin_client = AdminClient(cloud_region)
 
 
@@ -35,16 +35,17 @@ A call to create a Pub/Sub Lite topic looks like:
 
 .. code-block:: python
 
+    from google.cloud.pubsublite import AdminClient, Topic
     from google.cloud.pubsublite.types import (
         CloudRegion, CloudZone, TopicPath,
     )
-    from google.cloud.pubsublite_v1 import Topic
 
     project_number = 1122334455
     zone_id = "a"
     topic_id = "your-topic-id"
 
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    cloud_region = CloudRegion(cloud_region)
+    location = CloudZone(cloud_region, zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
 
     topic = Topic(
@@ -66,6 +67,7 @@ A call to create a Pub/Sub Lite topic looks like:
         ),
     )
 
+    admin_client = AdminClient(cloud_region)
     response = admin_client.create_topic(topic)
 
 
