@@ -82,6 +82,7 @@ You can configure flow control settings by setting the maximum number and size o
 outstanding messages. The message stream is paused when either condition is met.
 
 .. code-block:: python
+
     from google.cloud.pubsublite.types import FlowControlSettings
 
     flow_control_settings = FlowControlSettings(
