@@ -1,50 +1,18 @@
 Pub/Sub Lite Client Types
 =========================
 
-.. automodule:: google.cloud.pubsublite.types.CloudRegion
+.. automodule:: google.cloud.pubsublite.types
   :members:
   :noindex:
 
-.. automodule:: google.cloud.pubsublite.types.CloudZone
+.. autoclass:: google.cloud.pubsublite_v1.Cursor
   :members:
   :noindex:
 
-.. automodule:: google.cloud.pubsublite.types.DISABLED_FLOW_CONTROL
+.. autoclass:: google.cloud.pubsublite_v1.Subscription
   :members:
   :noindex:
 
-.. automodule:: google.cloud.pubsublite.types.FlowControlSettings
+.. autoclass:: google.cloud.pubsublite_v1.Topic
   :members:
   :noindex:
-
-.. automodule:: google.cloud.pubsublite.types.LocationPath
-  :members:
-  :noindex:
-
-.. automodule:: google.cloud.pubsublite.types.Partition
-  :members:
-  :noindex:
-
-.. automodule:: google.cloud.pubsublite.types.PublishMetadata
-  :members:
-  :noindex:
-
-.. automodule:: google.cloud.pubsublite.types.SubscriptionPath
-  :members:
-  :noindex:
-
-.. automodule:: google.cloud.pubsublite.types.TopicPath
-  :members:
-  :noindex:
-
-.. automodule:: google.cloud.pubsublite_v1.Cursor
-  :members:
-  :show-inheritance:
-
-.. automodule:: google.cloud.pubsublite_v1.Subscription
-  :members:
-  :show-inheritance:
-
-.. automodule:: google.cloud.pubsublite_v1.Topic
-  :members:
-  :show-inheritance:
