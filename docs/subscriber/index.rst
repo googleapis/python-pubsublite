@@ -55,9 +55,9 @@ Subscriber Callbacks
 
 Received messages are processed in a callback function. This callback function
 only takes one argument of type :class:`google.cloud.pubsub_v1.subscriber.message.Message`.
-After this message has been processed, the function should call either call
-:meth:`~.pubsub_v1.subscriber.message.Message.ack` to acknowledge the message
-or :meth:`~.pubsub_v1.subscriber.message.Message.nack` to unacknowledge the message.
+After this message has been processed, the function should either call
+:meth:`~.pubsub_v1.subscriber.message.Message.ack` to acknowledge the message or
+:meth:`~.pubsub_v1.subscriber.message.Message.nack` to send a negative acknowledgement.
 
 .. code-block:: python
 
@@ -72,9 +72,9 @@ Flow Control Settings
 Flow control settings are applied per partition.
 They control when to pause the message stream to a partition so the server temporarily
 stops sending out more messages (known as outstanding messages) from this partition.
-You can configure flow control settings by setting the maximum number and size of
-outstanding messages. The message stream is paused when either condition is met first.
 
+You can configure flow control settings by setting the maximum number and size of
+outstanding messages. The message stream is paused when either condition is met.
 
 .. code-block:: python
 
@@ -84,6 +84,9 @@ outstanding messages. The message stream is paused when either condition is met 
         # 10 MiB. Must be greater than the allowed size of the largest message (1 MiB).
         bytes_outstanding=10 * 1024 * 1024,
     )
+
+You may also turn off flow control settings by setting it to
+:class:`google.cloud.pubsublite.types.DISABLED_FLOW_CONTROL`.
 
 API Reference
 -------------

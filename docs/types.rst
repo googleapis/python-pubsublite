@@ -9,6 +9,10 @@ Pub/Sub Lite Client Types
   :members:
   :noindex:
 
+.. automodule:: google.cloud.pubsublite.types.DISABLED_FLOW_CONTROL
+  :members:
+  :noindex:
+
 .. automodule:: google.cloud.pubsublite.types.FlowControlSettings
   :members:
   :noindex:
