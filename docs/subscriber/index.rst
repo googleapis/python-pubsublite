@@ -5,13 +5,17 @@ Subscribe operations are handled through the
 :class:`~.pubsublite.cloudpubsub.subscriber_client.SubscriberClient` class (aliased as
 ``google.cloud.pubsublite.cloudpubsub.SubscriberClient``).
 
-Instantiating a subscriber client is simple:
+You should instantiate a subscriber client using a context manager:
 
 .. code-block:: python
 
     from google.cloud.pubsublite.cloudpubsub import SubscriberClient
 
-    subscriber_client = SubscriberClient()
+    with SubscriberClient() as subscriber_client:
+        pass
+
+When not using a context manager, you need to call
+:meth:`~.pubsublite.cloudpubsub.subscriber_client.SubscriberClient.__enter__`.
 
 Receive messages
 ----------------
