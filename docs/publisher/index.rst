@@ -29,6 +29,7 @@ and a message in byte string.
 A call to publish a message looks like:
 
 .. code-block:: python
+
     from google.cloud.pubsublite.cloudpubsub import PublisherClient
     from google.cloud.pubsublite.types import (
         CloudRegion, CloudZone, TopicPath,
