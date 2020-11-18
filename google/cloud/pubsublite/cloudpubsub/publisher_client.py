@@ -36,6 +36,7 @@ from google.cloud.pubsublite.cloudpubsub.publisher_client_interface import (
 from google.cloud.pubsublite.internal.constructable_from_service_account import (
     ConstructableFromServiceAccount,
 )
+from google.cloud.pubsublite.internal.require_started import RequireStarted
 from google.cloud.pubsublite.internal.wire.make_publisher import (
     DEFAULT_BATCHING_SETTINGS as WIRE_DEFAULT_BATCHING,
 )
@@ -52,6 +53,7 @@ class PublisherClient(PublisherClientInterface, ConstructableFromServiceAccount)
     """
 
     _impl: PublisherClientInterface
+    _require_stared: RequireStarted
 
     DEFAULT_BATCHING_SETTINGS = WIRE_DEFAULT_BATCHING
     """
@@ -83,6 +85,7 @@ class PublisherClient(PublisherClientInterface, ConstructableFromServiceAccount)
                 transport=transport,
             )
         )
+        self._require_stared = RequireStarted()
 
     @overrides
     def publish(
@@ -92,18 +95,21 @@ class PublisherClient(PublisherClientInterface, ConstructableFromServiceAccount)
         ordering_key: str = "",
         **attrs: Mapping[str, str]
     ) -> "Future[str]":
+        self._require_stared.require_started()
         return self._impl.publish(
             topic=topic, data=data, ordering_key=ordering_key, **attrs
         )
 
     @overrides
     def __enter__(self):
+        self._require_stared.__enter__()
         self._impl.__enter__()
         return self
 
     @overrides
     def __exit__(self, exc_type, exc_value, traceback):
         self._impl.__exit__(exc_type, exc_value, traceback)
+        self._require_stared.__exit__(exc_type, exc_value, traceback)
 
 
 class AsyncPublisherClient(
@@ -117,6 +123,7 @@ class AsyncPublisherClient(
     """
 
     _impl: AsyncPublisherClientInterface
+    _require_stared: RequireStarted
 
     DEFAULT_BATCHING_SETTINGS = WIRE_DEFAULT_BATCHING
     """
@@ -148,6 +155,7 @@ class AsyncPublisherClient(
                 transport=transport,
             )
         )
+        self._require_stared = RequireStarted()
 
     @overrides
     async def publish(
@@ -157,15 +165,18 @@ class AsyncPublisherClient(
         ordering_key: str = "",
         **attrs: Mapping[str, str]
     ) -> str:
+        self._require_stared.require_started()
         return await self._impl.publish(
             topic=topic, data=data, ordering_key=ordering_key, **attrs
         )
 
     @overrides
     async def __aenter__(self):
+        self._require_stared.__enter__()
         await self._impl.__aenter__()
         return self
 
     @overrides
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._impl.__aexit__(exc_type, exc_value, traceback)
+        self._require_stared.__exit__(exc_type, exc_value, traceback)
