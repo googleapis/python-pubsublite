@@ -27,14 +27,13 @@ def create_lite_subscription(
 ):
     # [START pubsublite_create_subscription]
     from google.api_core.exceptions import AlreadyExists
-    from google.cloud.pubsublite import AdminClient
+    from google.cloud.pubsublite import AdminClient, Subscription
     from google.cloud.pubsublite.types import (
         CloudRegion,
         CloudZone,
         SubscriptionPath,
         TopicPath,
     )
-    from google.cloud.pubsublite_v1 import Subscription
 
     # TODO(developer):
     # project_number = 1122334455

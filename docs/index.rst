@@ -11,8 +11,6 @@ API Reference
     Publisher Client <publisher/index>
     Subscriber Client <subscriber/index>
     Types <types>
-    pubsublite_v1/types
-    
 
 Changelog
 ---------
