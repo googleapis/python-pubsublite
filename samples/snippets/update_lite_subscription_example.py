@@ -25,9 +25,8 @@ import argparse
 def update_lite_subscription(project_number, cloud_region, zone_id, subscription_id):
     # [START pubsublite_update_subscription]
     from google.api_core.exceptions import NotFound
-    from google.cloud.pubsublite import AdminClient
+    from google.cloud.pubsublite import AdminClient, Subscription
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, SubscriptionPath
-    from google.cloud.pubsublite_v1 import Subscription
     from google.protobuf.field_mask_pb2 import FieldMask
 
     # TODO(developer):
@@ -37,9 +36,8 @@ def update_lite_subscription(project_number, cloud_region, zone_id, subscription
     # topic_id = "your-topic-id"
     # subscription_id = "your-subscription-id"
 
-    client = AdminClient(cloud_region)
-
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    cloud_region = CloudRegion(cloud_region)
+    location = CloudZone(cloud_region, zone_id)
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
     field_mask = FieldMask(paths=["delivery_config.delivery_requirement"])
 
@@ -55,6 +53,7 @@ def update_lite_subscription(project_number, cloud_region, zone_id, subscription
         ),
     )
 
+    client = AdminClient(cloud_region)
     try:
         response = client.update_subscription(subscription, field_mask)
         print(f"{response.name} updated successfully.")

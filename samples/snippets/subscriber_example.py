@@ -59,7 +59,9 @@ def receive_messages(
         print(f"Received {message_data} of ordering key {message.ordering_key}.")
         message.ack()
 
+    # SubscriberClient() must be used in a `with` block or have __enter__() called before use.
     with SubscriberClient() as subscriber_client:
+
         streaming_pull_future = subscriber_client.subscribe(
             subscription_path,
             callback=callback,

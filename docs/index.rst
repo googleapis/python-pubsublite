@@ -5,10 +5,12 @@
 API Reference
 -------------
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
-    pubsublite_v1/services
-    pubsublite_v1/types
+    Admin Client <admin/index>
+    Publisher Client <publisher/index>
+    Subscriber Client <subscriber/index>
+    Types <types>
 
 Changelog
 ---------

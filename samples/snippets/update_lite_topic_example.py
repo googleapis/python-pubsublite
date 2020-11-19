@@ -25,9 +25,8 @@ import argparse
 def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # [START pubsublite_update_topic]
     from google.api_core.exceptions import NotFound
-    from google.cloud.pubsublite import AdminClient
+    from google.cloud.pubsublite import AdminClient, Topic
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, TopicPath
-    from google.cloud.pubsublite_v1 import Topic
     from google.protobuf.duration_pb2 import Duration
     from google.protobuf.field_mask_pb2 import FieldMask
 
@@ -37,9 +36,8 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # zone_id = "a"
     # topic_id = "your-topic-id"
 
-    client = AdminClient(cloud_region)
-
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    cloud_region = CloudRegion(cloud_region)
+    location = CloudZone(cloud_region, zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
 
     # Defines which topic fields to update.
@@ -72,6 +70,7 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
         ),
     )
 
+    client = AdminClient(cloud_region)
     try:
         response = client.update_topic(topic, field_mask)
         print(f"{response.name} updated successfully.")
