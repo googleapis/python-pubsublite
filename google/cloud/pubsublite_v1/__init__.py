@@ -114,6 +114,7 @@ __all__ = (
     "PartitionAssignment",
     "PartitionAssignmentAck",
     "PartitionAssignmentRequest",
+    "PartitionAssignmentServiceClient",
     "PartitionCursor",
     "PubSubMessage",
     "PublishRequest",
@@ -132,8 +133,7 @@ __all__ = (
     "Subscription",
     "Topic",
     "TopicPartitions",
-    "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
-    "PartitionAssignmentServiceClient",
+    "TopicStatsServiceClient",
 )
