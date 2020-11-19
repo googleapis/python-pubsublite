@@ -25,7 +25,7 @@ import argparse
 def publish_with_batch_settings(
     project_number, cloud_region, zone_id, topic_id, num_messages
 ):
-    # [START pubsublite_publish_ordering_key]
+    # [START pubsublite_publish_batch]
     from google.cloud.pubsub_v1.types import BatchSettings
     from google.cloud.pubsublite.cloudpubsub import PublisherClient
     from google.cloud.pubsublite.types import (
@@ -70,7 +70,7 @@ def publish_with_batch_settings(
     print(
         f"Finished publishing {num_messages} messages with batch settings to {str(topic_path)}."
     )
-    # [END pubsublite_publish_ordering_key]
+    # [END pubsublite_publish_batch]
 
 
 if __name__ == "__main__":
