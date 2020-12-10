@@ -13,8 +13,7 @@
 # limitations under the License.
 import asyncio
 import sys
-import threading
-from typing import Callable
+from typing import Callable, Dict
 
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_cancelled
 from google.cloud.pubsublite.internal.wire.partition_count_watcher import (
@@ -27,6 +26,12 @@ from google.cloud.pubsublite_v1 import PubSubMessage
 
 
 class PartitionCountWatchingPublisher(Publisher):
+    _publishers: Dict[Partition, Publisher]
+    _publisher_factory: Callable[[Partition], Publisher]
+    _policy_factory: Callable[[int], RoutingPolicy]
+    _watcher: PartitionCountWatcher
+    _partition_count_poller: asyncio.Future
+
     def __init__(
         self,
         watcher: PartitionCountWatcher,
@@ -34,7 +39,6 @@ class PartitionCountWatchingPublisher(Publisher):
         policy_factory: Callable[[int], RoutingPolicy],
     ):
         self._publishers = {}
-        self._lock = threading.Lock()
         self._publisher_factory = publisher_factory
         self._policy_factory = policy_factory
         self._watcher = watcher
@@ -55,9 +59,8 @@ class PartitionCountWatchingPublisher(Publisher):
         self._partition_count_poller.cancel()
         await wait_ignore_cancelled(self._partition_count_poller)
         await self._watcher.__aexit__(exc_type, exc_val, exc_tb)
-        with self._lock:
-            for publisher in self._publishers.values():
-                await publisher.__aexit__(exc_type, exc_val, exc_tb)
+        for publisher in self._publishers.values():
+            await publisher.__aexit__(exc_type, exc_val, exc_tb)
 
     async def _poll_partition_count_action(self):
         partition_count = await self._watcher.get_partition_count()
@@ -68,8 +71,7 @@ class PartitionCountWatchingPublisher(Publisher):
             await self._poll_partition_count_action()
 
     async def _handle_partition_count_update(self, partition_count: int):
-        with self._lock:
-            current_count = len(self._publishers)
+        current_count = len(self._publishers)
         if current_count == partition_count:
             return
         if current_count > partition_count:
@@ -82,14 +84,11 @@ class PartitionCountWatchingPublisher(Publisher):
         await asyncio.gather(*[p.__aenter__() for p in new_publishers.values()])
         routing_policy = self._policy_factory(partition_count)
 
-        with self._lock:
-            self._publishers.update(new_publishers)
-            self._routing_policy = routing_policy
+        self._publishers.update(new_publishers)
+        self._routing_policy = routing_policy
 
     async def publish(self, message: PubSubMessage) -> PublishMetadata:
-        with self._lock:
-            partition = self._routing_policy.route(message)
-            assert partition in self._publishers
-            publisher = self._publishers[partition]
-
+        partition = self._routing_policy.route(message)
+        assert partition in self._publishers
+        publisher = self._publishers[partition]
         return await publisher.publish(message)

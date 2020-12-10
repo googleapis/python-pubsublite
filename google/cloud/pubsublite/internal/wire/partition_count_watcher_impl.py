@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import logging
 from concurrent.futures.thread import ThreadPoolExecutor
 import asyncio
 
@@ -25,6 +26,14 @@ from google.api_core.exceptions import GoogleAPICallError
 
 
 class PartitionCountWatcherImpl(PartitionCountWatcher, PermanentFailable):
+    _admin: AdminClientInterface
+    _topic_path: TopicPath
+    _duration: float
+    _any_success: bool
+    _thread: ThreadPoolExecutor
+    _queue: asyncio.Queue
+    _poll_partition_loop: asyncio.Future
+
     def __init__(
         self, admin: AdminClientInterface, topic_path: TopicPath, duration: float
     ):
@@ -59,6 +68,7 @@ class PartitionCountWatcherImpl(PartitionCountWatcher, PermanentFailable):
         except GoogleAPICallError as e:
             if not self._any_success:
                 raise e
+            logging.exception("Failed to retrieve partition count")
         await asyncio.sleep(self._duration)
 
     async def get_partition_count(self) -> int:

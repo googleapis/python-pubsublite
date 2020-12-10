@@ -49,6 +49,7 @@ DEFAULT_BATCHING_SETTINGS = BatchSettings(
     max_messages=1000,
     max_latency=0.05,  # 50 ms
 )
+DEFAULT_PARTITION_POLL_PERIOD = 600  # ten minutes
 
 
 def make_publisher(
@@ -108,7 +109,7 @@ def make_publisher(
         return DefaultRoutingPolicy(partition_count)
 
     return PartitionCountWatchingPublisher(
-        PartitionCountWatcherImpl(admin_client, topic, 10),
+        PartitionCountWatcherImpl(admin_client, topic, DEFAULT_PARTITION_POLL_PERIOD),
         publisher_factory,
         policy_factory,
     )

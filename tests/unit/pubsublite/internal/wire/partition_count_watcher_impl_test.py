@@ -53,7 +53,7 @@ def watcher(mock_admin, topic):
     def set_box():
         box.val = PartitionCountWatcherImpl(mock_admin, topic, 0.001)
 
-    # Initialize publisher on another thread with a different event loop.
+    # Initialize watcher on another thread with a different event loop.
     thread = threading.Thread(target=set_box)
     thread.start()
     thread.join()
