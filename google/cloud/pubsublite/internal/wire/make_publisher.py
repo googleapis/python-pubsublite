@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import AsyncIterator, Mapping, Optional, MutableMapping
+from typing import AsyncIterator, Mapping, Optional
 
 from google.cloud.pubsub_v1.types import BatchSettings
 
@@ -25,8 +25,13 @@ from google.cloud.pubsublite.internal.wire.gapic_connection import (
     GapicConnectionFactory,
 )
 from google.cloud.pubsublite.internal.wire.merge_metadata import merge_metadata
+from google.cloud.pubsublite.internal.wire.partition_count_watcher_impl import (
+    PartitionCountWatcherImpl,
+)
+from google.cloud.pubsublite.internal.wire.partition_count_watching_publisher import (
+    PartitionCountWatchingPublisher,
+)
 from google.cloud.pubsublite.internal.wire.publisher import Publisher
-from google.cloud.pubsublite.internal.wire.routing_publisher import RoutingPublisher
 from google.cloud.pubsublite.internal.wire.single_partition_publisher import (
     SinglePartitionPublisher,
 )
@@ -36,7 +41,6 @@ from google.cloud.pubsublite_v1 import InitialPublishRequest, PublishRequest
 from google.cloud.pubsublite_v1.services.publisher_service import async_client
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
-
 
 DEFAULT_BATCHING_SETTINGS = BatchSettings(
     max_bytes=(
@@ -87,21 +91,24 @@ def make_publisher(
         credentials=credentials, transport=transport, client_options=client_options
     )  # type: ignore
 
-    clients: MutableMapping[Partition, Publisher] = {}
-
-    partition_count = admin_client.get_topic_partition_count(topic)
-    for partition in range(partition_count):
-        partition = Partition(partition)
-
+    def publisher_factory(partition: Partition):
         def connection_factory(requests: AsyncIterator[PublishRequest]):
             final_metadata = merge_metadata(
                 metadata, topic_routing_metadata(topic, partition)
             )
             return client.publish(requests, metadata=list(final_metadata.items()))
 
-        clients[partition] = SinglePartitionPublisher(
+        return SinglePartitionPublisher(
             InitialPublishRequest(topic=str(topic), partition=partition.value),
             per_partition_batching_settings,
             GapicConnectionFactory(connection_factory),
         )
-    return RoutingPublisher(DefaultRoutingPolicy(partition_count), clients)
+
+    def policy_factory(partition_count: int):
+        return DefaultRoutingPolicy(partition_count)
+
+    return PartitionCountWatchingPublisher(
+        PartitionCountWatcherImpl(admin_client, topic, 10),
+        publisher_factory,
+        policy_factory,
+    )
