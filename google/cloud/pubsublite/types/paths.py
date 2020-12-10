@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import NamedTuple
+from typing import NamedTuple, Union
 
 from google.api_core.exceptions import InvalidArgument
 
@@ -20,23 +20,23 @@ from google.cloud.pubsublite.types.location import CloudZone
 
 
 class LocationPath(NamedTuple):
-    project_number: int
+    project: Union[int, str]
     location: CloudZone
 
     def __str__(self):
-        return f"projects/{self.project_number}/locations/{self.location}"
+        return f"projects/{self.project}/locations/{self.location}"
 
 
 class TopicPath(NamedTuple):
-    project_number: int
+    project: Union[int, str]
     location: CloudZone
     name: str
 
     def __str__(self):
-        return f"projects/{self.project_number}/locations/{self.location}/topics/{self.name}"
+        return f"projects/{self.project}/locations/{self.location}/topics/{self.name}"
 
     def to_location_path(self):
-        return LocationPath(self.project_number, self.location)
+        return LocationPath(self.project, self.location)
 
     @staticmethod
     def parse(to_parse: str) -> "TopicPath":
@@ -51,27 +51,19 @@ class TopicPath(NamedTuple):
                 "Topic path must be formatted like projects/{project_number}/locations/{location}/topics/{name} but was instead "
                 + to_parse
             )
-        project_number: int
-        try:
-            project_number = int(splits[1])
-        except ValueError:
-            raise InvalidArgument(
-                "Topic path must be formatted like projects/{project_number}/locations/{location}/topics/{name} but was instead "
-                + to_parse
-            )
-        return TopicPath(project_number, CloudZone.parse(splits[3]), splits[5])
+        return TopicPath(splits[1], CloudZone.parse(splits[3]), splits[5])
 
 
 class SubscriptionPath(NamedTuple):
-    project_number: int
+    project: Union[int, str]
     location: CloudZone
     name: str
 
     def __str__(self):
-        return f"projects/{self.project_number}/locations/{self.location}/subscriptions/{self.name}"
+        return f"projects/{self.project}/locations/{self.location}/subscriptions/{self.name}"
 
     def to_location_path(self):
-        return LocationPath(self.project_number, self.location)
+        return LocationPath(self.project, self.location)
 
     @staticmethod
     def parse(to_parse: str) -> "SubscriptionPath":
@@ -86,12 +78,4 @@ class SubscriptionPath(NamedTuple):
                 "Subscription path must be formatted like projects/{project_number}/locations/{location}/subscriptions/{name} but was instead "
                 + to_parse
             )
-        project_number: int
-        try:
-            project_number = int(splits[1])
-        except ValueError:
-            raise InvalidArgument(
-                "Subscription path must be formatted like projects/{project_number}/locations/{location}/subscriptions/{name} but was instead "
-                + to_parse
-            )
-        return SubscriptionPath(project_number, CloudZone.parse(splits[3]), splits[5])
+        return SubscriptionPath(splits[1], CloudZone.parse(splits[3]), splits[5])
