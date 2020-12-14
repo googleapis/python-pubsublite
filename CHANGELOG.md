@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-pubsublite/compare/v0.1.0...v0.2.0) (2020-12-14)
+
+
+### Features
+
+* Add support for increasing partitions in python ([#74](https://www.github.com/googleapis/python-pubsublite/issues/74)) ([e117a1a](https://www.github.com/googleapis/python-pubsublite/commit/e117a1aab8abe70f5b867395e3349053c7592aa7))
+
+
+### Bug Fixes
+
+* Fix type hints in paths now that string projects are allowed. ([#75](https://www.github.com/googleapis/python-pubsublite/issues/75)) ([b5ffc42](https://www.github.com/googleapis/python-pubsublite/commit/b5ffc423685596a309a7cee63f92c80ad5d74f07))
+
 ## 0.1.0 (2020-11-19)
 
 
