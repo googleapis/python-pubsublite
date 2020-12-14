@@ -73,7 +73,7 @@ def test_create_lite_topic_example(topic_path, capsys):
 
     topic_path_object = TopicPath.parse(topic_path)
     create_lite_topic_example.create_lite_topic(
-        topic_path_object.project_number,
+        topic_path_object.project,
         topic_path_object.location.region.name,
         topic_path_object.location.zone_id,
         topic_path_object.name,
@@ -88,7 +88,7 @@ def test_update_lite_topic_example(topic_path, capsys):
 
     topic_path_object = TopicPath.parse(topic_path)
     update_lite_topic_example.update_lite_topic(
-        topic_path_object.project_number,
+        topic_path_object.project,
         topic_path_object.location.region.name,
         topic_path_object.location.zone_id,
         topic_path_object.name,
@@ -102,7 +102,7 @@ def test_get_lite_topic_example(topic_path, capsys):
 
     topic_path_object = TopicPath.parse(topic_path)
     get_lite_topic_example.get_lite_topic(
-        topic_path_object.project_number,
+        topic_path_object.project,
         topic_path_object.location.region.name,
         topic_path_object.location.zone_id,
         topic_path_object.name,
@@ -116,7 +116,7 @@ def test_list_lite_topics_example(topic_path, capsys):
 
     topic_path_object = TopicPath.parse(topic_path)
     list_lite_topics_example.list_lite_topics(
-        topic_path_object.project_number,
+        topic_path_object.project,
         topic_path_object.location.region.name,
         topic_path_object.location.zone_id,
     )
@@ -131,7 +131,7 @@ def test_create_lite_subscription(subscription_path, topic_path, capsys):
     topic_path_object = TopicPath.parse(topic_path)
 
     create_lite_subscription_example.create_lite_subscription(
-        subscription_path_object.project_number,
+        subscription_path_object.project,
         subscription_path_object.location.region.name,
         subscription_path_object.location.zone_id,
         topic_path_object.name,
@@ -147,7 +147,7 @@ def test_update_lite_subscription_example(subscription_path, capsys):
     subscription_path_object = SubscriptionPath.parse(subscription_path)
 
     update_lite_subscription_example.update_lite_subscription(
-        subscription_path_object.project_number,
+        subscription_path_object.project,
         subscription_path_object.location.region.name,
         subscription_path_object.location.zone_id,
         subscription_path_object.name,
@@ -162,7 +162,7 @@ def test_get_lite_subscription(subscription_path, capsys):
     subscription_path_object = SubscriptionPath.parse(subscription_path)
 
     get_lite_subscription_example.get_lite_subscription(
-        subscription_path_object.project_number,
+        subscription_path_object.project,
         subscription_path_object.location.region.name,
         subscription_path_object.location.zone_id,
         subscription_path_object.name,
@@ -177,7 +177,7 @@ def test_list_lite_subscriptions_in_project(subscription_path, capsys):
     subscription_path_object = SubscriptionPath.parse(subscription_path)
 
     list_lite_subscriptions_in_project_example.list_lite_subscriptions_in_project(
-        subscription_path_object.project_number,
+        subscription_path_object.project,
         subscription_path_object.location.region.name,
         subscription_path_object.location.zone_id,
     )
@@ -192,7 +192,7 @@ def test_list_lite_subscriptions_in_topic(topic_path, subscription_path, capsys)
     topic_path_object = TopicPath.parse(topic_path)
 
     list_lite_subscriptions_in_topic_example.list_lite_subscriptions_in_topic(
-        subscription_path_object.project_number,
+        subscription_path_object.project,
         subscription_path_object.location.region.name,
         subscription_path_object.location.zone_id,
         topic_path_object.name,
@@ -267,7 +267,7 @@ def test_delete_lite_subscription_example(subscription_path, capsys):
     @backoff.on_exception(backoff.expo, AssertionError, max_time=MAX_TIME)
     def eventually_consistent_test():
         delete_lite_subscription_example.delete_lite_subscription(
-            subscription_path_object.project_number,
+            subscription_path_object.project,
             subscription_path_object.location.region.name,
             subscription_path_object.location.zone_id,
             subscription_path_object.name,
@@ -286,7 +286,7 @@ def test_delete_lite_topic_example(topic_path, capsys):
     @backoff.on_exception(backoff.expo, AssertionError, max_time=MAX_TIME)
     def eventually_consistent_test():
         delete_lite_topic_example.delete_lite_topic(
-            topic_path_object.project_number,
+            topic_path_object.project,
             topic_path_object.location.region.name,
             topic_path_object.location.zone_id,
             topic_path_object.name,
