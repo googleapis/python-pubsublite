@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import threading
 from asynctest.mock import MagicMock
 import pytest
 
@@ -23,7 +22,7 @@ from google.cloud.pubsublite.internal.wire.partition_count_watching_publisher im
 )
 from google.cloud.pubsublite.internal.wire.publisher import Publisher
 from google.cloud.pubsublite.internal.wire.routing_policy import RoutingPolicy
-from google.cloud.pubsublite.testing.test_utils import Box, wire_queues
+from google.cloud.pubsublite.testing.test_utils import wire_queues, run_on_thread
 from google.cloud.pubsublite.types import Partition
 from google.cloud.pubsublite_v1 import PubSubMessage
 from google.api_core.exceptions import GoogleAPICallError
@@ -49,18 +48,11 @@ def mock_watcher():
 
 @pytest.fixture()
 def publisher(mock_watcher, mock_publishers, mock_policies):
-    box = Box()
-
-    def set_box():
-        box.val = PartitionCountWatchingPublisher(
+    return run_on_thread(
+        lambda: PartitionCountWatchingPublisher(
             mock_watcher, lambda p: mock_publishers[p], lambda c: mock_policies[c]
         )
-
-    # Initialize publisher on another thread with a different event loop.
-    thread = threading.Thread(target=set_box)
-    thread.start()
-    thread.join()
-    return box.val
+    )
 
 
 async def test_init(mock_watcher, publisher):

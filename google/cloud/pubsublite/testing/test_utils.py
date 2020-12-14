@@ -13,7 +13,8 @@
 # limitations under the License.
 
 import asyncio
-from typing import List, Union, Any, TypeVar, Generic, Optional
+import threading
+from typing import List, Union, Any, TypeVar, Generic, Optional, Callable
 
 from asynctest import CoroutineMock
 
@@ -62,3 +63,16 @@ def wire_queues(mock: CoroutineMock) -> QueuePair:
 
 class Box(Generic[T]):
     val: Optional[T]
+
+
+def run_on_thread(func: Callable[[], T]) -> T:
+    box = Box()
+
+    def set_box():
+        box.val = func()
+
+    # Initialize watcher on another thread with a different event loop.
+    thread = threading.Thread(target=set_box)
+    thread.start()
+    thread.join()
+    return box.val

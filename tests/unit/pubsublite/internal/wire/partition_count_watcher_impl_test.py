@@ -13,7 +13,6 @@
 # limitations under the License.
 import asyncio
 import queue
-import threading
 from asynctest.mock import MagicMock
 import pytest
 
@@ -22,8 +21,8 @@ from google.cloud.pubsublite.internal.wire.partition_count_watcher_impl import (
     PartitionCountWatcherImpl,
 )
 from google.cloud.pubsublite.internal.wire.publisher import Publisher
-from google.cloud.pubsublite.testing.test_utils import Box
-from google.cloud.pubsublite.types import Partition, TopicPath, CloudZone, CloudRegion
+from google.cloud.pubsublite.testing.test_utils import run_on_thread
+from google.cloud.pubsublite.types import Partition, TopicPath
 from google.api_core.exceptions import GoogleAPICallError
 
 pytestmark = pytest.mark.asyncio
@@ -36,8 +35,7 @@ def mock_publishers():
 
 @pytest.fixture()
 def topic():
-    zone = CloudZone(region=CloudRegion("a"), zone_id="a")
-    return TopicPath(project_number=1, location=zone, name="c")
+    return TopicPath.parse("projects/1/locations/us-central1-a/topics/topic")
 
 
 @pytest.fixture()
@@ -48,16 +46,7 @@ def mock_admin():
 
 @pytest.fixture()
 def watcher(mock_admin, topic):
-    box = Box()
-
-    def set_box():
-        box.val = PartitionCountWatcherImpl(mock_admin, topic, 0.001)
-
-    # Initialize watcher on another thread with a different event loop.
-    thread = threading.Thread(target=set_box)
-    thread.start()
-    thread.join()
-    return box.val
+    return run_on_thread(lambda: PartitionCountWatcherImpl(mock_admin, topic, 0.001))
 
 
 async def test_init(watcher, mock_admin, topic):
