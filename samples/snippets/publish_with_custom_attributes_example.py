@@ -37,7 +37,6 @@ def publish_with_custom_attributes(project_number, cloud_region, zone_id, topic_
     # cloud_region = "us-central1"
     # zone_id = "a"
     # topic_id = "your-topic-id"
-    # num_messages = 100
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
