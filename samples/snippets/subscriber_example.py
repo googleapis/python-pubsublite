@@ -21,6 +21,10 @@ documentation at https://cloud.google.com/pubsub/lite/docs/subscribing.
 
 import argparse
 
+from google.pubsub_v1 import PubsubMessage
+
+from google.cloud.pubsublite.types import PublishMetadata
+
 
 def receive_messages(
     project_number, cloud_region, zone_id, subscription_id, timeout=90
@@ -54,9 +58,10 @@ def receive_messages(
         bytes_outstanding=10 * 1024 * 1024,
     )
 
-    def callback(message):
+    def callback(message: PubsubMessage):
         message_data = message.data.decode("utf-8")
-        print(f"Received {message_data} of ordering key {message.ordering_key}.")
+        metadata = PublishMetadata.decode(message.message_id)
+        print(f"Received {message_data} of ordering key {message.ordering_key} with id {metadata}.")
         message.ack()
 
     # SubscriberClient() must be used in a `with` block or have __enter__() called before use.
