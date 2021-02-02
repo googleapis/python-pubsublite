@@ -17,6 +17,11 @@ from uuid import uuid4
 
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
+
+from google.cloud.pubsublite.cloudpubsub.message_transforms import (
+    to_cps_subscribe_message,
+    add_id_to_cps_subscribe_transformer,
+)
 from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker_impl import (
     AckSetTrackerImpl,
@@ -28,10 +33,7 @@ from google.cloud.pubsublite.cloudpubsub.internal.assigning_subscriber import (
 from google.cloud.pubsublite.cloudpubsub.internal.single_partition_subscriber import (
     SinglePartitionSingleSubscriber,
 )
-from google.cloud.pubsublite.cloudpubsub.message_transformer import (
-    MessageTransformer,
-    DefaultMessageTransformer,
-)
+from google.cloud.pubsublite.cloudpubsub.message_transformer import MessageTransformer
 from google.cloud.pubsublite.cloudpubsub.nack_handler import (
     NackHandler,
     DefaultNackHandler,
@@ -149,7 +151,7 @@ def _make_partition_subscriber_factory(
             flow_control_settings,
             ack_set_tracker,
             nack_handler,
-            message_transformer,
+            add_id_to_cps_subscribe_transformer(partition, message_transformer),
         )
 
     return factory
@@ -200,7 +202,7 @@ def make_async_subscriber(
     if nack_handler is None:
         nack_handler = DefaultNackHandler()
     if message_transformer is None:
-        message_transformer = DefaultMessageTransformer()
+        message_transformer = MessageTransformer.of_callable(to_cps_subscribe_message)
     partition_subscriber_factory = _make_partition_subscriber_factory(
         subscription,
         transport,

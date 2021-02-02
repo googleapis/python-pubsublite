@@ -74,7 +74,7 @@ class SubscriberClient(SubscriberClientInterface, ConstructableFromServiceAccoun
         Args:
             executor: A ThreadPoolExecutor to use. The client will shut it down on __exit__. If provided a single threaded executor, messages will be ordered per-partition, but take care that the callback does not block for too long as it will impede forward progress on all subscriptions.
             nack_handler: A handler for when `nack()` is called. The default NackHandler raises an exception and fails the subscribe stream.
-            message_transformer: A transformer from Pub/Sub Lite messages to Cloud Pub/Sub messages.
+            message_transformer: A transformer from Pub/Sub Lite messages to Cloud Pub/Sub messages. This may not return a message with "message_id" set.
             credentials: If provided, the credentials to use when connecting.
             transport: The transport to use. Must correspond to an asyncio transport.
             client_options: The client options to use when connecting. If used, must explicitly set `api_endpoint`.
@@ -151,7 +151,7 @@ class AsyncSubscriberClient(
 
         Args:
             nack_handler: A handler for when `nack()` is called. The default NackHandler raises an exception and fails the subscribe stream.
-            message_transformer: A transformer from Pub/Sub Lite messages to Cloud Pub/Sub messages.
+            message_transformer: A transformer from Pub/Sub Lite messages to Cloud Pub/Sub messages. This may not return a message with "message_id" set.
             credentials: If provided, the credentials to use when connecting.
             transport: The transport to use. Must correspond to an asyncio transport.
             client_options: The client options to use when connecting. If used, must explicitly set `api_endpoint`.
