@@ -28,7 +28,7 @@ def publish_messages(project_number, cloud_region, zone_id, topic_id):
     from google.cloud.pubsublite.types import (
         CloudRegion,
         CloudZone,
-        PublishMetadata,
+        MessageMetadata,
         TopicPath,
     )
 
@@ -47,9 +47,9 @@ def publish_messages(project_number, cloud_region, zone_id, topic_id):
         api_future = publisher_client.publish(topic_path, data.encode("utf-8"))
         # result() blocks. To resolve API futures asynchronously, use add_done_callback().
         message_id = api_future.result()
-        publish_metadata = PublishMetadata.decode(message_id)
+        message_metadata = MessageMetadata.decode(message_id)
         print(
-            f"Published a message to partition {publish_metadata.partition.value} and offset {publish_metadata.cursor.offset}."
+            f"Published a message to partition {message_metadata.partition.value} and offset {message_metadata.cursor.offset}."
         )
     # [END pubsublite_quickstart_publisher]
 

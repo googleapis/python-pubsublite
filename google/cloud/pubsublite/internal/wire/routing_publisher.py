@@ -17,7 +17,7 @@ from typing import Mapping
 
 from google.cloud.pubsublite.internal.wire.publisher import Publisher
 from google.cloud.pubsublite.internal.wire.routing_policy import RoutingPolicy
-from google.cloud.pubsublite.types import Partition, PublishMetadata
+from google.cloud.pubsublite.types import Partition, MessageMetadata
 from google.cloud.pubsublite_v1 import PubSubMessage
 
 
@@ -42,7 +42,7 @@ class RoutingPublisher(Publisher):
         for publisher in self._publishers.values():
             await publisher.__aexit__(exc_type, exc_val, exc_tb)
 
-    async def publish(self, message: PubSubMessage) -> PublishMetadata:
+    async def publish(self, message: PubSubMessage) -> MessageMetadata:
         partition = self._routing_policy.route(message)
         assert partition in self._publishers
         return await self._publishers[partition].publish(message)

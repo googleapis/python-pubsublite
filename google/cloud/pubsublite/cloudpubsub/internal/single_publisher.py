@@ -38,7 +38,7 @@ class AsyncSinglePublisher(AsyncContextManager):
       **attrs: Additional attributes to send.
 
     Returns:
-      An ack id, which can be decoded using PublishMetadata.decode.
+      An ack id, which can be decoded using MessageMetadata.decode.
 
     Raises:
       GoogleApiCallError: On a permanent failure.
@@ -65,7 +65,7 @@ class SinglePublisher(ContextManager):
       **attrs: Additional attributes to send.
 
     Returns:
-      A future completed with an ack id, which can be decoded using PublishMetadata.decode.
+      A future completed with an ack id, which can be decoded using MessageMetadata.decode.
 
     Raises:
       GoogleApiCallError: On a permanent failure.

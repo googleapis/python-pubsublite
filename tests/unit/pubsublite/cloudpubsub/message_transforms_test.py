@@ -27,7 +27,7 @@ from google.cloud.pubsublite.cloudpubsub.message_transforms import (
     from_cps_publish_message,
     add_id_to_cps_subscribe_transformer,
 )
-from google.cloud.pubsublite.types import Partition, PublishMetadata
+from google.cloud.pubsublite.types import Partition, MessageMetadata
 from google.cloud.pubsublite_v1 import (
     SequencedMessage,
     Cursor,
@@ -166,7 +166,7 @@ def test_wrapped_successful():
                 Timestamp(seconds=55).ToDatetime()
             ),
         },
-        message_id=PublishMetadata(Partition(1), Cursor(offset=10)).encode(),
+        message_id=MessageMetadata(Partition(1), Cursor(offset=10)).encode(),
         publish_time=Timestamp(seconds=10),
     )
     result = wrapped.transform(

@@ -15,7 +15,7 @@
 from abc import abstractmethod
 from typing import AsyncContextManager
 from google.cloud.pubsublite_v1.types import PubSubMessage
-from google.cloud.pubsublite.types import PublishMetadata
+from google.cloud.pubsublite.types import MessageMetadata
 
 
 class Publisher(AsyncContextManager):
@@ -24,7 +24,7 @@ class Publisher(AsyncContextManager):
   """
 
     @abstractmethod
-    async def publish(self, message: PubSubMessage) -> PublishMetadata:
+    async def publish(self, message: PubSubMessage) -> MessageMetadata:
         """
     Publish the provided message.
 

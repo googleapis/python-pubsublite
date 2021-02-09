@@ -28,7 +28,7 @@ def publish_with_custom_attributes(project_number, cloud_region, zone_id, topic_
     from google.cloud.pubsublite.types import (
         CloudRegion,
         CloudZone,
-        PublishMetadata,
+        MessageMetadata,
         TopicPath,
     )
 
@@ -49,9 +49,9 @@ def publish_with_custom_attributes(project_number, cloud_region, zone_id, topic_
         )
         # result() blocks. To resolve api futures asynchronously, use add_done_callback().
         message_id = api_future.result()
-        publish_metadata = PublishMetadata.decode(message_id)
+        message_metadata = MessageMetadata.decode(message_id)
         print(
-            f"Published {data} to partition {publish_metadata.partition.value} and offset {publish_metadata.cursor.offset}."
+            f"Published {data} to partition {message_metadata.partition.value} and offset {message_metadata.cursor.offset}."
         )
 
     print(f"Finished publishing a message with custom attributes to {str(topic_path)}.")

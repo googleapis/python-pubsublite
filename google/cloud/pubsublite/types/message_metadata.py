@@ -19,7 +19,7 @@ from google.cloud.pubsublite_v1.types.common import Cursor
 from google.cloud.pubsublite.types.partition import Partition
 
 
-class PublishMetadata(NamedTuple):
+class MessageMetadata(NamedTuple):
     partition: Partition
     cursor: Cursor
 
@@ -29,9 +29,9 @@ class PublishMetadata(NamedTuple):
         )
 
     @staticmethod
-    def decode(source: str) -> "PublishMetadata":
+    def decode(source: str) -> "MessageMetadata":
         loaded = json.loads(source)
-        return PublishMetadata(
+        return MessageMetadata(
             partition=Partition(loaded["partition"]),
             cursor=Cursor(offset=loaded["offset"]),
         )

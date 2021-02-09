@@ -19,7 +19,7 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from google.pubsub_v1 import PubsubMessage
 
 from google.cloud.pubsublite.cloudpubsub import MessageTransformer
-from google.cloud.pubsublite.types import Partition, PublishMetadata
+from google.cloud.pubsublite.types import Partition, MessageMetadata
 from google.cloud.pubsublite_v1 import AttributeValues, SequencedMessage, PubSubMessage
 
 PUBSUB_LITE_EVENT_TIME = "x-goog-pubsublite-event-time"
@@ -63,7 +63,7 @@ def add_id_to_cps_subscribe_transformer(
             raise InvalidArgument(
                 "Message after transforming has the message_id field set."
             )
-        message.message_id = PublishMetadata(partition, source.cursor).encode()
+        message.message_id = MessageMetadata(partition, source.cursor).encode()
         return message
 
     return MessageTransformer.of_callable(add_id_to_message)
