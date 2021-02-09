@@ -19,12 +19,15 @@ from google.api_core.exceptions import InvalidArgument
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.pubsub_v1 import PubsubMessage
 
+from google.cloud.pubsublite.cloudpubsub import MessageTransformer
 from google.cloud.pubsublite.cloudpubsub.message_transforms import (
     PUBSUB_LITE_EVENT_TIME,
     to_cps_subscribe_message,
     encode_attribute_event_time,
     from_cps_publish_message,
+    add_id_to_cps_subscribe_transformer,
 )
+from google.cloud.pubsublite.types import Partition, PublishMetadata
 from google.cloud.pubsublite_v1 import (
     SequencedMessage,
     Cursor,
@@ -104,10 +107,69 @@ def test_subscribe_transform_correct():
                 Timestamp(seconds=55).ToDatetime()
             ),
         },
-        message_id=str(10),
         publish_time=Timestamp(seconds=10),
     )
     result = to_cps_subscribe_message(
+        SequencedMessage(
+            message=PubSubMessage(
+                data=b"xyz",
+                key=b"def",
+                event_time=Timestamp(seconds=55),
+                attributes={
+                    "x": AttributeValues(values=[b"abc"]),
+                    "y": AttributeValues(values=[b"abc"]),
+                },
+            ),
+            publish_time=Timestamp(seconds=10),
+            cursor=Cursor(offset=10),
+            size_bytes=10,
+        )
+    )
+    assert result == expected
+
+
+def test_wrapped_sets_id_error():
+    wrapped = add_id_to_cps_subscribe_transformer(
+        Partition(1),
+        MessageTransformer.of_callable(lambda x: PubsubMessage(message_id="a")),
+    )
+    with pytest.raises(InvalidArgument):
+        wrapped.transform(
+            SequencedMessage(
+                message=PubSubMessage(
+                    data=b"xyz",
+                    key=b"def",
+                    event_time=Timestamp(seconds=55),
+                    attributes={
+                        "x": AttributeValues(values=[b"abc"]),
+                        "y": AttributeValues(values=[b"abc"]),
+                    },
+                ),
+                publish_time=Timestamp(seconds=10),
+                cursor=Cursor(offset=10),
+                size_bytes=10,
+            )
+        )
+
+
+def test_wrapped_successful():
+    wrapped = add_id_to_cps_subscribe_transformer(
+        Partition(1), MessageTransformer.of_callable(to_cps_subscribe_message)
+    )
+    expected = PubsubMessage(
+        data=b"xyz",
+        ordering_key="def",
+        attributes={
+            "x": "abc",
+            "y": "abc",
+            PUBSUB_LITE_EVENT_TIME: encode_attribute_event_time(
+                Timestamp(seconds=55).ToDatetime()
+            ),
+        },
+        message_id=PublishMetadata(Partition(1), Cursor(offset=10)).encode(),
+        publish_time=Timestamp(seconds=10),
+    )
+    result = wrapped.transform(
         SequencedMessage(
             message=PubSubMessage(
                 data=b"xyz",

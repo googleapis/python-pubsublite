@@ -13,12 +13,11 @@
 # limitations under the License.
 
 from abc import ABC, abstractmethod
+from typing import Callable
 
 from google.pubsub_v1 import PubsubMessage
+from overrides import overrides
 
-from google.cloud.pubsublite.cloudpubsub.message_transforms import (
-    to_cps_subscribe_message,
-)
 from google.cloud.pubsublite_v1 import SequencedMessage
 
 
@@ -39,7 +38,11 @@ class MessageTransformer(ABC):
     """
         pass
 
+    @staticmethod
+    def of_callable(transformer: Callable[[SequencedMessage], PubsubMessage]):
+        class CallableTransformer(MessageTransformer):
+            @overrides
+            def transform(self, source: SequencedMessage) -> PubsubMessage:
+                return transformer(source)
 
-class DefaultMessageTransformer(MessageTransformer):
-    def transform(self, source: SequencedMessage) -> PubsubMessage:
-        return to_cps_subscribe_message(source)
+        return CallableTransformer()
