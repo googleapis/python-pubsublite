@@ -33,7 +33,7 @@ from google.cloud.pubsublite.internal.wire.serial_batcher import (
     SerialBatcher,
     BatchTester,
 )
-from google.cloud.pubsublite.types import Partition, PublishMetadata
+from google.cloud.pubsublite.types import Partition, MessageMetadata
 from google.cloud.pubsublite_v1.types import (
     PubSubMessage,
     Cursor,
@@ -159,11 +159,11 @@ class SinglePartitionPublisher(
             logging.debug(f"Failed publish on stream: {e}")
             self._fail_if_retrying_failed()
 
-    async def publish(self, message: PubSubMessage) -> PublishMetadata:
+    async def publish(self, message: PubSubMessage) -> MessageMetadata:
         cursor_future = self._batcher.add(message)
         if self._batcher.should_flush():
             await self._flush()
-        return PublishMetadata(self._partition, await cursor_future)
+        return MessageMetadata(self._partition, await cursor_future)
 
     async def reinitialize(
         self, connection: Connection[PublishRequest, PublishResponse]
