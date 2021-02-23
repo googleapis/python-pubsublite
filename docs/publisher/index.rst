@@ -45,8 +45,8 @@ A call to publish a message looks like:
 
     with PublisherClient() as publisher_client:
         data = "Hello world!"
-        api_future = publisher_client.publish(t
-            opic_path, data.encode("utf-8")
+        api_future = publisher_client.publish(
+            topic_path, data.encode("utf-8")
         )
         message_id = api_future.result()
 
