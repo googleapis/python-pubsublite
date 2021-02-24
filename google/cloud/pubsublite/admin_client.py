@@ -103,6 +103,7 @@ class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
     @overrides
     def create_subscription(self, subscription: Subscription) -> Subscription:
         return self._impl.create_subscription(subscription)
+
     @overrides
     def create_subscription(
         self, subscription: Subscription, location: AdminClientInterface.CursorLocation
