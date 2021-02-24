@@ -73,11 +73,17 @@ class AdminClientImpl(AdminClientInterface):
         return [SubscriptionPath.parse(x) for x in subscription_strings]
 
     def create_subscription(self, subscription: Subscription) -> Subscription:
+      return create_subscription(subscription, AdminClientInterface.CursorLocation.BEGINNING)
+
+    def create_subscription(
+        self, subscription: Subscription, location: AdminClientInterface.CursorLocation
+    ) -> Subscription:
         path = SubscriptionPath.parse(subscription.name)
         return self._underlying.create_subscription(
             parent=str(path.to_location_path()),
             subscription=subscription,
             subscription_id=path.name,
+            #skip_backlog=(location == AdminClientInterface.CursorLocation.END),
         )
 
     def get_subscription(self, subscription_path: SubscriptionPath) -> Subscription:
