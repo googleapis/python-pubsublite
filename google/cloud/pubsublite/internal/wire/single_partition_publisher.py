@@ -15,7 +15,7 @@
 import asyncio
 from typing import Optional, List, Iterable
 
-from absl import logging
+import logging
 from google.cloud.pubsub_v1.types import BatchSettings
 
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
@@ -42,6 +42,8 @@ from google.cloud.pubsublite_v1.types import (
     InitialPublishRequest,
 )
 from google.cloud.pubsublite.internal.wire.work_item import WorkItem
+
+_LOGGER = logging.getLogger(__name__)
 
 # Maximum bytes per batch at 3.5 MiB to avoid GRPC limit of 4 MiB
 _MAX_BYTES = int(3.5 * 1024 * 1024)
@@ -156,7 +158,7 @@ class SinglePartitionPublisher(
         try:
             await self._connection.write(aggregate)
         except GoogleAPICallError as e:
-            logging.debug(f"Failed publish on stream: {e}")
+            _LOGGER.debug(f"Failed publish on stream: {e}")
             self._fail_if_retrying_failed()
 
     async def publish(self, message: PubSubMessage) -> MessageMetadata:

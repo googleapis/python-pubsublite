@@ -15,7 +15,7 @@
 import asyncio
 from typing import Optional, List, Iterable
 
-from absl import logging
+import logging
 
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.committer import Committer
@@ -39,6 +39,9 @@ from google.cloud.pubsublite_v1.types import (
     InitialCommitCursorRequest,
 )
 from google.cloud.pubsublite.internal.wire.work_item import WorkItem
+
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class CommitterImpl(
@@ -149,7 +152,7 @@ class CommitterImpl(
         try:
             await self._connection.write(req)
         except GoogleAPICallError as e:
-            logging.debug(f"Failed commit on stream: {e}")
+            _LOGGER.debug(f"Failed commit on stream: {e}")
             self._fail_if_retrying_failed()
 
     async def commit(self, cursor: Cursor) -> None:
