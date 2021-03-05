@@ -15,7 +15,7 @@
 import asyncio
 from typing import Optional, Set
 
-from absl import logging
+import logging
 
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
@@ -35,6 +35,8 @@ from google.cloud.pubsublite_v1.types import (
     InitialPartitionAssignmentRequest,
     PartitionAssignmentAck,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 # Maximum bytes per batch at 3.5 MiB to avoid GRPC limit of 4 MiB
 _MAX_BYTES = int(3.5 * 1024 * 1024)
@@ -120,7 +122,7 @@ class AssignerImpl(
                 self._outstanding_assignment = False
             except GoogleAPICallError as e:
                 # If there is a failure to ack, keep going. The stream likely restarted.
-                logging.debug(
+                _LOGGER.debug(
                     f"Assignment ack attempt failed due to stream failure: {e}"
                 )
         return await self._connection.await_unless_failed(self._new_assignment.get())
