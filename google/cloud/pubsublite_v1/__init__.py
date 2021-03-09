@@ -72,6 +72,8 @@ from .types.subscriber import SeekRequest
 from .types.subscriber import SeekResponse
 from .types.subscriber import SubscribeRequest
 from .types.subscriber import SubscribeResponse
+from .types.topic_stats import ComputeHeadCursorRequest
+from .types.topic_stats import ComputeHeadCursorResponse
 from .types.topic_stats import ComputeMessageStatsRequest
 from .types.topic_stats import ComputeMessageStatsResponse
 
@@ -81,12 +83,13 @@ __all__ = (
     "AttributeValues",
     "CommitCursorRequest",
     "CommitCursorResponse",
+    "ComputeHeadCursorRequest",
+    "ComputeHeadCursorResponse",
     "ComputeMessageStatsRequest",
     "ComputeMessageStatsResponse",
     "CreateSubscriptionRequest",
     "CreateTopicRequest",
     "Cursor",
-    "CursorServiceClient",
     "DeleteSubscriptionRequest",
     "DeleteTopicRequest",
     "FlowControlRequest",
@@ -114,6 +117,7 @@ __all__ = (
     "PartitionAssignment",
     "PartitionAssignmentAck",
     "PartitionAssignmentRequest",
+    "PartitionAssignmentServiceClient",
     "PartitionCursor",
     "PubSubMessage",
     "PublishRequest",
@@ -135,5 +139,5 @@ __all__ = (
     "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
-    "PartitionAssignmentServiceClient",
+    "CursorServiceClient",
 )

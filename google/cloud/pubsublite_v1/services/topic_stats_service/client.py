@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.pubsublite_v1.types import common
 from google.cloud.pubsublite_v1.types import topic_stats
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
@@ -115,6 +116,22 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TopicStatsServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -126,7 +143,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            TopicStatsServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -234,10 +251,10 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.TopicStatsServiceTransport]): The
+            transport (Union[str, TopicStatsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -273,21 +290,17 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -330,7 +343,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -347,7 +360,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         given topic and partition.
 
         Args:
-            request (:class:`~.topic_stats.ComputeMessageStatsRequest`):
+            request (google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest):
                 The request object. Compute statistics about a range of
                 messages in a given topic and partition.
 
@@ -358,7 +371,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.topic_stats.ComputeMessageStatsResponse:
+            google.cloud.pubsublite_v1.types.ComputeMessageStatsResponse:
                 Response containing stats for
                 messages in the requested topic and
                 partition.
@@ -376,6 +389,64 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.compute_message_stats]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def compute_head_cursor(
+        self,
+        request: topic_stats.ComputeHeadCursorRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> topic_stats.ComputeHeadCursorResponse:
+        r"""Compute the head cursor for the partition.
+        The head cursor’s offset is guaranteed to be before or
+        equal to all messages which have not yet been
+        acknowledged to be published, and greater than the
+        offset of any message whose publish has already been
+        acknowledged. It is 0 if there have never been messages
+        on the partition.
+
+        Args:
+            request (google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest):
+                The request object. Compute the current head cursor for
+                a partition.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.pubsublite_v1.types.ComputeHeadCursorResponse:
+                Response containing the head cursor
+                for the requested topic and partition.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a topic_stats.ComputeHeadCursorRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, topic_stats.ComputeHeadCursorRequest):
+            request = topic_stats.ComputeHeadCursorRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.compute_head_cursor]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
