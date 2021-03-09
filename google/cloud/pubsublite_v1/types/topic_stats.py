@@ -44,9 +44,9 @@ class ComputeMessageStatsRequest(proto.Message):
         partition (int):
             Required. The partition for which we should
             compute message stats.
-        start_cursor (~.common.Cursor):
+        start_cursor (google.cloud.pubsublite_v1.types.Cursor):
             The inclusive start of the range.
-        end_cursor (~.common.Cursor):
+        end_cursor (google.cloud.pubsublite_v1.types.Cursor):
             The exclusive end of the range. The range is empty if
             end_cursor <= start_cursor. Specifying a start_cursor before
             the first message and an end_cursor after the last message
@@ -72,13 +72,13 @@ class ComputeMessageStatsResponse(proto.Message):
         message_bytes (int):
             The number of quota bytes accounted to these
             messages.
-        minimum_publish_time (~.timestamp.Timestamp):
+        minimum_publish_time (google.protobuf.timestamp_pb2.Timestamp):
             The minimum publish timestamp across these
             messages. Note that publish timestamps within a
             partition are not guaranteed to be non-
             decreasing. The timestamp will be unset if there
             are no messages.
-        minimum_event_time (~.timestamp.Timestamp):
+        minimum_event_time (google.protobuf.timestamp_pb2.Timestamp):
             The minimum event timestamp across these
             messages. For the purposes of this computation,
             if a message does not have an event time, we use
@@ -121,7 +121,7 @@ class ComputeHeadCursorResponse(proto.Message):
     and partition.
 
     Attributes:
-        head_cursor (~.common.Cursor):
+        head_cursor (google.cloud.pubsublite_v1.types.Cursor):
             The head cursor.
     """
 

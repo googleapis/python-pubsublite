@@ -79,6 +79,7 @@ class TopicStatsServiceAsyncClient:
         TopicStatsServiceClient.parse_common_location_path
     )
 
+    from_service_account_info = TopicStatsServiceClient.from_service_account_info
     from_service_account_file = TopicStatsServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -155,7 +156,7 @@ class TopicStatsServiceAsyncClient:
         given topic and partition.
 
         Args:
-            request (:class:`~.topic_stats.ComputeMessageStatsRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest`):
                 The request object. Compute statistics about a range of
                 messages in a given topic and partition.
 
@@ -166,7 +167,7 @@ class TopicStatsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.topic_stats.ComputeMessageStatsResponse:
+            google.cloud.pubsublite_v1.types.ComputeMessageStatsResponse:
                 Response containing stats for
                 messages in the requested topic and
                 partition.
@@ -225,7 +226,7 @@ class TopicStatsServiceAsyncClient:
         on the partition.
 
         Args:
-            request (:class:`~.topic_stats.ComputeHeadCursorRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest`):
                 The request object. Compute the current head cursor for
                 a partition.
 
@@ -236,7 +237,7 @@ class TopicStatsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.topic_stats.ComputeHeadCursorResponse:
+            google.cloud.pubsublite_v1.types.ComputeHeadCursorResponse:
                 Response containing the head cursor
                 for the requested topic and partition.
 

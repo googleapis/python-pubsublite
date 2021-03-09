@@ -11,8 +11,8 @@
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "ad3bb00ed7750cd0625b3a36e0e2eff29f778e4a",
-        "internalRef": "350067652"
+        "sha": "520682435235d9c503983a360a2090025aa47cd1",
+        "internalRef": "350246057"
       }
     },
     {
@@ -42,6 +42,7 @@
     }
   ],
   "generatedFiles": [
+    ".coveragerc",
     ".flake8",
     ".github/CONTRIBUTING.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
@@ -94,7 +95,13 @@
     "docs/_templates/layout.html",
     "docs/conf.py",
     "docs/multiprocessing.rst",
+    "docs/pubsublite_v1/admin_service.rst",
+    "docs/pubsublite_v1/cursor_service.rst",
+    "docs/pubsublite_v1/partition_assignment_service.rst",
+    "docs/pubsublite_v1/publisher_service.rst",
     "docs/pubsublite_v1/services.rst",
+    "docs/pubsublite_v1/subscriber_service.rst",
+    "docs/pubsublite_v1/topic_stats_service.rst",
     "docs/pubsublite_v1/types.rst",
     "google/cloud/pubsublite/py.typed",
     "google/cloud/pubsublite_v1/__init__.py",
