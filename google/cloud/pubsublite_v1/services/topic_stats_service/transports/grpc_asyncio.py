@@ -272,5 +272,40 @@ class TopicStatsServiceGrpcAsyncIOTransport(TopicStatsServiceTransport):
             )
         return self._stubs["compute_message_stats"]
 
+    @property
+    def compute_head_cursor(
+        self,
+    ) -> Callable[
+        [topic_stats.ComputeHeadCursorRequest],
+        Awaitable[topic_stats.ComputeHeadCursorResponse],
+    ]:
+        r"""Return a callable for the compute head cursor method over gRPC.
+
+        Compute the head cursor for the partition.
+        The head cursor’s offset is guaranteed to be before or
+        equal to all messages which have not yet been
+        acknowledged to be published, and greater than the
+        offset of any message whose publish has already been
+        acknowledged. It is 0 if there have never been messages
+        on the partition.
+
+        Returns:
+            Callable[[~.ComputeHeadCursorRequest],
+                    Awaitable[~.ComputeHeadCursorResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "compute_head_cursor" not in self._stubs:
+            self._stubs["compute_head_cursor"] = self.grpc_channel.unary_unary(
+                "/google.cloud.pubsublite.v1.TopicStatsService/ComputeHeadCursor",
+                request_serializer=topic_stats.ComputeHeadCursorRequest.serialize,
+                response_deserializer=topic_stats.ComputeHeadCursorResponse.deserialize,
+            )
+        return self._stubs["compute_head_cursor"]
+
 
 __all__ = ("TopicStatsServiceGrpcAsyncIOTransport",)

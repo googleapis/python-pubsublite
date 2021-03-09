@@ -72,6 +72,8 @@ from .types.subscriber import SeekRequest
 from .types.subscriber import SeekResponse
 from .types.subscriber import SubscribeRequest
 from .types.subscriber import SubscribeResponse
+from .types.topic_stats import ComputeHeadCursorRequest
+from .types.topic_stats import ComputeHeadCursorResponse
 from .types.topic_stats import ComputeMessageStatsRequest
 from .types.topic_stats import ComputeMessageStatsResponse
 
@@ -81,6 +83,8 @@ __all__ = (
     "AttributeValues",
     "CommitCursorRequest",
     "CommitCursorResponse",
+    "ComputeHeadCursorRequest",
+    "ComputeHeadCursorResponse",
     "ComputeMessageStatsRequest",
     "ComputeMessageStatsResponse",
     "CreateSubscriptionRequest",
@@ -119,6 +123,7 @@ __all__ = (
     "PubSubMessage",
     "PublishRequest",
     "PublishResponse",
+    "PublisherServiceClient",
     "SeekRequest",
     "SeekResponse",
     "SequencedCommitCursorRequest",
@@ -132,8 +137,7 @@ __all__ = (
     "Subscription",
     "Topic",
     "TopicPartitions",
-    "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
-    "PublisherServiceClient",
+    "TopicStatsServiceClient",
 )
