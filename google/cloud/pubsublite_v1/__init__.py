@@ -90,7 +90,6 @@ __all__ = (
     "CreateSubscriptionRequest",
     "CreateTopicRequest",
     "Cursor",
-    "CursorServiceClient",
     "DeleteSubscriptionRequest",
     "DeleteTopicRequest",
     "FlowControlRequest",
@@ -137,7 +136,8 @@ __all__ = (
     "Subscription",
     "Topic",
     "TopicPartitions",
+    "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
-    "TopicStatsServiceClient",
+    "CursorServiceClient",
 )
