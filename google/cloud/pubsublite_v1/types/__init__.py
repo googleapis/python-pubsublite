@@ -81,7 +81,6 @@ from .topic_stats import (
     ComputeMessageStatsResponse,
 )
 
-
 __all__ = (
     "AttributeValues",
     "PubSubMessage",
