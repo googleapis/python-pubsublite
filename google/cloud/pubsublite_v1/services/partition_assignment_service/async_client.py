@@ -89,9 +89,6 @@ class PartitionAssignmentServiceAsyncClient:
         PartitionAssignmentServiceClient.parse_common_location_path
     )
 
-    from_service_account_info = (
-        PartitionAssignmentServiceClient.from_service_account_info
-    )
     from_service_account_file = (
         PartitionAssignmentServiceClient.from_service_account_file
     )
@@ -178,7 +175,7 @@ class PartitionAssignmentServiceAsyncClient:
         the new assignment.
 
         Args:
-            requests (AsyncIterator[`google.cloud.pubsublite_v1.types.PartitionAssignmentRequest`]):
+            requests (AsyncIterator[`~.subscriber.PartitionAssignmentRequest`]):
                 The request object AsyncIterator. A request on the PartitionAssignment
                 stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -188,7 +185,7 @@ class PartitionAssignmentServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[google.cloud.pubsublite_v1.types.PartitionAssignment]:
+            AsyncIterable[~.subscriber.PartitionAssignment]:
                 PartitionAssignments should not race
                 with acknowledgements. There should be
                 exactly one unacknowledged

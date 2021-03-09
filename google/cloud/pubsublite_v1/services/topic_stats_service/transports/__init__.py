@@ -28,6 +28,7 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[TopicStatsServiceTra
 _transport_registry["grpc"] = TopicStatsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = TopicStatsServiceGrpcAsyncIOTransport
 
+
 __all__ = (
     "TopicStatsServiceTransport",
     "TopicStatsServiceGrpcTransport",

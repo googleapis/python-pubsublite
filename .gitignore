@@ -50,6 +50,7 @@ docs.metadata
 
 # Virtual environment
 env/
+venv/
 coverage.xml
 sponge_log.xml
 

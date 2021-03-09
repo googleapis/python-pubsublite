@@ -90,21 +90,8 @@ def test__get_default_mtls_endpoint():
     )
 
 
-def test_topic_stats_service_client_from_service_account_info():
-    creds = credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
-        factory.return_value = creds
-        info = {"valid": True}
-        client = TopicStatsServiceClient.from_service_account_info(info)
-        assert client.transport._credentials == creds
-
-        assert client.transport._host == "pubsublite.googleapis.com:443"
-
-
 @pytest.mark.parametrize(
-    "client_class", [TopicStatsServiceClient, TopicStatsServiceAsyncClient,]
+    "client_class", [TopicStatsServiceClient, TopicStatsServiceAsyncClient]
 )
 def test_topic_stats_service_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
@@ -123,10 +110,7 @@ def test_topic_stats_service_client_from_service_account_file(client_class):
 
 def test_topic_stats_service_client_get_transport_class():
     transport = TopicStatsServiceClient.get_transport_class()
-    available_transports = [
-        transports.TopicStatsServiceGrpcTransport,
-    ]
-    assert transport in available_transports
+    assert transport == transports.TopicStatsServiceGrpcTransport
 
     transport = TopicStatsServiceClient.get_transport_class("grpc")
     assert transport == transports.TopicStatsServiceGrpcTransport
@@ -611,136 +595,6 @@ async def test_compute_message_stats_field_headers_async():
     assert ("x-goog-request-params", "topic=topic/value",) in kw["metadata"]
 
 
-def test_compute_head_cursor(
-    transport: str = "grpc", request_type=topic_stats.ComputeHeadCursorRequest
-):
-    client = TopicStatsServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.compute_head_cursor), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = topic_stats.ComputeHeadCursorResponse()
-
-        response = client.compute_head_cursor(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == topic_stats.ComputeHeadCursorRequest()
-
-    # Establish that the response is the type that we expect.
-
-    assert isinstance(response, topic_stats.ComputeHeadCursorResponse)
-
-
-def test_compute_head_cursor_from_dict():
-    test_compute_head_cursor(request_type=dict)
-
-
-@pytest.mark.asyncio
-async def test_compute_head_cursor_async(
-    transport: str = "grpc_asyncio", request_type=topic_stats.ComputeHeadCursorRequest
-):
-    client = TopicStatsServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.compute_head_cursor), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            topic_stats.ComputeHeadCursorResponse()
-        )
-
-        response = await client.compute_head_cursor(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == topic_stats.ComputeHeadCursorRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, topic_stats.ComputeHeadCursorResponse)
-
-
-@pytest.mark.asyncio
-async def test_compute_head_cursor_async_from_dict():
-    await test_compute_head_cursor_async(request_type=dict)
-
-
-def test_compute_head_cursor_field_headers():
-    client = TopicStatsServiceClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = topic_stats.ComputeHeadCursorRequest()
-    request.topic = "topic/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.compute_head_cursor), "__call__"
-    ) as call:
-        call.return_value = topic_stats.ComputeHeadCursorResponse()
-
-        client.compute_head_cursor(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "topic=topic/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_compute_head_cursor_field_headers_async():
-    client = TopicStatsServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = topic_stats.ComputeHeadCursorRequest()
-    request.topic = "topic/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.compute_head_cursor), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            topic_stats.ComputeHeadCursorResponse()
-        )
-
-        await client.compute_head_cursor(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "topic=topic/value",) in kw["metadata"]
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.TopicStatsServiceGrpcTransport(
@@ -837,10 +691,7 @@ def test_topic_stats_service_base_transport():
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
-    methods = (
-        "compute_message_stats",
-        "compute_head_cursor",
-    )
+    methods = ("compute_message_stats",)
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
@@ -922,7 +773,7 @@ def test_topic_stats_service_host_with_port():
 
 
 def test_topic_stats_service_grpc_transport_channel():
-    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
+    channel = grpc.insecure_channel("http://localhost/")
 
     # Check that channel is used if provided.
     transport = transports.TopicStatsServiceGrpcTransport(
@@ -934,7 +785,7 @@ def test_topic_stats_service_grpc_transport_channel():
 
 
 def test_topic_stats_service_grpc_asyncio_transport_channel():
-    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
+    channel = aio.insecure_channel("http://localhost/")
 
     # Check that channel is used if provided.
     transport = transports.TopicStatsServiceGrpcAsyncIOTransport(
@@ -959,7 +810,7 @@ def test_topic_stats_service_transport_channel_mtls_with_client_cert_source(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
         with mock.patch.object(
-            transport_class, "create_channel"
+            transport_class, "create_channel", autospec=True
         ) as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
@@ -988,10 +839,6 @@ def test_topic_stats_service_transport_channel_mtls_with_client_cert_source(
                 scopes=("https://www.googleapis.com/auth/cloud-platform",),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
             assert transport._ssl_channel_credentials == mock_ssl_cred
@@ -1012,7 +859,7 @@ def test_topic_stats_service_transport_channel_mtls_with_adc(transport_class):
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
         with mock.patch.object(
-            transport_class, "create_channel"
+            transport_class, "create_channel", autospec=True
         ) as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
@@ -1033,10 +880,6 @@ def test_topic_stats_service_transport_channel_mtls_with_adc(transport_class):
                 scopes=("https://www.googleapis.com/auth/cloud-platform",),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
 

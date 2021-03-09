@@ -83,7 +83,6 @@ class SubscriberServiceAsyncClient:
         SubscriberServiceClient.parse_common_location_path
     )
 
-    from_service_account_info = SubscriberServiceClient.from_service_account_info
     from_service_account_file = SubscriberServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -160,7 +159,7 @@ class SubscriberServiceAsyncClient:
         messages.
 
         Args:
-            requests (AsyncIterator[`google.cloud.pubsublite_v1.types.SubscribeRequest`]):
+            requests (AsyncIterator[`~.subscriber.SubscribeRequest`]):
                 The request object AsyncIterator. A request sent from the client to
                 the server on a stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -170,7 +169,7 @@ class SubscriberServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[google.cloud.pubsublite_v1.types.SubscribeResponse]:
+            AsyncIterable[~.subscriber.SubscribeResponse]:
                 Response to SubscribeRequest.
         """
 
