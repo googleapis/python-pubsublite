@@ -32,11 +32,12 @@ library = gapic.py_library(
 )
 
 excludes = [
+    "docs/**/*",
+    "docs/index.rst",
+    "google/cloud/pubsublite/__init__.py",
+    "README.rst",
     "scripts/fixup*.py",  # new libraries do not need the keyword fixup script
     "setup.py",
-    "README.rst",
-    "docs/index.rst",
-    "google/cloud/pubsublite/__init__.py"
 ]
 s.move(library, excludes=excludes)
 
