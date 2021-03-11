@@ -90,7 +90,6 @@ __all__ = (
     "CreateSubscriptionRequest",
     "CreateTopicRequest",
     "Cursor",
-    "CursorServiceClient",
     "DeleteSubscriptionRequest",
     "DeleteTopicRequest",
     "FlowControlRequest",
@@ -123,6 +122,7 @@ __all__ = (
     "PubSubMessage",
     "PublishRequest",
     "PublishResponse",
+    "PublisherServiceClient",
     "SeekRequest",
     "SeekResponse",
     "SequencedCommitCursorRequest",
@@ -139,5 +139,5 @@ __all__ = (
     "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
-    "PublisherServiceClient",
+    "CursorServiceClient",
 )
