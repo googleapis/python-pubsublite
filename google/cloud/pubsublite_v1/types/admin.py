@@ -53,7 +53,7 @@ class CreateTopicRequest(proto.Message):
             Required. The parent location in which to create the topic.
             Structured like
             ``projects/{project_number}/locations/{location}``.
-        topic (~.common.Topic):
+        topic (google.cloud.pubsublite_v1.types.Topic):
             Required. Configuration of the topic to create. Its ``name``
             field is ignored.
         topic_id (str):
@@ -138,7 +138,7 @@ class ListTopicsResponse(proto.Message):
     r"""Response for ListTopics.
 
     Attributes:
-        topics (Sequence[~.common.Topic]):
+        topics (Sequence[google.cloud.pubsublite_v1.types.Topic]):
             The list of topic in the requested parent.
             The order of the topics is unspecified.
         next_page_token (str):
@@ -160,10 +160,10 @@ class UpdateTopicRequest(proto.Message):
     r"""Request for UpdateTopic.
 
     Attributes:
-        topic (~.common.Topic):
+        topic (google.cloud.pubsublite_v1.types.Topic):
             Required. The topic to update. Its ``name`` field must be
             populated.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. A mask specifying the topic fields
             to change.
     """
@@ -244,7 +244,7 @@ class CreateSubscriptionRequest(proto.Message):
             Required. The parent location in which to create the
             subscription. Structured like
             ``projects/{project_number}/locations/{location}``.
-        subscription (~.common.Subscription):
+        subscription (google.cloud.pubsublite_v1.types.Subscription):
             Required. Configuration of the subscription to create. Its
             ``name`` field is ignored.
         subscription_id (str):
@@ -306,7 +306,7 @@ class ListSubscriptionsResponse(proto.Message):
     r"""Response for ListSubscriptions.
 
     Attributes:
-        subscriptions (Sequence[~.common.Subscription]):
+        subscriptions (Sequence[google.cloud.pubsublite_v1.types.Subscription]):
             The list of subscriptions in the requested
             parent. The order of the subscriptions is
             unspecified.
@@ -331,10 +331,10 @@ class UpdateSubscriptionRequest(proto.Message):
     r"""Request for UpdateSubscription.
 
     Attributes:
-        subscription (~.common.Subscription):
+        subscription (google.cloud.pubsublite_v1.types.Subscription):
             Required. The subscription to update. Its ``name`` field
             must be populated. Topic field must not be populated.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. A mask specifying the subscription
             fields to change.
     """

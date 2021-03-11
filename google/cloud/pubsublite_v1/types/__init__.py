@@ -79,8 +79,9 @@ from .subscriber import (
 from .topic_stats import (
     ComputeMessageStatsRequest,
     ComputeMessageStatsResponse,
+    ComputeHeadCursorRequest,
+    ComputeHeadCursorResponse,
 )
-
 
 __all__ = (
     "AttributeValues",
@@ -136,4 +137,6 @@ __all__ = (
     "PartitionAssignmentRequest",
     "ComputeMessageStatsRequest",
     "ComputeMessageStatsResponse",
+    "ComputeHeadCursorRequest",
+    "ComputeHeadCursorResponse",
 )

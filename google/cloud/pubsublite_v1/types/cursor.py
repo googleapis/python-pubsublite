@@ -68,7 +68,7 @@ class SequencedCommitCursorRequest(proto.Message):
     SequencedCommitCursorRequests override outstanding ones.
 
     Attributes:
-        cursor (~.common.Cursor):
+        cursor (google.cloud.pubsublite_v1.types.Cursor):
             The new value for the committed cursor.
     """
 
@@ -94,9 +94,9 @@ class StreamingCommitCursorRequest(proto.Message):
     r"""A request sent from the client to the server on a stream.
 
     Attributes:
-        initial (~.gcp_cursor.InitialCommitCursorRequest):
+        initial (google.cloud.pubsublite_v1.types.InitialCommitCursorRequest):
             Initial request on the stream.
-        commit (~.gcp_cursor.SequencedCommitCursorRequest):
+        commit (google.cloud.pubsublite_v1.types.SequencedCommitCursorRequest):
             Request to commit a new cursor value.
     """
 
@@ -116,9 +116,9 @@ class StreamingCommitCursorResponse(proto.Message):
     r"""Response to a StreamingCommitCursorRequest.
 
     Attributes:
-        initial (~.gcp_cursor.InitialCommitCursorResponse):
+        initial (google.cloud.pubsublite_v1.types.InitialCommitCursorResponse):
             Initial response on the stream.
-        commit (~.gcp_cursor.SequencedCommitCursorResponse):
+        commit (google.cloud.pubsublite_v1.types.SequencedCommitCursorResponse):
             Response to committing a new cursor value.
     """
 
@@ -145,7 +145,7 @@ class CommitCursorRequest(proto.Message):
             The partition for which to update the cursor. Partitions are
             zero indexed, so ``partition`` must be in the range [0,
             topic.num_partitions).
-        cursor (~.common.Cursor):
+        cursor (google.cloud.pubsublite_v1.types.Cursor):
             The new value for the committed cursor.
     """
 
@@ -196,7 +196,7 @@ class PartitionCursor(proto.Message):
     Attributes:
         partition (int):
             The partition this is for.
-        cursor (~.common.Cursor):
+        cursor (google.cloud.pubsublite_v1.types.Cursor):
             The value of the cursor.
     """
 
@@ -209,7 +209,7 @@ class ListPartitionCursorsResponse(proto.Message):
     r"""Response for ListPartitionCursors
 
     Attributes:
-        partition_cursors (Sequence[~.gcp_cursor.PartitionCursor]):
+        partition_cursors (Sequence[google.cloud.pubsublite_v1.types.PartitionCursor]):
             The partition cursors from this request.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the

@@ -79,6 +79,7 @@ class AdminServiceAsyncClient:
         AdminServiceClient.parse_common_location_path
     )
 
+    from_service_account_info = AdminServiceClient.from_service_account_info
     from_service_account_file = AdminServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -157,18 +158,20 @@ class AdminServiceAsyncClient:
         r"""Creates a new topic.
 
         Args:
-            request (:class:`~.admin.CreateTopicRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.CreateTopicRequest`):
                 The request object. Request for CreateTopic.
             parent (:class:`str`):
                 Required. The parent location in which to create the
                 topic. Structured like
                 ``projects/{project_number}/locations/{location}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            topic (:class:`~.common.Topic`):
+            topic (:class:`google.cloud.pubsublite_v1.types.Topic`):
                 Required. Configuration of the topic to create. Its
                 ``name`` field is ignored.
+
                 This corresponds to the ``topic`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -177,6 +180,7 @@ class AdminServiceAsyncClient:
                 the final component of the topic's name.
 
                 This value is structured like: ``my-topic-name``.
+
                 This corresponds to the ``topic_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -188,7 +192,7 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.Topic:
+            google.cloud.pubsublite_v1.types.Topic:
                 Metadata about a topic resource.
         """
         # Create or coerce a protobuf request object.
@@ -245,11 +249,12 @@ class AdminServiceAsyncClient:
         r"""Returns the topic configuration.
 
         Args:
-            request (:class:`~.admin.GetTopicRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.GetTopicRequest`):
                 The request object. Request for GetTopic.
             name (:class:`str`):
                 Required. The name of the topic whose
                 configuration to return.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -261,7 +266,7 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.Topic:
+            google.cloud.pubsublite_v1.types.Topic:
                 Metadata about a topic resource.
         """
         # Create or coerce a protobuf request object.
@@ -315,11 +320,12 @@ class AdminServiceAsyncClient:
         topic.
 
         Args:
-            request (:class:`~.admin.GetTopicPartitionsRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.GetTopicPartitionsRequest`):
                 The request object. Request for GetTopicPartitions.
             name (:class:`str`):
                 Required. The topic whose partition
                 information to return.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -331,7 +337,7 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.admin.TopicPartitions:
+            google.cloud.pubsublite_v1.types.TopicPartitions:
                 Response for GetTopicPartitions.
         """
         # Create or coerce a protobuf request object.
@@ -384,12 +390,13 @@ class AdminServiceAsyncClient:
         r"""Returns the list of topics for the given project.
 
         Args:
-            request (:class:`~.admin.ListTopicsRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.ListTopicsRequest`):
                 The request object. Request for ListTopics.
             parent (:class:`str`):
                 Required. The parent whose topics are to be listed.
                 Structured like
                 ``projects/{project_number}/locations/{location}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -401,7 +408,7 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTopicsAsyncPager:
+            google.cloud.pubsublite_v1.services.admin_service.pagers.ListTopicsAsyncPager:
                 Response for ListTopics.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -465,17 +472,19 @@ class AdminServiceAsyncClient:
         r"""Updates properties of the specified topic.
 
         Args:
-            request (:class:`~.admin.UpdateTopicRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.UpdateTopicRequest`):
                 The request object. Request for UpdateTopic.
-            topic (:class:`~.common.Topic`):
+            topic (:class:`google.cloud.pubsublite_v1.types.Topic`):
                 Required. The topic to update. Its ``name`` field must
                 be populated.
+
                 This corresponds to the ``topic`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. A mask specifying the topic
                 fields to change.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -487,7 +496,7 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.Topic:
+            google.cloud.pubsublite_v1.types.Topic:
                 Metadata about a topic resource.
         """
         # Create or coerce a protobuf request object.
@@ -544,11 +553,12 @@ class AdminServiceAsyncClient:
         r"""Deletes the specified topic.
 
         Args:
-            request (:class:`~.admin.DeleteTopicRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.DeleteTopicRequest`):
                 The request object. Request for DeleteTopic.
             name (:class:`str`):
                 Required. The name of the topic to
                 delete.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -609,11 +619,12 @@ class AdminServiceAsyncClient:
         topic.
 
         Args:
-            request (:class:`~.admin.ListTopicSubscriptionsRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.ListTopicSubscriptionsRequest`):
                 The request object. Request for ListTopicSubscriptions.
             name (:class:`str`):
                 Required. The name of the topic whose
                 subscriptions to list.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -625,7 +636,7 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTopicSubscriptionsAsyncPager:
+            google.cloud.pubsublite_v1.services.admin_service.pagers.ListTopicSubscriptionsAsyncPager:
                 Response for ListTopicSubscriptions.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -690,18 +701,20 @@ class AdminServiceAsyncClient:
         r"""Creates a new subscription.
 
         Args:
-            request (:class:`~.admin.CreateSubscriptionRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.CreateSubscriptionRequest`):
                 The request object. Request for CreateSubscription.
             parent (:class:`str`):
                 Required. The parent location in which to create the
                 subscription. Structured like
                 ``projects/{project_number}/locations/{location}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            subscription (:class:`~.common.Subscription`):
+            subscription (:class:`google.cloud.pubsublite_v1.types.Subscription`):
                 Required. Configuration of the subscription to create.
                 Its ``name`` field is ignored.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -710,6 +723,7 @@ class AdminServiceAsyncClient:
                 become the final component of the subscription's name.
 
                 This value is structured like: ``my-sub-name``.
+
                 This corresponds to the ``subscription_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -721,7 +735,7 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.Subscription:
+            google.cloud.pubsublite_v1.types.Subscription:
                 Metadata about a subscription
                 resource.
 
@@ -780,12 +794,13 @@ class AdminServiceAsyncClient:
         r"""Returns the subscription configuration.
 
         Args:
-            request (:class:`~.admin.GetSubscriptionRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.GetSubscriptionRequest`):
                 The request object. Request for GetSubscription.
             name (:class:`str`):
                 Required. The name of the
                 subscription whose configuration to
                 return.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -797,7 +812,7 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.Subscription:
+            google.cloud.pubsublite_v1.types.Subscription:
                 Metadata about a subscription
                 resource.
 
@@ -853,12 +868,13 @@ class AdminServiceAsyncClient:
         project.
 
         Args:
-            request (:class:`~.admin.ListSubscriptionsRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.ListSubscriptionsRequest`):
                 The request object. Request for ListSubscriptions.
             parent (:class:`str`):
                 Required. The parent whose subscriptions are to be
                 listed. Structured like
                 ``projects/{project_number}/locations/{location}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -870,7 +886,7 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSubscriptionsAsyncPager:
+            google.cloud.pubsublite_v1.services.admin_service.pagers.ListSubscriptionsAsyncPager:
                 Response for ListSubscriptions.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -934,17 +950,19 @@ class AdminServiceAsyncClient:
         r"""Updates properties of the specified subscription.
 
         Args:
-            request (:class:`~.admin.UpdateSubscriptionRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.UpdateSubscriptionRequest`):
                 The request object. Request for UpdateSubscription.
-            subscription (:class:`~.common.Subscription`):
+            subscription (:class:`google.cloud.pubsublite_v1.types.Subscription`):
                 Required. The subscription to update. Its ``name`` field
                 must be populated. Topic field must not be populated.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. A mask specifying the
                 subscription fields to change.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -956,7 +974,7 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.Subscription:
+            google.cloud.pubsublite_v1.types.Subscription:
                 Metadata about a subscription
                 resource.
 
@@ -1015,11 +1033,12 @@ class AdminServiceAsyncClient:
         r"""Deletes the specified subscription.
 
         Args:
-            request (:class:`~.admin.DeleteSubscriptionRequest`):
+            request (:class:`google.cloud.pubsublite_v1.types.DeleteSubscriptionRequest`):
                 The request object. Request for DeleteSubscription.
             name (:class:`str`):
                 Required. The name of the
                 subscription to delete.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

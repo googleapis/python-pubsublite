@@ -24,7 +24,12 @@ from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.pubsublite.v1",
-    manifest={"ComputeMessageStatsRequest", "ComputeMessageStatsResponse",},
+    manifest={
+        "ComputeMessageStatsRequest",
+        "ComputeMessageStatsResponse",
+        "ComputeHeadCursorRequest",
+        "ComputeHeadCursorResponse",
+    },
 )
 
 
@@ -39,9 +44,9 @@ class ComputeMessageStatsRequest(proto.Message):
         partition (int):
             Required. The partition for which we should
             compute message stats.
-        start_cursor (~.common.Cursor):
+        start_cursor (google.cloud.pubsublite_v1.types.Cursor):
             The inclusive start of the range.
-        end_cursor (~.common.Cursor):
+        end_cursor (google.cloud.pubsublite_v1.types.Cursor):
             The exclusive end of the range. The range is empty if
             end_cursor <= start_cursor. Specifying a start_cursor before
             the first message and an end_cursor after the last message
@@ -67,12 +72,13 @@ class ComputeMessageStatsResponse(proto.Message):
         message_bytes (int):
             The number of quota bytes accounted to these
             messages.
-        minimum_publish_time (~.timestamp.Timestamp):
+        minimum_publish_time (google.protobuf.timestamp_pb2.Timestamp):
             The minimum publish timestamp across these
             messages. Note that publish timestamps within a
-            partition are non-decreasing. The timestamp will
-            be unset if there are no messages.
-        minimum_event_time (~.timestamp.Timestamp):
+            partition are not guaranteed to be non-
+            decreasing. The timestamp will be unset if there
+            are no messages.
+        minimum_event_time (google.protobuf.timestamp_pb2.Timestamp):
             The minimum event timestamp across these
             messages. For the purposes of this computation,
             if a message does not have an event time, we use
@@ -91,6 +97,35 @@ class ComputeMessageStatsResponse(proto.Message):
     minimum_event_time = proto.Field(
         proto.MESSAGE, number=4, message=timestamp.Timestamp,
     )
+
+
+class ComputeHeadCursorRequest(proto.Message):
+    r"""Compute the current head cursor for a partition.
+
+    Attributes:
+        topic (str):
+            Required. The topic for which we should
+            compute the head cursor.
+        partition (int):
+            Required. The partition for which we should
+            compute the head cursor.
+    """
+
+    topic = proto.Field(proto.STRING, number=1)
+
+    partition = proto.Field(proto.INT64, number=2)
+
+
+class ComputeHeadCursorResponse(proto.Message):
+    r"""Response containing the head cursor for the requested topic
+    and partition.
+
+    Attributes:
+        head_cursor (google.cloud.pubsublite_v1.types.Cursor):
+            The head cursor.
+    """
+
+    head_cursor = proto.Field(proto.MESSAGE, number=1, message=common.Cursor,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
