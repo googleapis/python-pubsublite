@@ -129,11 +129,11 @@ __all__ = (
     "StreamingCommitCursorResponse",
     "SubscribeRequest",
     "SubscribeResponse",
-    "SubscriberServiceClient",
     "Subscription",
     "Topic",
     "TopicPartitions",
+    "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
-    "TopicStatsServiceClient",
+    "SubscriberServiceClient",
 )
