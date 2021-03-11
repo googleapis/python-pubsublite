@@ -411,12 +411,12 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeHeadCursorResponse:
         r"""Compute the head cursor for the partition.
-        The head cursor’s offset is guaranteed to be before or
-        equal to all messages which have not yet been
-        acknowledged to be published, and greater than the
-        offset of any message whose publish has already been
-        acknowledged. It is 0 if there have never been messages
-        on the partition.
+        The head cursor's offset is guaranteed to be less than
+        or equal to all messages which have not yet been
+        acknowledged as published, and greater than the offset
+        of any message whose publish has already been
+        acknowledged. It is zero if there have never been
+        messages in the partition.
 
         Args:
             request (google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest):
