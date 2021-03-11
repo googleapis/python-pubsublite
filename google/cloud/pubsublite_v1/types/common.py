@@ -58,10 +58,10 @@ class PubSubMessage(proto.Message):
             the message is routed to an arbitrary partition.
         data (bytes):
             The payload of the message.
-        attributes (Sequence[~.common.PubSubMessage.AttributesEntry]):
+        attributes (Sequence[google.cloud.pubsublite_v1.types.PubSubMessage.AttributesEntry]):
             Optional attributes that can be used for
             message metadata/headers.
-        event_time (~.timestamp.Timestamp):
+        event_time (google.protobuf.timestamp_pb2.Timestamp):
             An optional, user-specified event time.
     """
 
@@ -94,13 +94,13 @@ class SequencedMessage(proto.Message):
     Lite system.
 
     Attributes:
-        cursor (~.common.Cursor):
+        cursor (google.cloud.pubsublite_v1.types.Cursor):
             The position of a message within the
             partition where it is stored.
-        publish_time (~.timestamp.Timestamp):
+        publish_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the message was received by the
             server when it was first published.
-        message (~.common.PubSubMessage):
+        message (google.cloud.pubsublite_v1.types.PubSubMessage):
             The user message.
         size_bytes (int):
             The size in bytes of this message for flow
@@ -123,9 +123,9 @@ class Topic(proto.Message):
         name (str):
             The name of the topic. Structured like:
             projects/{project_number}/locations/{location}/topics/{topic_id}
-        partition_config (~.common.Topic.PartitionConfig):
+        partition_config (google.cloud.pubsublite_v1.types.Topic.PartitionConfig):
             The settings for this topic's partitions.
-        retention_config (~.common.Topic.RetentionConfig):
+        retention_config (google.cloud.pubsublite_v1.types.Topic.RetentionConfig):
             The settings for this topic's message
             retention.
     """
@@ -147,7 +147,7 @@ class Topic(proto.Message):
                 this topic; a topic with ``scale`` of 2 and count of 10 is
                 charged for 20 partitions. This value must be in the range
                 [1,4].
-            capacity (~.common.Topic.PartitionConfig.Capacity):
+            capacity (google.cloud.pubsublite_v1.types.Topic.PartitionConfig.Capacity):
                 The capacity configuration.
         """
 
@@ -188,7 +188,7 @@ class Topic(proto.Message):
                 grows beyond this value, older messages will be dropped to
                 make room for newer ones, regardless of the value of
                 ``period``.
-            period (~.duration.Duration):
+            period (google.protobuf.duration_pb2.Duration):
                 How long a published message is retained. If unset, messages
                 will be retained as long as the bytes retained for each
                 partition is below ``per_partition_bytes``.
@@ -216,7 +216,7 @@ class Subscription(proto.Message):
             The name of the topic this subscription is attached to.
             Structured like:
             projects/{project_number}/locations/{location}/topics/{topic_id}
-        delivery_config (~.common.Subscription.DeliveryConfig):
+        delivery_config (google.cloud.pubsublite_v1.types.Subscription.DeliveryConfig):
             The settings for this subscription's message
             delivery.
     """
@@ -225,7 +225,7 @@ class Subscription(proto.Message):
         r"""The settings for a subscription's message delivery.
 
         Attributes:
-            delivery_requirement (~.common.Subscription.DeliveryConfig.DeliveryRequirement):
+            delivery_requirement (google.cloud.pubsublite_v1.types.Subscription.DeliveryConfig.DeliveryRequirement):
                 The DeliveryRequirement for this
                 subscription.
         """

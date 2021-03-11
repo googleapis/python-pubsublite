@@ -116,6 +116,22 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TopicStatsServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -127,7 +143,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            TopicStatsServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -235,10 +251,10 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.TopicStatsServiceTransport]): The
+            transport (Union[str, TopicStatsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -348,7 +364,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         given topic and partition.
 
         Args:
-            request (:class:`~.topic_stats.ComputeMessageStatsRequest`):
+            request (google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest):
                 The request object. Compute statistics about a range of
                 messages in a given topic and partition.
 
@@ -359,7 +375,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.topic_stats.ComputeMessageStatsResponse:
+            google.cloud.pubsublite_v1.types.ComputeMessageStatsResponse:
                 Response containing stats for
                 messages in the requested topic and
                 partition.
@@ -407,7 +423,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         on the partition.
 
         Args:
-            request (:class:`~.topic_stats.ComputeHeadCursorRequest`):
+            request (google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest):
                 The request object. Compute the current head cursor for
                 a partition.
 
@@ -418,7 +434,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.topic_stats.ComputeHeadCursorResponse:
+            google.cloud.pubsublite_v1.types.ComputeHeadCursorResponse:
                 Response containing the head cursor
                 for the requested topic and partition.
 

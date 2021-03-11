@@ -24,7 +24,7 @@ class ListPartitionCursorsPager:
     """A pager for iterating through ``list_partition_cursors`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cursor.ListPartitionCursorsResponse` object, and
+    :class:`google.cloud.pubsublite_v1.types.ListPartitionCursorsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``partition_cursors`` field.
 
@@ -33,7 +33,7 @@ class ListPartitionCursorsPager:
     through the ``partition_cursors`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cursor.ListPartitionCursorsResponse`
+    All the usual :class:`google.cloud.pubsublite_v1.types.ListPartitionCursorsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +51,9 @@ class ListPartitionCursorsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cursor.ListPartitionCursorsRequest`):
+            request (google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest):
                 The initial request object.
-            response (:class:`~.cursor.ListPartitionCursorsResponse`):
+            response (google.cloud.pubsublite_v1.types.ListPartitionCursorsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +86,7 @@ class ListPartitionCursorsAsyncPager:
     """A pager for iterating through ``list_partition_cursors`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cursor.ListPartitionCursorsResponse` object, and
+    :class:`google.cloud.pubsublite_v1.types.ListPartitionCursorsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``partition_cursors`` field.
 
@@ -95,7 +95,7 @@ class ListPartitionCursorsAsyncPager:
     through the ``partition_cursors`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cursor.ListPartitionCursorsResponse`
+    All the usual :class:`google.cloud.pubsublite_v1.types.ListPartitionCursorsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +113,9 @@ class ListPartitionCursorsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cursor.ListPartitionCursorsRequest`):
+            request (google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest):
                 The initial request object.
-            response (:class:`~.cursor.ListPartitionCursorsResponse`):
+            response (google.cloud.pubsublite_v1.types.ListPartitionCursorsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
