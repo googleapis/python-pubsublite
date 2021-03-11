@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-pubsublite.git",
-        "sha": "7861ffea044dce4dc142dfd52d39dd64b9e79d65"
+        "sha": "f913ed00453d3fe924e75caccd2486b24e12a6ae"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d5fc0bcf9ea9789c5b0e3154a9e3b29e5cea6116"
+        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d5fc0bcf9ea9789c5b0e3154a9e3b29e5cea6116"
+        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
       }
     }
   ],
@@ -48,6 +48,7 @@
     ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/ISSUE_TEMPLATE/support_request.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
     ".github/release-please.yml",
     ".github/snippet-bot.yml",
     ".gitignore",
@@ -85,6 +86,7 @@
     ".kokoro/test-samples.sh",
     ".kokoro/trampoline.sh",
     ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
     ".trampolinerc",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.rst",
@@ -93,9 +95,6 @@
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/conf.py",
-    "docs/multiprocessing.rst",
-    "docs/pubsublite_v1/services.rst",
-    "docs/pubsublite_v1/types.rst",
     "google/cloud/pubsublite/py.typed",
     "google/cloud/pubsublite_v1/__init__.py",
     "google/cloud/pubsublite_v1/py.typed",
