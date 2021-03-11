@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-pubsublite.git",
-        "sha": "f913ed00453d3fe924e75caccd2486b24e12a6ae"
+        "sha": "7861ffea044dce4dc142dfd52d39dd64b9e79d65"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "9ecdacc9a00e1dd443b11bf10215d6e7648db8a7",
-        "internalRef": "352563582"
+        "sha": "6a69c750c3f01a69017662395f90515bbf1fe1ff",
+        "internalRef": "342721036"
       }
     },
     {
@@ -42,7 +42,6 @@
     }
   ],
   "generatedFiles": [
-    ".coveragerc",
     ".flake8",
     ".github/CONTRIBUTING.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
@@ -94,6 +93,9 @@
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/conf.py",
+    "docs/multiprocessing.rst",
+    "docs/pubsublite_v1/services.rst",
+    "docs/pubsublite_v1/types.rst",
     "google/cloud/pubsublite/py.typed",
     "google/cloud/pubsublite_v1/__init__.py",
     "google/cloud/pubsublite_v1/py.typed",

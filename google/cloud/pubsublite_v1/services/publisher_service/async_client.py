@@ -86,7 +86,6 @@ class PublisherServiceAsyncClient:
         PublisherServiceClient.parse_common_location_path
     )
 
-    from_service_account_info = PublisherServiceClient.from_service_account_info
     from_service_account_file = PublisherServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -170,7 +169,7 @@ class PublisherServiceAsyncClient:
         they are sent by the client on a given stream.
 
         Args:
-            requests (AsyncIterator[`google.cloud.pubsublite_v1.types.PublishRequest`]):
+            requests (AsyncIterator[`~.publisher.PublishRequest`]):
                 The request object AsyncIterator. Request sent from the client to the
                 server on a stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -180,7 +179,7 @@ class PublisherServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[google.cloud.pubsublite_v1.types.PublishResponse]:
+            AsyncIterable[~.publisher.PublishResponse]:
                 Response to a PublishRequest.
         """
 

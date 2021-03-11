@@ -64,7 +64,7 @@ class InitialSubscribeResponse(proto.Message):
     r"""Response to an InitialSubscribeRequest.
 
     Attributes:
-        cursor (google.cloud.pubsublite_v1.types.Cursor):
+        cursor (~.common.Cursor):
             The cursor from which the subscriber will
             start receiving messages once flow control
             tokens become available.
@@ -81,9 +81,9 @@ class SeekRequest(proto.Message):
     stream. SeekRequests past head result in stream breakage.
 
     Attributes:
-        named_target (google.cloud.pubsublite_v1.types.SeekRequest.NamedTarget):
+        named_target (~.subscriber.SeekRequest.NamedTarget):
             A named target.
-        cursor (google.cloud.pubsublite_v1.types.Cursor):
+        cursor (~.common.Cursor):
             A target corresponding to the cursor,
             pointing to anywhere in the topic partition.
     """
@@ -107,7 +107,7 @@ class SeekResponse(proto.Message):
     r"""Response to a SeekRequest.
 
     Attributes:
-        cursor (google.cloud.pubsublite_v1.types.Cursor):
+        cursor (~.common.Cursor):
             The new delivery cursor for the current
             stream.
     """
@@ -137,12 +137,12 @@ class SubscribeRequest(proto.Message):
     r"""A request sent from the client to the server on a stream.
 
     Attributes:
-        initial (google.cloud.pubsublite_v1.types.InitialSubscribeRequest):
+        initial (~.subscriber.InitialSubscribeRequest):
             Initial request on the stream.
-        seek (google.cloud.pubsublite_v1.types.SeekRequest):
+        seek (~.subscriber.SeekRequest):
             Request to update the stream's delivery
             cursor.
-        flow_control (google.cloud.pubsublite_v1.types.FlowControlRequest):
+        flow_control (~.subscriber.FlowControlRequest):
             Request to grant tokens to the server,
     """
 
@@ -167,7 +167,7 @@ class MessageResponse(proto.Message):
        available to the server.
 
     Attributes:
-        messages (Sequence[google.cloud.pubsublite_v1.types.SequencedMessage]):
+        messages (Sequence[~.common.SequencedMessage]):
             Messages from the topic partition.
     """
 
@@ -180,11 +180,11 @@ class SubscribeResponse(proto.Message):
     r"""Response to SubscribeRequest.
 
     Attributes:
-        initial (google.cloud.pubsublite_v1.types.InitialSubscribeResponse):
+        initial (~.subscriber.InitialSubscribeResponse):
             Initial response on the stream.
-        seek (google.cloud.pubsublite_v1.types.SeekResponse):
+        seek (~.subscriber.SeekResponse):
             Response to a Seek operation.
-        messages (google.cloud.pubsublite_v1.types.MessageResponse):
+        messages (~.subscriber.MessageResponse):
             Response containing messages from the topic
             partition.
     """
@@ -258,9 +258,9 @@ class PartitionAssignmentRequest(proto.Message):
     r"""A request on the PartitionAssignment stream.
 
     Attributes:
-        initial (google.cloud.pubsublite_v1.types.InitialPartitionAssignmentRequest):
+        initial (~.subscriber.InitialPartitionAssignmentRequest):
             Initial request on the stream.
-        ack (google.cloud.pubsublite_v1.types.PartitionAssignmentAck):
+        ack (~.subscriber.PartitionAssignmentAck):
             Acknowledgement of a partition assignment.
     """
 

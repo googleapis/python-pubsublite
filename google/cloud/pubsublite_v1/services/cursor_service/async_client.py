@@ -89,7 +89,6 @@ class CursorServiceAsyncClient:
         CursorServiceClient.parse_common_location_path
     )
 
-    from_service_account_info = CursorServiceClient.from_service_account_info
     from_service_account_file = CursorServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -166,7 +165,7 @@ class CursorServiceAsyncClient:
         committed cursors.
 
         Args:
-            requests (AsyncIterator[`google.cloud.pubsublite_v1.types.StreamingCommitCursorRequest`]):
+            requests (AsyncIterator[`~.cursor.StreamingCommitCursorRequest`]):
                 The request object AsyncIterator. A request sent from the client to
                 the server on a stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -176,7 +175,7 @@ class CursorServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[google.cloud.pubsublite_v1.types.StreamingCommitCursorResponse]:
+            AsyncIterable[~.cursor.StreamingCommitCursorResponse]:
                 Response to a
                 StreamingCommitCursorRequest.
 
@@ -207,7 +206,7 @@ class CursorServiceAsyncClient:
         r"""Updates the committed cursor.
 
         Args:
-            request (:class:`google.cloud.pubsublite_v1.types.CommitCursorRequest`):
+            request (:class:`~.cursor.CommitCursorRequest`):
                 The request object. Request for CommitCursor.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -217,7 +216,7 @@ class CursorServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.pubsublite_v1.types.CommitCursorResponse:
+            ~.cursor.CommitCursorResponse:
                 Response for CommitCursor.
         """
         # Create or coerce a protobuf request object.
@@ -263,13 +262,12 @@ class CursorServiceAsyncClient:
         subscription.
 
         Args:
-            request (:class:`google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest`):
+            request (:class:`~.cursor.ListPartitionCursorsRequest`):
                 The request object. Request for ListPartitionCursors.
             parent (:class:`str`):
                 Required. The subscription for which to retrieve
                 cursors. Structured like
                 ``projects/{project_number}/locations/{location}/subscriptions/{subscription_id}``.
-
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -281,7 +279,7 @@ class CursorServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.pubsublite_v1.services.cursor_service.pagers.ListPartitionCursorsAsyncPager:
+            ~.pagers.ListPartitionCursorsAsyncPager:
                 Response for ListPartitionCursors
                 Iterating over this object will yield
                 results and resolve additional pages

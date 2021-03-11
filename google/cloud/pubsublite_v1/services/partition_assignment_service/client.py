@@ -124,22 +124,6 @@ class PartitionAssignmentServiceClient(metaclass=PartitionAssignmentServiceClien
     )
 
     @classmethod
-    def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
-
-        Args:
-            info (dict): The service account private key info.
-            args: Additional arguments to pass to the constructor.
-            kwargs: Additional arguments to pass to the constructor.
-
-        Returns:
-            PartitionAssignmentServiceClient: The constructed client.
-        """
-        credentials = service_account.Credentials.from_service_account_info(info)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
-
-    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -151,7 +135,7 @@ class PartitionAssignmentServiceClient(metaclass=PartitionAssignmentServiceClien
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            PartitionAssignmentServiceClient: The constructed client.
+            {@api.name}: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -243,10 +227,10 @@ class PartitionAssignmentServiceClient(metaclass=PartitionAssignmentServiceClien
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, PartitionAssignmentServiceTransport]): The
+            transport (Union[str, ~.PartitionAssignmentServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (client_options_lib.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -363,7 +347,7 @@ class PartitionAssignmentServiceClient(metaclass=PartitionAssignmentServiceClien
         the new assignment.
 
         Args:
-            requests (Iterator[google.cloud.pubsublite_v1.types.PartitionAssignmentRequest]):
+            requests (Iterator[`~.subscriber.PartitionAssignmentRequest`]):
                 The request object iterator. A request on the PartitionAssignment
                 stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -373,7 +357,7 @@ class PartitionAssignmentServiceClient(metaclass=PartitionAssignmentServiceClien
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[google.cloud.pubsublite_v1.types.PartitionAssignment]:
+            Iterable[~.subscriber.PartitionAssignment]:
                 PartitionAssignments should not race
                 with acknowledgements. There should be
                 exactly one unacknowledged

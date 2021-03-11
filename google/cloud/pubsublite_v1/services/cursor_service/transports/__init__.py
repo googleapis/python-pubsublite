@@ -28,6 +28,7 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[CursorServiceTranspo
 _transport_registry["grpc"] = CursorServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = CursorServiceGrpcAsyncIOTransport
 
+
 __all__ = (
     "CursorServiceTransport",
     "CursorServiceGrpcTransport",

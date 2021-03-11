@@ -30,6 +30,7 @@ _transport_registry = (
 _transport_registry["grpc"] = PartitionAssignmentServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = PartitionAssignmentServiceGrpcAsyncIOTransport
 
+
 __all__ = (
     "PartitionAssignmentServiceTransport",
     "PartitionAssignmentServiceGrpcTransport",

@@ -123,22 +123,6 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
     )
 
     @classmethod
-    def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
-
-        Args:
-            info (dict): The service account private key info.
-            args: Additional arguments to pass to the constructor.
-            kwargs: Additional arguments to pass to the constructor.
-
-        Returns:
-            CursorServiceClient: The constructed client.
-        """
-        credentials = service_account.Credentials.from_service_account_info(info)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
-
-    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -150,7 +134,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            CursorServiceClient: The constructed client.
+            {@api.name}: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -258,10 +242,10 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, CursorServiceTransport]): The
+            transport (Union[str, ~.CursorServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (client_options_lib.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -371,7 +355,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         committed cursors.
 
         Args:
-            requests (Iterator[google.cloud.pubsublite_v1.types.StreamingCommitCursorRequest]):
+            requests (Iterator[`~.cursor.StreamingCommitCursorRequest`]):
                 The request object iterator. A request sent from the client to
                 the server on a stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -381,7 +365,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[google.cloud.pubsublite_v1.types.StreamingCommitCursorResponse]:
+            Iterable[~.cursor.StreamingCommitCursorResponse]:
                 Response to a
                 StreamingCommitCursorRequest.
 
@@ -408,7 +392,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         r"""Updates the committed cursor.
 
         Args:
-            request (google.cloud.pubsublite_v1.types.CommitCursorRequest):
+            request (:class:`~.cursor.CommitCursorRequest`):
                 The request object. Request for CommitCursor.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -418,7 +402,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.pubsublite_v1.types.CommitCursorResponse:
+            ~.cursor.CommitCursorResponse:
                 Response for CommitCursor.
         """
         # Create or coerce a protobuf request object.
@@ -453,13 +437,12 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         subscription.
 
         Args:
-            request (google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest):
+            request (:class:`~.cursor.ListPartitionCursorsRequest`):
                 The request object. Request for ListPartitionCursors.
-            parent (str):
+            parent (:class:`str`):
                 Required. The subscription for which to retrieve
                 cursors. Structured like
                 ``projects/{project_number}/locations/{location}/subscriptions/{subscription_id}``.
-
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -471,7 +454,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.pubsublite_v1.services.cursor_service.pagers.ListPartitionCursorsPager:
+            ~.pagers.ListPartitionCursorsPager:
                 Response for ListPartitionCursors
                 Iterating over this object will yield
                 results and resolve additional pages
