@@ -123,6 +123,7 @@ __all__ = (
     "PubSubMessage",
     "PublishRequest",
     "PublishResponse",
+    "PublisherServiceClient",
     "SeekRequest",
     "SeekResponse",
     "SequencedCommitCursorRequest",
@@ -136,8 +137,7 @@ __all__ = (
     "Subscription",
     "Topic",
     "TopicPartitions",
-    "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
-    "PublisherServiceClient",
+    "TopicStatsServiceClient",
 )
