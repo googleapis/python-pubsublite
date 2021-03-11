@@ -90,15 +90,19 @@ def test__get_default_mtls_endpoint():
     )
 
 
-def test_topic_stats_service_client_from_service_account_info():
+@pytest.mark.parametrize(
+    "client_class", [TopicStatsServiceClient, TopicStatsServiceAsyncClient,]
+)
+def test_topic_stats_service_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = TopicStatsServiceClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "pubsublite.googleapis.com:443"
 
@@ -114,9 +118,11 @@ def test_topic_stats_service_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "pubsublite.googleapis.com:443"
 
@@ -493,6 +499,24 @@ def test_compute_message_stats_from_dict():
     test_compute_message_stats(request_type=dict)
 
 
+def test_compute_message_stats_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TopicStatsServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_message_stats), "__call__"
+    ) as call:
+        client.compute_message_stats()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == topic_stats.ComputeMessageStatsRequest()
+
+
 @pytest.mark.asyncio
 async def test_compute_message_stats_async(
     transport: str = "grpc_asyncio", request_type=topic_stats.ComputeMessageStatsRequest
@@ -627,6 +651,24 @@ def test_compute_head_cursor(
 
 def test_compute_head_cursor_from_dict():
     test_compute_head_cursor(request_type=dict)
+
+
+def test_compute_head_cursor_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TopicStatsServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_head_cursor), "__call__"
+    ) as call:
+        client.compute_head_cursor()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == topic_stats.ComputeHeadCursorRequest()
 
 
 @pytest.mark.asyncio
