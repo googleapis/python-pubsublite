@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-pubsublite.git",
-        "sha": "7861ffea044dce4dc142dfd52d39dd64b9e79d65"
+        "sha": "f913ed00453d3fe924e75caccd2486b24e12a6ae"
       }
     },
     {
@@ -93,9 +93,6 @@
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/conf.py",
-    "docs/multiprocessing.rst",
-    "docs/pubsublite_v1/services.rst",
-    "docs/pubsublite_v1/types.rst",
     "google/cloud/pubsublite/py.typed",
     "google/cloud/pubsublite_v1/__init__.py",
     "google/cloud/pubsublite_v1/py.typed",
