@@ -90,6 +90,7 @@ __all__ = (
     "CreateSubscriptionRequest",
     "CreateTopicRequest",
     "Cursor",
+    "CursorServiceClient",
     "DeleteSubscriptionRequest",
     "DeleteTopicRequest",
     "FlowControlRequest",
@@ -117,7 +118,6 @@ __all__ = (
     "PartitionAssignment",
     "PartitionAssignmentAck",
     "PartitionAssignmentRequest",
-    "PartitionAssignmentServiceClient",
     "PartitionCursor",
     "PubSubMessage",
     "PublishRequest",
@@ -139,5 +139,5 @@ __all__ = (
     "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
-    "CursorServiceClient",
+    "PartitionAssignmentServiceClient",
 )
