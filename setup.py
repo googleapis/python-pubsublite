@@ -19,7 +19,7 @@ import io
 import os
 import setuptools  # type: ignore
 
-version = "0.2.0"
+version = "0.3.0"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -29,7 +29,6 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 
 dependencies = [
     "google-api-core >= 1.22.0",
-    "absl-py >= 0.9.0",
     "proto-plus >= 0.4.0",
     "google-cloud-pubsub >= 2.1.0",
     "grpcio",

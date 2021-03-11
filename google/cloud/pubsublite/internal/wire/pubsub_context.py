@@ -15,9 +15,12 @@
 from base64 import b64encode
 from typing import Mapping, Optional, NamedTuple
 
-from absl import logging
+import logging
 import pkg_resources
 from google.protobuf import struct_pb2
+
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class _Semver(NamedTuple):
@@ -29,7 +32,7 @@ def _version() -> _Semver:
     version = pkg_resources.get_distribution("google-cloud-pubsublite").version
     splits = version.split(".")
     if len(splits) != 3:
-        logging.info(f"Failed to extract semver from {version}.")
+        _LOGGER.info(f"Failed to extract semver from {version}.")
         return _Semver(0, 0)
     return _Semver(int(splits[0]), int(splits[1]))
 

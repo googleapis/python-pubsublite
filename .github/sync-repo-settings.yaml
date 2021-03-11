@@ -30,6 +30,10 @@ branchProtectionRules:
   requiredStatusCheckContexts:
     - 'Kokoro'
     - 'cla/google'
+    - 'Samples - Python 3.6'
+    - 'Samples - Python 3.7'
+    - 'Samples - Python 3.8'
+    - 'Samples - Lint'
 # List of explicit permissions to add (additive only)
 permissionRules:
     # Team slug to add to repository permissions

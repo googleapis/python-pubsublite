@@ -32,11 +32,12 @@ library = gapic.py_library(
 )
 
 excludes = [
+    "docs/pubsublite_v1",  # generated GAPIC docs should be ignored
+    "docs/index.rst",
+    "google/cloud/pubsublite/__init__.py",
+    "README.rst",
     "scripts/fixup*.py",  # new libraries do not need the keyword fixup script
     "setup.py",
-    "README.rst",
-    "docs/index.rst",
-    "google/cloud/pubsublite/__init__.py"
 ]
 s.move(library, excludes=excludes)
 
@@ -46,15 +47,17 @@ s.move(library, excludes=excludes)
 templated_files = common.py_library(
     cov_level=70,
     microgenerator=True,
-    system_test_external_dependencies = ['asynctest'],
-    unit_test_external_dependencies = ['asynctest'],
+    system_test_external_dependencies=["asynctest"],
+    unit_test_external_dependencies=["asynctest"],
 )
 
 s.move(
-    templated_files, excludes=[".coveragerc"]
-)  # the microgenerator has a good coveragerc file
+    templated_files, 
+    excludes=[
+        ".coveragerc", # the microgenerator has a good coveragerc file
+        "docs/multiprocessing.rst",  # exclude multiprocessing note
+    ]
+)  
 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
-
-
