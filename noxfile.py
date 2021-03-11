@@ -84,6 +84,7 @@ def default(session):
     session.install("asyncmock", "pytest-asyncio")
 
     session.install("mock", "pytest", "pytest-cov", "asynctest")
+
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
