@@ -59,7 +59,7 @@ class MessagePublishRequest(proto.Message):
     r"""Request to publish messages to the topic.
 
     Attributes:
-        messages (Sequence[~.common.PubSubMessage]):
+        messages (Sequence[google.cloud.pubsublite_v1.types.PubSubMessage]):
             The messages to publish.
     """
 
@@ -72,7 +72,7 @@ class MessagePublishResponse(proto.Message):
     r"""Response to a MessagePublishRequest.
 
     Attributes:
-        start_cursor (~.common.Cursor):
+        start_cursor (google.cloud.pubsublite_v1.types.Cursor):
             The cursor of the first published message in
             the batch. The cursors for any remaining
             messages in the batch are guaranteed to be
@@ -86,9 +86,9 @@ class PublishRequest(proto.Message):
     r"""Request sent from the client to the server on a stream.
 
     Attributes:
-        initial_request (~.publisher.InitialPublishRequest):
+        initial_request (google.cloud.pubsublite_v1.types.InitialPublishRequest):
             Initial request on the stream.
-        message_publish_request (~.publisher.MessagePublishRequest):
+        message_publish_request (google.cloud.pubsublite_v1.types.MessagePublishRequest):
             Request to publish messages.
     """
 
@@ -105,9 +105,9 @@ class PublishResponse(proto.Message):
     r"""Response to a PublishRequest.
 
     Attributes:
-        initial_response (~.publisher.InitialPublishResponse):
+        initial_response (google.cloud.pubsublite_v1.types.InitialPublishResponse):
             Initial response on the stream.
-        message_response (~.publisher.MessagePublishResponse):
+        message_response (google.cloud.pubsublite_v1.types.MessagePublishResponse):
             Response to publishing messages.
     """
 

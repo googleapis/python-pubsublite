@@ -123,6 +123,9 @@ class TopicStatsServiceTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.compute_head_cursor: gapic_v1.method.wrap_method(
+                self.compute_head_cursor, default_timeout=None, client_info=client_info,
+            ),
         }
 
     @property
@@ -133,6 +136,18 @@ class TopicStatsServiceTransport(abc.ABC):
         typing.Union[
             topic_stats.ComputeMessageStatsResponse,
             typing.Awaitable[topic_stats.ComputeMessageStatsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def compute_head_cursor(
+        self,
+    ) -> typing.Callable[
+        [topic_stats.ComputeHeadCursorRequest],
+        typing.Union[
+            topic_stats.ComputeHeadCursorResponse,
+            typing.Awaitable[topic_stats.ComputeHeadCursorResponse],
         ],
     ]:
         raise NotImplementedError()
