@@ -24,7 +24,12 @@ from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.pubsublite.v1",
-    manifest={"ComputeMessageStatsRequest", "ComputeMessageStatsResponse",},
+    manifest={
+        "ComputeMessageStatsRequest",
+        "ComputeMessageStatsResponse",
+        "ComputeHeadCursorRequest",
+        "ComputeHeadCursorResponse",
+    },
 )
 
 
@@ -70,8 +75,9 @@ class ComputeMessageStatsResponse(proto.Message):
         minimum_publish_time (~.timestamp.Timestamp):
             The minimum publish timestamp across these
             messages. Note that publish timestamps within a
-            partition are non-decreasing. The timestamp will
-            be unset if there are no messages.
+            partition are not guaranteed to be non-
+            decreasing. The timestamp will be unset if there
+            are no messages.
         minimum_event_time (~.timestamp.Timestamp):
             The minimum event timestamp across these
             messages. For the purposes of this computation,
@@ -91,6 +97,35 @@ class ComputeMessageStatsResponse(proto.Message):
     minimum_event_time = proto.Field(
         proto.MESSAGE, number=4, message=timestamp.Timestamp,
     )
+
+
+class ComputeHeadCursorRequest(proto.Message):
+    r"""Compute the current head cursor for a partition.
+
+    Attributes:
+        topic (str):
+            Required. The topic for which we should
+            compute the head cursor.
+        partition (int):
+            Required. The partition for which we should
+            compute the head cursor.
+    """
+
+    topic = proto.Field(proto.STRING, number=1)
+
+    partition = proto.Field(proto.INT64, number=2)
+
+
+class ComputeHeadCursorResponse(proto.Message):
+    r"""Response containing the head cursor for the requested topic
+    and partition.
+
+    Attributes:
+        head_cursor (~.common.Cursor):
+            The head cursor.
+    """
+
+    head_cursor = proto.Field(proto.MESSAGE, number=1, message=common.Cursor,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

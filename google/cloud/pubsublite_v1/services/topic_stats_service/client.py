@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.pubsublite_v1.types import common
 from google.cloud.pubsublite_v1.types import topic_stats
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
@@ -376,6 +377,64 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.compute_message_stats]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def compute_head_cursor(
+        self,
+        request: topic_stats.ComputeHeadCursorRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> topic_stats.ComputeHeadCursorResponse:
+        r"""Compute the head cursor for the partition.
+        The head cursor’s offset is guaranteed to be before or
+        equal to all messages which have not yet been
+        acknowledged to be published, and greater than the
+        offset of any message whose publish has already been
+        acknowledged. It is 0 if there have never been messages
+        on the partition.
+
+        Args:
+            request (:class:`~.topic_stats.ComputeHeadCursorRequest`):
+                The request object. Compute the current head cursor for
+                a partition.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.topic_stats.ComputeHeadCursorResponse:
+                Response containing the head cursor
+                for the requested topic and partition.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a topic_stats.ComputeHeadCursorRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, topic_stats.ComputeHeadCursorRequest):
+            request = topic_stats.ComputeHeadCursorRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.compute_head_cursor]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
