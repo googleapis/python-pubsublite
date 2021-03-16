@@ -102,12 +102,10 @@ class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
         return self._impl.list_topic_subscriptions(topic_path)
 
     @overrides
-    def create_subscription(self, subscription: Subscription) -> Subscription:
-        return self._impl.create_subscription(subscription)
-
-    @overrides
-    def create_subscription_at_offset(
-        self, subscription: Subscription, starting_offset: OffsetLocation
+    def create_subscription(
+        self,
+        subscription: Subscription,
+        starting_offset: OffsetLocation = OffsetLocation.END,
     ) -> Subscription:
         return self._impl.create_subscription(subscription, starting_offset)
 

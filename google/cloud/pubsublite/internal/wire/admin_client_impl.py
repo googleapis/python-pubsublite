@@ -73,11 +73,10 @@ class AdminClientImpl(AdminClientInterface):
         ]
         return [SubscriptionPath.parse(x) for x in subscription_strings]
 
-    def create_subscription(self, subscription: Subscription) -> Subscription:
-        return self.create_subscription_at_offset(subscription, OffsetLocation.END)
-
-    def create_subscription_at_offset(
-        self, subscription: Subscription, starting_offset: OffsetLocation
+    def create_subscription(
+        self,
+        subscription: Subscription,
+        starting_offset: OffsetLocation = OffsetLocation.END,
     ) -> Subscription:
         path = SubscriptionPath.parse(subscription.name)
         return self._underlying.create_subscription(

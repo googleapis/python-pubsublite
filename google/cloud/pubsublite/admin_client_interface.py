@@ -64,14 +64,14 @@ class AdminClientInterface(ABC):
         """List the subscriptions that exist for a given topic."""
 
     @abstractmethod
-    def create_subscription(self, subscription: Subscription) -> Subscription:
-        """Create a subscription, returns the created subscription."""
-
-    @abstractmethod
-    def create_subscription_at_offset(
-        self, subscription: Subscription, starting_offset: OffsetLocation
+    def create_subscription(
+        self,
+        subscription: Subscription,
+        starting_offset: OffsetLocation = OffsetLocation.END,
     ) -> Subscription:
-        """Create a subscription at the given starting offset, returns the created subscription."""
+        """Create a subscription, returns the created subscription. By default
+        a subscription will only receive messages published after the
+        subscription was created."""
 
     @abstractmethod
     def get_subscription(self, subscription_path: SubscriptionPath) -> Subscription:
