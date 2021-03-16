@@ -30,6 +30,7 @@ from google.cloud.pubsublite.types import (
     SubscriptionPath,
     LocationPath,
     TopicPath,
+    OffsetLocation,
 )
 from google.cloud.pubsublite_v1 import AdminServiceClient, Subscription, Topic
 
@@ -103,6 +104,12 @@ class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
     @overrides
     def create_subscription(self, subscription: Subscription) -> Subscription:
         return self._impl.create_subscription(subscription)
+
+    @overrides
+    def create_subscription_at_offset(
+        self, subscription: Subscription, starting_offset: OffsetLocation
+    ) -> Subscription:
+        return self._impl.create_subscription(subscription, starting_offset)
 
     @overrides
     def get_subscription(self, subscription_path: SubscriptionPath) -> Subscription:

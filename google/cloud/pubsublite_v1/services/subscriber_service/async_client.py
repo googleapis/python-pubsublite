@@ -83,7 +83,36 @@ class SubscriberServiceAsyncClient:
         SubscriberServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = SubscriberServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SubscriberServiceAsyncClient: The constructed client.
+        """
+        return SubscriberServiceClient.from_service_account_info.__func__(SubscriberServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SubscriberServiceAsyncClient: The constructed client.
+        """
+        return SubscriberServiceClient.from_service_account_file.__func__(SubscriberServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -159,7 +188,7 @@ class SubscriberServiceAsyncClient:
         messages.
 
         Args:
-            requests (AsyncIterator[`~.subscriber.SubscribeRequest`]):
+            requests (AsyncIterator[`google.cloud.pubsublite_v1.types.SubscribeRequest`]):
                 The request object AsyncIterator. A request sent from the client to
                 the server on a stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -169,7 +198,7 @@ class SubscriberServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.subscriber.SubscribeResponse]:
+            AsyncIterable[google.cloud.pubsublite_v1.types.SubscribeResponse]:
                 Response to SubscribeRequest.
         """
 

@@ -20,6 +20,7 @@ from google.cloud.pubsublite.types import (
     TopicPath,
     LocationPath,
     SubscriptionPath,
+    OffsetLocation,
 )
 from google.cloud.pubsublite_v1 import Topic, Subscription
 from google.protobuf.field_mask_pb2 import FieldMask
@@ -65,6 +66,12 @@ class AdminClientInterface(ABC):
     @abstractmethod
     def create_subscription(self, subscription: Subscription) -> Subscription:
         """Create a subscription, returns the created subscription."""
+
+    @abstractmethod
+    def create_subscription_at_offset(
+        self, subscription: Subscription, starting_offset: OffsetLocation
+    ) -> Subscription:
+        """Create a subscription at the given starting offset, returns the created subscription."""
 
     @abstractmethod
     def get_subscription(self, subscription_path: SubscriptionPath) -> Subscription:

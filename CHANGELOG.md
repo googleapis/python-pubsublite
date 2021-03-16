@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-pubsublite/compare/v0.2.0...v0.3.0) (2021-03-09)
+
+
+### Features
+
+* Make message_id encode a PublishMetadata which includes the partition ([#90](https://www.github.com/googleapis/python-pubsublite/issues/90)) ([85944e7](https://www.github.com/googleapis/python-pubsublite/commit/85944e786908d0dd240b6c099cfd969045eecbd3))
+
+
+### Bug Fixes
+
+* remove absl dependency ([#94](https://www.github.com/googleapis/python-pubsublite/issues/94)) ([0573edb](https://www.github.com/googleapis/python-pubsublite/commit/0573edbefdf2612b2006b51829d1fd8fa636de3c))
+* Rename PublishMetadata to MessageMetadata ([#92](https://www.github.com/googleapis/python-pubsublite/issues/92)) ([a744441](https://www.github.com/googleapis/python-pubsublite/commit/a7444418d1e2822bcaee0da3aa036c6a14cf8a6e))
+
+
+### Documentation
+
+* remove multiprocessing note ([#82](https://www.github.com/googleapis/python-pubsublite/issues/82)) ([a8d26a1](https://www.github.com/googleapis/python-pubsublite/commit/a8d26a11db301d7dc7a97ff7f7405d82bcf0a910))
+
 ## [0.2.0](https://www.github.com/googleapis/python-pubsublite/compare/v0.1.0...v0.2.0) (2020-12-14)
 
 
