@@ -11,23 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-from .location import CloudRegion, CloudZone
-from .partition import Partition
-from .paths import LocationPath, TopicPath, SubscriptionPath
-from .message_metadata import MessageMetadata
-from .flow_control_settings import FlowControlSettings, DISABLED_FLOW_CONTROL
-from .offset_location import OffsetLocation
+import enum
 
-__all__ = (
-    "CloudRegion",
-    "CloudZone",
-    "FlowControlSettings",
-    "LocationPath",
-    "Partition",
-    "MessageMetadata",
-    "SubscriptionPath",
-    "TopicPath",
-    "OffsetLocation",
-)
+
+class OffsetLocation(enum.Enum):
+    """The location of an offset with respect to the message backlog."""
+
+    BEGINNING = 0
+    END = 1

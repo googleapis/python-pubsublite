@@ -22,6 +22,7 @@ from google.cloud.pubsublite.types import (
     SubscriptionPath,
     LocationPath,
     TopicPath,
+    OffsetLocation,
 )
 from google.cloud.pubsublite_v1 import (
     Subscription,
@@ -73,17 +74,17 @@ class AdminClientImpl(AdminClientInterface):
         return [SubscriptionPath.parse(x) for x in subscription_strings]
 
     def create_subscription(self, subscription: Subscription) -> Subscription:
-      return create_subscription(subscription, AdminClientInterface.CursorLocation.BEGINNING)
+        return self.create_subscription_at_offset(subscription, OffsetLocation.END)
 
-    def create_subscription(
-        self, subscription: Subscription, location: AdminClientInterface.CursorLocation
+    def create_subscription_at_offset(
+        self, subscription: Subscription, starting_offset: OffsetLocation
     ) -> Subscription:
         path = SubscriptionPath.parse(subscription.name)
         return self._underlying.create_subscription(
             parent=str(path.to_location_path()),
             subscription=subscription,
             subscription_id=path.name,
-            #skip_backlog=(location == AdminClientInterface.CursorLocation.END),
+            skip_backlog=(starting_offset == OffsetLocation.END),
         )
 
     def get_subscription(self, subscription_path: SubscriptionPath) -> Subscription:

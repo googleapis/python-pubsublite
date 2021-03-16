@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import proto
-
 from abc import ABC, abstractmethod
 from typing import List
 
@@ -22,6 +20,7 @@ from google.cloud.pubsublite.types import (
     TopicPath,
     LocationPath,
     SubscriptionPath,
+    OffsetLocation,
 )
 from google.cloud.pubsublite_v1 import Topic, Subscription
 from google.protobuf.field_mask_pb2 import FieldMask
@@ -31,11 +30,6 @@ class AdminClientInterface(ABC):
     """
     An admin client for Pub/Sub Lite. Only operates on a single region.
     """
-
-    class CursorLocation(proto.Enum):
-        """The location of the cursor on a subscription."""
-        BEGINNING = 0
-        END = 1
 
     @abstractmethod
     def region(self) -> CloudRegion:
@@ -74,10 +68,10 @@ class AdminClientInterface(ABC):
         """Create a subscription, returns the created subscription."""
 
     @abstractmethod
-    def create_subscription(
-        self, subscription: Subscription, location: CursorLocation
+    def create_subscription_at_offset(
+        self, subscription: Subscription, starting_offset: OffsetLocation
     ) -> Subscription:
-        """Create a subscription at the given location, returns the created subscription."""
+        """Create a subscription at the given starting offset, returns the created subscription."""
 
     @abstractmethod
     def get_subscription(self, subscription_path: SubscriptionPath) -> Subscription:
