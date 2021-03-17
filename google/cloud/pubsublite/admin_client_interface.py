@@ -20,7 +20,7 @@ from google.cloud.pubsublite.types import (
     TopicPath,
     LocationPath,
     SubscriptionPath,
-    OffsetLocation,
+    BacklogLocation,
 )
 from google.cloud.pubsublite_v1 import Topic, Subscription
 from google.protobuf.field_mask_pb2 import FieldMask
@@ -67,7 +67,7 @@ class AdminClientInterface(ABC):
     def create_subscription(
         self,
         subscription: Subscription,
-        starting_offset: OffsetLocation = OffsetLocation.END,
+        starting_offset: BacklogLocation = BacklogLocation.END,
     ) -> Subscription:
         """Create a subscription, returns the created subscription. By default
         a subscription will only receive messages published after the
