@@ -11,23 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-from .location import CloudRegion, CloudZone
-from .partition import Partition
-from .paths import LocationPath, TopicPath, SubscriptionPath
-from .message_metadata import MessageMetadata
-from .flow_control_settings import FlowControlSettings, DISABLED_FLOW_CONTROL
-from .backlog_location import BacklogLocation
+import enum
 
-__all__ = (
-    "CloudRegion",
-    "CloudZone",
-    "FlowControlSettings",
-    "LocationPath",
-    "Partition",
-    "MessageMetadata",
-    "SubscriptionPath",
-    "TopicPath",
-    "BacklogLocation",
-)
+
+class BacklogLocation(enum.Enum):
+    """A location with respect to the message backlog. BEGINNING refers to the
+    location of the oldest retained message. END refers to the location past
+    all currently published messages, skipping the entire message backlog."""
+
+    BEGINNING = 0
+    END = 1

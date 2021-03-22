@@ -30,6 +30,7 @@ from google.cloud.pubsublite.types import (
     SubscriptionPath,
     LocationPath,
     TopicPath,
+    BacklogLocation,
 )
 from google.cloud.pubsublite_v1 import AdminServiceClient, Subscription, Topic
 
@@ -101,8 +102,12 @@ class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
         return self._impl.list_topic_subscriptions(topic_path)
 
     @overrides
-    def create_subscription(self, subscription: Subscription) -> Subscription:
-        return self._impl.create_subscription(subscription)
+    def create_subscription(
+        self,
+        subscription: Subscription,
+        starting_offset: BacklogLocation = BacklogLocation.END,
+    ) -> Subscription:
+        return self._impl.create_subscription(subscription, starting_offset)
 
     @overrides
     def get_subscription(self, subscription_path: SubscriptionPath) -> Subscription:
