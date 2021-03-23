@@ -1,1 +1,1 @@
-google-cloud-pubsublite==0.3.0
+google-cloud-pubsublite==0.4.0
