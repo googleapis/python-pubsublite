@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-pubsublite.git",
-        "sha": "4d03d3a8ae8089fea87f5acd02a170697fa136fc"
+        "sha": "b0e04e2bfd4330b9857cdbc22353d8460718c36b"
       }
     },
     {
