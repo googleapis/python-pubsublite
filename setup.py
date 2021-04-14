@@ -34,7 +34,7 @@ dependencies = [
 
 setuptools.setup(
     name="google-cloud-pubsublite",
-    version=version,
+    version=setuptools.sic(version),
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
