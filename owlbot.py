@@ -19,27 +19,22 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate pubsublite GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="pubsublite",
-    version="v1",
-    bazel_target="//google/cloud/pubsublite/v1:pubsublite-v1-py",
-)
+default_version = "v1"
 
-excludes = [
-    "docs/pubsublite_v1",  # generated GAPIC docs should be ignored
-    "docs/index.rst",
-    "google/cloud/pubsublite/__init__.py",
-    "README.rst",
-    "scripts/fixup*.py",  # new libraries do not need the keyword fixup script
-    "setup.py",
-]
-s.move(library, excludes=excludes)
+for library in s.get_staging_dirs(default_version):
+    excludes = [
+        "docs/pubsublite_v1",  # generated GAPIC docs should be ignored
+        "docs/index.rst",
+        "google/cloud/pubsublite/__init__.py",
+        "README.rst",
+        "scripts/fixup*.py",  # new libraries do not need the keyword fixup script
+        "setup.py",
+    ]
+    s.move(library, excludes=excludes)
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -52,12 +47,12 @@ templated_files = common.py_library(
 )
 
 s.move(
-    templated_files, 
+    templated_files,
     excludes=[
         ".coveragerc", # the microgenerator has a good coveragerc file
         "docs/multiprocessing.rst",  # exclude multiprocessing note
     ]
-)  
+)
 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
