@@ -79,6 +79,7 @@ from .types.topic_stats import ComputeMessageStatsResponse
 
 
 __all__ = (
+    "AdminServiceClient",
     "AttributeValues",
     "CommitCursorRequest",
     "CommitCursorResponse",
@@ -122,7 +123,6 @@ __all__ = (
     "PubSubMessage",
     "PublishRequest",
     "PublishResponse",
-    "PublisherServiceClient",
     "SeekRequest",
     "SeekResponse",
     "SequencedCommitCursorRequest",
@@ -139,5 +139,5 @@ __all__ = (
     "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
-    "AdminServiceClient",
+    "PublisherServiceClient",
 )
