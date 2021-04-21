@@ -19,7 +19,7 @@ import io
 import os
 import setuptools  # type: ignore
 
-version = "0.3.0"
+version = "0.4.0"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -28,12 +28,8 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 dependencies = [
-    "google-api-core >= 1.22.0",
-    "proto-plus >= 0.4.0",
-    "google-cloud-pubsub >= 2.1.0",
-    "grpcio",
-    "setuptools",
-    "overrides",
+    "google-cloud-pubsub >= 2.1.0, <3.0.0dev",
+    "overrides>=2.0.0, < 3.0.0dev",
 ]
 
 setuptools.setup(
