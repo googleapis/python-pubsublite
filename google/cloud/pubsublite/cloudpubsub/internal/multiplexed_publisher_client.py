@@ -50,9 +50,14 @@ class MultiplexedPublisherClient(PublisherClientInterface):
     ) -> "Future[str]":
         if isinstance(topic, str):
             topic = TopicPath.parse(topic)
-        publisher = self._multiplexer.get_or_create(
-            topic, lambda: self._publisher_factory(topic).__enter__()
-        )
+        try:
+            publisher = self._multiplexer.get_or_create(
+                topic, lambda: self._publisher_factory(topic).__enter__()
+            )
+        except GoogleAPICallError as e:
+            failed = Future()
+            failed.set_exception(e)
+            return failed
         future = publisher.publish(data=data, ordering_key=ordering_key, **attrs)
         future.add_done_callback(
             lambda fut: self._on_future_completion(topic, publisher, fut)

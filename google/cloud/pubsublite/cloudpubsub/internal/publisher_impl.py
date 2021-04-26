@@ -15,6 +15,7 @@
 from concurrent.futures import Future
 from typing import Mapping
 
+from google.api_core.exceptions import GoogleAPICallError
 from google.cloud.pubsublite.cloudpubsub.internal.managed_event_loop import (
     ManagedEventLoop,
 )
@@ -42,7 +43,11 @@ class SinglePublisherImpl(SinglePublisher):
 
     def __enter__(self):
         self._managed_loop.__enter__()
-        self._managed_loop.submit(self._underlying.__aenter__()).result()
+        try:
+            self._managed_loop.submit(self._underlying.__aenter__()).result()
+        except GoogleAPICallError:
+            self._managed_loop.__exit__(None, None, None)
+            raise
         return self
 
     def __exit__(self, __exc_type, __exc_value, __traceback):
