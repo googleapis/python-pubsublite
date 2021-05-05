@@ -81,7 +81,7 @@ class SubscriberClientInterface(ContextManager):
     def subscribe(
         self,
         subscription: Union[SubscriptionPath, str],
-        callback: MessageCallback,
+        callback: Callable,  # TODO(dpcollins): Change to MessageCallback,
         per_partition_flow_control_settings: FlowControlSettings,
         fixed_partitions: Optional[Set[Partition]] = None,
     ) -> StreamingPullFuture:
