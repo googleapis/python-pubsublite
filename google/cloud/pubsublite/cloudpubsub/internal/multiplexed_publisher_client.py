@@ -47,7 +47,7 @@ class MultiplexedPublisherClient(PublisherClientInterface):
         data: bytes,
         ordering_key: str = "",
         **attrs: Mapping[str, str]
-    ) -> "Future[str]":
+    ) -> Future:
         if isinstance(topic, str):
             topic = TopicPath.parse(topic)
         try:

@@ -19,7 +19,7 @@ import io
 import os
 import setuptools  # type: ignore
 
-version = "0.4.0"
+version = "0.4.1"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -29,7 +29,7 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 
 dependencies = [
     "google-cloud-pubsub >= 2.1.0, <3.0.0dev",
-    "overrides>=2.0.0, < 3.0.0dev",
+    "overrides>=2.0.0, <7.0.0",
 ]
 
 setuptools.setup(
