@@ -1,5 +1,15 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-pubsublite/compare/v0.4.0...v0.4.1) (2021-05-05)
+
+
+### Bug Fixes
+
+* Change type hint on callback to be Callback. ([#135](https://www.github.com/googleapis/python-pubsublite/issues/135)) ([cbf16f8](https://www.github.com/googleapis/python-pubsublite/commit/cbf16f8c1737f1986ff1976e2bc5b2509b974389))
+* **deps:** remove duplicate dependencies and add version ranges ([#105](https://www.github.com/googleapis/python-pubsublite/issues/105)) ([d7ee309](https://www.github.com/googleapis/python-pubsublite/commit/d7ee309b2578e375783256df7954d67d238f3ea6))
+* do not crash if pubsublite distribution can not be found when extracting semver ([#120](https://www.github.com/googleapis/python-pubsublite/issues/120)) ([811434e](https://www.github.com/googleapis/python-pubsublite/commit/811434ea700e437c28cd97490db7a6f8edc5f47d))
+* Remove Future type hint from return type which fails to type check when overridden ([#133](https://www.github.com/googleapis/python-pubsublite/issues/133)) ([abe9b14](https://www.github.com/googleapis/python-pubsublite/commit/abe9b147e1673708bf581fe92d9bf7cef26c7429))
+
 ## [0.4.0](https://www.github.com/googleapis/python-pubsublite/compare/v0.3.0...v0.4.0) (2021-03-22)
 
 
