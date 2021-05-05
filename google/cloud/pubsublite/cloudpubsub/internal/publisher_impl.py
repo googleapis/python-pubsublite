@@ -15,7 +15,6 @@
 from concurrent.futures import Future
 from typing import Mapping
 
-from google.api_core.exceptions import GoogleAPICallError
 from google.cloud.pubsublite.cloudpubsub.internal.managed_event_loop import (
     ManagedEventLoop,
 )
