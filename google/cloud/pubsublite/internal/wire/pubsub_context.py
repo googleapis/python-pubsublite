@@ -29,7 +29,13 @@ class _Semver(NamedTuple):
 
 
 def _version() -> _Semver:
-    version = pkg_resources.get_distribution("google-cloud-pubsublite").version
+    try:
+        version = pkg_resources.get_distribution("google-cloud-pubsublite").version
+    except pkg_resources.DistributionNotFound:
+        _LOGGER.info(
+            "Failed to extract the google-cloud-pubsublite semver version. DistributionNotFound."
+        )
+        return _Semver(0, 0)
     splits = version.split(".")
     if len(splits) != 3:
         _LOGGER.info(f"Failed to extract semver from {version}.")
