@@ -43,11 +43,7 @@ class SinglePublisherImpl(SinglePublisher):
 
     def __enter__(self):
         self._managed_loop.__enter__()
-        try:
-            self._managed_loop.submit(self._underlying.__aenter__()).result()
-        except GoogleAPICallError:
-            self._managed_loop.__exit__(None, None, None)
-            raise
+        self._managed_loop.submit(self._underlying.__aenter__()).result()
         return self
 
     def __exit__(self, __exc_type, __exc_value, __traceback):

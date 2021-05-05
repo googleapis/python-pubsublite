@@ -52,7 +52,7 @@ class MultiplexedPublisherClient(PublisherClientInterface):
             topic = TopicPath.parse(topic)
         try:
             publisher = self._multiplexer.get_or_create(
-                topic, lambda: self._publisher_factory(topic).__enter__()
+                topic, lambda: self._create_and_start_publisher(topic)
             )
         except GoogleAPICallError as e:
             failed = Future()
@@ -63,6 +63,14 @@ class MultiplexedPublisherClient(PublisherClientInterface):
             lambda fut: self._on_future_completion(topic, publisher, fut)
         )
         return future
+
+    def _create_and_start_publisher(self, topic: Union[TopicPath, str]):
+        publisher = self._publisher_factory(topic)
+        try:
+          publisher.__enter__()
+        except GoogleAPICallError:
+          publisher.__exit__(None, None, None)
+          raise
 
     def _on_future_completion(
         self, topic: TopicPath, publisher: SinglePublisher, future: "Future[str]"
