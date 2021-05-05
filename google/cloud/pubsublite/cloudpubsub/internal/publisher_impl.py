@@ -35,7 +35,7 @@ class SinglePublisherImpl(SinglePublisher):
 
     def publish(
         self, data: bytes, ordering_key: str = "", **attrs: Mapping[str, str]
-    ) -> "Future[str]":
+    ) -> Future:
         return self._managed_loop.submit(
             self._underlying.publish(data=data, ordering_key=ordering_key, **attrs)
         )
