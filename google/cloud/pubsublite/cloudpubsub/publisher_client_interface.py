@@ -67,7 +67,7 @@ class PublisherClientInterface(ContextManager):
         data: bytes,
         ordering_key: str = "",
         **attrs: Mapping[str, str],
-    ) -> "Future[str]":
+    ) -> Future:
         """
     Publish a message.
 
@@ -78,7 +78,8 @@ class PublisherClientInterface(ContextManager):
       **attrs: Additional attributes to send.
 
     Returns:
-      A future completed with an ack id, which can be decoded using MessageMetadata.decode.
+      A future completed with an ack id of type str, which can be decoded using
+      MessageMetadata.decode.
 
     Raises:
       GoogleApiCallError: On a permanent failure.
