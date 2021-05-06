@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from concurrent.futures.thread import ThreadPoolExecutor
-from typing import Optional, Union, Set, AsyncIterator, Callable
+from typing import Optional, Union, Set, AsyncIterator
 
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
@@ -33,7 +33,7 @@ from google.cloud.pubsublite.cloudpubsub.message_transformer import MessageTrans
 from google.cloud.pubsublite.cloudpubsub.nack_handler import NackHandler
 from google.cloud.pubsublite.cloudpubsub.subscriber_client_interface import (
     SubscriberClientInterface,
-    AsyncSubscriberClientInterface,
+    AsyncSubscriberClientInterface, MessageCallback,
 )
 from google.cloud.pubsublite.internal.constructable_from_service_account import (
     ConstructableFromServiceAccount,
@@ -99,7 +99,7 @@ class SubscriberClient(SubscriberClientInterface, ConstructableFromServiceAccoun
     def subscribe(
         self,
         subscription: Union[SubscriptionPath, str],
-        callback: Callable,  # TODO(dpcollins): Change to MessageCallback,
+        callback: MessageCallback,
         per_partition_flow_control_settings: FlowControlSettings,
         fixed_partitions: Optional[Set[Partition]] = None,
     ) -> StreamingPullFuture:

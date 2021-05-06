@@ -67,7 +67,7 @@ class PublisherClientInterface(ContextManager):
         data: bytes,
         ordering_key: str = "",
         **attrs: Mapping[str, str],
-    ) -> Future:
+    ) -> "Future[str]":
         """
     Publish a message.
 

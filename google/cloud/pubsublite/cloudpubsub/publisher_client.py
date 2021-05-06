@@ -94,7 +94,7 @@ class PublisherClient(PublisherClientInterface, ConstructableFromServiceAccount)
         data: bytes,
         ordering_key: str = "",
         **attrs: Mapping[str, str]
-    ) -> Future:
+    ) -> "Future[str]":
         self._require_stared.require_started()
         return self._impl.publish(
             topic=topic, data=data, ordering_key=ordering_key, **attrs
