@@ -56,8 +56,9 @@ class PartitionCountWatchingPublisher(Publisher):
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        self._partition_count_poller.cancel()
-        await wait_ignore_cancelled(self._partition_count_poller)
+        if hasattr(self, '_partition_count_poller'):
+            self._partition_count_poller.cancel()
+            await wait_ignore_cancelled(self._partition_count_poller)
         await self._watcher.__aexit__(exc_type, exc_val, exc_tb)
         for publisher in self._publishers.values():
             await publisher.__aexit__(exc_type, exc_val, exc_tb)
