@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
@@ -27,7 +25,6 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.pubsublite_v1.types import topic_stats
-
 from .base import TopicStatsServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -65,7 +62,8 @@ class TopicStatsServiceGrpcTransport(TopicStatsServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -206,13 +204,15 @@ class TopicStatsServiceGrpcTransport(TopicStatsServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -229,7 +229,9 @@ class TopicStatsServiceGrpcTransport(TopicStatsServiceTransport):
         [topic_stats.ComputeMessageStatsRequest],
         topic_stats.ComputeMessageStatsResponse,
     ]:
-        r"""Return a callable for the compute message stats method over gRPC.
+        r"""Return a callable for the
+        compute message stats
+          method over gRPC.
 
         Compute statistics about a range of messages in a
         given topic and partition.
@@ -258,7 +260,9 @@ class TopicStatsServiceGrpcTransport(TopicStatsServiceTransport):
     ) -> Callable[
         [topic_stats.ComputeHeadCursorRequest], topic_stats.ComputeHeadCursorResponse
     ]:
-        r"""Return a callable for the compute head cursor method over gRPC.
+        r"""Return a callable for the
+        compute head cursor
+          method over gRPC.
 
         Compute the head cursor for the partition.
         The head cursor's offset is guaranteed to be less than

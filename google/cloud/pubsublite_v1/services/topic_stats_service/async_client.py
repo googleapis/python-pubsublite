@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -31,7 +29,6 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.pubsublite_v1.types import common
 from google.cloud.pubsublite_v1.types import topic_stats
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
 from .transports.base import TopicStatsServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import TopicStatsServiceGrpcAsyncIOTransport
 from .client import TopicStatsServiceClient
@@ -49,31 +46,26 @@ class TopicStatsServiceAsyncClient:
 
     topic_path = staticmethod(TopicStatsServiceClient.topic_path)
     parse_topic_path = staticmethod(TopicStatsServiceClient.parse_topic_path)
-
     common_billing_account_path = staticmethod(
         TopicStatsServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         TopicStatsServiceClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(TopicStatsServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         TopicStatsServiceClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         TopicStatsServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         TopicStatsServiceClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(TopicStatsServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
         TopicStatsServiceClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(TopicStatsServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
         TopicStatsServiceClient.parse_common_location_path
@@ -164,7 +156,6 @@ class TopicStatsServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = TopicStatsServiceClient(
             credentials=credentials,
             transport=transport,
@@ -185,9 +176,9 @@ class TopicStatsServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest`):
-                The request object. Compute statistics about a range of
+                The request object.
+                Compute statistics about a range of
                 messages in a given topic and partition.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -202,7 +193,6 @@ class TopicStatsServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = topic_stats.ComputeMessageStatsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -256,9 +246,9 @@ class TopicStatsServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest`):
-                The request object. Compute the current head cursor for
+                The request object.
+                Compute the current head cursor for
                 a partition.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -272,7 +262,6 @@ class TopicStatsServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = topic_stats.ComputeHeadCursorRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,

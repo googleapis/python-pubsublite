@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import os
 import mock
+import packaging.version
 
 import grpc
 from grpc.experimental import aio
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
+
 
 from google import auth
 from google.api_core import client_options
@@ -39,10 +39,39 @@ from google.cloud.pubsublite_v1.services.topic_stats_service import (
     TopicStatsServiceClient,
 )
 from google.cloud.pubsublite_v1.services.topic_stats_service import transports
+from google.cloud.pubsublite_v1.services.topic_stats_service.transports.base import (
+    _API_CORE_VERSION,
+)
+from google.cloud.pubsublite_v1.services.topic_stats_service.transports.base import (
+    _GOOGLE_AUTH_VERSION,
+)
 from google.cloud.pubsublite_v1.types import common
 from google.cloud.pubsublite_v1.types import topic_stats
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+
+
+# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
+# - Delete all the api-core and auth "less than" test cases
+# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
+requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth < 1.25.0",
+)
+requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth >= 1.25.0",
+)
+
+requires_api_core_lt_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core < 1.26.0",
+)
+
+requires_api_core_gte_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core >= 1.26.0",
+)
 
 
 def client_cert_source_callback():
@@ -477,21 +506,16 @@ def test_compute_message_stats(
         call.return_value = topic_stats.ComputeMessageStatsResponse(
             message_count=1389, message_bytes=1387,
         )
-
         response = client.compute_message_stats(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == topic_stats.ComputeMessageStatsRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, topic_stats.ComputeMessageStatsResponse)
-
     assert response.message_count == 1389
-
     assert response.message_bytes == 1387
 
 
@@ -513,7 +537,6 @@ def test_compute_message_stats_empty_call():
         client.compute_message_stats()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == topic_stats.ComputeMessageStatsRequest()
 
 
@@ -539,20 +562,16 @@ async def test_compute_message_stats_async(
                 message_count=1389, message_bytes=1387,
             )
         )
-
         response = await client.compute_message_stats(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == topic_stats.ComputeMessageStatsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, topic_stats.ComputeMessageStatsResponse)
-
     assert response.message_count == 1389
-
     assert response.message_bytes == 1387
 
 
@@ -567,6 +586,7 @@ def test_compute_message_stats_field_headers():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = topic_stats.ComputeMessageStatsRequest()
+
     request.topic = "topic/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -574,7 +594,6 @@ def test_compute_message_stats_field_headers():
         type(client.transport.compute_message_stats), "__call__"
     ) as call:
         call.return_value = topic_stats.ComputeMessageStatsResponse()
-
         client.compute_message_stats(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -596,6 +615,7 @@ async def test_compute_message_stats_field_headers_async():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = topic_stats.ComputeMessageStatsRequest()
+
     request.topic = "topic/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -605,7 +625,6 @@ async def test_compute_message_stats_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             topic_stats.ComputeMessageStatsResponse()
         )
-
         await client.compute_message_stats(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -635,17 +654,14 @@ def test_compute_head_cursor(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = topic_stats.ComputeHeadCursorResponse()
-
         response = client.compute_head_cursor(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == topic_stats.ComputeHeadCursorRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, topic_stats.ComputeHeadCursorResponse)
 
 
@@ -667,7 +683,6 @@ def test_compute_head_cursor_empty_call():
         client.compute_head_cursor()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == topic_stats.ComputeHeadCursorRequest()
 
 
@@ -691,13 +706,11 @@ async def test_compute_head_cursor_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             topic_stats.ComputeHeadCursorResponse()
         )
-
         response = await client.compute_head_cursor(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == topic_stats.ComputeHeadCursorRequest()
 
     # Establish that the response is the type that we expect.
@@ -715,6 +728,7 @@ def test_compute_head_cursor_field_headers():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = topic_stats.ComputeHeadCursorRequest()
+
     request.topic = "topic/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -722,7 +736,6 @@ def test_compute_head_cursor_field_headers():
         type(client.transport.compute_head_cursor), "__call__"
     ) as call:
         call.return_value = topic_stats.ComputeHeadCursorResponse()
-
         client.compute_head_cursor(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -744,6 +757,7 @@ async def test_compute_head_cursor_field_headers_async():
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = topic_stats.ComputeHeadCursorRequest()
+
     request.topic = "topic/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -753,7 +767,6 @@ async def test_compute_head_cursor_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             topic_stats.ComputeHeadCursorResponse()
         )
-
         await client.compute_head_cursor(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -871,10 +884,32 @@ def test_topic_stats_service_base_transport():
             getattr(transport, method)(request=object())
 
 
+@requires_google_auth_gte_1_25_0
 def test_topic_stats_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
-        auth, "load_credentials_from_file"
+        auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch(
+        "google.cloud.pubsublite_v1.services.topic_stats_service.transports.TopicStatsServiceTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        load_creds.return_value = (credentials.AnonymousCredentials(), None)
+        transport = transports.TopicStatsServiceTransport(
+            credentials_file="credentials.json", quota_project_id="octopus",
+        )
+        load_creds.assert_called_once_with(
+            "credentials.json",
+            scopes=None,
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id="octopus",
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_topic_stats_service_base_transport_with_credentials_file_old_google_auth():
+    # Instantiate the base transport with a credentials file
+    with mock.patch.object(
+        auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
         "google.cloud.pubsublite_v1.services.topic_stats_service.transports.TopicStatsServiceTransport._prep_wrapped_messages"
     ) as Transport:
@@ -892,7 +927,7 @@ def test_topic_stats_service_base_transport_with_credentials_file():
 
 def test_topic_stats_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, "default") as adc, mock.patch(
+    with mock.patch.object(auth, "default", autospec=True) as adc, mock.patch(
         "google.cloud.pubsublite_v1.services.topic_stats_service.transports.TopicStatsServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -901,9 +936,23 @@ def test_topic_stats_service_base_transport_with_adc():
         adc.assert_called_once()
 
 
+@requires_google_auth_gte_1_25_0
 def test_topic_stats_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
+    with mock.patch.object(auth, "default", autospec=True) as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        TopicStatsServiceClient()
+        adc.assert_called_once_with(
+            scopes=None,
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id=None,
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_topic_stats_service_auth_adc_old_google_auth():
+    # If no credentials are provided, we should use ADC credentials.
+    with mock.patch.object(auth, "default", autospec=True) as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
         TopicStatsServiceClient()
         adc.assert_called_once_with(
@@ -912,17 +961,147 @@ def test_topic_stats_service_auth_adc():
         )
 
 
-def test_topic_stats_service_transport_auth_adc():
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.TopicStatsServiceGrpcTransport,
+        transports.TopicStatsServiceGrpcAsyncIOTransport,
+    ],
+)
+@requires_google_auth_gte_1_25_0
+def test_topic_stats_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
+    with mock.patch.object(auth, "default", autospec=True) as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        transports.TopicStatsServiceGrpcTransport(
-            host="squid.clam.whelk", quota_project_id="octopus"
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+        adc.assert_called_once_with(
+            scopes=["1", "2"],
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id="octopus",
         )
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.TopicStatsServiceGrpcTransport,
+        transports.TopicStatsServiceGrpcAsyncIOTransport,
+    ],
+)
+@requires_google_auth_lt_1_25_0
+def test_topic_stats_service_transport_auth_adc_old_google_auth(transport_class):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(auth, "default", autospec=True) as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus")
         adc.assert_called_once_with(
             scopes=("https://www.googleapis.com/auth/cloud-platform",),
             quota_project_id="octopus",
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.TopicStatsServiceGrpcTransport, grpc_helpers),
+        (transports.TopicStatsServiceGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_gte_1_26_0
+def test_topic_stats_service_transport_create_channel(transport_class, grpc_helpers):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(auth, "default", autospec=True) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "pubsublite.googleapis.com",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            scopes=["1", "2"],
+            default_host="pubsublite.googleapis.com",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.TopicStatsServiceGrpcTransport, grpc_helpers),
+        (transports.TopicStatsServiceGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_lt_1_26_0
+def test_topic_stats_service_transport_create_channel_old_api_core(
+    transport_class, grpc_helpers
+):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(auth, "default", autospec=True) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus")
+
+        create_channel.assert_called_with(
+            "pubsublite.googleapis.com",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.TopicStatsServiceGrpcTransport, grpc_helpers),
+        (transports.TopicStatsServiceGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_lt_1_26_0
+def test_topic_stats_service_transport_create_channel_user_scopes(
+    transport_class, grpc_helpers
+):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(auth, "default", autospec=True) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "pubsublite.googleapis.com",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            scopes=["1", "2"],
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
         )
 
 
@@ -1121,7 +1300,6 @@ def test_topic_path():
     project = "squid"
     location = "clam"
     topic = "whelk"
-
     expected = "projects/{project}/locations/{location}/topics/{topic}".format(
         project=project, location=location, topic=topic,
     )
@@ -1144,7 +1322,6 @@ def test_parse_topic_path():
 
 def test_common_billing_account_path():
     billing_account = "cuttlefish"
-
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1165,7 +1342,6 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-
     expected = "folders/{folder}".format(folder=folder,)
     actual = TopicStatsServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -1184,7 +1360,6 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-
     expected = "organizations/{organization}".format(organization=organization,)
     actual = TopicStatsServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -1203,7 +1378,6 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-
     expected = "projects/{project}".format(project=project,)
     actual = TopicStatsServiceClient.common_project_path(project)
     assert expected == actual
@@ -1223,7 +1397,6 @@ def test_parse_common_project_path():
 def test_common_location_path():
     project = "whelk"
     location = "octopus"
-
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )

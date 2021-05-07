@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -43,7 +41,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.pubsublite_v1.types import subscriber
-
 from .transports.base import PartitionAssignmentServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import PartitionAssignmentServiceGrpcTransport
 from .transports.grpc_asyncio import PartitionAssignmentServiceGrpcAsyncIOTransport
@@ -360,7 +357,8 @@ class PartitionAssignmentServiceClient(metaclass=PartitionAssignmentServiceClien
 
         Args:
             requests (Iterator[google.cloud.pubsublite_v1.types.PartitionAssignmentRequest]):
-                The request object iterator. A request on the PartitionAssignment
+                The request object iterator.
+                A request on the PartitionAssignment
                 stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

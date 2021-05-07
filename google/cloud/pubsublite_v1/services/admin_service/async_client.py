@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -32,7 +30,6 @@ from google.cloud.pubsublite_v1.services.admin_service import pagers
 from google.cloud.pubsublite_v1.types import admin
 from google.cloud.pubsublite_v1.types import common
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-
 from .transports.base import AdminServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AdminServiceGrpcAsyncIOTransport
 from .client import AdminServiceClient
@@ -53,27 +50,22 @@ class AdminServiceAsyncClient:
     parse_subscription_path = staticmethod(AdminServiceClient.parse_subscription_path)
     topic_path = staticmethod(AdminServiceClient.topic_path)
     parse_topic_path = staticmethod(AdminServiceClient.parse_topic_path)
-
     common_billing_account_path = staticmethod(
         AdminServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         AdminServiceClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(AdminServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(AdminServiceClient.parse_common_folder_path)
-
     common_organization_path = staticmethod(AdminServiceClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         AdminServiceClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(AdminServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
         AdminServiceClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(AdminServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
         AdminServiceClient.parse_common_location_path
@@ -164,7 +156,6 @@ class AdminServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = AdminServiceClient(
             credentials=credentials,
             transport=transport,
@@ -187,7 +178,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.CreateTopicRequest`):
-                The request object. Request for CreateTopic.
+                The request object.
+                Request for CreateTopic.
             parent (:class:`str`):
                 Required. The parent location in which to create the
                 topic. Structured like
@@ -212,7 +204,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``topic_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -237,7 +228,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if topic is not None:
@@ -278,7 +268,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.GetTopicRequest`):
-                The request object. Request for GetTopic.
+                The request object.
+                Request for GetTopic.
             name (:class:`str`):
                 Required. The name of the topic whose
                 configuration to return.
@@ -286,7 +277,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -311,7 +301,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -349,7 +338,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.GetTopicPartitionsRequest`):
-                The request object. Request for GetTopicPartitions.
+                The request object.
+                Request for GetTopicPartitions.
             name (:class:`str`):
                 Required. The topic whose partition
                 information to return.
@@ -357,7 +347,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -382,7 +371,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -419,7 +407,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.ListTopicsRequest`):
-                The request object. Request for ListTopics.
+                The request object.
+                Request for ListTopics.
             parent (:class:`str`):
                 Required. The parent whose topics are to be listed.
                 Structured like
@@ -428,7 +417,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -457,7 +445,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -501,7 +488,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.UpdateTopicRequest`):
-                The request object. Request for UpdateTopic.
+                The request object.
+                Request for UpdateTopic.
             topic (:class:`google.cloud.pubsublite_v1.types.Topic`):
                 Required. The topic to update. Its ``name`` field must
                 be populated.
@@ -516,7 +504,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -541,7 +528,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if topic is not None:
             request.topic = topic
         if update_mask is not None:
@@ -582,7 +568,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.DeleteTopicRequest`):
-                The request object. Request for DeleteTopic.
+                The request object.
+                Request for DeleteTopic.
             name (:class:`str`):
                 Required. The name of the topic to
                 delete.
@@ -590,7 +577,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -611,7 +597,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -648,7 +633,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.ListTopicSubscriptionsRequest`):
-                The request object. Request for ListTopicSubscriptions.
+                The request object.
+                Request for ListTopicSubscriptions.
             name (:class:`str`):
                 Required. The name of the topic whose
                 subscriptions to list.
@@ -656,7 +642,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -685,7 +670,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -730,7 +714,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.CreateSubscriptionRequest`):
-                The request object. Request for CreateSubscription.
+                The request object.
+                Request for CreateSubscription.
             parent (:class:`str`):
                 Required. The parent location in which to create the
                 subscription. Structured like
@@ -755,7 +740,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``subscription_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -782,7 +766,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if subscription is not None:
@@ -823,7 +806,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.GetSubscriptionRequest`):
-                The request object. Request for GetSubscription.
+                The request object.
+                Request for GetSubscription.
             name (:class:`str`):
                 Required. The name of the
                 subscription whose configuration to
@@ -832,7 +816,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -859,7 +842,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -897,7 +879,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.ListSubscriptionsRequest`):
-                The request object. Request for ListSubscriptions.
+                The request object.
+                Request for ListSubscriptions.
             parent (:class:`str`):
                 Required. The parent whose subscriptions are to be
                 listed. Structured like
@@ -906,7 +889,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -935,7 +917,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -979,7 +960,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.UpdateSubscriptionRequest`):
-                The request object. Request for UpdateSubscription.
+                The request object.
+                Request for UpdateSubscription.
             subscription (:class:`google.cloud.pubsublite_v1.types.Subscription`):
                 Required. The subscription to update. Its ``name`` field
                 must be populated. Topic field must not be populated.
@@ -994,7 +976,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1021,7 +1002,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if subscription is not None:
             request.subscription = subscription
         if update_mask is not None:
@@ -1062,7 +1042,8 @@ class AdminServiceAsyncClient:
 
         Args:
             request (:class:`google.cloud.pubsublite_v1.types.DeleteSubscriptionRequest`):
-                The request object. Request for DeleteSubscription.
+                The request object.
+                Request for DeleteSubscription.
             name (:class:`str`):
                 Required. The name of the
                 subscription to delete.
@@ -1070,7 +1051,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1091,7 +1071,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 

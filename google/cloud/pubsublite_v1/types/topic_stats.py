@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.pubsublite_v1.types import common
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
@@ -53,12 +50,9 @@ class ComputeMessageStatsRequest(proto.Message):
             will retrieve all messages.
     """
 
-    topic = proto.Field(proto.STRING, number=1)
-
-    partition = proto.Field(proto.INT64, number=2)
-
+    topic = proto.Field(proto.STRING, number=1,)
+    partition = proto.Field(proto.INT64, number=2,)
     start_cursor = proto.Field(proto.MESSAGE, number=3, message=common.Cursor,)
-
     end_cursor = proto.Field(proto.MESSAGE, number=4, message=common.Cursor,)
 
 
@@ -86,14 +80,11 @@ class ComputeMessageStatsResponse(proto.Message):
             there are no messages.
     """
 
-    message_count = proto.Field(proto.INT64, number=1)
-
-    message_bytes = proto.Field(proto.INT64, number=2)
-
+    message_count = proto.Field(proto.INT64, number=1,)
+    message_bytes = proto.Field(proto.INT64, number=2,)
     minimum_publish_time = proto.Field(
         proto.MESSAGE, number=3, message=timestamp.Timestamp,
     )
-
     minimum_event_time = proto.Field(
         proto.MESSAGE, number=4, message=timestamp.Timestamp,
     )
@@ -101,7 +92,6 @@ class ComputeMessageStatsResponse(proto.Message):
 
 class ComputeHeadCursorRequest(proto.Message):
     r"""Compute the current head cursor for a partition.
-
     Attributes:
         topic (str):
             Required. The topic for which we should
@@ -111,9 +101,8 @@ class ComputeHeadCursorRequest(proto.Message):
             compute the head cursor.
     """
 
-    topic = proto.Field(proto.STRING, number=1)
-
-    partition = proto.Field(proto.INT64, number=2)
+    topic = proto.Field(proto.STRING, number=1,)
+    partition = proto.Field(proto.INT64, number=2,)
 
 
 class ComputeHeadCursorResponse(proto.Message):
