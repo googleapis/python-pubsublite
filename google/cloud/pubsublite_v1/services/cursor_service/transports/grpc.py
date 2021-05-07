@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
@@ -25,6 +27,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.pubsublite_v1.types import cursor
+
 from .base import CursorServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -64,8 +67,7 @@ class CursorServiceGrpcTransport(CursorServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]):
-                 The hostname to connect to.
+            host (Optional[str]): The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -206,15 +208,13 @@ class CursorServiceGrpcTransport(CursorServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-
-        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
-
+        scopes = scopes or cls.AUTH_SCOPES
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
+            scopes=scopes,
             quota_project_id=quota_project_id,
-            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -230,9 +230,7 @@ class CursorServiceGrpcTransport(CursorServiceTransport):
     ) -> Callable[
         [cursor.StreamingCommitCursorRequest], cursor.StreamingCommitCursorResponse
     ]:
-        r"""Return a callable for the
-        streaming commit cursor
-          method over gRPC.
+        r"""Return a callable for the streaming commit cursor method over gRPC.
 
         Establishes a stream with the server for managing
         committed cursors.
@@ -259,9 +257,7 @@ class CursorServiceGrpcTransport(CursorServiceTransport):
     def commit_cursor(
         self,
     ) -> Callable[[cursor.CommitCursorRequest], cursor.CommitCursorResponse]:
-        r"""Return a callable for the
-        commit cursor
-          method over gRPC.
+        r"""Return a callable for the commit cursor method over gRPC.
 
         Updates the committed cursor.
 
@@ -289,9 +285,7 @@ class CursorServiceGrpcTransport(CursorServiceTransport):
     ) -> Callable[
         [cursor.ListPartitionCursorsRequest], cursor.ListPartitionCursorsResponse
     ]:
-        r"""Return a callable for the
-        list partition cursors
-          method over gRPC.
+        r"""Return a callable for the list partition cursors method over gRPC.
 
         Returns all committed cursor information for a
         subscription.

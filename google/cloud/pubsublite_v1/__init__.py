@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +21,6 @@ from .services.partition_assignment_service import PartitionAssignmentServiceCli
 from .services.publisher_service import PublisherServiceClient
 from .services.subscriber_service import SubscriberServiceClient
 from .services.topic_stats_service import TopicStatsServiceClient
-
 from .types.admin import CreateSubscriptionRequest
 from .types.admin import CreateTopicRequest
 from .types.admin import DeleteSubscriptionRequest
@@ -79,6 +79,7 @@ from .types.topic_stats import ComputeMessageStatsRequest
 from .types.topic_stats import ComputeMessageStatsResponse
 from .types.topic_stats import ComputeTimeCursorRequest
 from .types.topic_stats import ComputeTimeCursorResponse
+
 
 __all__ = (
     "AdminServiceClient",

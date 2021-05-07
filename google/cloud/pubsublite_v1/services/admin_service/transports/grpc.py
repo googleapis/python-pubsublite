@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
@@ -27,6 +29,7 @@ import grpc  # type: ignore
 from google.cloud.pubsublite_v1.types import admin
 from google.cloud.pubsublite_v1.types import common
 from google.protobuf import empty_pb2 as empty  # type: ignore
+
 from .base import AdminServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -65,8 +68,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]):
-                 The hostname to connect to.
+            host (Optional[str]): The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -207,15 +209,13 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-
-        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
-
+        scopes = scopes or cls.AUTH_SCOPES
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
+            scopes=scopes,
             quota_project_id=quota_project_id,
-            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -227,9 +227,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
 
     @property
     def create_topic(self) -> Callable[[admin.CreateTopicRequest], common.Topic]:
-        r"""Return a callable for the
-        create topic
-          method over gRPC.
+        r"""Return a callable for the create topic method over gRPC.
 
         Creates a new topic.
 
@@ -253,9 +251,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
 
     @property
     def get_topic(self) -> Callable[[admin.GetTopicRequest], common.Topic]:
-        r"""Return a callable for the
-        get topic
-          method over gRPC.
+        r"""Return a callable for the get topic method over gRPC.
 
         Returns the topic configuration.
 
@@ -281,9 +277,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
     def get_topic_partitions(
         self,
     ) -> Callable[[admin.GetTopicPartitionsRequest], admin.TopicPartitions]:
-        r"""Return a callable for the
-        get topic partitions
-          method over gRPC.
+        r"""Return a callable for the get topic partitions method over gRPC.
 
         Returns the partition information for the requested
         topic.
@@ -310,9 +304,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
     def list_topics(
         self,
     ) -> Callable[[admin.ListTopicsRequest], admin.ListTopicsResponse]:
-        r"""Return a callable for the
-        list topics
-          method over gRPC.
+        r"""Return a callable for the list topics method over gRPC.
 
         Returns the list of topics for the given project.
 
@@ -336,9 +328,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
 
     @property
     def update_topic(self) -> Callable[[admin.UpdateTopicRequest], common.Topic]:
-        r"""Return a callable for the
-        update topic
-          method over gRPC.
+        r"""Return a callable for the update topic method over gRPC.
 
         Updates properties of the specified topic.
 
@@ -362,9 +352,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
 
     @property
     def delete_topic(self) -> Callable[[admin.DeleteTopicRequest], empty.Empty]:
-        r"""Return a callable for the
-        delete topic
-          method over gRPC.
+        r"""Return a callable for the delete topic method over gRPC.
 
         Deletes the specified topic.
 
@@ -392,9 +380,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
     ) -> Callable[
         [admin.ListTopicSubscriptionsRequest], admin.ListTopicSubscriptionsResponse
     ]:
-        r"""Return a callable for the
-        list topic subscriptions
-          method over gRPC.
+        r"""Return a callable for the list topic subscriptions method over gRPC.
 
         Lists the subscriptions attached to the specified
         topic.
@@ -421,9 +407,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
     def create_subscription(
         self,
     ) -> Callable[[admin.CreateSubscriptionRequest], common.Subscription]:
-        r"""Return a callable for the
-        create subscription
-          method over gRPC.
+        r"""Return a callable for the create subscription method over gRPC.
 
         Creates a new subscription.
 
@@ -449,9 +433,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
     def get_subscription(
         self,
     ) -> Callable[[admin.GetSubscriptionRequest], common.Subscription]:
-        r"""Return a callable for the
-        get subscription
-          method over gRPC.
+        r"""Return a callable for the get subscription method over gRPC.
 
         Returns the subscription configuration.
 
@@ -477,9 +459,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
     def list_subscriptions(
         self,
     ) -> Callable[[admin.ListSubscriptionsRequest], admin.ListSubscriptionsResponse]:
-        r"""Return a callable for the
-        list subscriptions
-          method over gRPC.
+        r"""Return a callable for the list subscriptions method over gRPC.
 
         Returns the list of subscriptions for the given
         project.
@@ -506,9 +486,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
     def update_subscription(
         self,
     ) -> Callable[[admin.UpdateSubscriptionRequest], common.Subscription]:
-        r"""Return a callable for the
-        update subscription
-          method over gRPC.
+        r"""Return a callable for the update subscription method over gRPC.
 
         Updates properties of the specified subscription.
 
@@ -534,9 +512,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
     def delete_subscription(
         self,
     ) -> Callable[[admin.DeleteSubscriptionRequest], empty.Empty]:
-        r"""Return a callable for the
-        delete subscription
-          method over gRPC.
+        r"""Return a callable for the delete subscription method over gRPC.
 
         Deletes the specified subscription.
 

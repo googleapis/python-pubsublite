@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 from collections import OrderedDict
 from distutils import util
 import os
@@ -41,6 +43,7 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.pubsublite_v1.types import publisher
+
 from .transports.base import PublisherServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import PublisherServiceGrpcTransport
 from .transports.grpc_asyncio import PublisherServiceGrpcAsyncIOTransport
@@ -358,8 +361,7 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
 
         Args:
             requests (Iterator[google.cloud.pubsublite_v1.types.PublishRequest]):
-                The request object iterator.
-                Request sent from the client to the
+                The request object iterator. Request sent from the client to the
                 server on a stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
