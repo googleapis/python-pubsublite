@@ -607,6 +607,61 @@ async def test_commit_cursor_async_from_dict():
     await test_commit_cursor_async(request_type=dict)
 
 
+def test_commit_cursor_field_headers():
+    client = CursorServiceClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cursor.CommitCursorRequest()
+    request.subscription = "subscription/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.commit_cursor), "__call__") as call:
+        call.return_value = cursor.CommitCursorResponse()
+
+        client.commit_cursor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
+        "metadata"
+    ]
+
+
+@pytest.mark.asyncio
+async def test_commit_cursor_field_headers_async():
+    client = CursorServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cursor.CommitCursorRequest()
+    request.subscription = "subscription/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.commit_cursor), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cursor.CommitCursorResponse()
+        )
+
+        await client.commit_cursor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
+        "metadata"
+    ]
+
+
 def test_list_partition_cursors(
     transport: str = "grpc", request_type=cursor.ListPartitionCursorsRequest
 ):

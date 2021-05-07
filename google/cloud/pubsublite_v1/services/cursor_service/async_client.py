@@ -273,6 +273,14 @@ class CursorServiceAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("subscription", request.subscription),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 

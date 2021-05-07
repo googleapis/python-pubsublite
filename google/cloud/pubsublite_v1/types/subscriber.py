@@ -53,11 +53,20 @@ class InitialSubscribeRequest(proto.Message):
             The partition from which to receive messages. Partitions are
             zero indexed, so ``partition`` must be in the range [0,
             topic.num_partitions).
+        initial_cursor (google.cloud.pubsublite_v1.types.Cursor):
+            Optional. Initial stream delivery cursor,
+            pointing to anywhere in the topic partition.
+            Cursors past head result in stream breakage. If
+            not set, messages will be delivered from the
+            commit cursor for the given subscription and
+            partition.
     """
 
     subscription = proto.Field(proto.STRING, number=1)
 
     partition = proto.Field(proto.INT64, number=2)
+
+    initial_cursor = proto.Field(proto.MESSAGE, number=3, message=common.Cursor,)
 
 
 class InitialSubscribeResponse(proto.Message):
