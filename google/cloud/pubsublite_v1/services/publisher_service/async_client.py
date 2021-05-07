@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -31,14 +29,13 @@ from typing import (
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.pubsublite_v1.types import publisher
-
 from .transports.base import PublisherServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import PublisherServiceGrpcAsyncIOTransport
 from .client import PublisherServiceClient
@@ -63,24 +60,20 @@ class PublisherServiceAsyncClient:
     parse_common_billing_account_path = staticmethod(
         PublisherServiceClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(PublisherServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         PublisherServiceClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         PublisherServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         PublisherServiceClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(PublisherServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
         PublisherServiceClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(PublisherServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
         PublisherServiceClient.parse_common_location_path
@@ -134,7 +127,7 @@ class PublisherServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, PublisherServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -171,7 +164,6 @@ class PublisherServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = PublisherServiceClient(
             credentials=credentials,
             transport=transport,

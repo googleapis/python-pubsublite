@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +15,18 @@
 #
 
 from .services.admin_service import AdminServiceClient
+from .services.admin_service import AdminServiceAsyncClient
 from .services.cursor_service import CursorServiceClient
+from .services.cursor_service import CursorServiceAsyncClient
 from .services.partition_assignment_service import PartitionAssignmentServiceClient
+from .services.partition_assignment_service import PartitionAssignmentServiceAsyncClient
 from .services.publisher_service import PublisherServiceClient
+from .services.publisher_service import PublisherServiceAsyncClient
 from .services.subscriber_service import SubscriberServiceClient
+from .services.subscriber_service import SubscriberServiceAsyncClient
 from .services.topic_stats_service import TopicStatsServiceClient
+from .services.topic_stats_service import TopicStatsServiceAsyncClient
+
 from .types.admin import CreateSubscriptionRequest
 from .types.admin import CreateTopicRequest
 from .types.admin import DeleteSubscriptionRequest
@@ -30,10 +36,10 @@ from .types.admin import GetTopicPartitionsRequest
 from .types.admin import GetTopicRequest
 from .types.admin import ListSubscriptionsRequest
 from .types.admin import ListSubscriptionsResponse
-from .types.admin import ListTopicSubscriptionsRequest
-from .types.admin import ListTopicSubscriptionsResponse
 from .types.admin import ListTopicsRequest
 from .types.admin import ListTopicsResponse
+from .types.admin import ListTopicSubscriptionsRequest
+from .types.admin import ListTopicSubscriptionsResponse
 from .types.admin import TopicPartitions
 from .types.admin import UpdateSubscriptionRequest
 from .types.admin import UpdateTopicRequest
@@ -79,7 +85,6 @@ from .types.topic_stats import ComputeMessageStatsRequest
 from .types.topic_stats import ComputeMessageStatsResponse
 from .types.topic_stats import ComputeTimeCursorRequest
 from .types.topic_stats import ComputeTimeCursorResponse
-
 
 __all__ = (
     "AdminServiceClient",
@@ -143,7 +148,7 @@ __all__ = (
     "TimeTarget",
     "Topic",
     "TopicPartitions",
+    "TopicStatsServiceClient",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
-    "TopicStatsServiceClient",
 )
