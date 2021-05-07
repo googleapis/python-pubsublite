@@ -37,6 +37,7 @@ from .common import (
     PubSubMessage,
     SequencedMessage,
     Subscription,
+    TimeTarget,
     Topic,
 )
 from .cursor import (
@@ -79,6 +80,8 @@ from .topic_stats import (
     ComputeHeadCursorResponse,
     ComputeMessageStatsRequest,
     ComputeMessageStatsResponse,
+    ComputeTimeCursorRequest,
+    ComputeTimeCursorResponse,
 )
 
 __all__ = (
@@ -103,6 +106,7 @@ __all__ = (
     "PubSubMessage",
     "SequencedMessage",
     "Subscription",
+    "TimeTarget",
     "Topic",
     "CommitCursorRequest",
     "CommitCursorResponse",
@@ -137,4 +141,6 @@ __all__ = (
     "ComputeHeadCursorResponse",
     "ComputeMessageStatsRequest",
     "ComputeMessageStatsResponse",
+    "ComputeTimeCursorRequest",
+    "ComputeTimeCursorResponse",
 )

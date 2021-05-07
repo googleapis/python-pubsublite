@@ -779,6 +779,148 @@ async def test_compute_head_cursor_field_headers_async():
     assert ("x-goog-request-params", "topic=topic/value",) in kw["metadata"]
 
 
+def test_compute_time_cursor(
+    transport: str = "grpc", request_type=topic_stats.ComputeTimeCursorRequest
+):
+    client = TopicStatsServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_time_cursor), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = topic_stats.ComputeTimeCursorResponse()
+        response = client.compute_time_cursor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == topic_stats.ComputeTimeCursorRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, topic_stats.ComputeTimeCursorResponse)
+
+
+def test_compute_time_cursor_from_dict():
+    test_compute_time_cursor(request_type=dict)
+
+
+def test_compute_time_cursor_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TopicStatsServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_time_cursor), "__call__"
+    ) as call:
+        client.compute_time_cursor()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == topic_stats.ComputeTimeCursorRequest()
+
+
+@pytest.mark.asyncio
+async def test_compute_time_cursor_async(
+    transport: str = "grpc_asyncio", request_type=topic_stats.ComputeTimeCursorRequest
+):
+    client = TopicStatsServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_time_cursor), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            topic_stats.ComputeTimeCursorResponse()
+        )
+        response = await client.compute_time_cursor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == topic_stats.ComputeTimeCursorRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, topic_stats.ComputeTimeCursorResponse)
+
+
+@pytest.mark.asyncio
+async def test_compute_time_cursor_async_from_dict():
+    await test_compute_time_cursor_async(request_type=dict)
+
+
+def test_compute_time_cursor_field_headers():
+    client = TopicStatsServiceClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = topic_stats.ComputeTimeCursorRequest()
+
+    request.topic = "topic/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_time_cursor), "__call__"
+    ) as call:
+        call.return_value = topic_stats.ComputeTimeCursorResponse()
+        client.compute_time_cursor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "topic=topic/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_compute_time_cursor_field_headers_async():
+    client = TopicStatsServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = topic_stats.ComputeTimeCursorRequest()
+
+    request.topic = "topic/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_time_cursor), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            topic_stats.ComputeTimeCursorResponse()
+        )
+        await client.compute_time_cursor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "topic=topic/value",) in kw["metadata"]
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.TopicStatsServiceGrpcTransport(
@@ -878,6 +1020,7 @@ def test_topic_stats_service_base_transport():
     methods = (
         "compute_message_stats",
         "compute_head_cursor",
+        "compute_time_cursor",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):

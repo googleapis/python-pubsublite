@@ -42,6 +42,7 @@ from .types.common import Cursor
 from .types.common import PubSubMessage
 from .types.common import SequencedMessage
 from .types.common import Subscription
+from .types.common import TimeTarget
 from .types.common import Topic
 from .types.cursor import CommitCursorRequest
 from .types.cursor import CommitCursorResponse
@@ -76,6 +77,8 @@ from .types.topic_stats import ComputeHeadCursorRequest
 from .types.topic_stats import ComputeHeadCursorResponse
 from .types.topic_stats import ComputeMessageStatsRequest
 from .types.topic_stats import ComputeMessageStatsResponse
+from .types.topic_stats import ComputeTimeCursorRequest
+from .types.topic_stats import ComputeTimeCursorResponse
 
 __all__ = (
     "AdminServiceClient",
@@ -86,6 +89,8 @@ __all__ = (
     "ComputeHeadCursorResponse",
     "ComputeMessageStatsRequest",
     "ComputeMessageStatsResponse",
+    "ComputeTimeCursorRequest",
+    "ComputeTimeCursorResponse",
     "CreateSubscriptionRequest",
     "CreateTopicRequest",
     "Cursor",
@@ -134,6 +139,7 @@ __all__ = (
     "SubscribeResponse",
     "SubscriberServiceClient",
     "Subscription",
+    "TimeTarget",
     "Topic",
     "TopicPartitions",
     "UpdateSubscriptionRequest",

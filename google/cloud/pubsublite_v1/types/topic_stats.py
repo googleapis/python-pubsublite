@@ -26,6 +26,8 @@ __protobuf__ = proto.module(
         "ComputeMessageStatsResponse",
         "ComputeHeadCursorRequest",
         "ComputeHeadCursorResponse",
+        "ComputeTimeCursorRequest",
+        "ComputeTimeCursorResponse",
     },
 )
 
@@ -115,6 +117,43 @@ class ComputeHeadCursorResponse(proto.Message):
     """
 
     head_cursor = proto.Field(proto.MESSAGE, number=1, message=common.Cursor,)
+
+
+class ComputeTimeCursorRequest(proto.Message):
+    r"""Compute the corresponding cursor for a publish or event time
+    in a topic partition.
+
+    Attributes:
+        topic (str):
+            Required. The topic for which we should
+            compute the cursor.
+        partition (int):
+            Required. The partition for which we should
+            compute the cursor.
+        target (google.cloud.pubsublite_v1.types.TimeTarget):
+            Required. The target publish or event time.
+            Specifying a future time will return an unset
+            cursor.
+    """
+
+    topic = proto.Field(proto.STRING, number=1,)
+    partition = proto.Field(proto.INT64, number=2,)
+    target = proto.Field(proto.MESSAGE, number=3, message=common.TimeTarget,)
+
+
+class ComputeTimeCursorResponse(proto.Message):
+    r"""Response containing the cursor corresponding to a publish or
+    event time in a topic partition.
+
+    Attributes:
+        cursor (google.cloud.pubsublite_v1.types.Cursor):
+            If present, the cursor references the first message with
+            time greater than or equal to the specified target time. If
+            such a message cannot be found, the cursor will be unset
+            (i.e. ``cursor`` is not present).
+    """
+
+    cursor = proto.Field(proto.MESSAGE, number=1, message=common.Cursor,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

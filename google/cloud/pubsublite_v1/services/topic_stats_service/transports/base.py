@@ -168,24 +168,14 @@ class TopicStatsServiceTransport(abc.ABC):
         self._wrapped_methods = {
             self.compute_message_stats: gapic_v1.method.wrap_method(
                 self.compute_message_stats,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        exceptions.Aborted,
-                        exceptions.DeadlineExceeded,
-                        exceptions.InternalServerError,
-                        exceptions.ServiceUnavailable,
-                        exceptions.Unknown,
-                    ),
-                    deadline=600.0,
-                ),
-                default_timeout=600.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.compute_head_cursor: gapic_v1.method.wrap_method(
                 self.compute_head_cursor, default_timeout=None, client_info=client_info,
+            ),
+            self.compute_time_cursor: gapic_v1.method.wrap_method(
+                self.compute_time_cursor, default_timeout=None, client_info=client_info,
             ),
         }
 
@@ -209,6 +199,18 @@ class TopicStatsServiceTransport(abc.ABC):
         Union[
             topic_stats.ComputeHeadCursorResponse,
             Awaitable[topic_stats.ComputeHeadCursorResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def compute_time_cursor(
+        self,
+    ) -> Callable[
+        [topic_stats.ComputeTimeCursorRequest],
+        Union[
+            topic_stats.ComputeTimeCursorResponse,
+            Awaitable[topic_stats.ComputeTimeCursorResponse],
         ],
     ]:
         raise NotImplementedError()

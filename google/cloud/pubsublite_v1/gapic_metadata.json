@@ -269,6 +269,11 @@
               "methods": [
                 "compute_message_stats"
               ]
+            },
+            "ComputeTimeCursor": {
+              "methods": [
+                "compute_time_cursor"
+              ]
             }
           }
         },
@@ -283,6 +288,11 @@
             "ComputeMessageStats": {
               "methods": [
                 "compute_message_stats"
+              ]
+            },
+            "ComputeTimeCursor": {
+              "methods": [
+                "compute_time_cursor"
               ]
             }
           }

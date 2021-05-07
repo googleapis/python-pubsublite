@@ -295,5 +295,37 @@ class TopicStatsServiceGrpcAsyncIOTransport(TopicStatsServiceTransport):
             )
         return self._stubs["compute_head_cursor"]
 
+    @property
+    def compute_time_cursor(
+        self,
+    ) -> Callable[
+        [topic_stats.ComputeTimeCursorRequest],
+        Awaitable[topic_stats.ComputeTimeCursorResponse],
+    ]:
+        r"""Return a callable for the
+        compute time cursor
+          method over gRPC.
+
+        Compute the corresponding cursor for a publish or
+        event time in a topic partition.
+
+        Returns:
+            Callable[[~.ComputeTimeCursorRequest],
+                    Awaitable[~.ComputeTimeCursorResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "compute_time_cursor" not in self._stubs:
+            self._stubs["compute_time_cursor"] = self.grpc_channel.unary_unary(
+                "/google.cloud.pubsublite.v1.TopicStatsService/ComputeTimeCursor",
+                request_serializer=topic_stats.ComputeTimeCursorRequest.serialize,
+                response_deserializer=topic_stats.ComputeTimeCursorResponse.deserialize,
+            )
+        return self._stubs["compute_time_cursor"]
+
 
 __all__ = ("TopicStatsServiceGrpcAsyncIOTransport",)
