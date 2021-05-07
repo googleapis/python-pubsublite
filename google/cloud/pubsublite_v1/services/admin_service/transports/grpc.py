@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.pubsublite_v1.types import admin
 from google.cloud.pubsublite_v1.types import common
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 from .base import AdminServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -54,7 +51,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
         self,
         *,
         host: str = "pubsublite.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -68,7 +65,8 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -178,7 +176,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
     def create_channel(
         cls,
         host: str = "pubsublite.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -209,13 +207,15 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -351,7 +351,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
         return self._stubs["update_topic"]
 
     @property
-    def delete_topic(self) -> Callable[[admin.DeleteTopicRequest], empty.Empty]:
+    def delete_topic(self) -> Callable[[admin.DeleteTopicRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete topic method over gRPC.
 
         Deletes the specified topic.
@@ -370,7 +370,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
             self._stubs["delete_topic"] = self.grpc_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/DeleteTopic",
                 request_serializer=admin.DeleteTopicRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_topic"]
 
@@ -511,7 +511,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
     @property
     def delete_subscription(
         self,
-    ) -> Callable[[admin.DeleteSubscriptionRequest], empty.Empty]:
+    ) -> Callable[[admin.DeleteSubscriptionRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete subscription method over gRPC.
 
         Deletes the specified subscription.
@@ -530,7 +530,7 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
             self._stubs["delete_subscription"] = self.grpc_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/DeleteSubscription",
                 request_serializer=admin.DeleteSubscriptionRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_subscription"]
 
