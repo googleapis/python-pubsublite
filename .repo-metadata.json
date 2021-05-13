@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_COMBO",
     "repo": "googleapis/python-pubsublite",
     "distribution_name": "google-cloud-pubsublite",
     "api_id": "pubsublite.googleapis.com"
