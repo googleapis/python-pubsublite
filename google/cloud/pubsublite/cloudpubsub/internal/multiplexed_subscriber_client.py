@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from concurrent.futures.thread import ThreadPoolExecutor
-from typing import Union, Optional, Set, Callable, cast
+from typing import Union, Optional, Set
 
 from google.cloud.pubsub_v1.subscriber.futures import StreamingPullFuture
 
@@ -61,13 +61,12 @@ class MultiplexedSubscriberClient(SubscriberClientInterface):
     def subscribe(
         self,
         subscription: Union[SubscriptionPath, str],
-        callback: Callable,  # TODO(dpcollins): Change to MessageCallback,
+        callback: MessageCallback,
         per_partition_flow_control_settings: FlowControlSettings,
         fixed_partitions: Optional[Set[Partition]] = None,
     ) -> StreamingPullFuture:
         if isinstance(subscription, str):
             subscription = SubscriptionPath.parse(subscription)
-        callback = cast(MessageCallback, callback)
 
         def create_and_open():
             underlying = self._underlying_factory(
