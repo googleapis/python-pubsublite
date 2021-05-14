@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,17 +20,16 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.pubsublite_v1.services.admin_service import pagers
 from google.cloud.pubsublite_v1.types import admin
 from google.cloud.pubsublite_v1.types import common
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-
+from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import AdminServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AdminServiceGrpcAsyncIOTransport
 from .client import AdminServiceClient
@@ -53,27 +50,22 @@ class AdminServiceAsyncClient:
     parse_subscription_path = staticmethod(AdminServiceClient.parse_subscription_path)
     topic_path = staticmethod(AdminServiceClient.topic_path)
     parse_topic_path = staticmethod(AdminServiceClient.parse_topic_path)
-
     common_billing_account_path = staticmethod(
         AdminServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         AdminServiceClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(AdminServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(AdminServiceClient.parse_common_folder_path)
-
     common_organization_path = staticmethod(AdminServiceClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         AdminServiceClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(AdminServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
         AdminServiceClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(AdminServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
         AdminServiceClient.parse_common_location_path
@@ -81,7 +73,8 @@ class AdminServiceAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -96,7 +89,7 @@ class AdminServiceAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -113,7 +106,7 @@ class AdminServiceAsyncClient:
 
     @property
     def transport(self) -> AdminServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             AdminServiceTransport: The transport used by the client instance.
@@ -127,12 +120,12 @@ class AdminServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, AdminServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the admin service client.
+        """Instantiates the admin service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -164,7 +157,6 @@ class AdminServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = AdminServiceClient(
             credentials=credentials,
             transport=transport,
@@ -212,7 +204,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``topic_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -237,7 +228,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if topic is not None:
@@ -286,7 +276,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -311,7 +300,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -357,7 +345,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -382,7 +369,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -428,7 +414,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -457,7 +442,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -492,7 +476,7 @@ class AdminServiceAsyncClient:
         request: admin.UpdateTopicRequest = None,
         *,
         topic: common.Topic = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -516,7 +500,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -541,7 +524,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if topic is not None:
             request.topic = topic
         if update_mask is not None:
@@ -590,7 +572,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -611,7 +592,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -656,7 +636,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -685,7 +664,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -755,7 +733,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``subscription_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -782,7 +759,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if subscription is not None:
@@ -832,7 +808,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -859,7 +834,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -906,7 +880,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -935,7 +908,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -970,7 +942,7 @@ class AdminServiceAsyncClient:
         request: admin.UpdateSubscriptionRequest = None,
         *,
         subscription: common.Subscription = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -994,7 +966,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1021,7 +992,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if subscription is not None:
             request.subscription = subscription
         if update_mask is not None:
@@ -1070,7 +1040,6 @@ class AdminServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1091,7 +1060,6 @@ class AdminServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 

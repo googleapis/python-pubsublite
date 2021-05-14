@@ -13,21 +13,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from typing import Dict, Type
-
-from .base import CursorServiceTransport
-from .grpc import CursorServiceGrpcTransport
-from .grpc_asyncio import CursorServiceGrpcAsyncIOTransport
-
-
-# Compile a registry of transports.
-_transport_registry = OrderedDict()  # type: Dict[str, Type[CursorServiceTransport]]
-_transport_registry['grpc'] = CursorServiceGrpcTransport
-_transport_registry['grpc_asyncio'] = CursorServiceGrpcAsyncIOTransport
-
-__all__ = (
-    'CursorServiceTransport',
-    'CursorServiceGrpcTransport',
-    'CursorServiceGrpcAsyncIOTransport',
-)
