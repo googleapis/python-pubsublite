@@ -24,12 +24,20 @@ common = gcp.CommonTemplates()
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
-    s.replace(library / f"google/cloud/pubsublite_{library.name}/types/common.py",
     # Work around gapic generator bug: https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/cloud/pubsublite_{library.name}/types/common.py",
                 r""".
     Attributes:""",
                 r""".\n
     Attributes:"""
+    )
+
+    # Work around gapic generator bug: https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/cloud/pubsublite_{library.name}/types/common.py",
+                r""".
+        Attributes:""",
+                r""".\n
+        Attributes:""",
     )
 
     excludes = [
