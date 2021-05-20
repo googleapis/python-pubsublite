@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
 
 class AttributeValues(proto.Message):
     r"""The values associated with a key of an attribute.
+
     Attributes:
         values (Sequence[bytes]):
             The list of values associated with a key.
@@ -111,6 +112,7 @@ class SequencedMessage(proto.Message):
 
 class Topic(proto.Message):
     r"""Metadata about a topic resource.
+
     Attributes:
         name (str):
             The name of the topic. Structured like:
@@ -194,6 +196,7 @@ class Topic(proto.Message):
 
 class Subscription(proto.Message):
     r"""Metadata about a subscription resource.
+
     Attributes:
         name (str):
             The name of the subscription. Structured like:
