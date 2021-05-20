@@ -151,6 +151,7 @@ class Topic(proto.Message):
 
         class Capacity(proto.Message):
             r"""The throughput capacity configuration for each partition.
+
             Attributes:
                 publish_mib_per_sec (int):
                     Publish throughput capacity per partition in
