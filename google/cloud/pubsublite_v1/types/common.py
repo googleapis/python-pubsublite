@@ -126,6 +126,7 @@ class Topic(proto.Message):
 
     class PartitionConfig(proto.Message):
         r"""The settings for a topic's partitions.
+
         Attributes:
             count (int):
                 The number of partitions in the topic. Must be at least 1.
@@ -173,6 +174,7 @@ class Topic(proto.Message):
 
     class RetentionConfig(proto.Message):
         r"""The settings for a topic's message retention.
+
         Attributes:
             per_partition_bytes (int):
                 The provisioned storage, in bytes, per partition. If the
@@ -212,6 +214,7 @@ class Subscription(proto.Message):
 
     class DeliveryConfig(proto.Message):
         r"""The settings for a subscription's message delivery.
+
         Attributes:
             delivery_requirement (google.cloud.pubsublite_v1.types.Subscription.DeliveryConfig.DeliveryRequirement):
                 The DeliveryRequirement for this
