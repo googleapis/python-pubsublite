@@ -19,7 +19,7 @@ import random
 import uuid
 
 import backoff
-from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import InternalServerError, NotFound
 from google.cloud.pubsublite import AdminClient
 from google.cloud.pubsublite.types import (
     CloudRegion,
@@ -53,8 +53,8 @@ def topic_path(client):
     yield topic_path
     try:
         client.delete_topic(topic_path)
-    except NotFound:
-        pass
+    except (InternalServerError, NotFound) as e:
+        print(e)
 
 
 @pytest.fixture(scope="module")
