@@ -64,8 +64,8 @@ def subscription_path(client):
     yield subscription_path
     try:
         client.delete_subscription(subscription_path)
-    except NotFound:
-        pass
+    except (InternalServerError, NotFound) as e:
+        print(e)
 
 
 def test_create_lite_topic_example(topic_path, capsys):
