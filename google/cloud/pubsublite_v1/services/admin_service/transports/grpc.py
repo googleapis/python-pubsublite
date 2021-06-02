@@ -534,5 +534,165 @@ class AdminServiceGrpcTransport(AdminServiceTransport):
             )
         return self._stubs["delete_subscription"]
 
+    @property
+    def create_reservation(
+        self,
+    ) -> Callable[[admin.CreateReservationRequest], common.Reservation]:
+        r"""Return a callable for the create reservation method over gRPC.
+
+        Creates a new reservation.
+
+        Returns:
+            Callable[[~.CreateReservationRequest],
+                    ~.Reservation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_reservation" not in self._stubs:
+            self._stubs["create_reservation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.pubsublite.v1.AdminService/CreateReservation",
+                request_serializer=admin.CreateReservationRequest.serialize,
+                response_deserializer=common.Reservation.deserialize,
+            )
+        return self._stubs["create_reservation"]
+
+    @property
+    def get_reservation(
+        self,
+    ) -> Callable[[admin.GetReservationRequest], common.Reservation]:
+        r"""Return a callable for the get reservation method over gRPC.
+
+        Returns the reservation configuration.
+
+        Returns:
+            Callable[[~.GetReservationRequest],
+                    ~.Reservation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_reservation" not in self._stubs:
+            self._stubs["get_reservation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.pubsublite.v1.AdminService/GetReservation",
+                request_serializer=admin.GetReservationRequest.serialize,
+                response_deserializer=common.Reservation.deserialize,
+            )
+        return self._stubs["get_reservation"]
+
+    @property
+    def list_reservations(
+        self,
+    ) -> Callable[[admin.ListReservationsRequest], admin.ListReservationsResponse]:
+        r"""Return a callable for the list reservations method over gRPC.
+
+        Returns the list of reservations for the given
+        project.
+
+        Returns:
+            Callable[[~.ListReservationsRequest],
+                    ~.ListReservationsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_reservations" not in self._stubs:
+            self._stubs["list_reservations"] = self.grpc_channel.unary_unary(
+                "/google.cloud.pubsublite.v1.AdminService/ListReservations",
+                request_serializer=admin.ListReservationsRequest.serialize,
+                response_deserializer=admin.ListReservationsResponse.deserialize,
+            )
+        return self._stubs["list_reservations"]
+
+    @property
+    def update_reservation(
+        self,
+    ) -> Callable[[admin.UpdateReservationRequest], common.Reservation]:
+        r"""Return a callable for the update reservation method over gRPC.
+
+        Updates properties of the specified reservation.
+
+        Returns:
+            Callable[[~.UpdateReservationRequest],
+                    ~.Reservation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_reservation" not in self._stubs:
+            self._stubs["update_reservation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.pubsublite.v1.AdminService/UpdateReservation",
+                request_serializer=admin.UpdateReservationRequest.serialize,
+                response_deserializer=common.Reservation.deserialize,
+            )
+        return self._stubs["update_reservation"]
+
+    @property
+    def delete_reservation(
+        self,
+    ) -> Callable[[admin.DeleteReservationRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete reservation method over gRPC.
+
+        Deletes the specified reservation.
+
+        Returns:
+            Callable[[~.DeleteReservationRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_reservation" not in self._stubs:
+            self._stubs["delete_reservation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.pubsublite.v1.AdminService/DeleteReservation",
+                request_serializer=admin.DeleteReservationRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_reservation"]
+
+    @property
+    def list_reservation_topics(
+        self,
+    ) -> Callable[
+        [admin.ListReservationTopicsRequest], admin.ListReservationTopicsResponse
+    ]:
+        r"""Return a callable for the list reservation topics method over gRPC.
+
+        Lists the topics attached to the specified
+        reservation.
+
+        Returns:
+            Callable[[~.ListReservationTopicsRequest],
+                    ~.ListReservationTopicsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_reservation_topics" not in self._stubs:
+            self._stubs["list_reservation_topics"] = self.grpc_channel.unary_unary(
+                "/google.cloud.pubsublite.v1.AdminService/ListReservationTopics",
+                request_serializer=admin.ListReservationTopicsRequest.serialize,
+                response_deserializer=admin.ListReservationTopicsResponse.deserialize,
+            )
+        return self._stubs["list_reservation_topics"]
+
 
 __all__ = ("AdminServiceGrpcTransport",)

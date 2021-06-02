@@ -27,13 +27,20 @@ from .services.subscriber_service import SubscriberServiceAsyncClient
 from .services.topic_stats_service import TopicStatsServiceClient
 from .services.topic_stats_service import TopicStatsServiceAsyncClient
 
+from .types.admin import CreateReservationRequest
 from .types.admin import CreateSubscriptionRequest
 from .types.admin import CreateTopicRequest
+from .types.admin import DeleteReservationRequest
 from .types.admin import DeleteSubscriptionRequest
 from .types.admin import DeleteTopicRequest
+from .types.admin import GetReservationRequest
 from .types.admin import GetSubscriptionRequest
 from .types.admin import GetTopicPartitionsRequest
 from .types.admin import GetTopicRequest
+from .types.admin import ListReservationsRequest
+from .types.admin import ListReservationsResponse
+from .types.admin import ListReservationTopicsRequest
+from .types.admin import ListReservationTopicsResponse
 from .types.admin import ListSubscriptionsRequest
 from .types.admin import ListSubscriptionsResponse
 from .types.admin import ListTopicsRequest
@@ -41,11 +48,13 @@ from .types.admin import ListTopicsResponse
 from .types.admin import ListTopicSubscriptionsRequest
 from .types.admin import ListTopicSubscriptionsResponse
 from .types.admin import TopicPartitions
+from .types.admin import UpdateReservationRequest
 from .types.admin import UpdateSubscriptionRequest
 from .types.admin import UpdateTopicRequest
 from .types.common import AttributeValues
 from .types.common import Cursor
 from .types.common import PubSubMessage
+from .types.common import Reservation
 from .types.common import SequencedMessage
 from .types.common import Subscription
 from .types.common import TimeTarget
@@ -103,13 +112,16 @@ __all__ = (
     "ComputeMessageStatsResponse",
     "ComputeTimeCursorRequest",
     "ComputeTimeCursorResponse",
+    "CreateReservationRequest",
     "CreateSubscriptionRequest",
     "CreateTopicRequest",
     "Cursor",
     "CursorServiceClient",
+    "DeleteReservationRequest",
     "DeleteSubscriptionRequest",
     "DeleteTopicRequest",
     "FlowControlRequest",
+    "GetReservationRequest",
     "GetSubscriptionRequest",
     "GetTopicPartitionsRequest",
     "GetTopicRequest",
@@ -122,6 +134,10 @@ __all__ = (
     "InitialSubscribeResponse",
     "ListPartitionCursorsRequest",
     "ListPartitionCursorsResponse",
+    "ListReservationTopicsRequest",
+    "ListReservationTopicsResponse",
+    "ListReservationsRequest",
+    "ListReservationsResponse",
     "ListSubscriptionsRequest",
     "ListSubscriptionsResponse",
     "ListTopicSubscriptionsRequest",
@@ -140,6 +156,7 @@ __all__ = (
     "PublishRequest",
     "PublishResponse",
     "PublisherServiceClient",
+    "Reservation",
     "SeekRequest",
     "SeekResponse",
     "SequencedCommitCursorRequest",
@@ -155,6 +172,7 @@ __all__ = (
     "Topic",
     "TopicPartitions",
     "TopicStatsServiceClient",
+    "UpdateReservationRequest",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
 )
