@@ -104,7 +104,9 @@ class AssignerImpl(
         await self._connection.__aexit__(exc_type, exc_val, exc_tb)
 
     async def reinitialize(
-        self, connection: Connection[PartitionAssignmentRequest, PartitionAssignment]
+        self,
+        connection: Connection[PartitionAssignmentRequest, PartitionAssignment],
+        last_error: Optional[GoogleAPICallError],
     ):
         self._outstanding_assignment = False
         while not self._new_assignment.empty():

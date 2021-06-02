@@ -167,6 +167,7 @@ class CommitterImpl(
         connection: Connection[
             StreamingCommitCursorRequest, StreamingCommitCursorResponse
         ],
+        last_error: Optional[GoogleAPICallError],
     ):
         await self._stop_loopers()
         await connection.write(StreamingCommitCursorRequest(initial=self._initial))

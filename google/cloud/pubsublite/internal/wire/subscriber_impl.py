@@ -146,7 +146,9 @@ class SubscriberImpl(
         await self._connection.__aexit__(exc_type, exc_val, exc_tb)
 
     async def reinitialize(
-        self, connection: Connection[SubscribeRequest, SubscribeResponse]
+        self,
+        connection: Connection[SubscribeRequest, SubscribeResponse],
+        last_error: Optional[GoogleAPICallError],
     ):
         self._reinitializing = True
         await self._stop_loopers()
