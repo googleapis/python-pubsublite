@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -31,6 +28,7 @@ __protobuf__ = proto.module(
         "SequencedMessage",
         "Topic",
         "Subscription",
+        "TimeTarget",
     },
 )
 
@@ -43,7 +41,7 @@ class AttributeValues(proto.Message):
             The list of values associated with a key.
     """
 
-    values = proto.RepeatedField(proto.BYTES, number=1)
+    values = proto.RepeatedField(proto.BYTES, number=1,)
 
 
 class PubSubMessage(proto.Message):
@@ -65,15 +63,12 @@ class PubSubMessage(proto.Message):
             An optional, user-specified event time.
     """
 
-    key = proto.Field(proto.BYTES, number=1)
-
-    data = proto.Field(proto.BYTES, number=2)
-
+    key = proto.Field(proto.BYTES, number=1,)
+    data = proto.Field(proto.BYTES, number=2,)
     attributes = proto.MapField(
         proto.STRING, proto.MESSAGE, number=3, message="AttributeValues",
     )
-
-    event_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
+    event_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
 
 
 class Cursor(proto.Message):
@@ -86,7 +81,7 @@ class Cursor(proto.Message):
             partition. Must be greater than or equal 0.
     """
 
-    offset = proto.Field(proto.INT64, number=1)
+    offset = proto.Field(proto.INT64, number=1,)
 
 
 class SequencedMessage(proto.Message):
@@ -108,12 +103,11 @@ class SequencedMessage(proto.Message):
     """
 
     cursor = proto.Field(proto.MESSAGE, number=1, message="Cursor",)
-
-    publish_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
+    publish_time = proto.Field(
+        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+    )
     message = proto.Field(proto.MESSAGE, number=3, message="PubSubMessage",)
-
-    size_bytes = proto.Field(proto.INT64, number=4)
+    size_bytes = proto.Field(proto.INT64, number=4,)
 
 
 class Topic(proto.Message):
@@ -167,14 +161,11 @@ class Topic(proto.Message):
                     in MiB/s. Must be >= 4 and <= 32.
             """
 
-            publish_mib_per_sec = proto.Field(proto.INT32, number=1)
+            publish_mib_per_sec = proto.Field(proto.INT32, number=1,)
+            subscribe_mib_per_sec = proto.Field(proto.INT32, number=2,)
 
-            subscribe_mib_per_sec = proto.Field(proto.INT32, number=2)
-
-        count = proto.Field(proto.INT64, number=1)
-
-        scale = proto.Field(proto.INT32, number=2, oneof="dimension")
-
+        count = proto.Field(proto.INT64, number=1,)
+        scale = proto.Field(proto.INT32, number=2, oneof="dimension",)
         capacity = proto.Field(
             proto.MESSAGE,
             number=3,
@@ -198,14 +189,11 @@ class Topic(proto.Message):
                 partition is below ``per_partition_bytes``.
         """
 
-        per_partition_bytes = proto.Field(proto.INT64, number=1)
+        per_partition_bytes = proto.Field(proto.INT64, number=1,)
+        period = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
 
-        period = proto.Field(proto.MESSAGE, number=2, message=duration.Duration,)
-
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     partition_config = proto.Field(proto.MESSAGE, number=2, message=PartitionConfig,)
-
     retention_config = proto.Field(proto.MESSAGE, number=3, message=RetentionConfig,)
 
 
@@ -249,11 +237,36 @@ class Subscription(proto.Message):
             enum="Subscription.DeliveryConfig.DeliveryRequirement",
         )
 
-    name = proto.Field(proto.STRING, number=1)
-
-    topic = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    topic = proto.Field(proto.STRING, number=2,)
     delivery_config = proto.Field(proto.MESSAGE, number=3, message=DeliveryConfig,)
+
+
+class TimeTarget(proto.Message):
+    r"""A target publish or event time. Can be used for seeking to or
+    retrieving the corresponding cursor.
+
+    Attributes:
+        publish_time (google.protobuf.timestamp_pb2.Timestamp):
+            Request the cursor of the first message with publish time
+            greater than or equal to ``publish_time``. All messages
+            thereafter are guaranteed to have publish times >=
+            ``publish_time``.
+        event_time (google.protobuf.timestamp_pb2.Timestamp):
+            Request the cursor of the first message with event time
+            greater than or equal to ``event_time``. If messages are
+            missing an event time, the publish time is used as a
+            fallback. As event times are user supplied, subsequent
+            messages may have event times less than ``event_time`` and
+            should be filtered by the client, if necessary.
+    """
+
+    publish_time = proto.Field(
+        proto.MESSAGE, number=1, oneof="time", message=timestamp_pb2.Timestamp,
+    )
+    event_time = proto.Field(
+        proto.MESSAGE, number=2, oneof="time", message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
