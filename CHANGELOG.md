@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.4.2](https://www.github.com/googleapis/python-pubsublite/compare/v0.4.1...v0.4.2) (2021-06-02)
+
+
+### Bug Fixes
+
+* shutdown event loop if publisher fails to start and set exception on result future ([#124](https://www.github.com/googleapis/python-pubsublite/issues/124)) ([c2c2b00](https://www.github.com/googleapis/python-pubsublite/commit/c2c2b00f0141af6f6d26ff095431de547deab96d))
+* Version bump overrides library past fix and undo workarounds ([#137](https://www.github.com/googleapis/python-pubsublite/issues/137)) ([94ae2f0](https://www.github.com/googleapis/python-pubsublite/commit/94ae2f04a85f94b6cffa2241d68068c292157c56))
+
 ### [0.4.1](https://www.github.com/googleapis/python-pubsublite/compare/v0.4.0...v0.4.1) (2021-05-05)
 
 
