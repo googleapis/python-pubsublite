@@ -66,10 +66,10 @@ async def test_init(mock_watcher, publisher):
 async def test_failed_init(mock_watcher, publisher):
     mock_watcher.get_partition_count.side_effect = GoogleAPICallError("error")
     with pytest.raises(GoogleAPICallError):
-        async with publisher:
-            pass
+        await publisher.__aenter__()
     mock_watcher.__aenter__.assert_called_once()
     mock_watcher.__aexit__.assert_called_once()
+    await publisher.__aexit__(None, None, None)
 
 
 async def test_simple_publish(mock_publishers, mock_policies, mock_watcher, publisher):
