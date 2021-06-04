@@ -94,7 +94,7 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
                                 )
                         self._read_queue = asyncio.Queue(maxsize=1)
                         self._write_queue = asyncio.Queue(maxsize=1)
-                        await self._reinitializer.reinitialize(connection)
+                        await self._reinitializer.reinitialize(connection, last_failure)
                         self._initialized_once.set()
                         bad_retries = 0
                         await self._loop_connection(connection)

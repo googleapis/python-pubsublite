@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+from unittest.mock import call
 
 from asynctest.mock import MagicMock, CoroutineMock
 import pytest
@@ -69,8 +70,9 @@ def asyncio_sleep(monkeypatch):
 async def test_permanent_error_on_reinitializer(
     retrying_connection: Connection[int, int], reinitializer, default_connection
 ):
-    async def reinit_action(conn):
+    async def reinit_action(conn, last_error):
         assert conn == default_connection
+        assert last_error is None
         raise InvalidArgument("abc")
 
     reinitializer.reinitialize.side_effect = reinit_action
@@ -82,8 +84,9 @@ async def test_permanent_error_on_reinitializer(
 async def test_successful_reinitialize(
     retrying_connection: Connection[int, int], reinitializer, default_connection
 ):
-    async def reinit_action(conn):
+    async def reinit_action(conn, last_error):
         assert conn == default_connection
+        assert last_error is None
         return None
 
     default_connection.read.return_value = 1
@@ -116,11 +119,15 @@ async def test_reinitialize_after_retryable(
 
     default_connection.read.return_value = 1
 
-    await reinit_queues.results.put(InternalServerError("abc"))
+    error = InternalServerError("abc")
+    await reinit_queues.results.put(error)
     await reinit_queues.results.put(None)
     async with retrying_connection as _:
         asyncio_sleep.assert_called_once_with(_MIN_BACKOFF_SECS)
         assert reinitializer.reinitialize.call_count == 2
+        reinitializer.reinitialize.assert_has_calls(
+            [call(default_connection, None), call(default_connection, error)]
+        )
         assert await retrying_connection.read() == 1
         assert (
             default_connection.read.call_count == 2

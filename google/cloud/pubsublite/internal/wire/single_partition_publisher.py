@@ -168,7 +168,9 @@ class SinglePartitionPublisher(
         return MessageMetadata(self._partition, await cursor_future)
 
     async def reinitialize(
-        self, connection: Connection[PublishRequest, PublishResponse]
+        self,
+        connection: Connection[PublishRequest, PublishResponse],
+        last_error: Optional[GoogleAPICallError],
     ):
         await self._stop_loopers()
         await connection.write(PublishRequest(initial_request=self._initial))
