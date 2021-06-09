@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import asyncio
-from typing import Union, Dict, NamedTuple
+from typing import Callable, Union, Dict, NamedTuple
 import queue
 
 from google.api_core.exceptions import FailedPrecondition, GoogleAPICallError
@@ -30,6 +30,9 @@ from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
 )
 from google.cloud.pubsublite.internal.wire.permanent_failable import PermanentFailable
 from google.cloud.pubsublite.internal.wire.subscriber import Subscriber
+from google.cloud.pubsublite.internal.wire.subscriber_reset_handler import (
+    SubscriberResetHandler,
+)
 from google.cloud.pubsublite_v1 import FlowControlRequest, SequencedMessage
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 
@@ -39,7 +42,12 @@ class _SizedMessage(NamedTuple):
     size_bytes: int
 
 
-class SinglePartitionSingleSubscriber(PermanentFailable, AsyncSingleSubscriber):
+ResettableSubscriberFactory = Callable[[SubscriberResetHandler], Subscriber]
+
+
+class SinglePartitionSingleSubscriber(
+    PermanentFailable, AsyncSingleSubscriber, SubscriberResetHandler
+):
     _underlying: Subscriber
     _flow_control_settings: FlowControlSettings
     _ack_set_tracker: AckSetTracker
@@ -47,26 +55,33 @@ class SinglePartitionSingleSubscriber(PermanentFailable, AsyncSingleSubscriber):
     _transformer: MessageTransformer
 
     _queue: queue.Queue
-    _messages_by_offset: Dict[int, _SizedMessage]
+    _ack_generation_id: int
+    _messages_by_ack_id: Dict[str, _SizedMessage]
     _looper_future: asyncio.Future
 
     def __init__(
         self,
-        underlying: Subscriber,
+        subscriber_factory: ResettableSubscriberFactory,
         flow_control_settings: FlowControlSettings,
         ack_set_tracker: AckSetTracker,
         nack_handler: NackHandler,
         transformer: MessageTransformer,
     ):
         super().__init__()
-        self._underlying = underlying
+        self._underlying = subscriber_factory(self)
         self._flow_control_settings = flow_control_settings
         self._ack_set_tracker = ack_set_tracker
         self._nack_handler = nack_handler
         self._transformer = transformer
 
         self._queue = queue.Queue()
-        self._messages_by_offset = {}
+        self._ack_generation_id = 0
+        self._messages_by_ack_id = {}
+
+    async def handle_reset(self):
+        # Increment ack generation id to ignore unacked messages.
+        ++self._ack_generation_id
+        await self._ack_set_tracker.clear_and_commit()
 
     async def read(self) -> Message:
         try:
@@ -75,13 +90,14 @@ class SinglePartitionSingleSubscriber(PermanentFailable, AsyncSingleSubscriber):
             )
             cps_message = self._transformer.transform(message)
             offset = message.cursor.offset
+            ack_id = f"{self._ack_generation_id}/{offset}"
             self._ack_set_tracker.track(offset)
-            self._messages_by_offset[offset] = _SizedMessage(
+            self._messages_by_ack_id[ack_id] = _SizedMessage(
                 cps_message, message.size_bytes
             )
             wrapped_message = Message(
                 cps_message._pb,
-                ack_id=str(offset),
+                ack_id=ack_id,
                 delivery_attempt=0,
                 request_queue=self._queue,
             )
@@ -91,22 +107,26 @@ class SinglePartitionSingleSubscriber(PermanentFailable, AsyncSingleSubscriber):
             raise e
 
     async def _handle_ack(self, message: requests.AckRequest):
-        offset = int(message.ack_id)
+        components = message.ack_id.split("/")
+        assert len(components) == 2
+        generation_id = int(components[0])
+        offset = int(components[1])
         await self._underlying.allow_flow(
             FlowControlRequest(
                 allowed_messages=1,
-                allowed_bytes=self._messages_by_offset[offset].size_bytes,
+                allowed_bytes=self._messages_by_ack_id[message.ack_id].size_bytes,
             )
         )
-        del self._messages_by_offset[offset]
-        try:
-            await self._ack_set_tracker.ack(offset)
-        except GoogleAPICallError as e:
-            self.fail(e)
+        del self._messages_by_ack_id[message.ack_id]
+        # Always refill flow control tokens, but do not commit offsets from outdated generations.
+        if generation_id == self._ack_generation_id:
+            try:
+                await self._ack_set_tracker.ack(offset)
+            except GoogleAPICallError as e:
+                self.fail(e)
 
     def _handle_nack(self, message: requests.NackRequest):
-        offset = int(message.ack_id)
-        sized_message = self._messages_by_offset[offset]
+        sized_message = self._messages_by_ack_id[message.ack_id]
         try:
             # Put the ack request back into the queue since the callback may be called from another thread.
             self._nack_handler.on_nack(

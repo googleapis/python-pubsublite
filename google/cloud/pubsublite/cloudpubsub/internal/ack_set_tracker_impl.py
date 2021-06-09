@@ -62,6 +62,11 @@ class AckSetTrackerImpl(AckSetTracker):
         # Convert from last acked to first unacked.
         await self._committer.commit(Cursor(offset=prefix_acked_offset + 1))
 
+    async def clear_and_commit(self):
+        self._receipts.clear()
+        self._acks = queue.PriorityQueue()
+        await self._committer.wait_until_empty()
+
     async def __aenter__(self):
         await self._committer.__aenter__()
 

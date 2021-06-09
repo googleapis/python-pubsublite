@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+from copy import deepcopy
 from unittest.mock import call
 from collections import defaultdict
 from typing import Dict, List
@@ -36,8 +37,12 @@ from google.cloud.pubsublite_v1 import (
     FlowControlRequest,
     SeekRequest,
 )
+from google.cloud.pubsublite.internal.wire.subscriber_reset_handler import (
+    SubscriberResetHandler,
+)
 from google.cloud.pubsublite_v1.types.common import Cursor, SequencedMessage
 from google.cloud.pubsublite.testing.test_utils import make_queue_waiter
+from google.cloud.pubsublite.testing.test_reset_signal import make_reset_signal
 from google.cloud.pubsublite.internal.wire.retrying_connection import _MIN_BACKOFF_SECS
 
 FLUSH_SECONDS = 100000
@@ -61,8 +66,19 @@ def connection_factory(default_connection):
 
 
 @pytest.fixture()
-def initial_request():
-    return SubscribeRequest(initial=InitialSubscribeRequest(subscription="mysub"))
+def reset_handler():
+    return MagicMock(spec=SubscriberResetHandler)
+
+
+@pytest.fixture()
+def base_initial_subscribe():
+    return InitialSubscribeRequest(subscription="mysub")
+
+
+@pytest.fixture()
+def initial_request(base_initial_subscribe):
+    location = SeekRequest(named_target=SeekRequest.NamedTarget.COMMITTED_CURSOR)
+    return make_initial_subscribe_request(base_initial_subscribe, location)
 
 
 class QueuePair:
@@ -95,8 +111,10 @@ def asyncio_sleep(monkeypatch, sleep_queues):
 
 
 @pytest.fixture()
-def subscriber(connection_factory, initial_request):
-    return SubscriberImpl(initial_request.initial, FLUSH_SECONDS, connection_factory)
+def subscriber(connection_factory, base_initial_subscribe, reset_handler):
+    return SubscriberImpl(
+        base_initial_subscribe, FLUSH_SECONDS, connection_factory, reset_handler
+    )
 
 
 def as_request(flow: FlowControlRequest):
@@ -109,6 +127,14 @@ def as_response(messages: List[SequencedMessage]):
     res = SubscribeResponse()
     res.messages.messages = messages
     return res
+
+
+def make_initial_subscribe_request(
+    base: InitialSubscribeRequest, location: SeekRequest
+):
+    initial_subscribe = deepcopy(base)
+    initial_subscribe.initial_location = location
+    return SubscribeRequest(initial=initial_subscribe)
 
 
 async def test_basic_flow_control_after_timeout(
@@ -253,6 +279,7 @@ async def test_flow_resent_on_restart(
 async def test_message_receipt(
     subscriber: Subscriber,
     default_connection,
+    base_initial_subscribe,
     initial_request,
     asyncio_sleep,
     sleep_queues,
@@ -307,28 +334,20 @@ async def test_message_receipt(
         await sleep_queues[_MIN_BACKOFF_SECS].results.put(None)
         # Reinitialization
         await write_called_queue.get()
-        default_connection.write.assert_has_calls(
-            [call(initial_request), call(as_request(flow)), call(initial_request)]
+        seek_to_cursor_request = make_initial_subscribe_request(
+            base_initial_subscribe,
+            SeekRequest(cursor=Cursor(offset=message_2.cursor.offset + 1)),
         )
-        await write_result_queue.put(None)
-        await read_called_queue.get()
-        await read_result_queue.put(SubscribeResponse(initial={}))
-        # Sends fetch offset seek on the stream, and checks the response.
-        seek_req = SubscribeRequest(
-            seek=SeekRequest(cursor=Cursor(offset=message_2.cursor.offset + 1))
-        )
-        await write_called_queue.get()
         default_connection.write.assert_has_calls(
             [
                 call(initial_request),
                 call(as_request(flow)),
-                call(initial_request),
-                call(seek_req),
+                call(seek_to_cursor_request),
             ]
         )
         await write_result_queue.put(None)
         await read_called_queue.get()
-        await read_result_queue.put(SubscribeResponse(seek={}))
+        await read_result_queue.put(SubscribeResponse(initial={}))
         # Re-sending flow tokens on the new stream.
         await write_called_queue.get()
         await write_result_queue.put(None)
@@ -336,8 +355,7 @@ async def test_message_receipt(
             [
                 call(initial_request),
                 call(as_request(flow)),
-                call(initial_request),
-                call(seek_req),
+                call(seek_to_cursor_request),
                 call(
                     as_request(
                         FlowControlRequest(allowed_messages=98, allowed_bytes=85)
@@ -400,3 +418,87 @@ async def test_out_of_order_receipt_failure(
         except GoogleAPICallError as e:
             assert e.grpc_status_code == StatusCode.FAILED_PRECONDITION
         pass
+
+
+async def test_handle_reset_signal(
+    subscriber: Subscriber,
+    default_connection,
+    initial_request,
+    asyncio_sleep,
+    sleep_queues,
+    reset_handler,
+):
+    write_called_queue = asyncio.Queue()
+    write_result_queue = asyncio.Queue()
+    flow = FlowControlRequest(allowed_messages=100, allowed_bytes=100)
+    message_1 = SequencedMessage(cursor=Cursor(offset=2), size_bytes=5)
+    message_2 = SequencedMessage(cursor=Cursor(offset=4), size_bytes=10)
+    # Ensure messages with earlier offsets can be handled post-reset.
+    message_3 = SequencedMessage(cursor=Cursor(offset=1), size_bytes=20)
+    default_connection.write.side_effect = make_queue_waiter(
+        write_called_queue, write_result_queue
+    )
+    read_called_queue = asyncio.Queue()
+    read_result_queue = asyncio.Queue()
+    default_connection.read.side_effect = make_queue_waiter(
+        read_called_queue, read_result_queue
+    )
+    read_result_queue.put_nowait(SubscribeResponse(initial={}))
+    write_result_queue.put_nowait(None)
+    async with subscriber:
+        # Set up connection
+        await write_called_queue.get()
+        await read_called_queue.get()
+        default_connection.write.assert_has_calls([call(initial_request)])
+
+        # Send tokens.
+        flow_fut = asyncio.ensure_future(subscriber.allow_flow(flow))
+        assert not flow_fut.done()
+
+        # Handle the inline write since initial tokens are 100% of outstanding.
+        await write_called_queue.get()
+        await write_result_queue.put(None)
+        await flow_fut
+        default_connection.write.assert_has_calls(
+            [call(initial_request), call(as_request(flow))]
+        )
+
+        # Send messages to the subscriber.
+        await read_result_queue.put(as_response([message_1, message_2]))
+
+        # Read one message.
+        await read_called_queue.get()
+        assert (await subscriber.read()) == message_1
+
+        # Fail the connection with an error containing the RESET signal.
+        await read_called_queue.get()
+        await read_result_queue.put(make_reset_signal())
+        await sleep_queues[_MIN_BACKOFF_SECS].called.get()
+        await sleep_queues[_MIN_BACKOFF_SECS].results.put(None)
+        # Reinitialization.
+        await write_called_queue.get()
+        await write_result_queue.put(None)
+        await read_called_queue.get()
+        await read_result_queue.put(SubscribeResponse(initial={}))
+        # Re-sending flow tokens on the new stream.
+        await write_called_queue.get()
+        await write_result_queue.put(None)
+        reset_handler.handle_reset.assert_called_once()
+        default_connection.write.assert_has_calls(
+            [
+                call(initial_request),
+                call(as_request(flow)),
+                call(initial_request),
+                call(
+                    as_request(
+                        # Tokens for undelivered message_2 refilled.
+                        FlowControlRequest(allowed_messages=99, allowed_bytes=95)
+                    )
+                ),
+            ]
+        )
+
+        # Ensure the subscriber accepts an earlier message.
+        await read_result_queue.put(as_response([message_3]))
+        await read_called_queue.get()
+        assert (await subscriber.read()) == message_3

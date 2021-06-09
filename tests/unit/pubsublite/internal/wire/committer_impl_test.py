@@ -26,7 +26,7 @@ from google.cloud.pubsublite.internal.wire.connection import (
     Connection,
     ConnectionFactory,
 )
-from google.api_core.exceptions import InternalServerError
+from google.api_core.exceptions import InternalServerError, InvalidArgument
 from google.cloud.pubsublite_v1.types.cursor import (
     StreamingCommitCursorRequest,
     StreamingCommitCursorResponse,
@@ -141,8 +141,10 @@ async def test_basic_commit_after_timeout(
         # Commit cursors
         commit_fut1 = asyncio.ensure_future(committer.commit(cursor1))
         commit_fut2 = asyncio.ensure_future(committer.commit(cursor2))
+        empty_fut = asyncio.ensure_future(committer.wait_until_empty())
         assert not commit_fut1.done()
         assert not commit_fut2.done()
+        assert not empty_fut.done()
 
         # Wait for writes to be waiting
         await sleep_called.get()
@@ -158,11 +160,13 @@ async def test_basic_commit_after_timeout(
         )
         assert not commit_fut1.done()
         assert not commit_fut2.done()
+        assert not empty_fut.done()
 
         # Send the connection response with 1 ack since only one request was sent.
         await read_result_queue.put(as_response(count=1))
         await commit_fut1
         await commit_fut2
+        await empty_fut
 
 
 async def test_commits_multi_cycle(
@@ -196,7 +200,9 @@ async def test_commits_multi_cycle(
 
         # Write message 1
         commit_fut1 = asyncio.ensure_future(committer.commit(cursor1))
+        empty_fut = asyncio.ensure_future(committer.wait_until_empty())
         assert not commit_fut1.done()
+        assert not empty_fut.done()
 
         # Wait for writes to be waiting
         await sleep_called.get()
@@ -210,6 +216,7 @@ async def test_commits_multi_cycle(
             [call(initial_request), call(as_request(cursor1))]
         )
         assert not commit_fut1.done()
+        assert not empty_fut.done()
 
         # Wait for writes to be waiting
         await sleep_called.get()
@@ -218,6 +225,7 @@ async def test_commits_multi_cycle(
         # Write message 2
         commit_fut2 = asyncio.ensure_future(committer.commit(cursor2))
         assert not commit_fut2.done()
+        assert not empty_fut.done()
 
         # Handle the connection write
         await sleep_results.put(None)
@@ -232,11 +240,13 @@ async def test_commits_multi_cycle(
         )
         assert not commit_fut1.done()
         assert not commit_fut2.done()
+        assert not empty_fut.done()
 
         # Send the connection responses
         await read_result_queue.put(as_response(count=2))
         await commit_fut1
         await commit_fut2
+        await empty_fut
 
 
 async def test_publishes_retried_on_restart(
@@ -270,7 +280,9 @@ async def test_publishes_retried_on_restart(
 
         # Write message 1
         commit_fut1 = asyncio.ensure_future(committer.commit(cursor1))
+        empty_fut = asyncio.ensure_future(committer.wait_until_empty())
         assert not commit_fut1.done()
+        assert not empty_fut.done()
 
         # Wait for writes to be waiting
         await sleep_called.get()
@@ -284,6 +296,7 @@ async def test_publishes_retried_on_restart(
             [call(initial_request), call(as_request(cursor1))]
         )
         assert not commit_fut1.done()
+        assert not empty_fut.done()
 
         # Wait for writes to be waiting
         await sleep_called.get()
@@ -292,6 +305,7 @@ async def test_publishes_retried_on_restart(
         # Write message 2
         commit_fut2 = asyncio.ensure_future(committer.commit(cursor2))
         assert not commit_fut2.done()
+        assert not empty_fut.done()
 
         # Handle the connection write
         await sleep_results.put(None)
@@ -306,6 +320,7 @@ async def test_publishes_retried_on_restart(
         )
         assert not commit_fut1.done()
         assert not commit_fut2.done()
+        assert not empty_fut.done()
 
         # Fail the connection with a retryable error
         await read_called_queue.get()
@@ -335,9 +350,74 @@ async def test_publishes_retried_on_restart(
                 call(as_request(cursor2)),
             ]
         )
+        assert not empty_fut.done()
 
         # Sending the response for the one commit finishes both
         await read_called_queue.get()
         await read_result_queue.put(as_response(count=1))
         await commit_fut1
         await commit_fut2
+        await empty_fut
+
+
+async def test_wait_until_empty_completes_on_failure(
+    committer: Committer,
+    default_connection,
+    initial_request,
+    asyncio_sleep,
+    sleep_queues,
+):
+    sleep_called = sleep_queues[FLUSH_SECONDS].called
+    sleep_results = sleep_queues[FLUSH_SECONDS].results
+    cursor1 = Cursor(offset=1)
+    write_called_queue = asyncio.Queue()
+    write_result_queue = asyncio.Queue()
+    default_connection.write.side_effect = make_queue_waiter(
+        write_called_queue, write_result_queue
+    )
+    read_called_queue = asyncio.Queue()
+    read_result_queue = asyncio.Queue()
+    default_connection.read.side_effect = make_queue_waiter(
+        read_called_queue, read_result_queue
+    )
+    read_result_queue.put_nowait(StreamingCommitCursorResponse(initial={}))
+    write_result_queue.put_nowait(None)
+    async with committer:
+        # Set up connection
+        await write_called_queue.get()
+        await read_called_queue.get()
+        default_connection.write.assert_has_calls([call(initial_request)])
+
+        # New committer is empty.
+        await committer.wait_until_empty()
+
+        # Write message 1
+        commit_fut1 = asyncio.ensure_future(committer.commit(cursor1))
+        empty_fut = asyncio.ensure_future(committer.wait_until_empty())
+        assert not commit_fut1.done()
+        assert not empty_fut.done()
+
+        # Wait for writes to be waiting
+        await sleep_called.get()
+        asyncio_sleep.assert_called_with(FLUSH_SECONDS)
+
+        # Handle the connection write
+        await sleep_results.put(None)
+        await write_called_queue.get()
+        await write_result_queue.put(None)
+        default_connection.write.assert_has_calls(
+            [call(initial_request), call(as_request(cursor1))]
+        )
+        assert not commit_fut1.done()
+        assert not empty_fut.done()
+
+        # Wait for writes to be waiting
+        await sleep_called.get()
+        asyncio_sleep.assert_has_calls([call(FLUSH_SECONDS), call(FLUSH_SECONDS)])
+
+        # Fail the connection with a permanent error
+        await read_called_queue.get()
+        await read_result_queue.put(InvalidArgument("permanent"))
+
+        with pytest.raises(InvalidArgument):
+            await empty_fut

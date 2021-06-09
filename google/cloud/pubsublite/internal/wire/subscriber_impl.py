@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+from copy import deepcopy
 from typing import Optional
 
 from google.api_core.exceptions import GoogleAPICallError, FailedPrecondition
@@ -28,6 +29,7 @@ from google.cloud.pubsublite.internal.wire.connection_reinitializer import (
 from google.cloud.pubsublite.internal.wire.flow_control_batcher import (
     FlowControlBatcher,
 )
+from google.cloud.pubsublite.internal.wire.reset_signal import is_reset_signal
 from google.cloud.pubsublite.internal.wire.retrying_connection import RetryingConnection
 from google.cloud.pubsublite.internal.wire.subscriber import Subscriber
 from google.cloud.pubsublite_v1 import (
@@ -39,14 +41,18 @@ from google.cloud.pubsublite_v1 import (
     SeekRequest,
     Cursor,
 )
+from google.cloud.pubsublite.internal.wire.subscriber_reset_handler import (
+    SubscriberResetHandler,
+)
 
 
 class SubscriberImpl(
     Subscriber, ConnectionReinitializer[SubscribeRequest, SubscribeResponse]
 ):
-    _initial: InitialSubscribeRequest
+    _base_initial: InitialSubscribeRequest
     _token_flush_seconds: float
     _connection: RetryingConnection[SubscribeRequest, SubscribeResponse]
+    _reset_handler: SubscriberResetHandler
 
     _outstanding_flow_control: FlowControlBatcher
 
@@ -60,13 +66,15 @@ class SubscriberImpl(
 
     def __init__(
         self,
-        initial: InitialSubscribeRequest,
+        base_initial: InitialSubscribeRequest,
         token_flush_seconds: float,
         factory: ConnectionFactory[SubscribeRequest, SubscribeResponse],
+        reset_handler: SubscriberResetHandler,
     ):
-        self._initial = initial
+        self._base_initial = base_initial
         self._token_flush_seconds = token_flush_seconds
         self._connection = RetryingConnection(factory, self)
+        self._reset_handler = reset_handler
         self._outstanding_flow_control = FlowControlBatcher()
         self._reinitializing = False
         self._last_received_offset = None
@@ -152,7 +160,30 @@ class SubscriberImpl(
     ):
         self._reinitializing = True
         await self._stop_loopers()
-        await connection.write(SubscribeRequest(initial=self._initial))
+        if last_error and is_reset_signal(last_error):
+            # Discard undelivered messages and refill flow control tokens.
+            while True:
+                try:
+                    msg = self._message_queue.get_nowait()
+                    self._outstanding_flow_control.add(
+                        FlowControlRequest(
+                            allowed_messages=1, allowed_bytes=msg.size_bytes,
+                        )
+                    )
+                except asyncio.QueueEmpty:
+                    break
+            await self._reset_handler.handle_reset()
+            self._last_received_offset = None
+        initial = deepcopy(self._base_initial)
+        if self._last_received_offset is not None:
+            initial.initial_location = SeekRequest(
+                cursor=Cursor(offset=self._last_received_offset + 1)
+            )
+        else:
+            initial.initial_location = SeekRequest(
+                named_target=SeekRequest.NamedTarget.COMMITTED_CURSOR
+            )
+        await connection.write(SubscribeRequest(initial=initial))
         response = await connection.read()
         if "initial" not in response:
             self._connection.fail(
@@ -161,23 +192,6 @@ class SubscriberImpl(
                 )
             )
             return
-        if self._last_received_offset is not None:
-            # Perform a seek to get the next message after the one we received.
-            await connection.write(
-                SubscribeRequest(
-                    seek=SeekRequest(
-                        cursor=Cursor(offset=self._last_received_offset + 1)
-                    )
-                )
-            )
-            seek_response = await connection.read()
-            if "seek" not in seek_response:
-                self._connection.fail(
-                    FailedPrecondition(
-                        "Received an invalid seek response on the subscribe stream."
-                    )
-                )
-                return
         tokens = self._outstanding_flow_control.request_for_restart()
         if tokens is not None:
             await connection.write(SubscribeRequest(flow_control=tokens))

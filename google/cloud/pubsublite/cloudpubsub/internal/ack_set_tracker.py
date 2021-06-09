@@ -45,3 +45,12 @@ class AckSetTracker(AsyncContextManager):
     Returns:
       GoogleAPICallError: On a commit failure.
     """
+
+    @abstractmethod
+    async def clear_and_commit(self):
+        """
+    Discard all outstanding acks and wait for the commit offset to be acknowledged by the server.
+
+    Raises:
+      GoogleAPICallError: If the committer has shut down due to a permanent error.
+    """
