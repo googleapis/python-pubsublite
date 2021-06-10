@@ -38,6 +38,14 @@ __protobuf__ = proto.module(
         "ListSubscriptionsResponse",
         "UpdateSubscriptionRequest",
         "DeleteSubscriptionRequest",
+        "CreateReservationRequest",
+        "GetReservationRequest",
+        "ListReservationsRequest",
+        "ListReservationsResponse",
+        "UpdateReservationRequest",
+        "DeleteReservationRequest",
+        "ListReservationTopicsRequest",
+        "ListReservationTopicsResponse",
     },
 )
 
@@ -331,6 +339,166 @@ class DeleteSubscriptionRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1,)
+
+
+class CreateReservationRequest(proto.Message):
+    r"""Request for CreateReservation.
+    Attributes:
+        parent (str):
+            Required. The parent location in which to create the
+            reservation. Structured like
+            ``projects/{project_number}/locations/{location}``.
+        reservation (google.cloud.pubsublite_v1.types.Reservation):
+            Required. Configuration of the reservation to create. Its
+            ``name`` field is ignored.
+        reservation_id (str):
+            Required. The ID to use for the reservation, which will
+            become the final component of the reservation's name.
+
+            This value is structured like: ``my-reservation-name``.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    reservation = proto.Field(proto.MESSAGE, number=2, message=common.Reservation,)
+    reservation_id = proto.Field(proto.STRING, number=3,)
+
+
+class GetReservationRequest(proto.Message):
+    r"""Request for GetReservation.
+    Attributes:
+        name (str):
+            Required. The name of the reservation whose configuration to
+            return. Structured like:
+            projects/{project_number}/locations/{location}/reservations/{reservation_id}
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class ListReservationsRequest(proto.Message):
+    r"""Request for ListReservations.
+    Attributes:
+        parent (str):
+            Required. The parent whose reservations are to be listed.
+            Structured like
+            ``projects/{project_number}/locations/{location}``.
+        page_size (int):
+            The maximum number of reservations to return.
+            The service may return fewer than this value. If
+            unset or zero, all reservations for the parent
+            will be returned.
+        page_token (str):
+            A page token, received from a previous ``ListReservations``
+            call. Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListReservations`` must match the call that provided the
+            page token.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListReservationsResponse(proto.Message):
+    r"""Response for ListReservations.
+    Attributes:
+        reservations (Sequence[google.cloud.pubsublite_v1.types.Reservation]):
+            The list of reservation in the requested
+            parent. The order of the reservations is
+            unspecified.
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page of results. If this field is omitted, there are no
+            more results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    reservations = proto.RepeatedField(
+        proto.MESSAGE, number=1, message=common.Reservation,
+    )
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class UpdateReservationRequest(proto.Message):
+    r"""Request for UpdateReservation.
+    Attributes:
+        reservation (google.cloud.pubsublite_v1.types.Reservation):
+            Required. The reservation to update. Its ``name`` field must
+            be populated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. A mask specifying the reservation
+            fields to change.
+    """
+
+    reservation = proto.Field(proto.MESSAGE, number=1, message=common.Reservation,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteReservationRequest(proto.Message):
+    r"""Request for DeleteReservation.
+    Attributes:
+        name (str):
+            Required. The name of the reservation to delete. Structured
+            like:
+            projects/{project_number}/locations/{location}/reservations/{reservation_id}
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class ListReservationTopicsRequest(proto.Message):
+    r"""Request for ListReservationTopics.
+    Attributes:
+        name (str):
+            Required. The name of the reservation whose topics to list.
+            Structured like:
+            projects/{project_number}/locations/{location}/reservations/{reservation_id}
+        page_size (int):
+            The maximum number of topics to return. The
+            service may return fewer than this value.
+            If unset or zero, all topics for the given
+            reservation will be returned.
+        page_token (str):
+            A page token, received from a previous
+            ``ListReservationTopics`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListReservationTopics`` must match the call that provided
+            the page token.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListReservationTopicsResponse(proto.Message):
+    r"""Response for ListReservationTopics.
+    Attributes:
+        topics (Sequence[str]):
+            The names of topics attached to the
+            reservation. The order of the topics is
+            unspecified.
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page of results. If this field is omitted, there are no
+            more results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    topics = proto.RepeatedField(proto.STRING, number=1,)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

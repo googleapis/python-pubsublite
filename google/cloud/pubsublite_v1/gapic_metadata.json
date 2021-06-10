@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "AdminServiceClient",
           "rpcs": {
+            "CreateReservation": {
+              "methods": [
+                "create_reservation"
+              ]
+            },
             "CreateSubscription": {
               "methods": [
                 "create_subscription"
@@ -20,6 +25,11 @@
                 "create_topic"
               ]
             },
+            "DeleteReservation": {
+              "methods": [
+                "delete_reservation"
+              ]
+            },
             "DeleteSubscription": {
               "methods": [
                 "delete_subscription"
@@ -28,6 +38,11 @@
             "DeleteTopic": {
               "methods": [
                 "delete_topic"
+              ]
+            },
+            "GetReservation": {
+              "methods": [
+                "get_reservation"
               ]
             },
             "GetSubscription": {
@@ -45,6 +60,16 @@
                 "get_topic_partitions"
               ]
             },
+            "ListReservationTopics": {
+              "methods": [
+                "list_reservation_topics"
+              ]
+            },
+            "ListReservations": {
+              "methods": [
+                "list_reservations"
+              ]
+            },
             "ListSubscriptions": {
               "methods": [
                 "list_subscriptions"
@@ -58,6 +83,11 @@
             "ListTopics": {
               "methods": [
                 "list_topics"
+              ]
+            },
+            "UpdateReservation": {
+              "methods": [
+                "update_reservation"
               ]
             },
             "UpdateSubscription": {
@@ -75,6 +105,11 @@
         "grpc-async": {
           "libraryClient": "AdminServiceAsyncClient",
           "rpcs": {
+            "CreateReservation": {
+              "methods": [
+                "create_reservation"
+              ]
+            },
             "CreateSubscription": {
               "methods": [
                 "create_subscription"
@@ -85,6 +120,11 @@
                 "create_topic"
               ]
             },
+            "DeleteReservation": {
+              "methods": [
+                "delete_reservation"
+              ]
+            },
             "DeleteSubscription": {
               "methods": [
                 "delete_subscription"
@@ -93,6 +133,11 @@
             "DeleteTopic": {
               "methods": [
                 "delete_topic"
+              ]
+            },
+            "GetReservation": {
+              "methods": [
+                "get_reservation"
               ]
             },
             "GetSubscription": {
@@ -110,6 +155,16 @@
                 "get_topic_partitions"
               ]
             },
+            "ListReservationTopics": {
+              "methods": [
+                "list_reservation_topics"
+              ]
+            },
+            "ListReservations": {
+              "methods": [
+                "list_reservations"
+              ]
+            },
             "ListSubscriptions": {
               "methods": [
                 "list_subscriptions"
@@ -123,6 +178,11 @@
             "ListTopics": {
               "methods": [
                 "list_topics"
+              ]
+            },
+            "UpdateReservation": {
+              "methods": [
+                "update_reservation"
               ]
             },
             "UpdateSubscription": {
