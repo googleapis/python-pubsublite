@@ -52,6 +52,9 @@ from google.cloud.pubsublite.internal.wire.gapic_connection import (
 from google.cloud.pubsublite.internal.wire.merge_metadata import merge_metadata
 from google.cloud.pubsublite.internal.wire.pubsub_context import pubsub_context
 import google.cloud.pubsublite.internal.wire.subscriber_impl as wire_subscriber
+from google.cloud.pubsublite.internal.wire.subscriber_reset_handler import (
+    SubscriberResetHandler,
+)
 from google.cloud.pubsublite.types import Partition, SubscriptionPath
 from google.cloud.pubsublite.internal.routing_metadata import (
     subscription_routing_metadata,
@@ -131,13 +134,16 @@ def _make_partition_subscriber_factory(
                 requests, metadata=list(final_metadata.items())
             )
 
-        subscriber = wire_subscriber.SubscriberImpl(
-            InitialSubscribeRequest(
-                subscription=str(subscription), partition=partition.value
-            ),
-            _DEFAULT_FLUSH_SECONDS,
-            GapicConnectionFactory(subscribe_connection_factory),
-        )
+        def subscriber_factory(reset_handler: SubscriberResetHandler):
+            return wire_subscriber.SubscriberImpl(
+                InitialSubscribeRequest(
+                    subscription=str(subscription), partition=partition.value
+                ),
+                _DEFAULT_FLUSH_SECONDS,
+                GapicConnectionFactory(subscribe_connection_factory),
+                reset_handler,
+            )
+
         committer = CommitterImpl(
             InitialCommitCursorRequest(
                 subscription=str(subscription), partition=partition.value
@@ -147,7 +153,7 @@ def _make_partition_subscriber_factory(
         )
         ack_set_tracker = AckSetTrackerImpl(committer)
         return SinglePartitionSingleSubscriber(
-            subscriber,
+            subscriber_factory,
             flow_control_settings,
             ack_set_tracker,
             nack_handler,

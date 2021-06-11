@@ -32,6 +32,9 @@ from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
     AsyncSingleSubscriber,
 )
 from google.cloud.pubsublite.internal.wire.subscriber import Subscriber
+from google.cloud.pubsublite.internal.wire.subscriber_reset_handler import (
+    SubscriberResetHandler,
+)
 from google.cloud.pubsublite.testing.test_utils import make_queue_waiter
 from google.cloud.pubsublite_v1 import Cursor, FlowControlRequest, SequencedMessage
 
@@ -85,8 +88,15 @@ def transformer():
 def subscriber(
     underlying, flow_control_settings, ack_set_tracker, nack_handler, transformer
 ):
+    def subscriber_factory(reset_handler: SubscriberResetHandler):
+        return underlying
+
     return SinglePartitionSingleSubscriber(
-        underlying, flow_control_settings, ack_set_tracker, nack_handler, transformer
+        subscriber_factory,
+        flow_control_settings,
+        ack_set_tracker,
+        nack_handler,
+        transformer,
     )
 
 
@@ -230,3 +240,55 @@ async def test_nack_calls_ack(
         await ack_called_queue.get()
         await ack_result_queue.put(None)
         ack_set_tracker.ack.assert_has_calls([call(1)])
+
+
+async def test_handle_reset(
+    subscriber: SinglePartitionSingleSubscriber,
+    underlying,
+    transformer,
+    ack_set_tracker,
+):
+    ack_called_queue = asyncio.Queue()
+    ack_result_queue = asyncio.Queue()
+    ack_set_tracker.ack.side_effect = make_queue_waiter(
+        ack_called_queue, ack_result_queue
+    )
+    async with subscriber:
+        message_1 = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)
+        underlying.read.return_value = message_1
+        read_1: Message = await subscriber.read()
+        ack_set_tracker.track.assert_has_calls([call(1)])
+        assert read_1.message_id == "1"
+
+        await subscriber.handle_reset()
+        ack_set_tracker.clear_and_commit.assert_called_once()
+
+        # After reset, flow control tokens of unacked messages are refilled,
+        # but offset not committed.
+        read_1.ack()
+        await ack_called_queue.get()
+        await ack_result_queue.put(None)
+        underlying.allow_flow.assert_has_calls(
+            [
+                call(FlowControlRequest(allowed_messages=1000, allowed_bytes=1000,)),
+                call(FlowControlRequest(allowed_messages=1, allowed_bytes=5,)),
+            ]
+        )
+        ack_set_tracker.ack.assert_has_calls([])
+
+        message_2 = SequencedMessage(cursor=Cursor(offset=2), size_bytes=10)
+        underlying.read.return_value = message_2
+        read_2: Message = await subscriber.read()
+        ack_set_tracker.track.assert_has_calls([call(1), call(2)])
+        assert read_2.message_id == "2"
+        read_2.ack()
+        await ack_called_queue.get()
+        await ack_result_queue.put(None)
+        underlying.allow_flow.assert_has_calls(
+            [
+                call(FlowControlRequest(allowed_messages=1000, allowed_bytes=1000,)),
+                call(FlowControlRequest(allowed_messages=1, allowed_bytes=5,)),
+                call(FlowControlRequest(allowed_messages=1, allowed_bytes=10,)),
+            ]
+        )
+        ack_set_tracker.ack.assert_has_calls([call(2)])

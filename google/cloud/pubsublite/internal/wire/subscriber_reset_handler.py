@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,27 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import abstractmethod
-from typing import AsyncContextManager
-
-from google.cloud.pubsublite_v1 import Cursor
+from abc import ABCMeta, abstractmethod
 
 
-class Committer(AsyncContextManager):
-    """
-  A Committer is able to commit subscribers' completed offsets.
-  """
+class SubscriberResetHandler(metaclass=ABCMeta):
+    """Helps to reset subscriber state when the `RESET` signal is received from the server."""
 
     @abstractmethod
-    async def commit(self, cursor: Cursor) -> None:
-        pass
-
-    @abstractmethod
-    async def wait_until_empty(self):
-        """
-        Flushes pending commits and waits for all outstanding commit responses from the server.
+    async def handle_reset(self):
+        """Reset subscriber state.
 
         Raises:
-          GoogleAPICallError: When the committer terminates in failure.
+            GoogleAPICallError: If reset handling fails. The subscriber will shut down.
         """
-        pass
+        raise NotImplementedError()

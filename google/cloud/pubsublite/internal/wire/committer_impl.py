@@ -63,6 +63,7 @@ class CommitterImpl(
 
     _receiver: Optional[asyncio.Future]
     _flusher: Optional[asyncio.Future]
+    _empty: asyncio.Event
 
     def __init__(
         self,
@@ -79,6 +80,8 @@ class CommitterImpl(
         self._outstanding_commits = []
         self._receiver = None
         self._flusher = None
+        self._empty = asyncio.Event()
+        self._empty.set()
 
     async def __aenter__(self):
         await self._connection.__aenter__()
@@ -117,6 +120,8 @@ class CommitterImpl(
             batch = self._outstanding_commits.pop(0)
             for item in batch:
                 item.response_future.set_result(None)
+        if len(self._outstanding_commits) == 0:
+            self._empty.set()
 
     async def _receive_loop(self):
         while True:
@@ -147,6 +152,7 @@ class CommitterImpl(
         if not batch:
             return
         self._outstanding_commits.append(batch)
+        self._empty.clear()
         req = StreamingCommitCursorRequest()
         req.commit.cursor = batch[-1].request
         try:
@@ -154,6 +160,10 @@ class CommitterImpl(
         except GoogleAPICallError as e:
             _LOGGER.debug(f"Failed commit on stream: {e}")
             self._fail_if_retrying_failed()
+
+    async def wait_until_empty(self):
+        await self._flush()
+        await self._connection.await_unless_failed(self._empty.wait())
 
     async def commit(self, cursor: Cursor) -> None:
         future = self._batcher.add(cursor)
