@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import json
 from typing import Callable, Union, Dict, NamedTuple
 import queue
 
@@ -43,17 +44,18 @@ class _SizedMessage(NamedTuple):
 
 
 class _AckId(NamedTuple):
-    generation_id: int
+    generation: int
     offset: int
 
     def str(self) -> str:
-        return f"{self.generation_id}/{self.offset}"
+        return json.dumps({"generation": self.generation, "offset": self.offset})
 
     @staticmethod
     def parse(payload: str) -> "_AckId":
-        components = payload.split("/")
-        assert len(components) == 2
-        return _AckId(generation_id=int(components[0]), offset=int(components[1]),)
+        loaded = json.loads(payload)
+        return _AckId(
+            generation=int(loaded["generation"]), offset=int(loaded["offset"]),
+        )
 
 
 ResettableSubscriberFactory = Callable[[SubscriberResetHandler], Subscriber]
@@ -130,7 +132,7 @@ class SinglePartitionSingleSubscriber(
         del self._messages_by_ack_id[message.ack_id]
         # Always refill flow control tokens, but do not commit offsets from outdated generations.
         ack_id = _AckId.parse(message.ack_id)
-        if ack_id.generation_id == self._ack_generation_id:
+        if ack_id.generation == self._ack_generation_id:
             try:
                 await self._ack_set_tracker.ack(ack_id.offset)
             except GoogleAPICallError as e:
