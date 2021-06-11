@@ -22,7 +22,8 @@ from google.cloud.pubsublite.types import (
     SubscriptionPath,
     BacklogLocation,
 )
-from google.cloud.pubsublite_v1 import Topic, Subscription
+from google.cloud.pubsublite.types.paths import ReservationPath
+from google.cloud.pubsublite_v1 import Topic, Subscription, Reservation
 from google.protobuf.field_mask_pb2 import FieldMask
 
 
@@ -60,7 +61,7 @@ class AdminClientInterface(ABC):
         """Delete a topic and all associated messages."""
 
     @abstractmethod
-    def list_topic_subscriptions(self, topic_path: TopicPath):
+    def list_topic_subscriptions(self, topic_path: TopicPath) -> List[SubscriptionPath]:
         """List the subscriptions that exist for a given topic."""
 
     @abstractmethod
@@ -90,3 +91,49 @@ class AdminClientInterface(ABC):
     @abstractmethod
     def delete_subscription(self, subscription_path: SubscriptionPath):
         """Delete a subscription and all associated messages."""
+
+    @abstractmethod
+    def create_reservation(self, reservation: Reservation) -> Reservation:
+        """Create a reservation, returns the created reservation.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """
+
+    @abstractmethod
+    def get_reservation(self, reservation_path: ReservationPath) -> Reservation:
+        """Get the reservation object from the server.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """
+
+    @abstractmethod
+    def list_reservations(self, location_path: LocationPath) -> List[Reservation]:
+        """List the Pub/Sub lite reservations that exist for a project in a given location.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """
+
+    @abstractmethod
+    def update_reservation(
+        self, reservation: Reservation, update_mask: FieldMask
+    ) -> Reservation:
+        """Update the masked fields of the provided reservation.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """
+
+    @abstractmethod
+    def delete_reservation(self, reservation_path: ReservationPath):
+        """Delete a reservation and all associated messages.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """
+
+    @abstractmethod
+    def list_reservation_topics(
+        self, reservation_path: ReservationPath
+    ) -> List[TopicPath]:
+        """List the subscriptions that exist for a given reservation.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """

@@ -23,6 +23,13 @@ class CloudRegion(NamedTuple):
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def parse(to_parse: str):
+        splits = to_parse.split("-")
+        if len(splits) != 2:
+            raise InvalidArgument("Invalid region name: " + to_parse)
+        return CloudRegion(name=splits[0] + "-" + splits[1])
+
 
 class CloudZone(NamedTuple):
     region: CloudRegion

@@ -22,9 +22,9 @@ from google.cloud.pubsublite_v1.types import PubSubMessage
 
 class DefaultRoutingPolicy(RoutingPolicy):
     """
-  The default routing policy which routes based on sha256 % num_partitions using the key if set or round robin if
-  unset.
-  """
+    The default routing policy which routes based on sha256 % num_partitions using the key if set or round robin if
+    unset.
+    """
 
     _num_partitions: int
     _current_round_robin: Partition

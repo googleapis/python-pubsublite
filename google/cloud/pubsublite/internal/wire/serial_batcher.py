@@ -26,11 +26,11 @@ class BatchTester(Generic[Request]):
     @abstractmethod
     def test(self, requests: Iterable[Request]) -> bool:
         """
-    Args:
-      requests: The current outstanding batch.
+        Args:
+          requests: The current outstanding batch.
 
-    Returns: Whether that batch must be sent.
-    """
+        Returns: Whether that batch must be sent.
+        """
         raise NotImplementedError()
 
 
@@ -44,14 +44,14 @@ class SerialBatcher(Generic[Request, Response]):
 
     def add(self, request: Request) -> "asyncio.Future[Response]":
         """Add a new request to this batcher. Callers must always call should_flush() after add, and flush() if that returns
-    true.
+        true.
 
-    Args:
-      request: The request to send.
+        Args:
+          request: The request to send.
 
-    Returns:
-      A future that will resolve to the response or a GoogleAPICallError.
-    """
+        Returns:
+          A future that will resolve to the response or a GoogleAPICallError.
+        """
         item = WorkItem[Request, Response](request)
         self._requests.append(item)
         return item.response_future

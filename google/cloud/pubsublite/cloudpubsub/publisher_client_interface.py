@@ -36,20 +36,20 @@ class AsyncPublisherClientInterface(AsyncContextManager):
         **attrs: Mapping[str, str],
     ) -> str:
         """
-    Publish a message.
+        Publish a message.
 
-    Args:
-      topic: The topic to publish to. Publishes to new topics may have nontrivial startup latency.
-      data: The bytestring payload of the message
-      ordering_key: The key to enforce ordering on, or "" for no ordering.
-      **attrs: Additional attributes to send.
+        Args:
+          topic: The topic to publish to. Publishes to new topics may have nontrivial startup latency.
+          data: The bytestring payload of the message
+          ordering_key: The key to enforce ordering on, or "" for no ordering.
+          **attrs: Additional attributes to send.
 
-    Returns:
-      An ack id, which can be decoded using MessageMetadata.decode.
+        Returns:
+          An ack id, which can be decoded using MessageMetadata.decode.
 
-    Raises:
-      GoogleApiCallError: On a permanent failure.
-    """
+        Raises:
+          GoogleApiCallError: On a permanent failure.
+        """
 
 
 class PublisherClientInterface(ContextManager):
@@ -69,18 +69,18 @@ class PublisherClientInterface(ContextManager):
         **attrs: Mapping[str, str],
     ) -> "Future[str]":
         """
-    Publish a message.
+        Publish a message.
 
-    Args:
-      topic: The topic to publish to. Publishes to new topics may have nontrivial startup latency.
-      data: The bytestring payload of the message
-      ordering_key: The key to enforce ordering on, or "" for no ordering.
-      **attrs: Additional attributes to send.
+        Args:
+          topic: The topic to publish to. Publishes to new topics may have nontrivial startup latency.
+          data: The bytestring payload of the message
+          ordering_key: The key to enforce ordering on, or "" for no ordering.
+          **attrs: Additional attributes to send.
 
-    Returns:
-      A future completed with an ack id of type str, which can be decoded using
-      MessageMetadata.decode.
+        Returns:
+          A future completed with an ack id of type str, which can be decoded using
+          MessageMetadata.decode.
 
-    Raises:
-      GoogleApiCallError: On a permanent failure.
-    """
+        Raises:
+          GoogleApiCallError: On a permanent failure.
+        """

@@ -24,11 +24,13 @@ from google.cloud.pubsublite.types import (
     TopicPath,
     BacklogLocation,
 )
+from google.cloud.pubsublite.types.paths import ReservationPath
 from google.cloud.pubsublite_v1 import (
     Subscription,
     Topic,
     AdminServiceClient,
     TopicPartitions,
+    Reservation,
 )
 
 
@@ -67,7 +69,7 @@ class AdminClientImpl(AdminClientInterface):
     def delete_topic(self, topic_path: TopicPath):
         self._underlying.delete_topic(name=str(topic_path))
 
-    def list_topic_subscriptions(self, topic_path: TopicPath):
+    def list_topic_subscriptions(self, topic_path: TopicPath) -> List[SubscriptionPath]:
         subscription_strings = [
             x for x in self._underlying.list_topic_subscriptions(name=str(topic_path))
         ]
@@ -105,3 +107,40 @@ class AdminClientImpl(AdminClientInterface):
 
     def delete_subscription(self, subscription_path: SubscriptionPath):
         self._underlying.delete_subscription(name=str(subscription_path))
+
+    def create_reservation(self, reservation: Reservation) -> Reservation:
+        path = ReservationPath.parse(reservation.name)
+        return self._underlying.create_reservation(
+            parent=str(path.to_location_path()),
+            reservation=reservation,
+            reservation_id=path.name,
+        )
+
+    def get_reservation(self, reservation_path: ReservationPath) -> Reservation:
+        return self._underlying.get_reservation(name=str(reservation_path))
+
+    def list_reservations(self, location_path: LocationPath) -> List[Reservation]:
+        return [
+            x for x in self._underlying.list_reservations(parent=str(location_path))
+        ]
+
+    def update_reservation(
+        self, reservation: Reservation, update_mask: FieldMask
+    ) -> Reservation:
+        return self._underlying.update_reservation(
+            reservation=reservation, update_mask=update_mask
+        )
+
+    def delete_reservation(self, reservation_path: ReservationPath):
+        self._underlying.delete_reservation(name=str(reservation_path))
+
+    def list_reservation_topics(
+        self, reservation_path: ReservationPath
+    ) -> List[TopicPath]:
+        subscription_strings = [
+            x
+            for x in self._underlying.list_reservation_topics(
+                name=str(reservation_path)
+            )
+        ]
+        return [TopicPath.parse(x) for x in subscription_strings]

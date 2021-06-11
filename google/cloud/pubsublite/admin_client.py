@@ -32,7 +32,13 @@ from google.cloud.pubsublite.types import (
     TopicPath,
     BacklogLocation,
 )
-from google.cloud.pubsublite_v1 import AdminServiceClient, Subscription, Topic
+from google.cloud.pubsublite.types.paths import ReservationPath
+from google.cloud.pubsublite_v1 import (
+    AdminServiceClient,
+    Subscription,
+    Topic,
+    Reservation,
+)
 
 
 class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
@@ -98,7 +104,7 @@ class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
         return self._impl.delete_topic(topic_path)
 
     @overrides
-    def list_topic_subscriptions(self, topic_path: TopicPath):
+    def list_topic_subscriptions(self, topic_path: TopicPath) -> List[SubscriptionPath]:
         return self._impl.list_topic_subscriptions(topic_path)
 
     @overrides
@@ -126,3 +132,31 @@ class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
     @overrides
     def delete_subscription(self, subscription_path: SubscriptionPath):
         return self._impl.delete_subscription(subscription_path)
+
+    @overrides
+    def create_reservation(self, reservation: Reservation) -> Reservation:
+        return self._impl.create_reservation(reservation)
+
+    @overrides
+    def get_reservation(self, reservation_path: ReservationPath) -> Reservation:
+        return self._impl.get_reservation(reservation_path)
+
+    @overrides
+    def list_reservations(self, location_path: LocationPath) -> List[Reservation]:
+        return self._impl.list_reservations(location_path)
+
+    @overrides
+    def update_reservation(
+        self, reservation: Reservation, update_mask: FieldMask
+    ) -> Reservation:
+        return self._impl.update_reservation(reservation, update_mask)
+
+    @overrides
+    def delete_reservation(self, reservation_path: ReservationPath):
+        return self._impl.delete_reservation(reservation_path)
+
+    @overrides
+    def list_reservation_topics(
+        self, reservation_path: ReservationPath
+    ) -> List[TopicPath]:
+        return self._impl.list_reservation_topics(reservation_path)

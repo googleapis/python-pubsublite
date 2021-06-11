@@ -61,22 +61,22 @@ def make_publisher(
     metadata: Optional[Mapping[str, str]] = None,
 ) -> Publisher:
     """
-  Make a new publisher for the given topic.
+    Make a new publisher for the given topic.
 
-  Args:
-    topic: The topic to publish to.
-    transport: The transport type to use.
-    per_partition_batching_settings: Settings for batching messages on each partition. The default is reasonable for most cases.
-    credentials: The credentials to use to connect. GOOGLE_DEFAULT_CREDENTIALS is used if None.
-    client_options: Other options to pass to the client. Note that if you pass any you must set api_endpoint.
-    metadata: Additional metadata to send with the RPC.
+    Args:
+      topic: The topic to publish to.
+      transport: The transport type to use.
+      per_partition_batching_settings: Settings for batching messages on each partition. The default is reasonable for most cases.
+      credentials: The credentials to use to connect. GOOGLE_DEFAULT_CREDENTIALS is used if None.
+      client_options: Other options to pass to the client. Note that if you pass any you must set api_endpoint.
+      metadata: Additional metadata to send with the RPC.
 
-  Returns:
-    A new Publisher.
+    Returns:
+      A new Publisher.
 
-  Throws:
-    GoogleApiCallException on any error determining topic structure.
-  """
+    Throws:
+      GoogleApiCallException on any error determining topic structure.
+    """
     if per_partition_batching_settings is None:
         per_partition_batching_settings = DEFAULT_BATCHING_SETTINGS
     admin_client = AdminClient(

@@ -175,23 +175,23 @@ def make_async_subscriber(
     metadata: Optional[Mapping[str, str]] = None,
 ) -> AsyncSingleSubscriber:
     """
-  Make a Pub/Sub Lite AsyncSubscriber.
+    Make a Pub/Sub Lite AsyncSubscriber.
 
-  Args:
-    subscription: The subscription to subscribe to.
-    transport: The transport type to use.
-    per_partition_flow_control_settings: The flow control settings for each partition subscribed to. Note that these
-      settings apply to each partition individually, not in aggregate.
-    nack_handler: An optional handler for when nack() is called on a Message. The default will fail the client.
-    message_transformer: An optional transformer from Pub/Sub Lite messages to Cloud Pub/Sub messages.
-    fixed_partitions: A fixed set of partitions to subscribe to. If not present, will instead use auto-assignment.
-    credentials: The credentials to use to connect. GOOGLE_DEFAULT_CREDENTIALS is used if None.
-    client_options: Other options to pass to the client. Note that if you pass any you must set api_endpoint.
-    metadata: Additional metadata to send with the RPC.
+    Args:
+      subscription: The subscription to subscribe to.
+      transport: The transport type to use.
+      per_partition_flow_control_settings: The flow control settings for each partition subscribed to. Note that these
+        settings apply to each partition individually, not in aggregate.
+      nack_handler: An optional handler for when nack() is called on a Message. The default will fail the client.
+      message_transformer: An optional transformer from Pub/Sub Lite messages to Cloud Pub/Sub messages.
+      fixed_partitions: A fixed set of partitions to subscribe to. If not present, will instead use auto-assignment.
+      credentials: The credentials to use to connect. GOOGLE_DEFAULT_CREDENTIALS is used if None.
+      client_options: Other options to pass to the client. Note that if you pass any you must set api_endpoint.
+      metadata: Additional metadata to send with the RPC.
 
-  Returns:
-    A new AsyncSubscriber.
-  """
+    Returns:
+      A new AsyncSubscriber.
+    """
     metadata = merge_metadata(pubsub_context(framework="CLOUD_PUBSUB_SHIM"), metadata)
     if client_options is None:
         client_options = ClientOptions(
