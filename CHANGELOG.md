@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-pubsublite/compare/v0.4.1...v0.5.0) (2021-06-11)
+
+
+### Features
+
+* Add Pub/Sub Lite Reservation APIs ([#156](https://www.github.com/googleapis/python-pubsublite/issues/156)) ([edbd104](https://www.github.com/googleapis/python-pubsublite/commit/edbd1046e38c14fcce8f4c20822eb124b026d925))
+* ComputeTimeCursor RPC for Pub/Sub Lite ([#143](https://www.github.com/googleapis/python-pubsublite/issues/143)) ([036ca2f](https://www.github.com/googleapis/python-pubsublite/commit/036ca2f1a93f9892262c3ac833b10c8345dddeb6))
+* Handle out of band seeks ([#158](https://www.github.com/googleapis/python-pubsublite/issues/158)) ([77db700](https://www.github.com/googleapis/python-pubsublite/commit/77db700ad966f0743d1b16897a9423d38dc5099a))
+
+
+### Bug Fixes
+
+* Add admin interfaces for reservations ([#159](https://www.github.com/googleapis/python-pubsublite/issues/159)) ([ad0f3d2](https://www.github.com/googleapis/python-pubsublite/commit/ad0f3d298ec9979ff558c2bb7fc73b53638db2ac))
+* Replace unreleased InitialSubscribeRequest initial_cursor field with initial_location ([#150](https://www.github.com/googleapis/python-pubsublite/issues/150)) ([30fcd3f](https://www.github.com/googleapis/python-pubsublite/commit/30fcd3f6712bf02bc6eb2cce5729751d77e89d8b))
+* shutdown event loop if publisher fails to start and set exception on result future ([#124](https://www.github.com/googleapis/python-pubsublite/issues/124)) ([c2c2b00](https://www.github.com/googleapis/python-pubsublite/commit/c2c2b00f0141af6f6d26ff095431de547deab96d))
+* Version bump overrides library past fix and undo workarounds ([#137](https://www.github.com/googleapis/python-pubsublite/issues/137)) ([94ae2f0](https://www.github.com/googleapis/python-pubsublite/commit/94ae2f04a85f94b6cffa2241d68068c292157c56))
+
 ### [0.4.1](https://www.github.com/googleapis/python-pubsublite/compare/v0.4.0...v0.4.1) (2021-05-05)
 
 
