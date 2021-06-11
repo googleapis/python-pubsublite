@@ -42,6 +42,20 @@ class _SizedMessage(NamedTuple):
     size_bytes: int
 
 
+class _AckId(NamedTuple):
+    generation_id: int
+    offset: int
+
+    def str(self) -> str:
+        return f"{self.generation_id}/{self.offset}"
+
+    @staticmethod
+    def parse(payload: str) -> "_AckId":
+        components = payload.split("/")
+        assert len(components) == 2
+        return _AckId(generation_id=int(components[0]), offset=int(components[1]),)
+
+
 ResettableSubscriberFactory = Callable[[SubscriberResetHandler], Subscriber]
 
 
@@ -90,14 +104,14 @@ class SinglePartitionSingleSubscriber(
             )
             cps_message = self._transformer.transform(message)
             offset = message.cursor.offset
-            ack_id = f"{self._ack_generation_id}/{offset}"
+            ack_id = _AckId(self._ack_generation_id, offset)
             self._ack_set_tracker.track(offset)
-            self._messages_by_ack_id[ack_id] = _SizedMessage(
+            self._messages_by_ack_id[ack_id.str()] = _SizedMessage(
                 cps_message, message.size_bytes
             )
             wrapped_message = Message(
                 cps_message._pb,
-                ack_id=ack_id,
+                ack_id=ack_id.str(),
                 delivery_attempt=0,
                 request_queue=self._queue,
             )
@@ -107,10 +121,6 @@ class SinglePartitionSingleSubscriber(
             raise e
 
     async def _handle_ack(self, message: requests.AckRequest):
-        components = message.ack_id.split("/")
-        assert len(components) == 2
-        generation_id = int(components[0])
-        offset = int(components[1])
         await self._underlying.allow_flow(
             FlowControlRequest(
                 allowed_messages=1,
@@ -119,9 +129,10 @@ class SinglePartitionSingleSubscriber(
         )
         del self._messages_by_ack_id[message.ack_id]
         # Always refill flow control tokens, but do not commit offsets from outdated generations.
-        if generation_id == self._ack_generation_id:
+        ack_id = _AckId.parse(message.ack_id)
+        if ack_id.generation_id == self._ack_generation_id:
             try:
-                await self._ack_set_tracker.ack(offset)
+                await self._ack_set_tracker.ack(ack_id.offset)
             except GoogleAPICallError as e:
                 self.fail(e)
 
