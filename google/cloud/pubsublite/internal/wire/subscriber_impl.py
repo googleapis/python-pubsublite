@@ -162,16 +162,13 @@ class SubscriberImpl(
         await self._stop_loopers()
         if last_error and is_reset_signal(last_error):
             # Discard undelivered messages and refill flow control tokens.
-            while True:
-                try:
-                    msg = self._message_queue.get_nowait()
-                    self._outstanding_flow_control.add(
-                        FlowControlRequest(
-                            allowed_messages=1, allowed_bytes=msg.size_bytes,
-                        )
+            while not self._message_queue.empty():
+                msg = self._message_queue.get_nowait()
+                self._outstanding_flow_control.add(
+                    FlowControlRequest(
+                        allowed_messages=1, allowed_bytes=msg.size_bytes,
                     )
-                except asyncio.QueueEmpty:
-                    break
+                )
             await self._reset_handler.handle_reset()
             self._last_received_offset = None
         initial = deepcopy(self._base_initial)
