@@ -20,21 +20,21 @@ from google.cloud.pubsublite.types import MessageMetadata
 
 class Publisher(AsyncContextManager):
     """
-  A Pub/Sub Lite asynchronous wire protocol publisher.
-  """
+    A Pub/Sub Lite asynchronous wire protocol publisher.
+    """
 
     @abstractmethod
     async def publish(self, message: PubSubMessage) -> MessageMetadata:
         """
-    Publish the provided message.
+        Publish the provided message.
 
-    Args:
-      message: The message to be published.
+        Args:
+          message: The message to be published.
 
-    Returns:
-      Metadata about the published message.
+        Returns:
+          Metadata about the published message.
 
-    Raises:
-      GoogleAPICallError: On a permanent error.
-    """
+        Raises:
+          GoogleAPICallError: On a permanent error.
+        """
         raise NotImplementedError()

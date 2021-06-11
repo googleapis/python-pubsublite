@@ -77,8 +77,8 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
 
     async def _run_loop(self):
         """
-    Processes actions on this connection and handles retries until cancelled.
-    """
+        Processes actions on this connection and handles retries until cancelled.
+        """
         last_failure: Optional[GoogleAPICallError] = None
         try:
             bad_retries = 0

@@ -52,13 +52,13 @@ class PermanentFailable:
 
     async def await_unless_failed(self, awaitable: Awaitable[T]) -> T:
         """
-    Await the awaitable, unless fail() is called first.
-    Args:
-      awaitable: An awaitable
+        Await the awaitable, unless fail() is called first.
+        Args:
+          awaitable: An awaitable
 
-    Returns: The result of the awaitable
-    Raises: The permanent error if fail() is called or the awaitable raises one.
-    """
+        Returns: The result of the awaitable
+        Raises: The permanent error if fail() is called or the awaitable raises one.
+        """
         async with _TaskWithCleanup(awaitable) as task:
             if self._failure_task.done():
                 raise self._failure_task.exception()
@@ -71,11 +71,11 @@ class PermanentFailable:
 
     async def run_poller(self, poll_action: Callable[[], Awaitable[None]]):
         """
-    Run a polling loop, which runs poll_action forever unless this is failed.
-    Args:
-      poll_action: A callable returning an awaitable to run in a loop. Note that async functions which return once
-      satisfy this.
-    """
+        Run a polling loop, which runs poll_action forever unless this is failed.
+        Args:
+          poll_action: A callable returning an awaitable to run in a loop. Note that async functions which return once
+          satisfy this.
+        """
         try:
             while True:
                 await self.await_unless_failed(poll_action())
