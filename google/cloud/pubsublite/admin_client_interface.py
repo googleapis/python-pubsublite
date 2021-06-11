@@ -94,28 +94,46 @@ class AdminClientInterface(ABC):
 
     @abstractmethod
     def create_reservation(self, reservation: Reservation) -> Reservation:
-        """Create a reservation, returns the created reservation."""
+        """Create a reservation, returns the created reservation.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """
 
     @abstractmethod
     def get_reservation(self, reservation_path: ReservationPath) -> Reservation:
-        """Get the reservation object from the server."""
+        """Get the reservation object from the server.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """
 
     @abstractmethod
     def list_reservations(self, location_path: LocationPath) -> List[Reservation]:
-        """List the Pub/Sub lite reservations that exist for a project in a given location."""
+        """List the Pub/Sub lite reservations that exist for a project in a given location.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """
 
     @abstractmethod
     def update_reservation(
         self, reservation: Reservation, update_mask: FieldMask
     ) -> Reservation:
-        """Update the masked fields of the provided reservation."""
+        """Update the masked fields of the provided reservation.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """
 
     @abstractmethod
     def delete_reservation(self, reservation_path: ReservationPath):
-        """Delete a reservation and all associated messages."""
+        """Delete a reservation and all associated messages.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """
 
     @abstractmethod
     def list_reservation_topics(
         self, reservation_path: ReservationPath
     ) -> List[TopicPath]:
-        """List the subscriptions that exist for a given reservation."""
+        """List the subscriptions that exist for a given reservation.
+
+        warning:: This may not be implemented in the backend, it is a pre-release feature.
+        """
