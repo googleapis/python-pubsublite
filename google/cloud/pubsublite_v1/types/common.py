@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
         "PubSubMessage",
         "Cursor",
         "SequencedMessage",
+        "Reservation",
         "Topic",
         "Subscription",
         "TimeTarget",
@@ -110,6 +111,29 @@ class SequencedMessage(proto.Message):
     size_bytes = proto.Field(proto.INT64, number=4,)
 
 
+class Reservation(proto.Message):
+    r"""Metadata about a reservation resource.
+
+    Attributes:
+        name (str):
+            The name of the reservation. Structured like:
+            projects/{project_number}/locations/{location}/reservations/{reservation_id}
+        throughput_capacity (int):
+            The reserved throughput capacity. Every unit
+            of throughput capacity is equivalent to 1 MiB/s
+            of published messages or 2 MiB/s of subscribed
+            messages.
+
+            Any topics which are declared as using capacity
+            from a Reservation will consume resources from
+            this reservation instead of being charged
+            individually.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    throughput_capacity = proto.Field(proto.INT64, number=2,)
+
+
 class Topic(proto.Message):
     r"""Metadata about a topic resource.
 
@@ -122,6 +146,9 @@ class Topic(proto.Message):
         retention_config (google.cloud.pubsublite_v1.types.Topic.RetentionConfig):
             The settings for this topic's message
             retention.
+        reservation_config (google.cloud.pubsublite_v1.types.Topic.ReservationConfig):
+            The settings for this topic's Reservation
+            usage.
     """
 
     class PartitionConfig(proto.Message):
@@ -192,9 +219,24 @@ class Topic(proto.Message):
         per_partition_bytes = proto.Field(proto.INT64, number=1,)
         period = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
 
+    class ReservationConfig(proto.Message):
+        r"""The settings for this topic's Reservation usage.
+
+        Attributes:
+            throughput_reservation (str):
+                The Reservation to use for this topic's throughput capacity.
+                Structured like:
+                projects/{project_number}/locations/{location}/reservations/{reservation_id}
+        """
+
+        throughput_reservation = proto.Field(proto.STRING, number=1,)
+
     name = proto.Field(proto.STRING, number=1,)
     partition_config = proto.Field(proto.MESSAGE, number=2, message=PartitionConfig,)
     retention_config = proto.Field(proto.MESSAGE, number=3, message=RetentionConfig,)
+    reservation_config = proto.Field(
+        proto.MESSAGE, number=4, message=ReservationConfig,
+    )
 
 
 class Subscription(proto.Message):

@@ -208,6 +208,26 @@ class AdminServiceTransport(abc.ABC):
             self.delete_subscription: gapic_v1.method.wrap_method(
                 self.delete_subscription, default_timeout=None, client_info=client_info,
             ),
+            self.create_reservation: gapic_v1.method.wrap_method(
+                self.create_reservation, default_timeout=None, client_info=client_info,
+            ),
+            self.get_reservation: gapic_v1.method.wrap_method(
+                self.get_reservation, default_timeout=None, client_info=client_info,
+            ),
+            self.list_reservations: gapic_v1.method.wrap_method(
+                self.list_reservations, default_timeout=None, client_info=client_info,
+            ),
+            self.update_reservation: gapic_v1.method.wrap_method(
+                self.update_reservation, default_timeout=None, client_info=client_info,
+            ),
+            self.delete_reservation: gapic_v1.method.wrap_method(
+                self.delete_reservation, default_timeout=None, client_info=client_info,
+            ),
+            self.list_reservation_topics: gapic_v1.method.wrap_method(
+                self.list_reservation_topics,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     @property
@@ -316,6 +336,65 @@ class AdminServiceTransport(abc.ABC):
     ) -> Callable[
         [admin.DeleteSubscriptionRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_reservation(
+        self,
+    ) -> Callable[
+        [admin.CreateReservationRequest],
+        Union[common.Reservation, Awaitable[common.Reservation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_reservation(
+        self,
+    ) -> Callable[
+        [admin.GetReservationRequest],
+        Union[common.Reservation, Awaitable[common.Reservation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_reservations(
+        self,
+    ) -> Callable[
+        [admin.ListReservationsRequest],
+        Union[
+            admin.ListReservationsResponse, Awaitable[admin.ListReservationsResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_reservation(
+        self,
+    ) -> Callable[
+        [admin.UpdateReservationRequest],
+        Union[common.Reservation, Awaitable[common.Reservation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_reservation(
+        self,
+    ) -> Callable[
+        [admin.DeleteReservationRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_reservation_topics(
+        self,
+    ) -> Callable[
+        [admin.ListReservationTopicsRequest],
+        Union[
+            admin.ListReservationTopicsResponse,
+            Awaitable[admin.ListReservationTopicsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
