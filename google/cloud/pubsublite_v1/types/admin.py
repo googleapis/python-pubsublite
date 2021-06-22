@@ -17,6 +17,7 @@ import proto  # type: ignore
 
 from google.cloud.pubsublite_v1.types import common
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -38,6 +39,9 @@ __protobuf__ = proto.module(
         "ListSubscriptionsResponse",
         "UpdateSubscriptionRequest",
         "DeleteSubscriptionRequest",
+        "SeekSubscriptionRequest",
+        "SeekSubscriptionResponse",
+        "OperationMetadata",
         "CreateReservationRequest",
         "GetReservationRequest",
         "ListReservationsRequest",
@@ -339,6 +343,63 @@ class DeleteSubscriptionRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1,)
+
+
+class SeekSubscriptionRequest(proto.Message):
+    r"""Request for SeekSubscription.
+    Attributes:
+        name (str):
+            Required. The name of the subscription to
+            seek.
+        named_target (google.cloud.pubsublite_v1.types.SeekSubscriptionRequest.NamedTarget):
+            Seek to a named position with respect to the
+            message backlog.
+        time_target (google.cloud.pubsublite_v1.types.TimeTarget):
+            Seek to the first message whose publish or
+            event time is greater than or equal to the
+            specified query time. If no such message can be
+            located, will seek to the end of the message
+            backlog.
+    """
+
+    class NamedTarget(proto.Enum):
+        r"""A named position with respect to the message backlog."""
+        NAMED_TARGET_UNSPECIFIED = 0
+        TAIL = 1
+        HEAD = 2
+
+    name = proto.Field(proto.STRING, number=1,)
+    named_target = proto.Field(proto.ENUM, number=2, oneof="target", enum=NamedTarget,)
+    time_target = proto.Field(
+        proto.MESSAGE, number=3, oneof="target", message=common.TimeTarget,
+    )
+
+
+class SeekSubscriptionResponse(proto.Message):
+    r"""Response for SeekSubscription long running operation.    """
+
+
+class OperationMetadata(proto.Message):
+    r"""Metadata for long running operations.
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation was created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation finished running. Not
+            set if the operation has not completed.
+        target (str):
+            Resource path for the target of the operation. For example,
+            targets of seeks are subscription resources, structured
+            like:
+            projects/{project_number}/locations/{location}/subscriptions/{subscription_id}
+        verb (str):
+            Name of the verb executed by the operation.
+    """
+
+    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    target = proto.Field(proto.STRING, number=3,)
+    verb = proto.Field(proto.STRING, number=4,)
 
 
 class CreateReservationRequest(proto.Message):

@@ -18,6 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
+from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 import packaging.version
@@ -27,6 +28,7 @@ from grpc.experimental import aio  # type: ignore
 
 from google.cloud.pubsublite_v1.types import admin
 from google.cloud.pubsublite_v1.types import common
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import AdminServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import AdminServiceGrpcTransport
@@ -82,14 +84,14 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
             aio.Channel: A gRPC AsyncIO channel object.
         """
 
-        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
-
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
             quota_project_id=quota_project_id,
-            **self_signed_jwt_kwargs,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
             **kwargs,
         )
 
@@ -158,6 +160,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -199,6 +202,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
             scopes=scopes,
             quota_project_id=quota_project_id,
             client_info=client_info,
+            always_use_jwt_access=True,
         )
 
         if not self._grpc_channel:
@@ -227,6 +231,22 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         """
         # Return the channel from cache.
         return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Sanity check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self.grpc_channel
+            )
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
     def create_topic(
@@ -545,6 +565,58 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_subscription"]
+
+    @property
+    def seek_subscription(
+        self,
+    ) -> Callable[[admin.SeekSubscriptionRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the seek subscription method over gRPC.
+
+        Performs an out-of-band seek for a subscription to a
+        specified target, which may be timestamps or named
+        positions within the message backlog. Seek translates
+        these targets to cursors for each partition and
+        orchestrates subscribers to start consuming messages
+        from these seek cursors.
+
+        If an operation is returned, the seek has been
+        registered and subscribers will eventually receive
+        messages from the seek cursors (i.e. eventual
+        consistency), as long as they are using a minimum
+        supported client library version and not a system that
+        tracks cursors independently of Pub/Sub Lite (e.g.
+        Apache Beam, Dataflow, Spark). The seek operation will
+        fail for unsupported clients.
+
+        If clients would like to know when subscribers react to
+        the seek (or not), they can poll the operation. The seek
+        operation will succeed and complete once subscribers are
+        ready to receive messages from the seek cursors for all
+        partitions of the topic. This means that the seek
+        operation will not complete until all subscribers come
+        online.
+
+        If the previous seek operation has not yet completed, it
+        will be aborted and the new invocation of seek will
+        supersede it.
+
+        Returns:
+            Callable[[~.SeekSubscriptionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "seek_subscription" not in self._stubs:
+            self._stubs["seek_subscription"] = self.grpc_channel.unary_unary(
+                "/google.cloud.pubsublite.v1.AdminService/SeekSubscription",
+                request_serializer=admin.SeekSubscriptionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["seek_subscription"]
 
     @property
     def create_reservation(

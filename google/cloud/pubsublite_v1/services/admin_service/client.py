@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.pubsublite_v1.services.admin_service import pagers
 from google.cloud.pubsublite_v1.types import admin
 from google.cloud.pubsublite_v1.types import common
@@ -1298,6 +1300,92 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
+
+    def seek_subscription(
+        self,
+        request: admin.SeekSubscriptionRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Performs an out-of-band seek for a subscription to a
+        specified target, which may be timestamps or named
+        positions within the message backlog. Seek translates
+        these targets to cursors for each partition and
+        orchestrates subscribers to start consuming messages
+        from these seek cursors.
+
+        If an operation is returned, the seek has been
+        registered and subscribers will eventually receive
+        messages from the seek cursors (i.e. eventual
+        consistency), as long as they are using a minimum
+        supported client library version and not a system that
+        tracks cursors independently of Pub/Sub Lite (e.g.
+        Apache Beam, Dataflow, Spark). The seek operation will
+        fail for unsupported clients.
+
+        If clients would like to know when subscribers react to
+        the seek (or not), they can poll the operation. The seek
+        operation will succeed and complete once subscribers are
+        ready to receive messages from the seek cursors for all
+        partitions of the topic. This means that the seek
+        operation will not complete until all subscribers come
+        online.
+
+        If the previous seek operation has not yet completed, it
+        will be aborted and the new invocation of seek will
+        supersede it.
+
+        Args:
+            request (google.cloud.pubsublite_v1.types.SeekSubscriptionRequest):
+                The request object. Request for SeekSubscription.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.pubsublite_v1.types.SeekSubscriptionResponse`
+                Response for SeekSubscription long running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a admin.SeekSubscriptionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, admin.SeekSubscriptionRequest):
+            request = admin.SeekSubscriptionRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.seek_subscription]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            admin.SeekSubscriptionResponse,
+            metadata_type=admin.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def create_reservation(
         self,

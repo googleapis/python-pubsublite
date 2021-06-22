@@ -85,6 +85,11 @@
                 "list_topics"
               ]
             },
+            "SeekSubscription": {
+              "methods": [
+                "seek_subscription"
+              ]
+            },
             "UpdateReservation": {
               "methods": [
                 "update_reservation"
@@ -178,6 +183,11 @@
             "ListTopics": {
               "methods": [
                 "list_topics"
+              ]
+            },
+            "SeekSubscription": {
+              "methods": [
+                "seek_subscription"
               ]
             },
             "UpdateReservation": {
