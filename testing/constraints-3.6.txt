@@ -7,3 +7,4 @@
 # Then this file should have foo==1.14.0
 google-cloud-pubsub==2.1.0
 overrides==2.0.0
+packaging==14.3
