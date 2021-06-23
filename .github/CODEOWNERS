@@ -6,7 +6,7 @@
 
 
 # The @googleapis/api-pubsublite is the default owner for changes in this repo
-*               @googleapis/api-pubsublite
+*           @googleapis/yoshi-python @googleapis/api-pubsublite
 
 # The python-samples-reviewers team is the default owner for samples changes
 /samples/   @googleapis/python-samples-owners
