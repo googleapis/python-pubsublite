@@ -26,9 +26,12 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
+from google.api_core import operation_async  # type: ignore
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.pubsublite_v1.services.admin_service import AdminServiceAsyncClient
@@ -40,9 +43,11 @@ from google.cloud.pubsublite_v1.services.admin_service.transports.base import (
 )
 from google.cloud.pubsublite_v1.types import admin
 from google.cloud.pubsublite_v1.types import common
+from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
 
 
@@ -3307,6 +3312,146 @@ async def test_delete_subscription_flattened_error_async():
         )
 
 
+def test_seek_subscription(
+    transport: str = "grpc", request_type=admin.SeekSubscriptionRequest
+):
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.seek_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.seek_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == admin.SeekSubscriptionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_seek_subscription_from_dict():
+    test_seek_subscription(request_type=dict)
+
+
+def test_seek_subscription_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.seek_subscription), "__call__"
+    ) as call:
+        client.seek_subscription()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == admin.SeekSubscriptionRequest()
+
+
+@pytest.mark.asyncio
+async def test_seek_subscription_async(
+    transport: str = "grpc_asyncio", request_type=admin.SeekSubscriptionRequest
+):
+    client = AdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.seek_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.seek_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == admin.SeekSubscriptionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_seek_subscription_async_from_dict():
+    await test_seek_subscription_async(request_type=dict)
+
+
+def test_seek_subscription_field_headers():
+    client = AdminServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = admin.SeekSubscriptionRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.seek_subscription), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.seek_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_seek_subscription_field_headers_async():
+    client = AdminServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = admin.SeekSubscriptionRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.seek_subscription), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.seek_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
 def test_create_reservation(
     transport: str = "grpc", request_type=admin.CreateReservationRequest
 ):
@@ -4960,6 +5105,7 @@ def test_admin_service_base_transport():
         "list_subscriptions",
         "update_subscription",
         "delete_subscription",
+        "seek_subscription",
         "create_reservation",
         "get_reservation",
         "list_reservations",
@@ -4970,6 +5116,11 @@ def test_admin_service_base_transport():
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
+
+    # Additionally, the LRO client (a property) should
+    # also raise NotImplementedError
+    with pytest.raises(NotImplementedError):
+        transport.operations_client
 
 
 @requires_google_auth_gte_1_25_0
@@ -5301,6 +5452,32 @@ def test_admin_service_transport_channel_mtls_with_adc(transport_class):
                 ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+
+
+def test_admin_service_grpc_lro_client():
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_admin_service_grpc_lro_async_client():
+    client = AdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_reservation_path():

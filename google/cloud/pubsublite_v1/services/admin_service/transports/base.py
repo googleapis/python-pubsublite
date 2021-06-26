@@ -23,11 +23,13 @@ import google.api_core  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
+from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.pubsublite_v1.types import admin
 from google.cloud.pubsublite_v1.types import common
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 try:
@@ -196,6 +198,9 @@ class AdminServiceTransport(abc.ABC):
             self.delete_subscription: gapic_v1.method.wrap_method(
                 self.delete_subscription, default_timeout=None, client_info=client_info,
             ),
+            self.seek_subscription: gapic_v1.method.wrap_method(
+                self.seek_subscription, default_timeout=None, client_info=client_info,
+            ),
             self.create_reservation: gapic_v1.method.wrap_method(
                 self.create_reservation, default_timeout=None, client_info=client_info,
             ),
@@ -217,6 +222,11 @@ class AdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
         }
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Return the client designed to process long-running operations."""
+        raise NotImplementedError()
 
     @property
     def create_topic(
@@ -324,6 +334,15 @@ class AdminServiceTransport(abc.ABC):
     ) -> Callable[
         [admin.DeleteSubscriptionRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def seek_subscription(
+        self,
+    ) -> Callable[
+        [admin.SeekSubscriptionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

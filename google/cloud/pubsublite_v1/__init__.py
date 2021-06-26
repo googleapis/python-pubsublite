@@ -47,6 +47,9 @@ from .types.admin import ListTopicsRequest
 from .types.admin import ListTopicsResponse
 from .types.admin import ListTopicSubscriptionsRequest
 from .types.admin import ListTopicSubscriptionsResponse
+from .types.admin import OperationMetadata
+from .types.admin import SeekSubscriptionRequest
+from .types.admin import SeekSubscriptionResponse
 from .types.admin import TopicPartitions
 from .types.admin import UpdateReservationRequest
 from .types.admin import UpdateSubscriptionRequest
@@ -147,6 +150,7 @@ __all__ = (
     "MessagePublishRequest",
     "MessagePublishResponse",
     "MessageResponse",
+    "OperationMetadata",
     "PartitionAssignment",
     "PartitionAssignmentAck",
     "PartitionAssignmentRequest",
@@ -159,6 +163,8 @@ __all__ = (
     "Reservation",
     "SeekRequest",
     "SeekResponse",
+    "SeekSubscriptionRequest",
+    "SeekSubscriptionResponse",
     "SequencedCommitCursorRequest",
     "SequencedCommitCursorResponse",
     "SequencedMessage",
