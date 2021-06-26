@@ -32,6 +32,7 @@ dependencies = [
     "grpcio >= 1.18.0",
     "grpcio-status >= 1.18.0",
     "overrides>=6.0.1, <7.0.0",
+    "packaging >= 14.3",
 ]
 
 setuptools.setup(
@@ -42,7 +43,11 @@ setuptools.setup(
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
     url="https://github.com/googleapis/python-pubsublite",
-    packages=setuptools.PEP420PackageFinder.find(),
+    packages=[
+        package
+        for package in setuptools.PEP420PackageFinder.find()
+        if package.startswith("google")
+    ],
     namespace_packages=("google", "google.cloud"),
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
