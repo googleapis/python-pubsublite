@@ -13,14 +13,17 @@
 # limitations under the License.
 
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Union
 
+from google.api_core.operation import Operation
 from google.cloud.pubsublite.types import (
     CloudRegion,
     TopicPath,
     LocationPath,
     SubscriptionPath,
     BacklogLocation,
+    PublishTime,
+    EventTime,
 )
 from google.cloud.pubsublite.types.paths import ReservationPath
 from google.cloud.pubsublite_v1 import Topic, Subscription, Reservation
@@ -87,6 +90,32 @@ class AdminClientInterface(ABC):
         self, subscription: Subscription, update_mask: FieldMask
     ) -> Subscription:
         """Update the masked fields of the provided subscription."""
+
+    @abstractmethod
+    def seek_subscription(
+        self,
+        subscription_path: SubscriptionPath,
+        target: Union[BacklogLocation, PublishTime, EventTime],
+    ) -> Operation:
+        """Initiate an out-of-band seek for a subscription to a specified target.
+
+        If an operation is returned, the seek has been registered and subscribers
+        will eventually receive messages from the seek target, as long as the
+        subscriber client supports out-of-band seeks. The seek operation will be
+        aborted for unsupported clients, or if it is superseded by a newer seek
+        invocation for the same subscription.
+
+        To determine when subscribers react to the seek (or it has been aborted),
+        wait for the returned operation to complete. The operation will succeed and
+        complete once subscribers are receiving messages from the seek target for all
+        partitions of the topic. The operation will not complete until all
+        subscribers come online.
+
+        Returns:
+            google.api_core.operation.Operation with:
+              result type: google.cloud.pubsublite.SeekSubscriptionResponse
+              metadata type: google.cloud.pubsublite.OperationMetadata
+        """
 
     @abstractmethod
     def delete_subscription(self, subscription_path: SubscriptionPath):

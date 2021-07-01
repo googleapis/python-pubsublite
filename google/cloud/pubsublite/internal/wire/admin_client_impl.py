@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
+from typing import List, Union
 
+from google.api_core.exceptions import InvalidArgument
+from google.api_core.operation import Operation
 from google.protobuf.field_mask_pb2 import FieldMask
+from google.protobuf.timestamp_pb2 import Timestamp
 
 from google.cloud.pubsublite.admin_client_interface import AdminClientInterface
 from google.cloud.pubsublite.types import (
@@ -23,6 +26,8 @@ from google.cloud.pubsublite.types import (
     LocationPath,
     TopicPath,
     BacklogLocation,
+    PublishTime,
+    EventTime,
 )
 from google.cloud.pubsublite.types.paths import ReservationPath
 from google.cloud.pubsublite_v1 import (
@@ -31,6 +36,8 @@ from google.cloud.pubsublite_v1 import (
     AdminServiceClient,
     TopicPartitions,
     Reservation,
+    TimeTarget,
+    SeekSubscriptionRequest,
 )
 
 
@@ -104,6 +111,29 @@ class AdminClientImpl(AdminClientInterface):
         return self._underlying.update_subscription(
             subscription=subscription, update_mask=update_mask
         )
+
+    def seek_subscription(
+        self,
+        subscription_path: SubscriptionPath,
+        target: Union[BacklogLocation, PublishTime, EventTime],
+    ) -> Operation:
+        request = SeekSubscriptionRequest(name=str(subscription_path))
+        if isinstance(target, PublishTime):
+            ts = Timestamp()
+            ts.FromDatetime(target.value)
+            request.time_target = TimeTarget(publish_time=ts)
+        elif isinstance(target, EventTime):
+            ts = Timestamp()
+            ts.FromDatetime(target.value)
+            request.time_target = TimeTarget(event_time=ts)
+        elif isinstance(target, BacklogLocation):
+            if target == BacklogLocation.END:
+                request.named_target = SeekSubscriptionRequest.NamedTarget.HEAD
+            else:
+                request.named_target = SeekSubscriptionRequest.NamedTarget.TAIL
+        else:
+            raise InvalidArgument("A valid seek target must be specified.")
+        return self._underlying.seek_subscription(request=request)
 
     def delete_subscription(self, subscription_path: SubscriptionPath):
         self._underlying.delete_subscription(name=str(subscription_path))

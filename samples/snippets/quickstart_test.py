@@ -259,6 +259,16 @@ def test_subscriber_example(topic_path, subscription_path, capsys):
         assert f"Received {message}" in out
 
 
+def test_seek_lite_subscription_example(capsys):
+    import seek_lite_subscription_example
+
+    seek_lite_subscription_example.seek_lite_subscription(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, "BEGINNING", False
+    )
+    out, _ = capsys.readouterr()
+    assert "Seek operation" in out
+
+
 def test_delete_lite_subscription_example(subscription_path, capsys):
     import delete_lite_subscription_example
 
