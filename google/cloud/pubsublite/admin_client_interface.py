@@ -99,17 +99,9 @@ class AdminClientInterface(ABC):
     ) -> Operation:
         """Initiate an out-of-band seek for a subscription to a specified target.
 
-        If an operation is returned, the seek has been registered and subscribers
-        will eventually receive messages from the seek target, as long as the
-        subscriber client supports out-of-band seeks. The seek operation will be
-        aborted for unsupported clients, or if it is superseded by a newer seek
-        invocation for the same subscription.
-
-        To determine when subscribers react to the seek (or it has been aborted),
-        wait for the returned operation to complete. The operation will succeed and
-        complete once subscribers are receiving messages from the seek target for all
-        partitions of the topic. The operation will not complete until all
-        subscribers come online.
+        The seek target may be timestamps or named positions within the message
+        backlog See https://cloud.google.com/pubsub/lite/docs/seek for more
+        information.
 
         Returns:
             google.api_core.operation.Operation with:

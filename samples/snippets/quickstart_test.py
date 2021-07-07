@@ -26,6 +26,7 @@ from google.cloud.pubsublite.types import (
     CloudZone,
     SubscriptionPath,
     TopicPath,
+    BacklogLocation,
 )
 import pytest
 
@@ -263,7 +264,7 @@ def test_seek_lite_subscription_example(capsys):
     import seek_lite_subscription_example
 
     seek_lite_subscription_example.seek_lite_subscription(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, "BEGINNING", False
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, BacklogLocation.BEGINNING, False
     )
     out, _ = capsys.readouterr()
     assert "Seek operation" in out

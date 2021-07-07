@@ -14,60 +14,53 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This application demonstrates how to invoke an out-of-band seek for a
+"""This application demonstrates how to initiate an out-of-band seek for a
 subscription with the Pub/Sub Lite API.
 """
 
 import argparse
 
 
-def seek_lite_subscription(project_number, cloud_region, zone_id, subscription_id, target, wait_for_operation):
+def seek_lite_subscription(project_number, cloud_region, zone_id, subscription_id, seek_target, wait_for_operation):
     # [START pubsublite_seek_subscription]
-    from datetime import datetime
-    from google.api_core.exceptions import NotFound, GoogleAPICallError
+    from google.api_core.exceptions import NotFound
     from google.cloud.pubsublite import AdminClient
-    from google.cloud.pubsublite.types import CloudRegion, CloudZone, SubscriptionPath, BacklogLocation, PublishTime
+    from google.cloud.pubsublite.types import CloudRegion, CloudZone, SubscriptionPath
 
     # TODO(developer):
     # project_number = 1122334455
     # cloud_region = "us-central1"
     # zone_id = "a"
     # subscription_id = "your-subscription-id"
-    # target = "BEGINNING"
-    # wait_for_operation = 1
+    # seek_target = BacklogLocation.BEGINNING
+    # wait_for_operation = True
 
     cloud_region = CloudRegion(cloud_region)
     location = CloudZone(cloud_region, zone_id)
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
 
-    if target == "BEGINNING":
-        seek_target = BacklogLocation.BEGINNING
-    elif target == "END":
-        seek_target = BacklogLocation.END
-    else:
-        seek_target = PublishTime(datetime.strptime(target, "%Y-%m-%d %H:%M:%S"))
-
     client = AdminClient(cloud_region)
     try:
         seek_operation = client.seek_subscription(subscription_path, seek_target)
         print(f"Seek operation: {seek_operation.operation.name}")
-        print(f"Metadata:\n{seek_operation.metadata}")
     except NotFound:
         print(f"{subscription_path} not found.")
+        return
 
-    # Note: In order for the operation to complete, a subscriber must be
-    # receiving messages for the subscription.
+    # Optional: Wait for the seek operation to complete, which indicates when
+    # subscribers for all partitions are receiving messages from the seek
+    # target.
     if wait_for_operation:
         print("Waiting for operation to complete...")
-        try:
-            seek_operation.result()
-            print(f"Operation completed. Metadata:\n{seek_operation.metadata}")
-        except GoogleAPICallError as e:
-            print(e)
+        seek_operation.result()
+        print(f"Operation completed. Metadata:\n{seek_operation.metadata}")
     # [END pubsublite_seek_subscription]
 
 
 if __name__ == "__main__":
+    from datetime import datetime
+    from google.cloud.pubsublite.types import BacklogLocation, PublishTime
+
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -80,6 +73,14 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    if args.target == "BEGINNING":
+        seek_target = BacklogLocation.BEGINNING
+    elif args.target == "END":
+        seek_target = BacklogLocation.END
+    else:
+        seek_target = PublishTime(datetime.strptime(args.target, "%Y-%m-%d %H:%M:%S"))
+
     seek_lite_subscription(
-        args.project_number, args.cloud_region, args.zone_id, args.subscription_id, args.target, args.wait_for_operation
+        args.project_number, args.cloud_region, args.zone_id,
+        args.subscription_id, seek_target, args.wait_for_operation
     )
