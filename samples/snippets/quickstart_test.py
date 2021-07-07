@@ -22,11 +22,11 @@ import backoff
 from google.api_core.exceptions import NotFound
 from google.cloud.pubsublite import AdminClient
 from google.cloud.pubsublite.types import (
+    BacklogLocation,
     CloudRegion,
     CloudZone,
     SubscriptionPath,
     TopicPath,
-    BacklogLocation,
 )
 import pytest
 
