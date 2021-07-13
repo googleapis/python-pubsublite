@@ -17,6 +17,7 @@ from google.api_core.exceptions import Aborted, NotFound
 from google.cloud.pubsublite.internal.wire.reset_signal import is_reset_signal
 from google.cloud.pubsublite.testing.test_reset_signal import (
     make_call,
+    make_call_without_metadata,
     make_reset_signal,
 )
 from google.protobuf.any_pb2 import Any
@@ -37,6 +38,13 @@ async def test_non_retryable():
 
 async def test_missing_call():
     assert not is_reset_signal(Aborted(""))
+
+
+async def test_extracted_status_is_none():
+    status_pb = Status(code=10, details=[])
+    assert not is_reset_signal(
+        Aborted("", response=make_call_without_metadata(status_pb))
+    )
 
 
 async def test_wrong_reason():
