@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/googleapis/python-pubsublite/compare/v0.5.0...v0.6.0) (2021-07-13)
+
+
+### Features
+
+* add always_use_jwt_access ([6c84e24](https://www.github.com/googleapis/python-pubsublite/commit/6c84e24ce6e3e0c50f2807c2e98db47fe0424715))
+* Add SeekSubscription and Operations to API ([#169](https://www.github.com/googleapis/python-pubsublite/issues/169)) ([2e29ba1](https://www.github.com/googleapis/python-pubsublite/commit/2e29ba1f39f299acf97e543db355bf8ebfcdf121))
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#162](https://www.github.com/googleapis/python-pubsublite/issues/162)) ([94281c5](https://www.github.com/googleapis/python-pubsublite/commit/94281c5b925b550c0e0905e3f53ec9d23c45b499))
+* disable always_use_jwt_access ([#175](https://www.github.com/googleapis/python-pubsublite/issues/175)) ([6c84e24](https://www.github.com/googleapis/python-pubsublite/commit/6c84e24ce6e3e0c50f2807c2e98db47fe0424715))
+* exclude docs and tests from package ([#161](https://www.github.com/googleapis/python-pubsublite/issues/161)) ([b8a70d9](https://www.github.com/googleapis/python-pubsublite/commit/b8a70d9bafca7d62351404421c465e9dfc466420))
+* is_reset_signal should handle status that is None ([#183](https://www.github.com/googleapis/python-pubsublite/issues/183)) ([4ba484e](https://www.github.com/googleapis/python-pubsublite/commit/4ba484e1c5f8ff458a4ad462167f8907b44ebe28))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-pubsublite/issues/1127)) ([#165](https://www.github.com/googleapis/python-pubsublite/issues/165)) ([cea99be](https://www.github.com/googleapis/python-pubsublite/commit/cea99be19a5415796eaddf7f51ca4bcd4af9f75f))
+
 ## [0.5.0](https://www.github.com/googleapis/python-pubsublite/compare/v0.4.1...v0.5.0) (2021-06-11)
 
 
