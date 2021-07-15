@@ -126,21 +126,19 @@ def _make_partition_subscriber_factory(
     )
 
     def factory(partition: Partition) -> AsyncSingleSubscriber:
-        subscribe_client = subscribe_client_cache.get()
-        cursor_client = cursor_client_cache.get()
         final_metadata = merge_metadata(
             base_metadata, subscription_routing_metadata(subscription, partition)
         )
 
         def subscribe_connection_factory(requests: AsyncIterator[SubscribeRequest]):
-            return subscribe_client.subscribe(
+            return subscribe_client_cache.get().subscribe(
                 requests, metadata=list(final_metadata.items())
             )
 
         def cursor_connection_factory(
             requests: AsyncIterator[StreamingCommitCursorRequest],
         ):
-            return cursor_client.streaming_commit_cursor(
+            return cursor_client_cache.get().streaming_commit_cursor(
                 requests, metadata=list(final_metadata.items())
             )
 
