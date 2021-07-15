@@ -18,6 +18,7 @@ from google.cloud.pubsub_v1.types import BatchSettings
 
 from google.cloud.pubsublite.admin_client import AdminClient
 from google.cloud.pubsublite.internal.endpoints import regional_endpoint
+from google.cloud.pubsublite.internal.wire.client_cache import ClientCache
 from google.cloud.pubsublite.internal.wire.default_routing_policy import (
     DefaultRoutingPolicy,
 )
@@ -88,16 +89,20 @@ def make_publisher(
         client_options = ClientOptions(
             api_endpoint=regional_endpoint(topic.location.region)
         )
-    client = async_client.PublisherServiceAsyncClient(
-        credentials=credentials, transport=transport, client_options=client_options
-    )  # type: ignore
+    client_cache = ClientCache(
+        lambda: async_client.PublisherServiceAsyncClient(
+            credentials=credentials, transport=transport, client_options=client_options
+        )
+    )
 
     def publisher_factory(partition: Partition):
         def connection_factory(requests: AsyncIterator[PublishRequest]):
             final_metadata = merge_metadata(
                 metadata, topic_routing_metadata(topic, partition)
             )
-            return client.publish(requests, metadata=list(final_metadata.items()))
+            return client_cache.get().publish(
+                requests, metadata=list(final_metadata.items())
+            )
 
         return SinglePartitionPublisher(
             InitialPublishRequest(topic=str(topic), partition=partition.value),
