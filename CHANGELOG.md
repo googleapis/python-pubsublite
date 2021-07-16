@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.6.1](https://www.github.com/googleapis/python-pubsublite/compare/v0.6.0...v0.6.1) (2021-07-16)
+
+
+### Bug Fixes
+
+* Add ClientCache which forces new client creation after 75 uses ([#188](https://www.github.com/googleapis/python-pubsublite/issues/188)) ([089789c](https://www.github.com/googleapis/python-pubsublite/commit/089789c54e876615157ec7e05b79000fc93e2dd9))
+
 ## [0.6.0](https://www.github.com/googleapis/python-pubsublite/compare/v0.5.0...v0.6.0) (2021-07-13)
 
 
