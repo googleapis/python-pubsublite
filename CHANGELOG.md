@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-pubsublite/compare/v0.6.1...v1.0.0) (2021-07-19)
+
+
+### Features
+
+* bump release level to production/stable ([#146](https://www.github.com/googleapis/python-pubsublite/issues/146)) ([4c294f2](https://www.github.com/googleapis/python-pubsublite/commit/4c294f262d882bcf7adc8ca96a1cbb8268fd39d5))
+
+
+### Miscellaneous Chores
+
+* release as 1.0.0 ([#193](https://www.github.com/googleapis/python-pubsublite/issues/193)) ([88368c6](https://www.github.com/googleapis/python-pubsublite/commit/88368c6826525ee74fe63efc89dda3acb670c130))
+
 ### [0.6.1](https://www.github.com/googleapis/python-pubsublite/compare/v0.6.0...v0.6.1) (2021-07-16)
 
 
