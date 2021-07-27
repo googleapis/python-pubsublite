@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-pubsublite/compare/v1.0.0...v1.1.0) (2021-07-27)
+
+
+### Features
+
+* add Samples section to CONTRIBUTING.rst ([#196](https://www.github.com/googleapis/python-pubsublite/issues/196)) ([35b7dca](https://www.github.com/googleapis/python-pubsublite/commit/35b7dcabff683196fc4ccc0d0873238e2030a137))
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#199](https://www.github.com/googleapis/python-pubsublite/issues/199)) ([b8b9832](https://www.github.com/googleapis/python-pubsublite/commit/b8b983261eccfe63a5f4c9a77e6958f84bf6c91c))
+
 ## [1.0.0](https://www.github.com/googleapis/python-pubsublite/compare/v0.6.1...v1.0.0) (2021-07-19)
 
 
