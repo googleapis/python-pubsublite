@@ -4,7 +4,7 @@
     "product_documentation": "https://https://cloud.google.com/pubsub/lite",
     "client_documentation": "https://googleapis.dev/python/pubsublite/latest",
     "issue_tracker": "",
-    "release_level": "beta",
+    "release_level": "ga",
     "language": "python",
     "library_type": "GAPIC_COMBO",
     "repo": "googleapis/python-pubsublite",

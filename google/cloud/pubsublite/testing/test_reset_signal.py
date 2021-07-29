@@ -30,6 +30,13 @@ def make_call(status_pb: Status) -> grpc.Call:
     return mock_call
 
 
+def make_call_without_metadata(status_pb: Status) -> grpc.Call:
+    mock_call = make_call(status_pb)
+    # Causes rpc_status.from_call to return None.
+    mock_call.trailing_metadata.return_value = None
+    return mock_call
+
+
 def make_reset_signal() -> GoogleAPICallError:
     any = Any()
     any.Pack(ErrorInfo(reason="RESET", domain="pubsublite.googleapis.com"))

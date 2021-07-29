@@ -29,14 +29,17 @@ def is_reset_signal(error: GoogleAPICallError) -> bool:
         return False
     try:
         status = rpc_status.from_call(error.response)
+        if not status:
+            return False
         for detail in status.details:
-            info = ErrorInfo()
-            if (
-                detail.Unpack(info)
-                and info.reason == "RESET"
-                and info.domain == "pubsublite.googleapis.com"
-            ):
-                return True
+            if detail.Is(ErrorInfo.DESCRIPTOR):
+                info = ErrorInfo()
+                if (
+                    detail.Unpack(info)
+                    and info.reason == "RESET"
+                    and info.domain == "pubsublite.googleapis.com"
+                ):
+                    return True
     except ValueError:
         pass
     return False

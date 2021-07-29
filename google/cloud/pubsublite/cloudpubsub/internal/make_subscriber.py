@@ -22,6 +22,7 @@ from google.cloud.pubsublite.cloudpubsub.message_transforms import (
     to_cps_subscribe_message,
     add_id_to_cps_subscribe_transformer,
 )
+from google.cloud.pubsublite.internal.wire.client_cache import ClientCache
 from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker_impl import (
     AckSetTrackerImpl,
@@ -113,24 +114,31 @@ def _make_partition_subscriber_factory(
     nack_handler: NackHandler,
     message_transformer: MessageTransformer,
 ) -> PartitionSubscriberFactory:
+    subscribe_client_cache = ClientCache(
+        lambda: SubscriberServiceAsyncClient(
+            credentials=credentials, transport=transport, client_options=client_options
+        )
+    )
+    cursor_client_cache = ClientCache(
+        lambda: CursorServiceAsyncClient(
+            credentials=credentials, transport=transport, client_options=client_options
+        )
+    )
+
     def factory(partition: Partition) -> AsyncSingleSubscriber:
-        subscribe_client = SubscriberServiceAsyncClient(
-            credentials=credentials, client_options=client_options, transport=transport
-        )  # type: ignore
-        cursor_client = CursorServiceAsyncClient(credentials=credentials, client_options=client_options, transport=transport)  # type: ignore
         final_metadata = merge_metadata(
             base_metadata, subscription_routing_metadata(subscription, partition)
         )
 
         def subscribe_connection_factory(requests: AsyncIterator[SubscribeRequest]):
-            return subscribe_client.subscribe(
+            return subscribe_client_cache.get().subscribe(
                 requests, metadata=list(final_metadata.items())
             )
 
         def cursor_connection_factory(
             requests: AsyncIterator[StreamingCommitCursorRequest],
         ):
-            return cursor_client.streaming_commit_cursor(
+            return cursor_client_cache.get().streaming_commit_cursor(
                 requests, metadata=list(final_metadata.items())
             )
 
