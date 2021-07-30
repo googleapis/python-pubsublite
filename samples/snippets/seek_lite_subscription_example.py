@@ -15,7 +15,8 @@
 # limitations under the License.
 
 """This application demonstrates how to initiate an out-of-band seek for a
-subscription with the Pub/Sub Lite API.
+subscription with the Pub/Sub Lite API. For more information, see the
+documentation at https://cloud.google.com/pubsub/lite/docs/seek.
 """
 
 import argparse
@@ -33,7 +34,21 @@ def seek_lite_subscription(project_number, cloud_region, zone_id, subscription_i
     # zone_id = "a"
     # subscription_id = "your-subscription-id"
     # seek_target = BacklogLocation.BEGINNING
-    # wait_for_operation = True
+    # wait_for_operation = False
+
+    # Possible values for seek_target:
+    # - `BacklogLocation.BEGINNING`: replays from the beginning of all retained
+    #    messages.
+    # - `BacklogLocation.END`: skips past all current published messages.
+    # - `PublishTime(<datetime>)`: delivers messages with publish time greater
+    #    than or equal to the specified timestamp.
+    # - `EventTime(<datetime>)`: seeks to the first message with event time
+    #    greaterthan or equal to the specified timestamp.
+
+    # Waiting for the seek operation to complete is optional. It indicates when
+    # subscribers for all partitions are receiving messages from the seek
+    # target. If subscribers are offline, the seek will complete once they are
+    # online.
 
     cloud_region = CloudRegion(cloud_region)
     location = CloudZone(cloud_region, zone_id)
@@ -41,15 +56,16 @@ def seek_lite_subscription(project_number, cloud_region, zone_id, subscription_i
 
     client = AdminClient(cloud_region)
     try:
+        # Initiate an out-of-band seek for a subscription to the specified
+        # target. If an operation is returned, the seek has been successfully
+        # registered and will eventually complete.
         seek_operation = client.seek_subscription(subscription_path, seek_target)
         print(f"Seek operation: {seek_operation.operation.name}")
     except NotFound:
         print(f"{subscription_path} not found.")
         return
 
-    # Optional: Wait for the seek operation to complete, which indicates when
-    # subscribers for all partitions are receiving messages from the seek
-    # target.
+    # Optionally wait for the seek to propagate to subscribers.
     if wait_for_operation:
         print("Waiting for operation to complete...")
         seek_operation.result()
