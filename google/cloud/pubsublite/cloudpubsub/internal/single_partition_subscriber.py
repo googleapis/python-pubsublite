@@ -96,7 +96,7 @@ class SinglePartitionSingleSubscriber(
 
     async def handle_reset(self):
         # Increment ack generation id to ignore unacked messages.
-        ++self._ack_generation_id
+        self._ack_generation_id += 1
         await self._ack_set_tracker.clear_and_commit()
 
     async def read(self) -> Message:
@@ -123,6 +123,9 @@ class SinglePartitionSingleSubscriber(
             raise e
 
     async def _handle_ack(self, message: requests.AckRequest):
+        if message.ack_id not in self._messages_by_ack_id:
+            # Ignore duplicate acks.
+            return
         await self._underlying.allow_flow(
             FlowControlRequest(
                 allowed_messages=1,
