@@ -51,15 +51,17 @@ async def test_track_and_aggregate_acks(committer, tracker: AckSetTracker):
         committer.commit.assert_has_calls([])
         await tracker.ack(offset=3)
         committer.commit.assert_has_calls([])
-        await tracker.ack(offset=5)
-        committer.commit.assert_has_calls([])
         await tracker.ack(offset=1)
-        committer.commit.assert_has_calls([call(Cursor(offset=6))])
+        committer.commit.assert_has_calls([call(Cursor(offset=4))])
+        await tracker.ack(offset=5)
+        committer.commit.assert_has_calls(
+            [call(Cursor(offset=4)), call(Cursor(offset=6))]
+        )
 
         tracker.track(offset=8)
         await tracker.ack(offset=7)
         committer.commit.assert_has_calls(
-            [call(Cursor(offset=6)), call(Cursor(offset=8))]
+            [call(Cursor(offset=4)), call(Cursor(offset=6)), call(Cursor(offset=8))]
         )
     committer.__aexit__.assert_called_once()
 
