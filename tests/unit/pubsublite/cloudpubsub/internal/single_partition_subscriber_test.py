@@ -145,8 +145,6 @@ async def test_ack(
         await ack_called_queue.get()
         await ack_result_queue.put(None)
         ack_set_tracker.ack.assert_has_calls([call(2)])
-        # Note: verifies duplicate ack for read_2 ignored.
-        read_2.ack()
         read_1.ack()
         await ack_called_queue.get()
         await ack_result_queue.put(None)

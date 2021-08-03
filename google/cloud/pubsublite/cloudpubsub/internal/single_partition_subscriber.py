@@ -123,9 +123,6 @@ class SinglePartitionSingleSubscriber(
             raise e
 
     async def _handle_ack(self, message: requests.AckRequest):
-        if message.ack_id not in self._messages_by_ack_id:
-            # Ignore duplicate acks.
-            return
         await self._underlying.allow_flow(
             FlowControlRequest(
                 allowed_messages=1,
