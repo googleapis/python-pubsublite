@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-pubsublite/compare/v1.0.1...v1.0.2) (2021-08-04)
+
+
+### Bug Fixes
+
+* Backlog never zero despite messages received ([#204](https://www.github.com/googleapis/python-pubsublite/issues/204)) ([b93a0bf](https://www.github.com/googleapis/python-pubsublite/commit/b93a0bf1fda1079900278a022455b001d6fde86f))
+* Increment ack generation id ([#203](https://www.github.com/googleapis/python-pubsublite/issues/203)) ([644163d](https://www.github.com/googleapis/python-pubsublite/commit/644163d2adc067372c379c617d570497b3f9354e))
+
 ### [1.0.1](https://www.github.com/googleapis/python-pubsublite/compare/v1.0.0...v1.0.1) (2021-07-28)
 
 
