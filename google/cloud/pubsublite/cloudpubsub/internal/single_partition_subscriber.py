@@ -96,7 +96,7 @@ class SinglePartitionSingleSubscriber(
 
     async def handle_reset(self):
         # Increment ack generation id to ignore unacked messages.
-        ++self._ack_generation_id
+        self._ack_generation_id += 1
         await self._ack_set_tracker.clear_and_commit()
 
     async def read(self) -> Message:
