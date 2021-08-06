@@ -54,7 +54,7 @@ class AckSetTrackerImpl(AckSetTracker):
             if receipt == ack:
                 prefix_acked_offset = receipt
                 continue
-            self._receipts.append(receipt)
+            self._receipts.appendleft(receipt)
             self._acks.put(ack)
             break
         if prefix_acked_offset is None:
