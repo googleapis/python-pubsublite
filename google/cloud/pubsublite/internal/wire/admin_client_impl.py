@@ -17,7 +17,6 @@ from typing import List, Union
 from google.api_core.exceptions import InvalidArgument
 from google.api_core.operation import Operation
 from google.protobuf.field_mask_pb2 import FieldMask
-from google.protobuf.timestamp_pb2 import Timestamp
 
 from google.cloud.pubsublite.admin_client_interface import AdminClientInterface
 from google.cloud.pubsublite.types import (
@@ -119,13 +118,9 @@ class AdminClientImpl(AdminClientInterface):
     ) -> Operation:
         request = SeekSubscriptionRequest(name=str(subscription_path))
         if isinstance(target, PublishTime):
-            ts = Timestamp()
-            ts.FromDatetime(target.value)
-            request.time_target = TimeTarget(publish_time=ts)
+            request.time_target = TimeTarget(publish_time=target.value)
         elif isinstance(target, EventTime):
-            ts = Timestamp()
-            ts.FromDatetime(target.value)
-            request.time_target = TimeTarget(event_time=ts)
+            request.time_target = TimeTarget(event_time=target.value)
         elif isinstance(target, BacklogLocation):
             if target == BacklogLocation.END:
                 request.named_target = SeekSubscriptionRequest.NamedTarget.HEAD
