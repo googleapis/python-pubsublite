@@ -37,13 +37,13 @@ def seek_lite_subscription(project_number, cloud_region, zone_id, subscription_i
     # wait_for_operation = False
 
     # Possible values for seek_target:
-    # - `BacklogLocation.BEGINNING`: replays from the beginning of all retained
-    #    messages.
-    # - `BacklogLocation.END`: skips past all current published messages.
-    # - `PublishTime(<datetime>)`: delivers messages with publish time greater
-    #    than or equal to the specified timestamp.
-    # - `EventTime(<datetime>)`: seeks to the first message with event time
-    #    greaterthan or equal to the specified timestamp.
+    # - BacklogLocation.BEGINNING: replays from the beginning of all retained
+    #   messages.
+    # - BacklogLocation.END: skips past all current published messages.
+    # - PublishTime(<datetime>): delivers messages with publish time greater
+    #   than or equal to the specified timestamp.
+    # - EventTime(<datetime>): seeks to the first message with event time
+    #   greater than or equal to the specified timestamp.
 
     # Waiting for the seek operation to complete is optional. It indicates when
     # subscribers for all partitions are receiving messages from the seek
@@ -58,14 +58,13 @@ def seek_lite_subscription(project_number, cloud_region, zone_id, subscription_i
     try:
         # Initiate an out-of-band seek for a subscription to the specified
         # target. If an operation is returned, the seek has been successfully
-        # registered and will eventually complete.
+        # registered and will eventually propagate to subscribers.
         seek_operation = client.seek_subscription(subscription_path, seek_target)
         print(f"Seek operation: {seek_operation.operation.name}")
     except NotFound:
         print(f"{subscription_path} not found.")
         return
 
-    # Optionally wait for the seek to propagate to subscribers.
     if wait_for_operation:
         print("Waiting for operation to complete...")
         seek_operation.result()
