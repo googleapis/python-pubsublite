@@ -47,8 +47,8 @@ def seek_lite_subscription(project_number, cloud_region, zone_id, subscription_i
 
     # Waiting for the seek operation to complete is optional. It indicates when
     # subscribers for all partitions are receiving messages from the seek
-    # target. If subscribers are offline, the seek will complete once they are
-    # online.
+    # target. If subscribers are offline, the operation will complete once they
+    # are online.
 
     cloud_region = CloudRegion(cloud_region)
     location = CloudZone(cloud_region, zone_id)
