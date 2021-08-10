@@ -22,6 +22,7 @@ import backoff
 from google.api_core.exceptions import NotFound
 from google.cloud.pubsublite import AdminClient
 from google.cloud.pubsublite.types import (
+    BacklogLocation,
     CloudRegion,
     CloudZone,
     SubscriptionPath,
@@ -257,6 +258,16 @@ def test_subscriber_example(topic_path, subscription_path, capsys):
     assert f"Listening for messages on {subscription_path}..." in out
     for message in range(NUM_MESSAGES):
         assert f"Received {message}" in out
+
+
+def test_seek_lite_subscription_example(capsys):
+    import seek_lite_subscription_example
+
+    seek_lite_subscription_example.seek_lite_subscription(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, BacklogLocation.BEGINNING, False
+    )
+    out, _ = capsys.readouterr()
+    assert "Seek operation" in out
 
 
 def test_delete_lite_subscription_example(subscription_path, capsys):

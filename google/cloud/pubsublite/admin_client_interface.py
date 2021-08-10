@@ -13,14 +13,17 @@
 # limitations under the License.
 
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Union
 
+from google.api_core.operation import Operation
 from google.cloud.pubsublite.types import (
     CloudRegion,
     TopicPath,
     LocationPath,
     SubscriptionPath,
     BacklogLocation,
+    PublishTime,
+    EventTime,
 )
 from google.cloud.pubsublite.types.paths import ReservationPath
 from google.cloud.pubsublite_v1 import Topic, Subscription, Reservation
@@ -87,6 +90,24 @@ class AdminClientInterface(ABC):
         self, subscription: Subscription, update_mask: FieldMask
     ) -> Subscription:
         """Update the masked fields of the provided subscription."""
+
+    @abstractmethod
+    def seek_subscription(
+        self,
+        subscription_path: SubscriptionPath,
+        target: Union[BacklogLocation, PublishTime, EventTime],
+    ) -> Operation:
+        """Initiate an out-of-band seek for a subscription to a specified target.
+
+        The seek target may be timestamps or named positions within the message
+        backlog See https://cloud.google.com/pubsub/lite/docs/seek for more
+        information.
+
+        Returns:
+            google.api_core.operation.Operation with:
+              result type: google.cloud.pubsublite.SeekSubscriptionResponse
+              metadata type: google.cloud.pubsublite.OperationMetadata
+        """
 
     @abstractmethod
     def delete_subscription(self, subscription_path: SubscriptionPath):

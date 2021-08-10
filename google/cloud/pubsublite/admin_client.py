@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional, List
+from typing import Optional, List, Union
 
 from overrides import overrides
 from google.api_core.client_options import ClientOptions
+from google.api_core.operation import Operation
 from google.auth.credentials import Credentials
 from google.protobuf.field_mask_pb2 import FieldMask
 
@@ -31,6 +32,8 @@ from google.cloud.pubsublite.types import (
     LocationPath,
     TopicPath,
     BacklogLocation,
+    PublishTime,
+    EventTime,
 )
 from google.cloud.pubsublite.types.paths import ReservationPath
 from google.cloud.pubsublite_v1 import (
@@ -128,6 +131,14 @@ class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
         self, subscription: Subscription, update_mask: FieldMask
     ) -> Subscription:
         return self._impl.update_subscription(subscription, update_mask)
+
+    @overrides
+    def seek_subscription(
+        self,
+        subscription_path: SubscriptionPath,
+        target: Union[BacklogLocation, PublishTime, EventTime],
+    ) -> Operation:
+        return self._impl.seek_subscription(subscription_path, target)
 
     @overrides
     def delete_subscription(self, subscription_path: SubscriptionPath):
