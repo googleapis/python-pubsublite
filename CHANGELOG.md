@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-pubsublite/compare/v1.0.2...v1.1.0) (2021-08-12)
+
+
+### Features
+
+* Support seek subscription in AdminClient ([#176](https://www.github.com/googleapis/python-pubsublite/issues/176)) ([fc648ae](https://www.github.com/googleapis/python-pubsublite/commit/fc648ae224c22564fa86fbc0eceaf40a0b109d4c))
+
 ### [1.0.2](https://www.github.com/googleapis/python-pubsublite/compare/v1.0.1...v1.0.2) (2021-08-04)
 
 
