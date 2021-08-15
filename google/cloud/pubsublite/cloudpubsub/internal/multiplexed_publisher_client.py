@@ -38,7 +38,9 @@ class MultiplexedPublisherClient(PublisherClientInterface):
 
     def __init__(self, publisher_factory: PublisherFactory):
         self._publisher_factory = publisher_factory
-        self._multiplexer = ClientMultiplexer()
+        self._multiplexer = ClientMultiplexer(
+            lambda topic: self._create_and_start_publisher(topic)
+        )
 
     @overrides
     def publish(
@@ -51,9 +53,7 @@ class MultiplexedPublisherClient(PublisherClientInterface):
         if isinstance(topic, str):
             topic = TopicPath.parse(topic)
         try:
-            publisher = self._multiplexer.get_or_create(
-                topic, lambda: self._create_and_start_publisher(topic)
-            )
+            publisher = self._multiplexer.get_or_create(topic)
         except GoogleAPICallError as e:
             failed = Future()
             failed.set_exception(e)

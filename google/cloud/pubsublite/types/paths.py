@@ -105,4 +105,4 @@ class ReservationPath(NamedTuple):
                 "Reservation path must be formatted like projects/{project_number}/locations/{location}/reservations/{name} but was instead "
                 + to_parse
             )
-        return ReservationPath(splits[1], CloudZone.parse(splits[3]), splits[5])
+        return ReservationPath(splits[1], CloudRegion.parse(splits[3]), splits[5])

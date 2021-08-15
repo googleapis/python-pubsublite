@@ -54,7 +54,7 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
         self._underlying = underlying
         self._callback = callback
         self._unowned_executor = unowned_executor
-        self._event_loop = ManagedEventLoop()
+        self._event_loop = ManagedEventLoop("SubscriberLoopThread")
         self._close_lock = threading.Lock()
         self._failure = None
         self._close_callback = None
