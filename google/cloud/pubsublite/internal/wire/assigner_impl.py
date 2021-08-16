@@ -28,7 +28,7 @@ from google.cloud.pubsublite.internal.wire.connection_reinitializer import (
     ConnectionReinitializer,
 )
 from google.cloud.pubsublite.internal.wire.connection import Connection
-from google.cloud.pubsublite.types import Partition
+from google.cloud.pubsublite.types.partition import Partition
 from google.cloud.pubsublite_v1.types import (
     PartitionAssignmentRequest,
     PartitionAssignment,

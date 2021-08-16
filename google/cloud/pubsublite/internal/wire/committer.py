@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from typing import AsyncContextManager
 
 from google.cloud.pubsublite_v1 import Cursor
 
 
-class Committer(AsyncContextManager):
+class Committer(AsyncContextManager, metaclass=ABCMeta):
     """
     A Committer is able to commit subscribers' completed offsets.
     """

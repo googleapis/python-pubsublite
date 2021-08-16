@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from typing import AsyncContextManager
 
 
-class AckSetTracker(AsyncContextManager):
+class AckSetTracker(AsyncContextManager, metaclass=ABCMeta):
     """
     An AckSetTracker tracks disjoint acknowledged messages and commits them when a contiguous prefix of tracked offsets
     is aggregated.

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from typing import AsyncContextManager, Callable, Set, Optional
 
 from google.cloud.pubsub_v1.subscriber.message import Message
@@ -24,7 +24,7 @@ from google.cloud.pubsublite.types import (
 )
 
 
-class AsyncSingleSubscriber(AsyncContextManager):
+class AsyncSingleSubscriber(AsyncContextManager, metaclass=ABCMeta):
     """
     A Cloud Pub/Sub asynchronous subscriber.
 

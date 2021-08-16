@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from concurrent.futures import Future
 from typing import ContextManager, Mapping, Union, AsyncContextManager
 
 from google.cloud.pubsublite.types import TopicPath
 
 
-class AsyncPublisherClientInterface(AsyncContextManager):
+class AsyncPublisherClientInterface(AsyncContextManager, metaclass=ABCMeta):
     """
     An AsyncPublisherClientInterface publishes messages similar to Google Pub/Sub, but must be used in an
     async context. Any publish failures are unlikely to succeed if retried.
@@ -50,9 +50,10 @@ class AsyncPublisherClientInterface(AsyncContextManager):
         Raises:
           GoogleApiCallError: On a permanent failure.
         """
+        raise NotImplementedError()
 
 
-class PublisherClientInterface(ContextManager):
+class PublisherClientInterface(ContextManager, metaclass=ABCMeta):
     """
     A PublisherClientInterface publishes messages similar to Google Pub/Sub.
     Any publish failures are unlikely to succeed if retried.
@@ -84,3 +85,4 @@ class PublisherClientInterface(ContextManager):
         Raises:
           GoogleApiCallError: On a permanent failure.
         """
+        raise NotImplementedError()

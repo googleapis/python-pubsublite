@@ -94,10 +94,14 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
                                 )
                         self._read_queue = asyncio.Queue(maxsize=1)
                         self._write_queue = asyncio.Queue(maxsize=1)
-                        await self._reinitializer.reinitialize(connection, last_failure)
+                        await self._reinitializer.reinitialize(
+                            connection, last_failure  # pytype: disable=name-error
+                        )
                         self._initialized_once.set()
                         bad_retries = 0
-                        await self._loop_connection(connection)
+                        await self._loop_connection(
+                            connection  # pytype: disable=name-error
+                        )
                 except GoogleAPICallError as e:
                     last_failure = e
                     if not is_retryable(e):
@@ -118,7 +122,7 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
 
     async def _loop_connection(self, connection: Connection[Request, Response]):
         read_task: "Future[Response]" = asyncio.ensure_future(connection.read())
-        write_task: "Future[WorkItem[Request]]" = asyncio.ensure_future(
+        write_task: "Future[WorkItem[Request, None]]" = asyncio.ensure_future(
             self._write_queue.get()
         )
         try:

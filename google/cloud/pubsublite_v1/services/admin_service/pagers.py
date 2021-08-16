@@ -15,10 +15,10 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
+    Iterator,
     Sequence,
     Tuple,
     Optional,
@@ -75,14 +75,14 @@ class ListTopicsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[admin.ListTopicsResponse]:
+    def pages(self) -> Iterator[admin.ListTopicsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[common.Topic]:
+    def __iter__(self) -> Iterator[common.Topic]:
         for page in self.pages:
             yield from page.topics
 
@@ -137,14 +137,14 @@ class ListTopicsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[admin.ListTopicsResponse]:
+    async def pages(self) -> AsyncIterator[admin.ListTopicsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[common.Topic]:
+    def __aiter__(self) -> AsyncIterator[common.Topic]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.topics:
@@ -203,14 +203,14 @@ class ListTopicSubscriptionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[admin.ListTopicSubscriptionsResponse]:
+    def pages(self) -> Iterator[admin.ListTopicSubscriptionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[str]:
+    def __iter__(self) -> Iterator[str]:
         for page in self.pages:
             yield from page.subscriptions
 
@@ -265,14 +265,14 @@ class ListTopicSubscriptionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[admin.ListTopicSubscriptionsResponse]:
+    async def pages(self) -> AsyncIterator[admin.ListTopicSubscriptionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[str]:
+    def __aiter__(self) -> AsyncIterator[str]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.subscriptions:
@@ -331,14 +331,14 @@ class ListSubscriptionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[admin.ListSubscriptionsResponse]:
+    def pages(self) -> Iterator[admin.ListSubscriptionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[common.Subscription]:
+    def __iter__(self) -> Iterator[common.Subscription]:
         for page in self.pages:
             yield from page.subscriptions
 
@@ -393,14 +393,14 @@ class ListSubscriptionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[admin.ListSubscriptionsResponse]:
+    async def pages(self) -> AsyncIterator[admin.ListSubscriptionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[common.Subscription]:
+    def __aiter__(self) -> AsyncIterator[common.Subscription]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.subscriptions:
@@ -459,14 +459,14 @@ class ListReservationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[admin.ListReservationsResponse]:
+    def pages(self) -> Iterator[admin.ListReservationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[common.Reservation]:
+    def __iter__(self) -> Iterator[common.Reservation]:
         for page in self.pages:
             yield from page.reservations
 
@@ -521,14 +521,14 @@ class ListReservationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[admin.ListReservationsResponse]:
+    async def pages(self) -> AsyncIterator[admin.ListReservationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[common.Reservation]:
+    def __aiter__(self) -> AsyncIterator[common.Reservation]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.reservations:
@@ -587,14 +587,14 @@ class ListReservationTopicsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[admin.ListReservationTopicsResponse]:
+    def pages(self) -> Iterator[admin.ListReservationTopicsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[str]:
+    def __iter__(self) -> Iterator[str]:
         for page in self.pages:
             yield from page.topics
 
@@ -649,14 +649,14 @@ class ListReservationTopicsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[admin.ListReservationTopicsResponse]:
+    async def pages(self) -> AsyncIterator[admin.ListReservationTopicsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[str]:
+    def __aiter__(self) -> AsyncIterator[str]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.topics:

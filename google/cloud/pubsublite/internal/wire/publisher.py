@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from typing import AsyncContextManager
 from google.cloud.pubsublite_v1.types import PubSubMessage
 from google.cloud.pubsublite.types import MessageMetadata
 
 
-class Publisher(AsyncContextManager):
+class Publisher(AsyncContextManager, metaclass=ABCMeta):
     """
     A Pub/Sub Lite asynchronous wire protocol publisher.
     """

@@ -51,7 +51,7 @@ class _AckId(NamedTuple):
         return json.dumps({"generation": self.generation, "offset": self.offset})
 
     @staticmethod
-    def parse(payload: str) -> "_AckId":
+    def parse(payload: str) -> "_AckId":  # pytype: disable=invalid-annotation
         loaded = json.loads(payload)
         return _AckId(
             generation=int(loaded["generation"]), offset=int(loaded["offset"]),
