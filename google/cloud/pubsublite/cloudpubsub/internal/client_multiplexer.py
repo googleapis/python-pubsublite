@@ -92,11 +92,15 @@ class AsyncClientMultiplexer(Generic[_Key, _Client]):
     async def try_erase(self, key: _Key, client: _Client):
         if key not in self._live_clients:
             return
-        current_client = await self._live_clients[key]
+        client_future = self._live_clients[key]
+        current_client = await client_future
         if current_client is not client:
             return
         # duplicate check after await that no one raced with us
-        if key not in self._live_clients:
+        if (
+            key not in self._live_clients
+            or self._live_clients[key] is not client_future
+        ):
             return
         del self._live_clients[key]
         await self._closer(client)
