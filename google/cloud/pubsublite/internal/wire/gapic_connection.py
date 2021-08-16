@@ -42,7 +42,7 @@ class GapicConnection(
 ):
     """A Connection wrapping a gapic AsyncIterator[Request/Response] pair."""
 
-    _write_queue: "asyncio.Queue[WorkItem[Request, Response]]"
+    _write_queue: "asyncio.Queue[WorkItem[Request, None]]"
     _response_it: Optional[AsyncIterator[Response]]
 
     def __init__(self):
@@ -77,7 +77,7 @@ class GapicConnection(
         pass
 
     async def __anext__(self) -> Request:
-        item: WorkItem[Request] = await self.await_unless_failed(
+        item: WorkItem[Request, None] = await self.await_unless_failed(
             self._write_queue.get()
         )
         item.response_future.set_result(None)
