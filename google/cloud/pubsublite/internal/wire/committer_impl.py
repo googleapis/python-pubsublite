@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import asyncio
-from typing import Optional, List, Iterable
+from typing import Optional, List
 
 import logging
 
@@ -28,10 +28,7 @@ from google.cloud.pubsublite.internal.wire.connection_reinitializer import (
     ConnectionReinitializer,
 )
 from google.cloud.pubsublite.internal.wire.connection import Connection
-from google.cloud.pubsublite.internal.wire.serial_batcher import (
-    SerialBatcher,
-    BatchTester,
-)
+from google.cloud.pubsublite.internal.wire.serial_batcher import SerialBatcher
 from google.cloud.pubsublite_v1 import Cursor
 from google.cloud.pubsublite_v1.types import (
     StreamingCommitCursorRequest,
@@ -49,7 +46,6 @@ class CommitterImpl(
     ConnectionReinitializer[
         StreamingCommitCursorRequest, StreamingCommitCursorResponse
     ],
-    BatchTester[Cursor],
 ):
     _initial: InitialCommitCursorRequest
     _flush_seconds: float
@@ -76,7 +72,7 @@ class CommitterImpl(
         self._initial = initial
         self._flush_seconds = flush_seconds
         self._connection = RetryingConnection(factory, self)
-        self._batcher = SerialBatcher(self)
+        self._batcher = SerialBatcher()
         self._outstanding_commits = []
         self._receiver = None
         self._flusher = None
@@ -167,9 +163,6 @@ class CommitterImpl(
 
     async def commit(self, cursor: Cursor) -> None:
         future = self._batcher.add(cursor)
-        if self._batcher.should_flush():
-            # always returns false currently, here in case this changes in the future.
-            await self._flush()
         await future
 
     async def reinitialize(
@@ -199,7 +192,3 @@ class CommitterImpl(
             req.commit.cursor = rollup[-1].request
             await connection.write(req)
         self._start_loopers()
-
-    def test(self, requests: Iterable[Cursor]) -> bool:
-        # There is no bound on the number of outstanding cursors.
-        return False

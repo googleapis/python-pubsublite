@@ -22,9 +22,9 @@ class ManagedEventLoop(ContextManager):
     _loop: AbstractEventLoop
     _thread: Thread
 
-    def __init__(self):
+    def __init__(self, name=None):
         self._loop = new_event_loop()
-        self._thread = Thread(target=lambda: self._loop.run_forever())
+        self._thread = Thread(target=lambda: self._loop.run_forever(), name=name)
 
     def __enter__(self):
         self._thread.start()

@@ -23,9 +23,6 @@ from typing import (
 
 from google.cloud.pubsub_v1.subscriber.message import Message
 
-from google.cloud.pubsublite.cloudpubsub.internal.client_multiplexer import (
-    AsyncClientMultiplexer,
-)
 from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
     AsyncSubscriberFactory,
     AsyncSingleSubscriber,
@@ -66,11 +63,11 @@ class _SubscriberAsyncIterator(AsyncIterator):
 
 class MultiplexedAsyncSubscriberClient(AsyncSubscriberClientInterface):
     _underlying_factory: AsyncSubscriberFactory
-    _multiplexer: AsyncClientMultiplexer[SubscriptionPath, AsyncSingleSubscriber]
+    _live_clients: Set[AsyncSingleSubscriber]
 
     def __init__(self, underlying_factory: AsyncSubscriberFactory):
         self._underlying_factory = underlying_factory
-        self._multiplexer = AsyncClientMultiplexer()
+        self._live_clients = set()
 
     @overrides
     async def subscribe(
@@ -82,25 +79,28 @@ class MultiplexedAsyncSubscriberClient(AsyncSubscriberClientInterface):
         if isinstance(subscription, str):
             subscription = SubscriptionPath.parse(subscription)
 
-        async def create_and_open():
-            client = self._underlying_factory(
-                subscription, fixed_partitions, per_partition_flow_control_settings
-            )
-            await client.__aenter__()
-            return client
-
-        subscriber = await self._multiplexer.get_or_create(
-            subscription, create_and_open
+        subscriber = self._underlying_factory(
+            subscription, fixed_partitions, per_partition_flow_control_settings
         )
+        await subscriber.__aenter__()
+        self._live_clients.add(subscriber)
+
         return _SubscriberAsyncIterator(
-            subscriber, lambda: self._multiplexer.try_erase(subscription, subscriber)
+            subscriber, lambda: self._try_remove_client(subscriber)
         )
 
     @overrides
     async def __aenter__(self):
-        await self._multiplexer.__aenter__()
         return self
+
+    async def _try_remove_client(self, client: AsyncSingleSubscriber):
+        if client in self._live_clients:
+            self._live_clients.remove(client)
+            await client.__aexit__(None, None, None)
 
     @overrides
     async def __aexit__(self, exc_type, exc_value, traceback):
-        await self._multiplexer.__aexit__(exc_type, exc_value, traceback)
+        live_clients = self._live_clients
+        self._live_clients = set()
+        for client in live_clients:
+            await client.__aexit__(None, None, None)
