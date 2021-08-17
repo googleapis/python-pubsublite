@@ -64,13 +64,12 @@ s.remove_staging_dirs()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-python.py_samples(skip_readmes=True)
     cov_level=70,
     microgenerator=True,
     system_test_external_dependencies=["asynctest"],
     unit_test_external_dependencies=["asynctest"],
 )
-
+python.py_samples(skip_readmes=True)
 s.move(
     templated_files, 
     excludes=[
