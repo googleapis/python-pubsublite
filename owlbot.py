@@ -69,7 +69,7 @@ templated_files = common.py_library(
     system_test_external_dependencies=["asynctest"],
     unit_test_external_dependencies=["asynctest"],
 )
-
+python.py_samples(skip_readmes=True)
 s.move(
     templated_files, 
     excludes=[
