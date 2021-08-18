@@ -43,7 +43,7 @@ class AsyncSinglePublisher(AsyncContextManager, metaclass=ABCMeta):
         Raises:
           GoogleApiCallError: On a permanent failure.
         """
-        raise NotImplementedError("")
+        raise NotImplementedError()
 
 
 class SinglePublisher(ContextManager, metaclass=ABCMeta):
@@ -71,4 +71,4 @@ class SinglePublisher(ContextManager, metaclass=ABCMeta):
         Raises:
           GoogleApiCallError: On a permanent failure.
         """
-        raise NotImplementedError("")
+        raise NotImplementedError()
