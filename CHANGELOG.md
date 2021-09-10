@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.0...v1.1.1) (2021-09-07)
+
+
+### Bug Fixes
+
+* Add workaround for https://github.com/grpc/grpc/issues/25364 ([#213](https://www.github.com/googleapis/python-pubsublite/issues/213)) ([e417bf3](https://www.github.com/googleapis/python-pubsublite/commit/e417bf39fe32c995e5ac2e0a807a10fee3f37d9f))
+* Numerous small performance and correctness issues ([#211](https://www.github.com/googleapis/python-pubsublite/issues/211)) ([358a1d8](https://www.github.com/googleapis/python-pubsublite/commit/358a1d8a429086ee75373260eb087a9dd171e3e6))
+
 ## [1.1.0](https://www.github.com/googleapis/python-pubsublite/compare/v1.0.2...v1.1.0) (2021-08-12)
 
 
