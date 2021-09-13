@@ -67,11 +67,8 @@ class AssigningSingleSubscriber(AsyncSingleSubscriber, PermanentFailable):
         return await self.await_unless_failed(self._batches.get())
 
     async def _subscribe_action(self, subscriber: AsyncSingleSubscriber):
-        try:
-            batch = await subscriber.read()
-            await self._batches.put(batch)
-        except Exception as e:
-            raise e
+        batch = await subscriber.read()
+        await self._batches.put(batch)
 
     async def _start_subscriber(self, partition: Partition):
         new_subscriber = self._subscriber_factory(partition)
