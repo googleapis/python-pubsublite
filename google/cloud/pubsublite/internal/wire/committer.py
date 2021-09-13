@@ -24,7 +24,13 @@ class Committer(AsyncContextManager, metaclass=ABCMeta):
     """
 
     @abstractmethod
-    async def commit(self, cursor: Cursor) -> None:
+    def commit(self, cursor: Cursor) -> None:
+        """
+        Start the commit for a cursor.
+
+        Raises:
+          GoogleAPICallError: When the committer terminates in failure.
+        """
         pass
 
     @abstractmethod

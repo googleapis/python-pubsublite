@@ -20,7 +20,10 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 from google.cloud.pubsublite.cloudpubsub.internal.single_subscriber import (
     AsyncSingleSubscriber,
 )
-from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_cancelled
+from google.cloud.pubsublite.internal.wait_ignore_cancelled import (
+    wait_ignore_cancelled,
+    wait_ignore_errors,
+)
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
 from google.cloud.pubsublite.internal.wire.permanent_failable import PermanentFailable
 from google.cloud.pubsublite.types import Partition
@@ -64,8 +67,11 @@ class AssigningSingleSubscriber(AsyncSingleSubscriber, PermanentFailable):
         return await self.await_unless_failed(self._batches.get())
 
     async def _subscribe_action(self, subscriber: AsyncSingleSubscriber):
-        batch = await subscriber.read()
-        await self._batches.put(batch)
+        try:
+            batch = await subscriber.read()
+            await self._batches.put(batch)
+        except Exception as e:
+            raise e
 
     async def _start_subscriber(self, partition: Partition):
         new_subscriber = self._subscriber_factory(partition)
@@ -100,8 +106,10 @@ class AssigningSingleSubscriber(AsyncSingleSubscriber, PermanentFailable):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         self._assign_poller.cancel()
-        await wait_ignore_cancelled(self._assign_poller)
-        await self._assigner.__aexit__(exc_type, exc_value, traceback)
+        await wait_ignore_errors(self._assign_poller)
+        await wait_ignore_errors(
+            self._assigner.__aexit__(exc_type, exc_value, traceback)
+        )
         for running in self._subscribers.values():
-            await self._stop_subscriber(running)
+            await wait_ignore_errors(self._stop_subscriber(running))
         pass

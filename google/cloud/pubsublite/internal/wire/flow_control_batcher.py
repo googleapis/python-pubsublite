@@ -26,11 +26,14 @@ class _AggregateRequest:
     def __init__(self):
         self._request = FlowControlRequest.meta.pb()
 
-    def __add__(self, other: FlowControlRequest.meta.pb):
-        self._request.allowed_bytes = self._request.allowed_bytes + other.allowed_bytes
+    def __add__(self, other: FlowControlRequest):
+        other_pb = other._pb
+        self._request.allowed_bytes = (
+            self._request.allowed_bytes + other_pb.allowed_bytes
+        )
         self._request.allowed_bytes = min(self._request.allowed_bytes, _MAX_INT64)
         self._request.allowed_messages = (
-            self._request.allowed_messages + other.allowed_messages
+            self._request.allowed_messages + other_pb.allowed_messages
         )
         self._request.allowed_messages = min(self._request.allowed_messages, _MAX_INT64)
         return self
@@ -77,16 +80,3 @@ class FlowControlBatcher:
         request = self._pending_tokens
         self._pending_tokens = _AggregateRequest()
         return request.to_optional()
-
-    def should_expedite(self):
-        pending_request = self._pending_tokens._request
-        client_request = self._client_tokens._request
-        if _exceeds_expedite_ratio(
-            pending_request.allowed_bytes, client_request.allowed_bytes
-        ):
-            return True
-        if _exceeds_expedite_ratio(
-            pending_request.allowed_messages, client_request.allowed_messages
-        ):
-            return True
-        return False

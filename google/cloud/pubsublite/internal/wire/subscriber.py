@@ -36,7 +36,7 @@ class Subscriber(AsyncContextManager, metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abstractmethod
-    async def allow_flow(self, request: FlowControlRequest):
+    def allow_flow(self, request: FlowControlRequest):
         """
         Allow an additional amount of messages and bytes to be sent to this client.
         """

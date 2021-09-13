@@ -17,6 +17,9 @@ import threading
 from concurrent.futures.thread import ThreadPoolExecutor
 from typing import ContextManager, Optional
 from google.api_core.exceptions import GoogleAPICallError
+from functools import partial
+
+from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.cloudpubsub.internal.managed_event_loop import (
     ManagedEventLoop,
 )
@@ -78,6 +81,7 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
         self.__exit__(None, None, None)
 
     def _fail(self, error: GoogleAPICallError):
+        print("started")
         self._failure = error
         self.close()
 
@@ -86,8 +90,8 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
             while True:
                 batch = await self._underlying.read()
                 self._unowned_executor.map(self._callback, batch)
-        except GoogleAPICallError as e:  # noqa: F841  Flake8 thinks e is unused
-            self._unowned_executor.submit(lambda: self._fail(e))  # noqa: F821
+        except GoogleAPICallError as e:
+            self._unowned_executor.submit(partial(self._fail, e))
 
     def __enter__(self):
         assert self._close_callback is not None
@@ -97,13 +101,15 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
+        self._poller_future.cancel()
         try:
-            self._poller_future.cancel()
-            self._poller_future.result()
-        except concurrent.futures.CancelledError:
+            self._poller_future.result()  # Ignore error.
+        except:  # noqa: E722
             pass
         self._event_loop.submit(
-            self._underlying.__aexit__(exc_type, exc_value, traceback)
+            wait_ignore_errors(
+                self._underlying.__aexit__(exc_type, exc_value, traceback)
+            )
         ).result()
         self._event_loop.__exit__(exc_type, exc_value, traceback)
         assert self._close_callback is not None

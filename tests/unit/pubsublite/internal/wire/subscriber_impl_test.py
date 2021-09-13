@@ -168,20 +168,23 @@ async def test_basic_flow_control_after_timeout(
         default_connection.write.assert_has_calls([call(initial_request)])
 
         # Send tokens.
-        flow_fut1 = asyncio.ensure_future(subscriber.allow_flow(flow_1))
-        assert not flow_fut1.done()
+        subscriber.allow_flow(flow_1)
 
-        # Handle the inline write since initial tokens are 100% of outstanding.
+        # Wait for writes to be waiting
+        await sleep_called.get()
+        asyncio_sleep.assert_called_with(FLUSH_SECONDS)
+        await sleep_results.put(None)
+
+        # Handle the connection write.
         await write_called_queue.get()
         await write_result_queue.put(None)
-        await flow_fut1
         default_connection.write.assert_has_calls(
             [call(initial_request), call(as_request(flow_1))]
         )
 
-        # Should complete without writing to the connection
-        await subscriber.allow_flow(flow_2)
-        await subscriber.allow_flow(flow_3)
+        # Multiple requests are batched
+        subscriber.allow_flow(flow_2)
+        subscriber.allow_flow(flow_3)
 
         # Wait for writes to be waiting
         await sleep_called.get()
@@ -234,20 +237,23 @@ async def test_flow_resent_on_restart(
         default_connection.write.assert_has_calls([call(initial_request)])
 
         # Send tokens.
-        flow_fut1 = asyncio.ensure_future(subscriber.allow_flow(flow_1))
-        assert not flow_fut1.done()
+        subscriber.allow_flow(flow_1)
 
-        # Handle the inline write since initial tokens are 100% of outstanding.
+        # Wait for writes to be waiting
+        await sleep_queues[FLUSH_SECONDS].called.get()
+        asyncio_sleep.assert_called_with(FLUSH_SECONDS)
+        await sleep_queues[FLUSH_SECONDS].results.put(None)
+
+        # Handle the connection write.
         await write_called_queue.get()
         await write_result_queue.put(None)
-        await flow_fut1
         default_connection.write.assert_has_calls(
             [call(initial_request), call(as_request(flow_1))]
         )
 
-        # Should complete without writing to the connection
-        await subscriber.allow_flow(flow_2)
-        await subscriber.allow_flow(flow_3)
+        # Send more tokens
+        subscriber.allow_flow(flow_2)
+        subscriber.allow_flow(flow_3)
 
         # Fail the connection with a retryable error
         await read_called_queue.get()
@@ -306,13 +312,16 @@ async def test_message_receipt(
         default_connection.write.assert_has_calls([call(initial_request)])
 
         # Send tokens.
-        flow_fut = asyncio.ensure_future(subscriber.allow_flow(flow))
-        assert not flow_fut.done()
+        subscriber.allow_flow(flow)
 
-        # Handle the inline write since initial tokens are 100% of outstanding.
+        # Wait for writes to be waiting
+        await sleep_queues[FLUSH_SECONDS].called.get()
+        asyncio_sleep.assert_called_with(FLUSH_SECONDS)
+        await sleep_queues[FLUSH_SECONDS].results.put(None)
+
+        # Handle the connection write.
         await write_called_queue.get()
         await write_result_queue.put(None)
-        await flow_fut
         default_connection.write.assert_has_calls(
             [call(initial_request), call(as_request(flow))]
         )
@@ -395,13 +404,16 @@ async def test_out_of_order_receipt_failure(
         default_connection.write.assert_has_calls([call(initial_request)])
 
         # Send tokens.
-        flow_fut = asyncio.ensure_future(subscriber.allow_flow(flow))
-        assert not flow_fut.done()
+        subscriber.allow_flow(flow)
 
-        # Handle the inline write since initial tokens are 100% of outstanding.
+        # Wait for writes to be waiting
+        await sleep_queues[FLUSH_SECONDS].called.get()
+        asyncio_sleep.assert_called_with(FLUSH_SECONDS)
+        await sleep_queues[FLUSH_SECONDS].results.put(None)
+
+        # Handle the connection write.
         await write_called_queue.get()
         await write_result_queue.put(None)
-        await flow_fut
         default_connection.write.assert_has_calls(
             [call(initial_request), call(as_request(flow))]
         )
@@ -453,13 +465,16 @@ async def test_handle_reset_signal(
         default_connection.write.assert_has_calls([call(initial_request)])
 
         # Send tokens.
-        flow_fut = asyncio.ensure_future(subscriber.allow_flow(flow))
-        assert not flow_fut.done()
+        subscriber.allow_flow(flow)
 
-        # Handle the inline write since initial tokens are 100% of outstanding.
+        # Wait for writes to be waiting
+        await sleep_queues[FLUSH_SECONDS].called.get()
+        asyncio_sleep.assert_called_with(FLUSH_SECONDS)
+        await sleep_queues[FLUSH_SECONDS].results.put(None)
+
+        # Handle the connection write.
         await write_called_queue.get()
         await write_result_queue.put(None)
-        await flow_fut
         default_connection.write.assert_has_calls(
             [call(initial_request), call(as_request(flow))]
         )

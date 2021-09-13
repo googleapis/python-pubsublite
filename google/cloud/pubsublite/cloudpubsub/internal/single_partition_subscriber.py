@@ -126,8 +126,8 @@ class SinglePartitionSingleSubscriber(
             self.fail(e)
             raise e
 
-    async def _handle_ack(self, message: requests.AckRequest):
-        await self._underlying.allow_flow(
+    def _handle_ack(self, message: requests.AckRequest):
+        self._underlying.allow_flow(
             FlowControlRequest(
                 allowed_messages=1,
                 allowed_bytes=self._messages_by_ack_id[message.ack_id].size_bytes,
@@ -138,7 +138,7 @@ class SinglePartitionSingleSubscriber(
         ack_id = _AckId.parse(message.ack_id)
         if ack_id.generation == self._ack_generation_id:
             try:
-                await self._ack_set_tracker.ack(ack_id.offset)
+                self._ack_set_tracker.ack(ack_id.offset)
             except GoogleAPICallError as e:
                 self.fail(e)
 
@@ -179,7 +179,7 @@ class SinglePartitionSingleSubscriber(
                 )
             )
         elif isinstance(message, requests.AckRequest):
-            await self._handle_ack(message)
+            self._handle_ack(message)
         else:
             self._handle_nack(message)
 
@@ -198,7 +198,7 @@ class SinglePartitionSingleSubscriber(
         await self._ack_set_tracker.__aenter__()
         await self._underlying.__aenter__()
         self._looper_future = asyncio.ensure_future(self._looper())
-        await self._underlying.allow_flow(
+        self._underlying.allow_flow(
             FlowControlRequest(
                 allowed_messages=self._flow_control_settings.messages_outstanding,
                 allowed_bytes=self._flow_control_settings.bytes_outstanding,
