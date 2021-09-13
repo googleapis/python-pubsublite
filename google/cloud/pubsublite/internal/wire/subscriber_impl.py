@@ -14,7 +14,7 @@
 
 import asyncio
 from copy import deepcopy
-from typing import Optional
+from typing import Optional, List
 
 from google.api_core.exceptions import GoogleAPICallError, FailedPrecondition
 
@@ -59,7 +59,7 @@ class SubscriberImpl(
     _reinitializing: bool
     _last_received_offset: Optional[int]
 
-    _message_queue: "asyncio.Queue[SequencedMessage]"
+    _message_queue: "asyncio.Queue[List[SequencedMessage.meta.pb]]"
 
     _receiver: Optional[asyncio.Future]
     _flusher: Optional[asyncio.Future]
@@ -110,8 +110,10 @@ class SubscriberImpl(
                 )
             )
             return
-        self._outstanding_flow_control.on_messages(response.messages.messages)
-        for message in response.messages.messages:
+        # Workaround for incredibly slow proto-plus-python accesses
+        messages = list(response.messages.messages._pb)
+        self._outstanding_flow_control.on_messages(messages)
+        for message in messages:
             if (
                 self._last_received_offset is not None
                 and message.cursor.offset <= self._last_received_offset
@@ -125,9 +127,8 @@ class SubscriberImpl(
                 )
                 return
             self._last_received_offset = message.cursor.offset
-        for message in response.messages.messages:
-            # queue is unbounded.
-            self._message_queue.put_nowait(message)
+        # queue is unbounded.
+        self._message_queue.put_nowait(messages)
 
     async def _receive_loop(self):
         while True:
@@ -163,12 +164,14 @@ class SubscriberImpl(
         if last_error and is_reset_signal(last_error):
             # Discard undelivered messages and refill flow control tokens.
             while not self._message_queue.empty():
-                msg = self._message_queue.get_nowait()
+                batch: List[SequencedMessage.meta.pb] = self._message_queue.get_nowait()
+                allowed_bytes = sum(message.size_bytes for message in batch)
                 self._outstanding_flow_control.add(
                     FlowControlRequest(
-                        allowed_messages=1, allowed_bytes=msg.size_bytes,
+                        allowed_messages=len(batch), allowed_bytes=allowed_bytes,
                     )
                 )
+
             await self._reset_handler.handle_reset()
             self._last_received_offset = None
         initial = deepcopy(self._base_initial)
@@ -195,7 +198,7 @@ class SubscriberImpl(
         self._reinitializing = False
         self._start_loopers()
 
-    async def read(self) -> SequencedMessage:
+    async def read(self) -> List[SequencedMessage.meta.pb]:
         return await self._connection.await_unless_failed(self._message_queue.get())
 
     async def allow_flow(self, request: FlowControlRequest):

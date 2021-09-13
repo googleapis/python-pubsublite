@@ -66,7 +66,8 @@ async def test_iterator(
 ):
     read_queues = wire_queues(default_subscriber.read)
     subscription = SubscriptionPath(1, CloudZone.parse("us-central1-a"), "abc")
-    message = Message(PubsubMessage(message_id="1")._pb, "", 0, None)
+    message1 = Message(PubsubMessage(message_id="1")._pb, "", 0, None)
+    message2 = Message(PubsubMessage(message_id="2")._pb, "", 0, None)
     async with multiplexed_client:
         iterator = await multiplexed_client.subscribe(
             subscription, DISABLED_FLOW_CONTROL
@@ -78,8 +79,9 @@ async def test_iterator(
         assert not read_fut_1.done()
         await read_queues.called.get()
         default_subscriber.read.assert_has_calls([call()])
-        await read_queues.results.put(message)
-        assert await read_fut_1 is message
+        await read_queues.results.put([message1, message2])
+        assert await read_fut_1 is message1
+        assert await iterator.__anext__() is message2
         read_fut_2 = asyncio.ensure_future(iterator.__anext__())
         assert not read_fut_2.done()
         await read_queues.called.get()

@@ -13,8 +13,7 @@
 # limitations under the License.
 
 import asyncio
-import json
-from typing import Callable, Union, Dict, NamedTuple
+from typing import Callable, Union, List, Dict, NamedTuple
 import queue
 
 from google.api_core.exceptions import FailedPrecondition, GoogleAPICallError
@@ -22,6 +21,8 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 from google.pubsub_v1 import PubsubMessage
 
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_cancelled
+from google.cloud.pubsublite.internal.wire.permanent_failable import adapt_error
+from google.cloud.pubsublite.internal import fast_serialize
 from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker import AckSetTracker
 from google.cloud.pubsublite.cloudpubsub.message_transformer import MessageTransformer
@@ -47,15 +48,13 @@ class _AckId(NamedTuple):
     generation: int
     offset: int
 
-    def str(self) -> str:
-        return json.dumps({"generation": self.generation, "offset": self.offset})
+    def encode(self) -> str:
+        return fast_serialize.dump([self.generation, self.offset])
 
     @staticmethod
     def parse(payload: str) -> "_AckId":  # pytype: disable=invalid-annotation
-        loaded = json.loads(payload)
-        return _AckId(
-            generation=int(loaded["generation"]), offset=int(loaded["offset"]),
-        )
+        loaded = fast_serialize.load(payload)
+        return _AckId(generation=loaded[0], offset=loaded[1])
 
 
 ResettableSubscriberFactory = Callable[[SubscriberResetHandler], Subscriber]
@@ -99,26 +98,31 @@ class SinglePartitionSingleSubscriber(
         self._ack_generation_id += 1
         await self._ack_set_tracker.clear_and_commit()
 
-    async def read(self) -> Message:
+    def _wrap_message(self, message: SequencedMessage.meta.pb) -> Message:
+        # Rewrap in the proto-plus-python wrapper for passing to the transform
+        rewrapped = SequencedMessage()
+        rewrapped._pb = message
+        cps_message = self._transformer.transform(rewrapped)
+        offset = message.cursor.offset
+        ack_id_str = _AckId(self._ack_generation_id, offset).encode()
+        self._ack_set_tracker.track(offset)
+        self._messages_by_ack_id[ack_id_str] = _SizedMessage(
+            cps_message, message.size_bytes
+        )
+        wrapped_message = Message(
+            cps_message._pb,
+            ack_id=ack_id_str,
+            delivery_attempt=0,
+            request_queue=self._queue,
+        )
+        return wrapped_message
+
+    async def read(self) -> List[Message]:
         try:
-            message: SequencedMessage = await self.await_unless_failed(
-                self._underlying.read()
-            )
-            cps_message = self._transformer.transform(message)
-            offset = message.cursor.offset
-            ack_id = _AckId(self._ack_generation_id, offset)
-            self._ack_set_tracker.track(offset)
-            self._messages_by_ack_id[ack_id.str()] = _SizedMessage(
-                cps_message, message.size_bytes
-            )
-            wrapped_message = Message(
-                cps_message._pb,
-                ack_id=ack_id.str(),
-                delivery_attempt=0,
-                request_queue=self._queue,
-            )
-            return wrapped_message
-        except GoogleAPICallError as e:
+            latest_batch = await self.await_unless_failed(self._underlying.read())
+            return [self._wrap_message(message) for message in latest_batch]
+        except Exception as e:
+            e = adapt_error(e)  # This could be from user code
             self.fail(e)
             raise e
 

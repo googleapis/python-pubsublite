@@ -84,8 +84,8 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
     async def _poller(self):
         try:
             while True:
-                message = await self._underlying.read()
-                self._unowned_executor.submit(self._callback, message)
+                batch = await self._underlying.read()
+                self._unowned_executor.map(self._callback, batch)
         except GoogleAPICallError as e:  # noqa: F841  Flake8 thinks e is unused
             self._unowned_executor.submit(lambda: self._fail(e))  # noqa: F821
 

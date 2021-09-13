@@ -16,6 +16,7 @@ import asyncio
 import concurrent
 from concurrent.futures.thread import ThreadPoolExecutor
 from queue import Queue
+from typing import List
 
 from asynctest.mock import MagicMock
 import pytest
@@ -94,16 +95,17 @@ def test_messages_received(
 ):
     message1 = Message(PubsubMessage(message_id="1")._pb, "", 0, None)
     message2 = Message(PubsubMessage(message_id="2")._pb, "", 0, None)
+    message3 = Message(PubsubMessage(message_id="3")._pb, "", 0, None)
 
     counter = Box[int]()
     counter.val = 0
 
-    async def on_read() -> Message:
+    async def on_read() -> List[Message]:
         counter.val += 1
         if counter.val == 1:
-            return message1
+            return [message1, message2]
         if counter.val == 2:
-            return message2
+            return [message3]
         await sleep_forever()
 
     async_subscriber.read.side_effect = on_read
@@ -115,4 +117,5 @@ def test_messages_received(
     subscriber.__enter__()
     assert results.get() == "1"
     assert results.get() == "2"
+    assert results.get() == "3"
     subscriber.close()

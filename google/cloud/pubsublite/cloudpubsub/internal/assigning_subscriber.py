@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from asyncio import Future, Queue, ensure_future
-from typing import Callable, NamedTuple, Dict, Set, Optional
+from typing import Callable, NamedTuple, Dict, List, Set, Optional
 
 from google.cloud.pubsub_v1.subscriber.message import Message
 
@@ -41,7 +41,7 @@ class AssigningSingleSubscriber(AsyncSingleSubscriber, PermanentFailable):
 
     # Lazily initialized to ensure they are initialized on the thread where __aenter__ is called.
     _assigner: Optional[Assigner]
-    _messages: Optional["Queue[Message]"]
+    _batches: Optional["Queue[List[Message]]"]
     _assign_poller: Future
 
     def __init__(
@@ -58,14 +58,14 @@ class AssigningSingleSubscriber(AsyncSingleSubscriber, PermanentFailable):
         self._assigner = None
         self._subscriber_factory = subscriber_factory
         self._subscribers = {}
-        self._messages = None
+        self._batches = None
 
-    async def read(self) -> Message:
-        return await self.await_unless_failed(self._messages.get())
+    async def read(self) -> List[Message]:
+        return await self.await_unless_failed(self._batches.get())
 
     async def _subscribe_action(self, subscriber: AsyncSingleSubscriber):
-        message = await subscriber.read()
-        await self._messages.put(message)
+        batch = await subscriber.read()
+        await self._batches.put(batch)
 
     async def _start_subscriber(self, partition: Partition):
         new_subscriber = self._subscriber_factory(partition)
@@ -92,7 +92,7 @@ class AssigningSingleSubscriber(AsyncSingleSubscriber, PermanentFailable):
             await self._stop_subscriber(subscriber)
 
     async def __aenter__(self):
-        self._messages = Queue()
+        self._batches = Queue()
         self._assigner = self._assigner_factory()
         await self._assigner.__aenter__()
         self._assign_poller = ensure_future(self.run_poller(self._assign_action))
