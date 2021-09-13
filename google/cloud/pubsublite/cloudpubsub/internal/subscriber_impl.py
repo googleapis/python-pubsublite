@@ -81,7 +81,6 @@ class SubscriberImpl(ContextManager, StreamingPullManager):
         self.__exit__(None, None, None)
 
     def _fail(self, error: GoogleAPICallError):
-        print("started")
         self._failure = error
         self.close()
 
