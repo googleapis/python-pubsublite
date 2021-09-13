@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.3](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.2...v1.1.3) (2021-09-13)
+
+
+### Bug Fixes
+
+* ensure ack() doesn't wait on stream messages ([#234](https://www.github.com/googleapis/python-pubsublite/issues/234)) ([03db702](https://www.github.com/googleapis/python-pubsublite/commit/03db702c1f88982ed424bec3d99ae9d4bdc353bd))
+
 ### [1.1.2](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.1...v1.1.2) (2021-09-13)
 
 
