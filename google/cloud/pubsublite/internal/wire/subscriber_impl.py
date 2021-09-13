@@ -201,10 +201,5 @@ class SubscriberImpl(
     async def read(self) -> List[SequencedMessage.meta.pb]:
         return await self._connection.await_unless_failed(self._message_queue.get())
 
-    async def allow_flow(self, request: FlowControlRequest):
+    def allow_flow(self, request: FlowControlRequest):
         self._outstanding_flow_control.add(request)
-        if (
-            not self._reinitializing
-            and self._outstanding_flow_control.should_expedite()
-        ):
-            await self._try_send_tokens()
