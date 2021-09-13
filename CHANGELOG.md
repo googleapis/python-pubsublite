@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.1.2](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.1...v1.1.2) (2021-09-13)
+
+
+### Bug Fixes
+
+* Enable pytype on Pub/Sub Lite repo and fix all errors ([#214](https://www.github.com/googleapis/python-pubsublite/issues/214)) ([df58fdf](https://www.github.com/googleapis/python-pubsublite/commit/df58fdfc83bdc4f6f753f664365a0ff26d3201e7))
+* performance issues with subscriber client ([#232](https://www.github.com/googleapis/python-pubsublite/issues/232)) ([78a47b2](https://www.github.com/googleapis/python-pubsublite/commit/78a47b2817bee4a468f8ce15fe437165be1d1458))
+
 ### [1.1.1](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.0...v1.1.1) (2021-09-07)
 
 
