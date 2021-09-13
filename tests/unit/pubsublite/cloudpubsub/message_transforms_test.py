@@ -24,6 +24,7 @@ from google.cloud.pubsublite.cloudpubsub.message_transforms import (
     PUBSUB_LITE_EVENT_TIME,
     to_cps_subscribe_message,
     encode_attribute_event_time,
+    decode_attribute_event_time,
     from_cps_publish_message,
     add_id_to_cps_subscribe_transformer,
 )
@@ -104,7 +105,7 @@ def test_subscribe_transform_correct():
             "x": "abc",
             "y": "abc",
             PUBSUB_LITE_EVENT_TIME: encode_attribute_event_time(
-                Timestamp(seconds=55).ToDatetime()
+                Timestamp(seconds=55).ToDatetime().replace(tzinfo=datetime.timezone.utc)
             ),
         },
         publish_time=Timestamp(seconds=10),
@@ -163,7 +164,7 @@ def test_wrapped_successful():
             "x": "abc",
             "y": "abc",
             PUBSUB_LITE_EVENT_TIME: encode_attribute_event_time(
-                Timestamp(seconds=55).ToDatetime()
+                Timestamp(seconds=55).ToDatetime().replace(tzinfo=datetime.timezone.utc)
             ),
         },
         message_id=MessageMetadata(Partition(1), Cursor(offset=10)).encode(),
@@ -199,6 +200,10 @@ def test_publish_invalid_event_time():
 
 def test_publish_valid_transform():
     now = datetime.datetime.now()
+    encoded_event_time = encode_attribute_event_time(now)
+    assert decode_attribute_event_time(encoded_event_time) == now.astimezone(
+        datetime.timezone.utc
+    )
     expected = PubSubMessage(
         data=b"xyz",
         key=b"def",
@@ -208,15 +213,14 @@ def test_publish_valid_transform():
             "y": AttributeValues(values=[b"abc"]),
         },
     )
-    result = from_cps_publish_message(
-        PubsubMessage(
-            data=b"xyz",
-            ordering_key="def",
-            attributes={
-                "x": "abc",
-                "y": "abc",
-                PUBSUB_LITE_EVENT_TIME: encode_attribute_event_time(now),
-            },
-        )
+    initial = PubsubMessage(
+        data=b"xyz",
+        ordering_key="def",
+        attributes={
+            "x": "abc",
+            "y": "abc",
+            PUBSUB_LITE_EVENT_TIME: encode_attribute_event_time(now),
+        },
     )
+    result = from_cps_publish_message(initial)
     assert result == expected

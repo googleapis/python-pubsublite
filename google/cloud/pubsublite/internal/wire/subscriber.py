@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from abc import abstractmethod, ABCMeta
-from typing import AsyncContextManager
+from typing import AsyncContextManager, List
 from google.cloud.pubsublite_v1.types import SequencedMessage, FlowControlRequest
 
 
@@ -23,12 +23,12 @@ class Subscriber(AsyncContextManager, metaclass=ABCMeta):
     """
 
     @abstractmethod
-    async def read(self) -> SequencedMessage:
+    async def read(self) -> List[SequencedMessage.meta.pb]:
         """
-        Read the next message off of the stream.
+        Read a batch of messages off of the stream.
 
         Returns:
-          The next message.
+          The next batch of messages.
 
         Raises:
           GoogleAPICallError: On a permanent error.

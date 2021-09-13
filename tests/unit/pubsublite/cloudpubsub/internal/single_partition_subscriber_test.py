@@ -13,8 +13,7 @@
 # limitations under the License.
 
 import asyncio
-import json
-from typing import Callable
+from typing import Callable, List
 
 from asynctest.mock import MagicMock, call
 import pytest
@@ -26,6 +25,7 @@ from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker import AckSetTracker
 from google.cloud.pubsublite.cloudpubsub.internal.single_partition_subscriber import (
     SinglePartitionSingleSubscriber,
+    _AckId,
 )
 from google.cloud.pubsublite.cloudpubsub.message_transformer import MessageTransformer
 from google.cloud.pubsublite.cloudpubsub.nack_handler import NackHandler
@@ -49,7 +49,7 @@ def mock_async_context_manager(cm):
 
 
 def ack_id(generation, offset) -> str:
-    return json.dumps({"generation": generation, "offset": offset})
+    return _AckId(generation, offset).encode()
 
 
 @pytest.fixture()
@@ -80,12 +80,14 @@ def nack_handler():
     return MagicMock(spec=NackHandler)
 
 
+def return_message(source: SequencedMessage):
+    return PubsubMessage(message_id=str(source.cursor.offset))
+
+
 @pytest.fixture()
 def transformer():
     result = MagicMock(spec=MessageTransformer)
-    result.transform.side_effect = lambda source: PubsubMessage(
-        message_id=str(source.cursor.offset)
-    )
+    result.transform.side_effect = return_message
     return result
 
 
@@ -117,7 +119,7 @@ async def test_init(subscriber, underlying, ack_set_tracker, initial_flow_reques
 async def test_failed_transform(subscriber, underlying, transformer):
     async with subscriber:
         transformer.transform.side_effect = FailedPrecondition("Bad message")
-        underlying.read.return_value = SequencedMessage()
+        underlying.read.return_value = [SequencedMessage()._pb]
         with pytest.raises(FailedPrecondition):
             await subscriber.read()
 
@@ -131,15 +133,15 @@ async def test_ack(
         ack_called_queue, ack_result_queue
     )
     async with subscriber:
-        message_1 = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)
-        message_2 = SequencedMessage(cursor=Cursor(offset=2), size_bytes=10)
-        underlying.read.return_value = message_1
-        read_1: Message = await subscriber.read()
-        ack_set_tracker.track.assert_has_calls([call(1)])
-        assert read_1.message_id == "1"
-        underlying.read.return_value = message_2
-        read_2: Message = await subscriber.read()
+        message_1 = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)._pb
+        message_2 = SequencedMessage(cursor=Cursor(offset=2), size_bytes=10)._pb
+        underlying.read.return_value = [message_1, message_2]
+        read: List[Message] = await subscriber.read()
+        assert len(read) == 2
+        read_1 = read[0]
+        read_2 = read[1]
         ack_set_tracker.track.assert_has_calls([call(1), call(2)])
+        assert read_1.message_id == "1"
         assert read_2.message_id == "2"
         read_2.ack()
         await ack_called_queue.get()
@@ -159,8 +161,8 @@ async def test_track_failure(
 ):
     async with subscriber:
         ack_set_tracker.track.side_effect = FailedPrecondition("Bad track")
-        message = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)
-        underlying.read.return_value = message
+        message = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)._pb
+        underlying.read.return_value = [message]
         with pytest.raises(FailedPrecondition):
             await subscriber.read()
         ack_set_tracker.track.assert_has_calls([call(1)])
@@ -178,11 +180,12 @@ async def test_ack_failure(
         ack_called_queue, ack_result_queue
     )
     async with subscriber:
-        message = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)
-        underlying.read.return_value = message
-        read: Message = await subscriber.read()
+        message = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)._pb
+        underlying.read.return_value = [message]
+        read: List[Message] = await subscriber.read()
+        assert len(read) == 1
         ack_set_tracker.track.assert_has_calls([call(1)])
-        read.ack()
+        read[0].ack()
         await ack_called_queue.get()
         ack_set_tracker.ack.assert_has_calls([call(1)])
         await ack_result_queue.put(FailedPrecondition("Bad ack"))
@@ -203,12 +206,13 @@ async def test_nack_failure(
     nack_handler,
 ):
     async with subscriber:
-        message = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)
-        underlying.read.return_value = message
-        read: Message = await subscriber.read()
+        message = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)._pb
+        underlying.read.return_value = [message]
+        read: List[Message] = await subscriber.read()
+        assert len(read) == 1
         ack_set_tracker.track.assert_has_calls([call(1)])
         nack_handler.on_nack.side_effect = FailedPrecondition("Bad nack")
-        read.nack()
+        read[0].nack()
 
         async def sleep_forever():
             await asyncio.sleep(float("inf"))
@@ -231,9 +235,10 @@ async def test_nack_calls_ack(
         ack_called_queue, ack_result_queue
     )
     async with subscriber:
-        message = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)
-        underlying.read.return_value = message
-        read: Message = await subscriber.read()
+        message = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)._pb
+        underlying.read.return_value = [message]
+        read: List[Message] = await subscriber.read()
+        assert len(read) == 1
         ack_set_tracker.track.assert_has_calls([call(1)])
 
         def on_nack(nacked: PubsubMessage, ack: Callable[[], None]):
@@ -241,7 +246,7 @@ async def test_nack_calls_ack(
             ack()
 
         nack_handler.on_nack.side_effect = on_nack
-        read.nack()
+        read[0].nack()
         await ack_called_queue.get()
         await ack_result_queue.put(None)
         ack_set_tracker.ack.assert_has_calls([call(1)])
@@ -259,27 +264,29 @@ async def test_handle_reset(
         ack_called_queue, ack_result_queue
     )
     async with subscriber:
-        message_1 = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)
-        underlying.read.return_value = message_1
-        read_1: Message = await subscriber.read()
+        message_1 = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)._pb
+        underlying.read.return_value = [message_1]
+        read_1: List[Message] = await subscriber.read()
+        assert len(read_1) == 1
         ack_set_tracker.track.assert_has_calls([call(1)])
-        assert read_1.message_id == "1"
-        assert read_1.ack_id == ack_id(0, 1)
+        assert read_1[0].message_id == "1"
+        assert read_1[0].ack_id == ack_id(0, 1)
 
         await subscriber.handle_reset()
         ack_set_tracker.clear_and_commit.assert_called_once()
 
         # Message ACKed after reset. Its flow control tokens are refilled
         # but offset not committed (verified below after message 2).
-        read_1.ack()
+        read_1[0].ack()
 
-        message_2 = SequencedMessage(cursor=Cursor(offset=2), size_bytes=10)
-        underlying.read.return_value = message_2
-        read_2: Message = await subscriber.read()
+        message_2 = SequencedMessage(cursor=Cursor(offset=2), size_bytes=10)._pb
+        underlying.read.return_value = [message_2]
+        read_2: List[Message] = await subscriber.read()
+        assert len(read_2) == 1
         ack_set_tracker.track.assert_has_calls([call(1), call(2)])
-        assert read_2.message_id == "2"
-        assert read_2.ack_id == ack_id(1, 2)
-        read_2.ack()
+        assert read_2[0].message_id == "2"
+        assert read_2[0].ack_id == ack_id(1, 2)
+        read_2[0].ack()
         await ack_called_queue.get()
         await ack_result_queue.put(None)
         underlying.allow_flow.assert_has_calls(

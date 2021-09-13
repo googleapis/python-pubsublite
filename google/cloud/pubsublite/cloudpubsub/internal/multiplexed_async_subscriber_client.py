@@ -38,27 +38,17 @@ from google.cloud.pubsublite.types import (
 from overrides import overrides
 
 
-class _SubscriberAsyncIterator(AsyncIterator):
-    _subscriber: AsyncSingleSubscriber
-    _on_failure: Callable[[], Awaitable[None]]
-
-    def __init__(
-        self,
-        subscriber: AsyncSingleSubscriber,
-        on_failure: Callable[[], Awaitable[None]],
-    ):
-        self._subscriber = subscriber
-        self._on_failure = on_failure
-
-    async def __anext__(self) -> Message:
-        try:
-            return await self._subscriber.read()
-        except:  # noqa: E722
-            await self._on_failure()
-            raise
-
-    def __aiter__(self):
-        return self
+async def _iterate_subscriber(
+    subscriber: AsyncSingleSubscriber, on_failure: Callable[[], Awaitable[None]]
+) -> AsyncIterator[Message]:
+    try:
+        while True:
+            batch = await subscriber.read()
+            for message in batch:
+                yield message
+    except:  # noqa: E722
+        await on_failure()
+        raise
 
 
 class MultiplexedAsyncSubscriberClient(AsyncSubscriberClientInterface):
@@ -85,7 +75,7 @@ class MultiplexedAsyncSubscriberClient(AsyncSubscriberClientInterface):
         await subscriber.__aenter__()
         self._live_clients.add(subscriber)
 
-        return _SubscriberAsyncIterator(
+        return _iterate_subscriber(
             subscriber, lambda: self._try_remove_client(subscriber)
         )
 

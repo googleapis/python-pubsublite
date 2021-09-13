@@ -23,10 +23,10 @@ import argparse
 
 from google.cloud.pubsublite.types import MessageMetadata
 from google.pubsub_v1 import PubsubMessage
+from time import sleep
 
 
 def receive_messages(
-    project_number, cloud_region, zone_id, subscription_id, timeout=90
 ):
     # [START pubsublite_quickstart_subscriber]
     from concurrent.futures._base import TimeoutError
@@ -34,7 +34,7 @@ def receive_messages(
     from google.cloud.pubsublite.types import (
         CloudRegion,
         CloudZone,
-        FlowControlSettings,
+        FlowControlSettings, DISABLED_FLOW_CONTROL,
         SubscriptionPath,
     )
 
@@ -45,16 +45,16 @@ def receive_messages(
     # subscription_id = "your-subscription-id"
     # timeout = 90
 
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
-    subscription_path = SubscriptionPath(project_number, location, subscription_id)
+    # location = CloudZone(CloudRegion(cloud_region), zone_id)
+    subscription_path = SubscriptionPath.parse("projects/129988248131/locations/us-central1-a/subscriptions/dpcollins-test-python-throughput")
     # Configure when to pause the message stream for more incoming messages based on the
     # maximum size or number of messages that a single-partition subscriber has received,
     # whichever condition is met first.
     per_partition_flow_control_settings = FlowControlSettings(
         # 1,000 outstanding messages. Must be >0.
-        messages_outstanding=1000,
-        # 10 MiB. Must be greater than the allowed size of the largest message (1 MiB).
-        bytes_outstanding=10 * 1024 * 1024,
+        messages_outstanding=100000000000,
+        # 500 MiB. Must be greater than the allowed size of the largest message (1 MiB).
+        bytes_outstanding=500 * 1024 * 1024,
     )
 
     def callback(message: PubsubMessage):
@@ -65,7 +65,6 @@ def receive_messages(
 
     # SubscriberClient() must be used in a `with` block or have __enter__() called before use.
     with SubscriberClient() as subscriber_client:
-
         streaming_pull_future = subscriber_client.subscribe(
             subscription_path,
             callback=callback,
@@ -75,7 +74,7 @@ def receive_messages(
         print(f"Listening for messages on {str(subscription_path)}...")
 
         try:
-            streaming_pull_future.result(timeout=timeout)
+            streaming_pull_future.result(timeout=180)
         except TimeoutError or KeyboardInterrupt:
             streaming_pull_future.cancel()
             assert streaming_pull_future.done()
@@ -83,6 +82,7 @@ def receive_messages(
 
 
 if __name__ == "__main__":
+    """
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -99,11 +99,6 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
+    """
 
-    receive_messages(
-        args.project_number,
-        args.cloud_region,
-        args.zone_id,
-        args.subscription_id,
-        args.timeout,
-    )
+    receive_messages()

@@ -287,8 +287,8 @@ async def test_message_receipt(
     write_called_queue = asyncio.Queue()
     write_result_queue = asyncio.Queue()
     flow = FlowControlRequest(allowed_messages=100, allowed_bytes=100)
-    message_1 = SequencedMessage(cursor=Cursor(offset=3), size_bytes=5)
-    message_2 = SequencedMessage(cursor=Cursor(offset=5), size_bytes=10)
+    message_1 = SequencedMessage(cursor=Cursor(offset=3), size_bytes=5)._pb
+    message_2 = SequencedMessage(cursor=Cursor(offset=5), size_bytes=10)._pb
     default_connection.write.side_effect = make_queue_waiter(
         write_called_queue, write_result_queue
     )
@@ -317,15 +317,16 @@ async def test_message_receipt(
             [call(initial_request), call(as_request(flow))]
         )
 
-        message1_fut = asyncio.ensure_future(subscriber.read())
+        batch1_fut = asyncio.ensure_future(subscriber.read())
 
         # Send messages to the subscriber.
         await read_result_queue.put(as_response([message_1, message_2]))
         # Wait for the next read call
         await read_called_queue.get()
 
-        assert (await message1_fut) == message_1
-        assert (await subscriber.read()) == message_2
+        batch1 = await batch1_fut
+        assert batch1[0].SerializeToString() == message_1.SerializeToString()
+        assert batch1[1].SerializeToString() == message_2.SerializeToString()
 
         # Fail the connection with a retryable error
         await read_called_queue.get()
@@ -375,8 +376,8 @@ async def test_out_of_order_receipt_failure(
     write_called_queue = asyncio.Queue()
     write_result_queue = asyncio.Queue()
     flow = FlowControlRequest(allowed_messages=100, allowed_bytes=100)
-    message_1 = SequencedMessage(cursor=Cursor(offset=3), size_bytes=5)
-    message_2 = SequencedMessage(cursor=Cursor(offset=5), size_bytes=10)
+    message_1 = SequencedMessage(cursor=Cursor(offset=3), size_bytes=5)._pb
+    message_2 = SequencedMessage(cursor=Cursor(offset=5), size_bytes=10)._pb
     default_connection.write.side_effect = make_queue_waiter(
         write_called_queue, write_result_queue
     )
@@ -431,10 +432,10 @@ async def test_handle_reset_signal(
     write_called_queue = asyncio.Queue()
     write_result_queue = asyncio.Queue()
     flow = FlowControlRequest(allowed_messages=100, allowed_bytes=100)
-    message_1 = SequencedMessage(cursor=Cursor(offset=2), size_bytes=5)
-    message_2 = SequencedMessage(cursor=Cursor(offset=4), size_bytes=10)
+    message_1 = SequencedMessage(cursor=Cursor(offset=2), size_bytes=5)._pb
+    message_2 = SequencedMessage(cursor=Cursor(offset=4), size_bytes=10)._pb
     # Ensure messages with earlier offsets can be handled post-reset.
-    message_3 = SequencedMessage(cursor=Cursor(offset=1), size_bytes=20)
+    message_3 = SequencedMessage(cursor=Cursor(offset=1), size_bytes=20)._pb
     default_connection.write.side_effect = make_queue_waiter(
         write_called_queue, write_result_queue
     )
@@ -464,11 +465,13 @@ async def test_handle_reset_signal(
         )
 
         # Send messages to the subscriber.
-        await read_result_queue.put(as_response([message_1, message_2]))
+        await read_result_queue.put(as_response([message_1]))
+        await read_result_queue.put(as_response([message_2]))
 
         # Read one message.
         await read_called_queue.get()
-        assert (await subscriber.read()) == message_1
+        batch1 = await subscriber.read()
+        assert batch1[0].SerializeToString() == message_1.SerializeToString()
 
         # Fail the connection with an error containing the RESET signal.
         await read_called_queue.get()
@@ -501,4 +504,5 @@ async def test_handle_reset_signal(
         # Ensure the subscriber accepts an earlier message.
         await read_result_queue.put(as_response([message_3]))
         await read_called_queue.get()
-        assert (await subscriber.read()) == message_3
+        batch2 = await subscriber.read()
+        assert batch2[0].SerializeToString() == message_3.SerializeToString()

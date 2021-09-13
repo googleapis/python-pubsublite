@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from abc import abstractmethod, ABCMeta
-from typing import AsyncContextManager, Callable, Set, Optional
+from typing import AsyncContextManager, Callable, List, Set, Optional
 
 from google.cloud.pubsub_v1.subscriber.message import Message
 
@@ -32,12 +32,13 @@ class AsyncSingleSubscriber(AsyncContextManager, metaclass=ABCMeta):
     """
 
     @abstractmethod
-    async def read(self) -> Message:
+    async def read(self) -> List[Message]:
         """
-        Read the next message off of the stream.
+        Read the next batch off of the stream.
 
         Returns:
-          The next message. ack() or nack() must eventually be called exactly once.
+          The next batch of messages. ack() or nack() must eventually be called
+          exactly once on each message.
 
           Pub/Sub Lite does not support nack() by default- if you do call nack(), it will immediately fail the client
           unless you have a NackHandler installed.
