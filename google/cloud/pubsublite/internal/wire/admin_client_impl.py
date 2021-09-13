@@ -16,7 +16,7 @@ from typing import List, Union
 
 from google.api_core.exceptions import InvalidArgument
 from google.api_core.operation import Operation
-from google.protobuf.field_mask_pb2 import FieldMask
+from google.protobuf.field_mask_pb2 import FieldMask  # pytype: disable=pyi-error
 
 from google.cloud.pubsublite.admin_client_interface import AdminClientInterface
 from google.cloud.pubsublite.types import (
@@ -37,6 +37,7 @@ from google.cloud.pubsublite_v1 import (
     Reservation,
     TimeTarget,
     SeekSubscriptionRequest,
+    CreateSubscriptionRequest,
 )
 
 
@@ -88,12 +89,12 @@ class AdminClientImpl(AdminClientInterface):
     ) -> Subscription:
         path = SubscriptionPath.parse(subscription.name)
         return self._underlying.create_subscription(
-            request={
-                "parent": str(path.to_location_path()),
-                "subscription": subscription,
-                "subscription_id": path.name,
-                "skip_backlog": (starting_offset == BacklogLocation.END),
-            }
+            request=CreateSubscriptionRequest(
+                parent=str(path.to_location_path()),
+                subscription=subscription,
+                subscription_id=path.name,
+                skip_backlog=(starting_offset == BacklogLocation.END),
+            )
         )
 
     def get_subscription(self, subscription_path: SubscriptionPath) -> Subscription:

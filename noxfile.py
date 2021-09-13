@@ -42,6 +42,7 @@ nox.options.sessions = [
     "lint_setup_py",
     "blacken",
     "docs",
+    "pytype",  # Custom pytype session
 ]
 
 # Error if a python version is missing
@@ -78,9 +79,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def default(session):
-    # Install all test dependencies, then install this package in-place.
-
+def install_test_deps(session):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
@@ -96,6 +95,11 @@ def default(session):
     session.install("asynctest", "-c", constraints_path)
 
     session.install("-e", ".", "-c", constraints_path)
+
+
+def default(session):
+    # Install all test dependencies, then install this package in-place.
+    install_test_deps(session)
 
     # Run py.test against the unit tests.
     session.run(
@@ -238,3 +242,11 @@ def docfx(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def pytype(session):
+    """Run type checks."""
+    install_test_deps(session)
+    session.install("pytype")
+    session.run("pytype", "google/cloud/pubsublite")

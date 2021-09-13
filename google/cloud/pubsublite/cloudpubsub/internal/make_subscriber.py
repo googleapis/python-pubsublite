@@ -88,6 +88,9 @@ def _make_dynamic_assigner(
     credentials: Optional[Credentials],
     base_metadata: Optional[Mapping[str, str]],
 ) -> Assigner:
+    if base_metadata is None:
+        base_metadata = {}
+
     def assignment_connection_factory(
         requests: AsyncIterator[PartitionAssignmentRequest],
     ):

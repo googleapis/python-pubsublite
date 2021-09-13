@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from typing import (
     ContextManager,
     Union,
@@ -33,7 +33,7 @@ from google.cloud.pubsublite.types import (
 )
 
 
-class AsyncSubscriberClientInterface(AsyncContextManager):
+class AsyncSubscriberClientInterface(AsyncContextManager, metaclass=ABCMeta):
     """
     An AsyncSubscriberClientInterface reads messages similar to Google Pub/Sub, but must be used in an
     async context.
@@ -64,12 +64,13 @@ class AsyncSubscriberClientInterface(AsyncContextManager):
         Raises:
           GoogleApiCallError: On a permanent failure.
         """
+        raise NotImplementedError()
 
 
 MessageCallback = Callable[[Message], None]
 
 
-class SubscriberClientInterface(ContextManager):
+class SubscriberClientInterface(ContextManager, metaclass=ABCMeta):
     """
     A SubscriberClientInterface reads messages similar to Google Pub/Sub.
     Any subscribe failures are unlikely to succeed if retried.
@@ -103,3 +104,4 @@ class SubscriberClientInterface(ContextManager):
         Raises:
           GoogleApiCallError: On a permanent failure.
         """
+        raise NotImplementedError()

@@ -75,6 +75,7 @@ s.move(
     excludes=[
         ".coveragerc", # the microgenerator has a good coveragerc file
         "docs/multiprocessing.rst",  # exclude multiprocessing note
+        "noxfile.py",  # exclude to opt-in to pytype
     ]
 )  
 

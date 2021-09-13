@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from typing import Generic, List, NamedTuple
 import asyncio
 from overrides import overrides
@@ -31,7 +31,7 @@ class BatchSize(NamedTuple):
         )
 
 
-class RequestSizer(Generic[Request]):
+class RequestSizer(Generic[Request], metaclass=ABCMeta):
     """A RequestSizer determines the size of a request."""
 
     @abstractmethod
@@ -47,7 +47,7 @@ class RequestSizer(Generic[Request]):
 
 class IgnoredRequestSizer(RequestSizer[Request]):
     @overrides
-    def get_size(self, request: Request) -> BatchSize:
+    def get_size(self, request) -> BatchSize:
         return BatchSize(0, 0)
 
 

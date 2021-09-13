@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 from typing import AsyncContextManager, Mapping, ContextManager
 from concurrent import futures
 
 
-class AsyncSinglePublisher(AsyncContextManager):
+class AsyncSinglePublisher(AsyncContextManager, metaclass=ABCMeta):
     """
     An AsyncPublisher publishes messages similar to Google Pub/Sub, but must be used in an
     async context. Any publish failures are permanent.
@@ -43,9 +43,10 @@ class AsyncSinglePublisher(AsyncContextManager):
         Raises:
           GoogleApiCallError: On a permanent failure.
         """
+        raise NotImplementedError()
 
 
-class SinglePublisher(ContextManager):
+class SinglePublisher(ContextManager, metaclass=ABCMeta):
     """
     A Publisher publishes messages similar to Google Pub/Sub. Any publish failures are permanent.
 
@@ -70,3 +71,4 @@ class SinglePublisher(ContextManager):
         Raises:
           GoogleApiCallError: On a permanent failure.
         """
+        raise NotImplementedError()
