@@ -36,7 +36,6 @@ from google.cloud.pubsublite.internal.wire.subscriber import Subscriber
 from google.cloud.pubsublite.internal.wire.subscriber_reset_handler import (
     SubscriberResetHandler,
 )
-from google.cloud.pubsublite.testing.test_utils import make_queue_waiter
 from google.cloud.pubsublite_v1 import Cursor, FlowControlRequest, SequencedMessage
 
 # All test coroutines will be treated as marked.
@@ -71,8 +70,15 @@ def initial_flow_request(flow_control_settings):
 
 
 @pytest.fixture()
-def ack_set_tracker():
-    return mock_async_context_manager(MagicMock(spec=AckSetTracker))
+def ack_queue():
+    return asyncio.Queue()
+
+
+@pytest.fixture()
+def ack_set_tracker(ack_queue):
+    tracker = mock_async_context_manager(MagicMock(spec=AckSetTracker))
+    tracker.ack.side_effect = lambda offset: ack_queue.put_nowait(None)
+    return tracker
 
 
 @pytest.fixture()
@@ -125,13 +131,12 @@ async def test_failed_transform(subscriber, underlying, transformer):
 
 
 async def test_ack(
-    subscriber: AsyncSingleSubscriber, underlying, transformer, ack_set_tracker
+    subscriber: AsyncSingleSubscriber,
+    underlying,
+    transformer,
+    ack_set_tracker,
+    ack_queue,
 ):
-    ack_called_queue = asyncio.Queue()
-    ack_result_queue = asyncio.Queue()
-    ack_set_tracker.ack.side_effect = make_queue_waiter(
-        ack_called_queue, ack_result_queue
-    )
     async with subscriber:
         message_1 = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)._pb
         message_2 = SequencedMessage(cursor=Cursor(offset=2), size_bytes=10)._pb
@@ -144,12 +149,10 @@ async def test_ack(
         assert read_1.message_id == "1"
         assert read_2.message_id == "2"
         read_2.ack()
-        await ack_called_queue.get()
-        await ack_result_queue.put(None)
+        await ack_queue.get()
         ack_set_tracker.ack.assert_has_calls([call(2)])
         read_1.ack()
-        await ack_called_queue.get()
-        await ack_result_queue.put(None)
+        await ack_queue.get()
         ack_set_tracker.ack.assert_has_calls([call(2), call(1)])
 
 
@@ -173,22 +176,23 @@ async def test_ack_failure(
     underlying,
     transformer,
     ack_set_tracker,
+    ack_queue,
 ):
-    ack_called_queue = asyncio.Queue()
-    ack_result_queue = asyncio.Queue()
-    ack_set_tracker.ack.side_effect = make_queue_waiter(
-        ack_called_queue, ack_result_queue
-    )
     async with subscriber:
         message = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)._pb
         underlying.read.return_value = [message]
         read: List[Message] = await subscriber.read()
         assert len(read) == 1
         ack_set_tracker.track.assert_has_calls([call(1)])
+
+        def bad_ack(offset):
+            ack_queue.put_nowait(None)
+            raise FailedPrecondition("Bad ack")
+
+        ack_set_tracker.ack.side_effect = bad_ack
         read[0].ack()
-        await ack_called_queue.get()
+        await ack_queue.get()
         ack_set_tracker.ack.assert_has_calls([call(1)])
-        await ack_result_queue.put(FailedPrecondition("Bad ack"))
 
         async def sleep_forever():
             await asyncio.sleep(float("inf"))
@@ -228,12 +232,8 @@ async def test_nack_calls_ack(
     transformer,
     ack_set_tracker,
     nack_handler,
+    ack_queue,
 ):
-    ack_called_queue = asyncio.Queue()
-    ack_result_queue = asyncio.Queue()
-    ack_set_tracker.ack.side_effect = make_queue_waiter(
-        ack_called_queue, ack_result_queue
-    )
     async with subscriber:
         message = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)._pb
         underlying.read.return_value = [message]
@@ -247,8 +247,7 @@ async def test_nack_calls_ack(
 
         nack_handler.on_nack.side_effect = on_nack
         read[0].nack()
-        await ack_called_queue.get()
-        await ack_result_queue.put(None)
+        await ack_queue.get()
         ack_set_tracker.ack.assert_has_calls([call(1)])
 
 
@@ -257,12 +256,8 @@ async def test_handle_reset(
     underlying,
     transformer,
     ack_set_tracker,
+    ack_queue,
 ):
-    ack_called_queue = asyncio.Queue()
-    ack_result_queue = asyncio.Queue()
-    ack_set_tracker.ack.side_effect = make_queue_waiter(
-        ack_called_queue, ack_result_queue
-    )
     async with subscriber:
         message_1 = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)._pb
         underlying.read.return_value = [message_1]
@@ -287,8 +282,7 @@ async def test_handle_reset(
         assert read_2[0].message_id == "2"
         assert read_2[0].ack_id == ack_id(1, 2)
         read_2[0].ack()
-        await ack_called_queue.get()
-        await ack_result_queue.put(None)
+        await ack_queue.get()
         underlying.allow_flow.assert_has_calls(
             [
                 call(FlowControlRequest(allowed_messages=1000, allowed_bytes=1000,)),

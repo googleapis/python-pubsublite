@@ -21,14 +21,12 @@ from google.cloud.pubsublite_v1 import FlowControlRequest, SequencedMessage
 def test_restart_clears_send():
     batcher = FlowControlBatcher()
     batcher.add(FlowControlRequest(allowed_bytes=10, allowed_messages=3))
-    assert batcher.should_expedite()
     to_send = batcher.release_pending_request()
     assert to_send.allowed_bytes == 10
     assert to_send.allowed_messages == 3
     restart_1 = batcher.request_for_restart()
     assert restart_1.allowed_bytes == 10
     assert restart_1.allowed_messages == 3
-    assert not batcher.should_expedite()
     assert batcher.release_pending_request() is None
 
 

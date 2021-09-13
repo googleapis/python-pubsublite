@@ -35,7 +35,7 @@ class AckSetTracker(AsyncContextManager, metaclass=ABCMeta):
         """
 
     @abstractmethod
-    async def ack(self, offset: int):
+    def ack(self, offset: int):
         """
         Acknowledge the message with the provided offset. The offset must have previously been tracked.
 

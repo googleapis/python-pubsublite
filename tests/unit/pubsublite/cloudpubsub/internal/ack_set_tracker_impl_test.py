@@ -49,17 +49,17 @@ async def test_track_and_aggregate_acks(committer, tracker: AckSetTracker):
         tracker.track(offset=7)
 
         committer.commit.assert_has_calls([])
-        await tracker.ack(offset=3)
+        tracker.ack(offset=3)
         committer.commit.assert_has_calls([])
-        await tracker.ack(offset=1)
+        tracker.ack(offset=1)
         committer.commit.assert_has_calls([call(Cursor(offset=4))])
-        await tracker.ack(offset=5)
+        tracker.ack(offset=5)
         committer.commit.assert_has_calls(
             [call(Cursor(offset=4)), call(Cursor(offset=6))]
         )
 
         tracker.track(offset=8)
-        await tracker.ack(offset=7)
+        tracker.ack(offset=7)
         committer.commit.assert_has_calls(
             [call(Cursor(offset=4)), call(Cursor(offset=6)), call(Cursor(offset=8))]
         )
@@ -74,7 +74,7 @@ async def test_clear_and_commit(committer, tracker: AckSetTracker):
 
         with pytest.raises(FailedPrecondition):
             tracker.track(offset=1)
-        await tracker.ack(offset=5)
+        tracker.ack(offset=5)
         committer.commit.assert_has_calls([])
 
         await tracker.clear_and_commit()
@@ -82,6 +82,6 @@ async def test_clear_and_commit(committer, tracker: AckSetTracker):
 
         # After clearing, it should be possible to track earlier offsets.
         tracker.track(offset=1)
-        await tracker.ack(offset=1)
+        tracker.ack(offset=1)
         committer.commit.assert_has_calls([call(Cursor(offset=2))])
     committer.__aexit__.assert_called_once()
