@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.4](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.3...v1.1.4) (2021-09-14)
+
+
+### Bug Fixes
+
+* Race conditions and performance issues ([#237](https://www.github.com/googleapis/python-pubsublite/issues/237)) ([ec76272](https://www.github.com/googleapis/python-pubsublite/commit/ec7627295bbd26a4ac910f88f4dadc5492b48fa3))
+
 ### [1.1.3](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.2...v1.1.3) (2021-09-13)
 
 
