@@ -88,7 +88,7 @@ class RetryingConnection(Connection[Request, Response], PermanentFailable):
         """
         try:
             bad_retries = 0
-            while True:
+            while not self.error():
                 try:
                     conn_fut = self._connection_factory.new()
                     async with (await conn_fut) as connection:
