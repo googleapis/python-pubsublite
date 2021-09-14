@@ -17,6 +17,8 @@ from typing import Optional, List
 
 import logging
 
+from overrides import overrides
+
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.committer import Committer
 from google.cloud.pubsublite.internal.wire.retrying_connection import (
@@ -152,14 +154,17 @@ class CommitterImpl(
             raise self._connection.error()
         self._next_to_commit = cursor
 
+    @overrides
+    async def stop_processing(self, error: GoogleAPICallError):
+        await self._stop_loopers()
+
+    @overrides
     async def reinitialize(
         self,
         connection: Connection[
             StreamingCommitCursorRequest, StreamingCommitCursorResponse
         ],
-        last_error: Optional[GoogleAPICallError],
     ):
-        await self._stop_loopers()
         await connection.write(StreamingCommitCursorRequest(initial=self._initial))
         response = await connection.read()
         if "initial" not in response:
