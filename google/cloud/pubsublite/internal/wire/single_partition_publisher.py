@@ -169,12 +169,14 @@ class SinglePartitionPublisher(
             await self._flush()
         return MessageMetadata(self._partition, await future)
 
-    async def reinitialize(
-        self,
-        connection: Connection[PublishRequest, PublishResponse],
-        last_error: Optional[GoogleAPICallError],
-    ):
+    @overrides
+    async def stop_processing(self, error: GoogleAPICallError):
         await self._stop_loopers()
+
+    @overrides
+    async def reinitialize(
+        self, connection: Connection[PublishRequest, PublishResponse],
+    ):
         await connection.write(PublishRequest(initial_request=self._initial))
         response = await connection.read()
         if "initial_response" not in response:

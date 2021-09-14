@@ -17,6 +17,7 @@ from copy import deepcopy
 from typing import Optional, List
 
 from google.api_core.exceptions import GoogleAPICallError, FailedPrecondition
+from overrides import overrides
 
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.connection import (
@@ -56,7 +57,6 @@ class SubscriberImpl(
 
     _outstanding_flow_control: FlowControlBatcher
 
-    _reinitializing: bool
     _last_received_offset: Optional[int]
 
     _message_queue: "asyncio.Queue[List[SequencedMessage.meta.pb]]"
@@ -154,14 +154,10 @@ class SubscriberImpl(
         await self._stop_loopers()
         await self._connection.__aexit__(exc_type, exc_val, exc_tb)
 
-    async def reinitialize(
-        self,
-        connection: Connection[SubscribeRequest, SubscribeResponse],
-        last_error: Optional[GoogleAPICallError],
-    ):
-        self._reinitializing = True
+    @overrides
+    async def stop_processing(self, error: GoogleAPICallError):
         await self._stop_loopers()
-        if last_error and is_reset_signal(last_error):
+        if is_reset_signal(error):
             # Discard undelivered messages and refill flow control tokens.
             while not self._message_queue.empty():
                 batch: List[SequencedMessage.meta.pb] = self._message_queue.get_nowait()
@@ -174,6 +170,11 @@ class SubscriberImpl(
 
             await self._reset_handler.handle_reset()
             self._last_received_offset = None
+
+    @overrides
+    async def reinitialize(
+        self, connection: Connection[SubscribeRequest, SubscribeResponse]
+    ):
         initial = deepcopy(self._base_initial)
         if self._last_received_offset is not None:
             initial.initial_location = SeekRequest(
@@ -195,7 +196,6 @@ class SubscriberImpl(
         tokens = self._outstanding_flow_control.request_for_restart()
         if tokens is not None:
             await connection.write(SubscribeRequest(flow_control=tokens))
-        self._reinitializing = False
         self._start_loopers()
 
     async def read(self) -> List[SequencedMessage.meta.pb]:

@@ -127,12 +127,12 @@ class SinglePartitionSingleSubscriber(
             raise e
 
     def _handle_ack(self, message: requests.AckRequest):
-        self._underlying.allow_flow(
-            FlowControlRequest(
-                allowed_messages=1,
-                allowed_bytes=self._messages_by_ack_id[message.ack_id].size_bytes,
-            )
-        )
+        flow_control = FlowControlRequest()
+        flow_control._pb.allowed_messages = 1
+        flow_control._pb.allowed_bytes = self._messages_by_ack_id[
+            message.ack_id
+        ].size_bytes
+        self._underlying.allow_flow(flow_control)
         del self._messages_by_ack_id[message.ack_id]
         # Always refill flow control tokens, but do not commit offsets from outdated generations.
         ack_id = _AckId.parse(message.ack_id)

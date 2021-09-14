@@ -17,7 +17,7 @@ from unittest.mock import call
 
 from asynctest.mock import MagicMock, CoroutineMock
 import pytest
-from google.api_core.exceptions import InternalServerError, InvalidArgument
+from google.api_core.exceptions import InternalServerError, InvalidArgument, Unknown
 from google.cloud.pubsublite.internal.wire.connection import (
     Connection,
     ConnectionFactory,
@@ -70,9 +70,8 @@ def asyncio_sleep(monkeypatch):
 async def test_permanent_error_on_reinitializer(
     retrying_connection: Connection[int, int], reinitializer, default_connection
 ):
-    async def reinit_action(conn, last_error):
+    async def reinit_action(conn):
         assert conn == default_connection
-        assert last_error is None
         raise InvalidArgument("abc")
 
     reinitializer.reinitialize.side_effect = reinit_action
@@ -84,9 +83,8 @@ async def test_permanent_error_on_reinitializer(
 async def test_successful_reinitialize(
     retrying_connection: Connection[int, int], reinitializer, default_connection
 ):
-    async def reinit_action(conn, last_error):
+    async def reinit_action(conn):
         assert conn == default_connection
-        assert last_error is None
         return None
 
     default_connection.read.return_value = 1
@@ -126,9 +124,30 @@ async def test_reinitialize_after_retryable(
         asyncio_sleep.assert_called_once_with(_MIN_BACKOFF_SECS)
         assert reinitializer.reinitialize.call_count == 2
         reinitializer.reinitialize.assert_has_calls(
-            [call(default_connection, None), call(default_connection, error)]
+            [call(default_connection), call(default_connection)]
         )
+        reinitializer.stop_processing.assert_called_once_with(error)
         assert await retrying_connection.read() == 1
         assert (
             default_connection.read.call_count == 2
         )  # re-call to read once first completes
+
+
+async def test_reinitialize_stop_processing_fails(
+    retrying_connection: Connection[int, int],
+    reinitializer,
+    default_connection,
+    asyncio_sleep,
+):
+    reinit_queues = wire_queues(reinitializer.reinitialize)
+
+    default_connection.read.return_value = 1
+
+    error = InternalServerError("abc")
+    await reinit_queues.results.put(error)
+    reinitializer.stop_processing.side_effect = Exception("can't stop me")
+    with pytest.raises(Unknown):
+        async with retrying_connection as _:
+            pass
+    reinitializer.reinitialize.assert_called_once_with(default_connection)
+    reinitializer.stop_processing.assert_called_once_with(error)
