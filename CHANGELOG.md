@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.4...v1.2.0) (2021-09-15)
+
+
+### Features
+
+* Add cloud region path handling for when this is allowed by the backend ([#240](https://www.github.com/googleapis/python-pubsublite/issues/240)) ([4cad460](https://www.github.com/googleapis/python-pubsublite/commit/4cad4603e7d24037b401259be9ebcd116984f7c8))
+
 ### [1.1.4](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.3...v1.1.4) (2021-09-14)
 
 
