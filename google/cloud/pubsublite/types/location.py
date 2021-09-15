@@ -30,6 +30,10 @@ class CloudRegion(NamedTuple):
             raise InvalidArgument("Invalid region name: " + to_parse)
         return CloudRegion(name=splits[0] + "-" + splits[1])
 
+    @property
+    def region(self):
+        return self
+
 
 class CloudZone(NamedTuple):
     region: CloudRegion
