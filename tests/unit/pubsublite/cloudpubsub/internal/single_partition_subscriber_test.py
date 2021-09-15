@@ -226,6 +226,27 @@ async def test_nack_failure(
             await subscriber.read()
 
 
+async def test_nack_after_shutdown_noop(
+    subscriber: SinglePartitionSingleSubscriber,
+    underlying,
+    transformer,
+    ack_set_tracker,
+    nack_handler,
+):
+    async with subscriber:
+        message = SequencedMessage(cursor=Cursor(offset=1), size_bytes=5)._pb
+        underlying.read.return_value = [message]
+        read: List[Message] = await subscriber.read()
+        assert len(read) == 1
+        ack_set_tracker.track.assert_has_calls([call(1)])
+        nack_handler.on_nack.side_effect = FailedPrecondition("Bad nack")
+    read[0].nack()
+    # Yield to the runtime, allowing the subscriber to process the queue if it
+    # is still running (which it should not be)
+    await asyncio.sleep(1)
+    nack_handler.on_nack.assert_has_calls([])
+
+
 async def test_nack_calls_ack(
     subscriber: SinglePartitionSingleSubscriber,
     underlying,
