@@ -85,8 +85,10 @@ class PermanentFailable:
         try:
             while True:
                 await self.await_unless_failed(poll_action())
-        except GoogleAPICallError as e:
-            self.fail(e)
+        except asyncio.CancelledError:
+            pass
+        except Exception as e:
+            self.fail(adapt_error(e))
 
     def fail(self, err: GoogleAPICallError):
         if not self._failure_task.done():

@@ -14,6 +14,7 @@
 
 from typing import Set
 
+from asyncio import Future
 from asynctest.mock import MagicMock, call
 import threading
 import pytest
@@ -21,6 +22,7 @@ from google.api_core.exceptions import FailedPrecondition
 from google.cloud.pubsub_v1.subscriber.message import Message
 from google.pubsub_v1 import PubsubMessage
 
+from google.cloud.pubsublite.cloudpubsub.reassignment_handler import ReassignmentHandler
 from google.cloud.pubsublite.cloudpubsub.internal.assigning_subscriber import (
     AssigningSingleSubscriber,
     PartitionSubscriberFactory,
@@ -47,16 +49,25 @@ def assigner():
 
 
 @pytest.fixture()
+def reassignment_handler():
+    handler = MagicMock(spec=ReassignmentHandler)
+    handler.handle_reassignment.return_value = None
+    return handler
+
+
+@pytest.fixture()
 def subscriber_factory():
     return MagicMock(spec=PartitionSubscriberFactory)
 
 
 @pytest.fixture()
-def subscriber(assigner, subscriber_factory):
+def subscriber(assigner, subscriber_factory, reassignment_handler):
     box = Box()
 
     def set_box():
-        box.val = AssigningSingleSubscriber(lambda: assigner, subscriber_factory)
+        box.val = AssigningSingleSubscriber(
+            lambda: assigner, subscriber_factory, reassignment_handler
+        )
 
     # Initialize AssigningSubscriber on another thread with a different event loop.
     thread = threading.Thread(target=set_box)
@@ -103,7 +114,9 @@ async def test_assigner_failure(subscriber, assigner, subscriber_factory):
             await subscriber.read()
 
 
-async def test_assignment_change(subscriber, assigner, subscriber_factory):
+async def test_assignment_change(
+    subscriber, assigner, subscriber_factory, reassignment_handler
+):
     assign_queues = wire_queues(assigner.get_assignment)
     async with subscriber:
         await assign_queues.called.get()
@@ -124,13 +137,35 @@ async def test_assignment_change(subscriber, assigner, subscriber_factory):
         )
         sub1.__aenter__.assert_called_once()
         sub2.__aenter__.assert_called_once()
+        reassignment_handler.handle_reassignment.assert_called_once_with(
+            set(), {Partition(1), Partition(2)}
+        )
+        reassignment_triggered = Future()
+        reassignment_future = Future()
+
+        def on_reassignment(before, after):
+            reassignment_triggered.set_result(None)
+            return reassignment_future
+
+        reassignment_handler.handle_reassignment.side_effect = on_reassignment
         await assign_queues.results.put({Partition(1), Partition(3)})
-        await assign_queues.called.get()
+        await reassignment_triggered
         subscriber_factory.assert_has_calls(
             [call(Partition(1)), call(Partition(2)), call(Partition(3))], any_order=True
         )
         sub3.__aenter__.assert_called_once()
         sub2.__aexit__.assert_called_once()
+        reassignment_handler.handle_reassignment.assert_has_calls(
+            [
+                call(set(), {Partition(1), Partition(2)}),
+                call({Partition(1), Partition(2)}, {Partition(1), Partition(3)}),
+            ]
+        )
+        # Assigner is stalled waiting for reassignment future completion
+        assert assign_queues.called.empty()
+        reassignment_future.set_result(None)
+        await assign_queues.called.get()
+
     sub1.__aexit__.assert_called_once()
     sub2.__aexit__.assert_called_once()
     sub3.__aexit__.assert_called_once()
