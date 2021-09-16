@@ -237,4 +237,6 @@ def make_async_subscriber(
         nack_handler,
         message_transformer,
     )
-    return AssigningSingleSubscriber(assigner_factory, partition_subscriber_factory)
+    return AssigningSingleSubscriber(
+        assigner_factory, partition_subscriber_factory, reassignment_handler
+    )
