@@ -30,7 +30,7 @@ class ReassignmentHandler(ABC):
 
     Because of the above, as long as reassignment handling is processed quickly, it can be used to
     abort outstanding operations on partitions which are being assigned away from this client, or to
-    pre-warm state which will be used by the subscriber handler.
+    pre-warm state which will be used by the MessageCallback.
     """
 
     @abstractmethod
@@ -43,9 +43,10 @@ class ReassignmentHandler(ABC):
         quickly, or the backend will assume it is non-responsive and assign all partitions away without
         waiting for acknowledgement.
 
-        If this method returns an awaitable, it will be awaited before acknowledging the assignment.
+        handle_reassignment will only be called after no new message deliveries will be started for the partition.
+        There may still be messages in flight on executors or in async callbacks.
 
-        Nacks on messages for partitions being assigned away will not call the client's nackHandler.
+        Acks or nacks on messages from partitions being assigned away will have no effect.
 
         This method will be called on an event loop and should not block.
 
