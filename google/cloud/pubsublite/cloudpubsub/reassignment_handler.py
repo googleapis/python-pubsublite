@@ -29,8 +29,7 @@ class ReassignmentHandler(ABC):
     the time the assignment is sent from server's point of view).
 
     Because of the above, as long as reassignment handling is processed quickly, it can be used to
-    abort outstanding operations on partitions which are being assigned away from this client, or to
-    pre-warm state which will be used by the MessageCallback.
+    abort outstanding operations on partitions which are being assigned away from this client.
     """
 
     @abstractmethod
