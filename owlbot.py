@@ -55,6 +55,7 @@ for library in s.get_staging_dirs(default_version):
         "README.rst",
         "scripts/fixup*.py",  # new libraries do not need the keyword fixup script
         "setup.py",
+        "noxfile.py",  # exclude to opt-in to pytype
     ]
     s.move(library, excludes=excludes)
 
