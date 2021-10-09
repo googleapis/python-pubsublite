@@ -22,6 +22,7 @@ from typing import (
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.pubsublite_v1.types import admin
