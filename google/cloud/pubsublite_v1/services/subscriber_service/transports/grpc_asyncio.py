@@ -258,5 +258,8 @@ class SubscriberServiceGrpcAsyncIOTransport(SubscriberServiceTransport):
             )
         return self._stubs["subscribe"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("SubscriberServiceGrpcAsyncIOTransport",)

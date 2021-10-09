@@ -56,7 +56,8 @@ class InitialCommitCursorRequest(proto.Message):
 
 
 class InitialCommitCursorResponse(proto.Message):
-    r"""Response to an InitialCommitCursorRequest.    """
+    r"""Response to an InitialCommitCursorRequest.
+    """
 
 
 class SequencedCommitCursorRequest(proto.Message):
@@ -73,6 +74,7 @@ class SequencedCommitCursorRequest(proto.Message):
 
 class SequencedCommitCursorResponse(proto.Message):
     r"""Response to a SequencedCommitCursorRequest.
+
     Attributes:
         acknowledged_commits (int):
             The number of outstanding
@@ -87,6 +89,7 @@ class SequencedCommitCursorResponse(proto.Message):
 
 class StreamingCommitCursorRequest(proto.Message):
     r"""A request sent from the client to the server on a stream.
+
     Attributes:
         initial (google.cloud.pubsublite_v1.types.InitialCommitCursorRequest):
             Initial request on the stream.
@@ -107,6 +110,7 @@ class StreamingCommitCursorRequest(proto.Message):
 
 class StreamingCommitCursorResponse(proto.Message):
     r"""Response to a StreamingCommitCursorRequest.
+
     Attributes:
         initial (google.cloud.pubsublite_v1.types.InitialCommitCursorResponse):
             Initial response on the stream.
@@ -127,6 +131,7 @@ class StreamingCommitCursorResponse(proto.Message):
 
 class CommitCursorRequest(proto.Message):
     r"""Request for CommitCursor.
+
     Attributes:
         subscription (str):
             The subscription for which to update the
@@ -145,11 +150,13 @@ class CommitCursorRequest(proto.Message):
 
 
 class CommitCursorResponse(proto.Message):
-    r"""Response for CommitCursor.    """
+    r"""Response for CommitCursor.
+    """
 
 
 class ListPartitionCursorsRequest(proto.Message):
     r"""Request for ListPartitionCursors.
+
     Attributes:
         parent (str):
             Required. The subscription for which to retrieve cursors.
@@ -177,6 +184,7 @@ class ListPartitionCursorsRequest(proto.Message):
 
 class PartitionCursor(proto.Message):
     r"""A pair of a Cursor and the partition it is for.
+
     Attributes:
         partition (int):
             The partition this is for.
@@ -190,6 +198,7 @@ class PartitionCursor(proto.Message):
 
 class ListPartitionCursorsResponse(proto.Message):
     r"""Response for ListPartitionCursors
+
     Attributes:
         partition_cursors (Sequence[google.cloud.pubsublite_v1.types.PartitionCursor]):
             The partition cursors from this request.

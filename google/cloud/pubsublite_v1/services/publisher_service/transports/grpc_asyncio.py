@@ -266,5 +266,8 @@ class PublisherServiceGrpcAsyncIOTransport(PublisherServiceTransport):
             )
         return self._stubs["publish"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("PublisherServiceGrpcAsyncIOTransport",)
