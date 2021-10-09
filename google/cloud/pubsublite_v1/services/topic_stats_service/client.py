@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -357,7 +357,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
 
     def compute_message_stats(
         self,
-        request: topic_stats.ComputeMessageStatsRequest = None,
+        request: Union[topic_stats.ComputeMessageStatsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -367,7 +367,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         given topic and partition.
 
         Args:
-            request (google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest):
+            request (Union[google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest, dict]):
                 The request object. Compute statistics about a range of
                 messages in a given topic and partition.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -409,7 +409,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
 
     def compute_head_cursor(
         self,
-        request: topic_stats.ComputeHeadCursorRequest = None,
+        request: Union[topic_stats.ComputeHeadCursorRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -424,7 +424,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         messages in the partition.
 
         Args:
-            request (google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest):
+            request (Union[google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest, dict]):
                 The request object. Compute the current head cursor for
                 a partition.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -465,7 +465,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
 
     def compute_time_cursor(
         self,
-        request: topic_stats.ComputeTimeCursorRequest = None,
+        request: Union[topic_stats.ComputeTimeCursorRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -475,7 +475,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         event time in a topic partition.
 
         Args:
-            request (google.cloud.pubsublite_v1.types.ComputeTimeCursorRequest):
+            request (Union[google.cloud.pubsublite_v1.types.ComputeTimeCursorRequest, dict]):
                 The request object. Compute the corresponding cursor for
                 a publish or event time in a topic partition.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
