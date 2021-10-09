@@ -312,5 +312,8 @@ class CursorServiceGrpcTransport(CursorServiceTransport):
             )
         return self._stubs["list_partition_cursors"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("CursorServiceGrpcTransport",)
