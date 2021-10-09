@@ -17,17 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Optional,
-    Iterable,
-    Iterator,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -402,7 +392,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
 
     def commit_cursor(
         self,
-        request: cursor.CommitCursorRequest = None,
+        request: Union[cursor.CommitCursorRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -411,7 +401,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         r"""Updates the committed cursor.
 
         Args:
-            request (google.cloud.pubsublite_v1.types.CommitCursorRequest):
+            request (Union[google.cloud.pubsublite_v1.types.CommitCursorRequest, dict]):
                 The request object. Request for CommitCursor.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -451,7 +441,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
 
     def list_partition_cursors(
         self,
-        request: cursor.ListPartitionCursorsRequest = None,
+        request: Union[cursor.ListPartitionCursorsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -462,7 +452,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         subscription.
 
         Args:
-            request (google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest):
+            request (Union[google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest, dict]):
                 The request object. Request for ListPartitionCursors.
             parent (str):
                 Required. The subscription for which to retrieve

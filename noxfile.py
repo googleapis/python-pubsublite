@@ -27,6 +27,8 @@ import nox
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
+PYTYPE_VERSION = "pytype==2021.09.09"
+
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
@@ -249,5 +251,5 @@ def docfx(session):
 def pytype(session):
     """Run type checks."""
     install_test_deps(session)
-    session.install("pytype")
+    session.install(PYTYPE_VERSION)
     session.run("pytype", "google/cloud/pubsublite")
