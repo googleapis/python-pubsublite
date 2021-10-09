@@ -17,17 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Optional,
-    Iterable,
-    Iterator,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -356,10 +346,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
-                always_use_jwt_access=(
-                    Transport == type(self).get_transport_class("grpc")
-                    or Transport == type(self).get_transport_class("grpc_asyncio")
-                ),
+                always_use_jwt_access=True,
             )
 
     def streaming_commit_cursor(
@@ -402,7 +389,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
 
     def commit_cursor(
         self,
-        request: cursor.CommitCursorRequest = None,
+        request: Union[cursor.CommitCursorRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -411,7 +398,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         r"""Updates the committed cursor.
 
         Args:
-            request (google.cloud.pubsublite_v1.types.CommitCursorRequest):
+            request (Union[google.cloud.pubsublite_v1.types.CommitCursorRequest, dict]):
                 The request object. Request for CommitCursor.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -451,7 +438,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
 
     def list_partition_cursors(
         self,
-        request: cursor.ListPartitionCursorsRequest = None,
+        request: Union[cursor.ListPartitionCursorsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -462,7 +449,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         subscription.
 
         Args:
-            request (google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest):
+            request (Union[google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest, dict]):
                 The request object. Request for ListPartitionCursors.
             parent (str):
                 Required. The subscription for which to retrieve
@@ -528,6 +515,19 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:
