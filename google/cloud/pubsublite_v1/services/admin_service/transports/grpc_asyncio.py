@@ -784,5 +784,8 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
             )
         return self._stubs["list_reservation_topics"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("AdminServiceGrpcAsyncIOTransport",)

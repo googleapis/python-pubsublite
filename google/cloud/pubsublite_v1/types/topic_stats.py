@@ -94,6 +94,7 @@ class ComputeMessageStatsResponse(proto.Message):
 
 class ComputeHeadCursorRequest(proto.Message):
     r"""Compute the current head cursor for a partition.
+
     Attributes:
         topic (str):
             Required. The topic for which we should
