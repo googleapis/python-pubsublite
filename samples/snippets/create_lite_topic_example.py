@@ -14,19 +14,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This application demonstrates how to create a topic with the Pub/Sub
-Lite API. For more information, see the root level README.md and the
-documentation at https://cloud.google.com/pubsub/lite/docs/topics.
+"""This application demonstrates how to create both a regional and zonal topic
+with the Pub/Sub Lite API. For more information, see the root level README.md
+and the documentation at https://cloud.google.com/pubsub/lite/docs/topics.
 """
 
 import argparse
 
 
-def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_partitions):
+def create_lite_topic(
+    project_number,
+    cloud_region,
+    zone_id,
+    topic_id,
+    reservation_id,
+    num_partitions,
+    regional,
+):
     # [START pubsublite_create_topic]
     from google.api_core.exceptions import AlreadyExists
     from google.cloud.pubsublite import AdminClient, Topic
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, TopicPath
+    from google.cloud.pubsublite.types.paths import ReservationPath
     from google.protobuf.duration_pb2 import Duration
 
     # TODO(developer):
@@ -34,11 +43,23 @@ def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_parti
     # cloud_region = "us-central1"
     # zone_id = "a"
     # topic_id = "your-topic-id"
+    # reservation_id = "your-reservation-id"
     # num_partitions = 1
+    # regional = true
 
     cloud_region = CloudRegion(cloud_region)
-    location = CloudZone(cloud_region, zone_id)
-    topic_path = TopicPath(project_number, location, topic_id)
+    reservation_path = ReservationPath(project_number, cloud_region, reservation_id)
+
+    topic_path = None
+    if regional:
+        #  A regional topic.
+        topic_path = TopicPath(project_number, cloud_region, topic_id)
+    else:
+        #  A zonal topic
+        topic_path = TopicPath(
+            project_number, CloudZone(cloud_region, zone_id), topic_id
+        )
+
     topic = Topic(
         name=str(topic_path),
         partition_config=Topic.PartitionConfig(
@@ -61,12 +82,18 @@ def create_lite_topic(project_number, cloud_region, zone_id, topic_id, num_parti
             # Allow messages to be retained for 7 days.
             period=Duration(seconds=60 * 60 * 24 * 7),
         ),
+        reservation_config=Topic.ReservationConfig(
+            throughput_reservation=str(reservation_path),
+        ),
     )
 
     client = AdminClient(cloud_region)
     try:
         response = client.create_topic(topic)
-        print(f"{response.name} created successfully.")
+        if regional:
+            print(f"{response.name} (regional topic) created successfully.")
+        else:
+            print(f"{response.name} (zonal topic) created successfully.")
     except AlreadyExists:
         print(f"{topic_path} already exists.")
     # [END pubsublite_create_topic]
@@ -80,9 +107,11 @@ if __name__ == "__main__":
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("topic_id", help="Your topic ID")
+    parser.add_argument("reservation_id", help="Your reservation ID")
     parser.add_argument(
         "num_partitions", type=int, help="Number of partitions in the topic"
     )
+    parser.add_argument("regional", type=bool, help="Regional topic or not")
 
     args = parser.parse_args()
 
@@ -91,5 +120,7 @@ if __name__ == "__main__":
         args.cloud_region,
         args.zone_id,
         args.topic_id,
+        args.reservation_id,
         args.num_partitions,
+        args.regional,
     )
