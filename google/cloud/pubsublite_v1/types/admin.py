@@ -364,6 +364,13 @@ class DeleteSubscriptionRequest(proto.Message):
 class SeekSubscriptionRequest(proto.Message):
     r"""Request for SeekSubscription.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The name of the subscription to
@@ -371,12 +378,14 @@ class SeekSubscriptionRequest(proto.Message):
         named_target (google.cloud.pubsublite_v1.types.SeekSubscriptionRequest.NamedTarget):
             Seek to a named position with respect to the
             message backlog.
+            This field is a member of `oneof`_ ``target``.
         time_target (google.cloud.pubsublite_v1.types.TimeTarget):
             Seek to the first message whose publish or
             event time is greater than or equal to the
             specified query time. If no such message can be
             located, will seek to the end of the message
             backlog.
+            This field is a member of `oneof`_ ``target``.
     """
 
     class NamedTarget(proto.Enum):

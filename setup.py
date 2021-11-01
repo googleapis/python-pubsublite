@@ -32,7 +32,6 @@ dependencies = [
     "grpcio >= 1.18.0",
     "grpcio-status >= 1.18.0",
     "overrides>=6.0.1, <7.0.0",
-    "packaging >= 14.3",
 ]
 
 setuptools.setup(

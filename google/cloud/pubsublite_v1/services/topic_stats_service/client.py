@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.pubsublite_v1.types import common
 from google.cloud.pubsublite_v1.types import topic_stats
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -356,7 +358,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         self,
         request: Union[topic_stats.ComputeMessageStatsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeMessageStatsResponse:
@@ -408,7 +410,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         self,
         request: Union[topic_stats.ComputeHeadCursorRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeHeadCursorResponse:
@@ -464,7 +466,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         self,
         request: Union[topic_stats.ComputeTimeCursorRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeTimeCursorResponse:
