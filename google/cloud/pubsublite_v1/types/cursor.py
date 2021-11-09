@@ -100,9 +100,11 @@ class StreamingCommitCursorRequest(proto.Message):
     Attributes:
         initial (google.cloud.pubsublite_v1.types.InitialCommitCursorRequest):
             Initial request on the stream.
+
             This field is a member of `oneof`_ ``request``.
         commit (google.cloud.pubsublite_v1.types.SequencedCommitCursorRequest):
             Request to commit a new cursor value.
+
             This field is a member of `oneof`_ ``request``.
     """
 
@@ -130,9 +132,11 @@ class StreamingCommitCursorResponse(proto.Message):
     Attributes:
         initial (google.cloud.pubsublite_v1.types.InitialCommitCursorResponse):
             Initial response on the stream.
+
             This field is a member of `oneof`_ ``request``.
         commit (google.cloud.pubsublite_v1.types.SequencedCommitCursorResponse):
             Response to committing a new cursor value.
+
             This field is a member of `oneof`_ ``request``.
     """
 

@@ -92,9 +92,11 @@ class PublishRequest(proto.Message):
     Attributes:
         initial_request (google.cloud.pubsublite_v1.types.InitialPublishRequest):
             Initial request on the stream.
+
             This field is a member of `oneof`_ ``request_type``.
         message_publish_request (google.cloud.pubsublite_v1.types.MessagePublishRequest):
             Request to publish messages.
+
             This field is a member of `oneof`_ ``request_type``.
     """
 
@@ -119,9 +121,11 @@ class PublishResponse(proto.Message):
     Attributes:
         initial_response (google.cloud.pubsublite_v1.types.InitialPublishResponse):
             Initial response on the stream.
+
             This field is a member of `oneof`_ ``response_type``.
         message_response (google.cloud.pubsublite_v1.types.MessagePublishResponse):
             Response to publishing messages.
+
             This field is a member of `oneof`_ ``response_type``.
     """
 
