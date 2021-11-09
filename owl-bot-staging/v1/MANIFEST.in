@@ -1,0 +1,2 @@
+recursive-include google/cloud/pubsublite *.py
+recursive-include google/cloud/pubsublite_v1 *.py
