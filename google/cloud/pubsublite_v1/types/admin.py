@@ -378,6 +378,7 @@ class SeekSubscriptionRequest(proto.Message):
         named_target (google.cloud.pubsublite_v1.types.SeekSubscriptionRequest.NamedTarget):
             Seek to a named position with respect to the
             message backlog.
+
             This field is a member of `oneof`_ ``target``.
         time_target (google.cloud.pubsublite_v1.types.TimeTarget):
             Seek to the first message whose publish or
@@ -385,6 +386,7 @@ class SeekSubscriptionRequest(proto.Message):
             specified query time. If no such message can be
             located, will seek to the end of the message
             backlog.
+
             This field is a member of `oneof`_ ``target``.
     """
 

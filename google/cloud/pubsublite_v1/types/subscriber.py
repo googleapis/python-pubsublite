@@ -94,10 +94,12 @@ class SeekRequest(proto.Message):
     Attributes:
         named_target (google.cloud.pubsublite_v1.types.SeekRequest.NamedTarget):
             A named target.
+
             This field is a member of `oneof`_ ``target``.
         cursor (google.cloud.pubsublite_v1.types.Cursor):
             A target corresponding to the cursor,
             pointing to anywhere in the topic partition.
+
             This field is a member of `oneof`_ ``target``.
     """
 
@@ -157,13 +159,16 @@ class SubscribeRequest(proto.Message):
     Attributes:
         initial (google.cloud.pubsublite_v1.types.InitialSubscribeRequest):
             Initial request on the stream.
+
             This field is a member of `oneof`_ ``request``.
         seek (google.cloud.pubsublite_v1.types.SeekRequest):
             Request to update the stream's delivery
             cursor.
+
             This field is a member of `oneof`_ ``request``.
         flow_control (google.cloud.pubsublite_v1.types.FlowControlRequest):
             Request to grant tokens to the server,
+
             This field is a member of `oneof`_ ``request``.
     """
 
@@ -208,13 +213,16 @@ class SubscribeResponse(proto.Message):
     Attributes:
         initial (google.cloud.pubsublite_v1.types.InitialSubscribeResponse):
             Initial response on the stream.
+
             This field is a member of `oneof`_ ``response``.
         seek (google.cloud.pubsublite_v1.types.SeekResponse):
             Response to a Seek operation.
+
             This field is a member of `oneof`_ ``response``.
         messages (google.cloud.pubsublite_v1.types.MessageResponse):
             Response containing messages from the topic
             partition.
+
             This field is a member of `oneof`_ ``response``.
     """
 
@@ -294,9 +302,11 @@ class PartitionAssignmentRequest(proto.Message):
     Attributes:
         initial (google.cloud.pubsublite_v1.types.InitialPartitionAssignmentRequest):
             Initial request on the stream.
+
             This field is a member of `oneof`_ ``request``.
         ack (google.cloud.pubsublite_v1.types.PartitionAssignmentAck):
             Acknowledgement of a partition assignment.
+
             This field is a member of `oneof`_ ``request``.
     """
 

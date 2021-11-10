@@ -179,9 +179,11 @@ class Topic(proto.Message):
                 this topic; a topic with ``scale`` of 2 and count of 10 is
                 charged for 20 partitions. This value must be in the range
                 [1,4].
+
                 This field is a member of `oneof`_ ``dimension``.
             capacity (google.cloud.pubsublite_v1.types.Topic.PartitionConfig.Capacity):
                 The capacity configuration.
+
                 This field is a member of `oneof`_ ``dimension``.
         """
 
@@ -310,6 +312,7 @@ class TimeTarget(proto.Message):
             greater than or equal to ``publish_time``. All messages
             thereafter are guaranteed to have publish times >=
             ``publish_time``.
+
             This field is a member of `oneof`_ ``time``.
         event_time (google.protobuf.timestamp_pb2.Timestamp):
             Request the cursor of the first message with event time
@@ -318,6 +321,7 @@ class TimeTarget(proto.Message):
             fallback. As event times are user supplied, subsequent
             messages may have event times less than ``event_time`` and
             should be filtered by the client, if necessary.
+
             This field is a member of `oneof`_ ``time``.
     """
 
