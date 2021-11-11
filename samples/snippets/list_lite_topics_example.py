@@ -33,6 +33,8 @@ def list_lite_topics(project_number, cloud_region, zone_id):
     # zone_id = "a"
 
     location = CloudZone(CloudRegion(cloud_region), zone_id)
+    # Update location to only list regional topics.
+    # location = CloudRegion(cloud_region)
     location_path = LocationPath(project_number, location)
 
     client = AdminClient(cloud_region)

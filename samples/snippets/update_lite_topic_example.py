@@ -22,11 +22,12 @@ documentation at https://cloud.google.com/pubsub/lite/docs/topics.
 import argparse
 
 
-def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
+def update_lite_topic(project_number, cloud_region, zone_id, topic_id, reservation_id):
     # [START pubsublite_update_topic]
     from google.api_core.exceptions import NotFound
     from google.cloud.pubsublite import AdminClient, Topic
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, TopicPath
+    from google.cloud.pubsublite.types.paths import ReservationPath
     from google.protobuf.duration_pb2 import Duration
     from google.protobuf.field_mask_pb2 import FieldMask
 
@@ -35,10 +36,12 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # cloud_region = "us-central1"
     # zone_id = "a"
     # topic_id = "your-topic-id"
+    # reservation_id = "your-reservation-id"
 
     cloud_region = CloudRegion(cloud_region)
     location = CloudZone(cloud_region, zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
+    reservation_path = ReservationPath(project_number, cloud_region, reservation_id)
 
     # Defines which topic fields to update.
     field_mask = FieldMask(
@@ -46,6 +49,7 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
             "partition_config.scale",
             "retention_config.per_partition_bytes",
             "retention_config.period",
+            "reservation_confing.throughput_reservation",
         ]
     )
 
@@ -68,6 +72,9 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id):
             # Allow messages to be stored for 14 days.
             period=Duration(seconds=60 * 60 * 24 * 14),
         ),
+        reservation_config=Topic.ReservationConfig(
+            throughput_reservation=str(reservation_path),
+        ),
     )
 
     client = AdminClient(cloud_region)
@@ -87,9 +94,14 @@ if __name__ == "__main__":
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("topic_id", help="Your topic ID")
+    parser.add_argument("reservation_id", help="Your reservation ID")
 
     args = parser.parse_args()
 
     update_lite_topic(
-        args.project_number, args.cloud_region, args.zone_id, args.topic_id,
+        args.project_number,
+        args.cloud_region,
+        args.zone_id,
+        args.topic_id,
+        args.reservation_id,
     )

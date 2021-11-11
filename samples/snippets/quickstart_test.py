@@ -179,7 +179,9 @@ def test_create_lite_topic_example(reservation, capsys):
 
     reservation_path_object = ReservationPath.parse(reservation.name)
 
-    wanted_regional_topic_path = f"projects/{PROJECT_NUMBER}/locations/{CLOUD_REGION}/topics/{TOPIC_ID}"
+    wanted_regional_topic_path = (
+        f"projects/{PROJECT_NUMBER}/locations/{CLOUD_REGION}/topics/{TOPIC_ID}"
+    )
     wanted_zonal_topic_path = f"projects/{PROJECT_NUMBER}/locations/{CLOUD_REGION}-{ZONE_ID}/topics/{TOPIC_ID}"
 
     create_lite_topic_example.create_lite_topic(
@@ -208,11 +210,13 @@ def test_create_lite_topic_example(reservation, capsys):
     assert f"{wanted_zonal_topic_path} (zonal topic) created successfully." in out
 
 
-def test_update_lite_topic_example(zonal_topic, capsys):
+def test_update_lite_topic_example(zonal_topic, reservation, capsys):
     import update_lite_topic_example
 
+    reservation_path_object = ReservationPath.parse(reservation.name)
+
     update_lite_topic_example.update_lite_topic(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, reservation_path_object.name,
     )
     out, _ = capsys.readouterr()
     assert f"{zonal_topic.name} updated successfully." in out
