@@ -46,7 +46,7 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id, reservati
     # Defines which topic fields to update.
     field_mask = FieldMask(
         paths=[
-            "partition_config.scale",
+            "partition_config.capacity",
             "retention_config.per_partition_bytes",
             "retention_config.period",
             "reservation_confing.throughput_reservation",
@@ -57,18 +57,17 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id, reservati
     topic = Topic(
         name=str(topic_path),
         partition_config=Topic.PartitionConfig(
-            # Set publishing throughput to 2x standard partition throughput of 4 MiB
-            # per second. This must in the range [1,4]. A topic with `scale` of 2 and
-            # `count` of 10 is charged for 20 partitions.
-            scale=2,
+            capacity=Topic.PartitionConfig.Capacity(
+                publish_mib_per_sec=16, subscribe_mib_per_sec=32,
+            )
         ),
         retention_config=Topic.RetentionConfig(
-            # Set storage per partition to 100 GiB. This must be in the range 30 GiB-10TiB.
+            # Set storage per partition to 32 GiB. This must be in the range 30 GiB-10TiB.
             # If the number of byptes stored in any of the topic's partitions grows beyond
             # this value, older messages will be dropped to make room for newer ones,
             # regardless of the value of `period`.
             # Be careful when decreasing storage per partition as it may cuase lost messages.
-            per_partition_bytes=100 * 1024 * 1024 * 1024,
+            per_partition_bytes=32 * 1024 * 1024 * 1024,
             # Allow messages to be stored for 14 days.
             period=Duration(seconds=60 * 60 * 24 * 14),
         ),
