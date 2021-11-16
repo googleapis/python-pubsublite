@@ -33,7 +33,7 @@ def delete_lite_topic(project_number, cloud_region, zone_id, topic_id, regional)
     # cloud_region = "us-central1"
     # zone_id = "a"
     # topic_id = "your-topic-id"
-    # regional = true
+    # regional = True
 
     cloud_region = CloudRegion(cloud_region)
     topic_path = None

@@ -232,13 +232,20 @@ def test_get_lite_topic_example(zonal_topic, capsys):
     assert f"{zonal_topic.name} has {NUM_PARTITIONS} partition(s)." in out
 
 
-def test_list_lite_topics_example(capsys):
+def test_list_lite_topics_example(zonal_topic, regional_topic, capsys):
     import list_lite_topics_example
 
+    # List regional topics
     list_lite_topics_example.list_lite_topics(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, True,
+    )
+    # List zonal topics
+    list_lite_topics_example.list_lite_topics(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, False,
     )
     out, _ = capsys.readouterr()
+    assert f"{zonal_topic.name}"
+    assert f"{regional_topic.name}"
     assert "topic(s) listed in your project and location." in out
 
 

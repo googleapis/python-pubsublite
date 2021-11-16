@@ -45,7 +45,7 @@ def create_lite_topic(
     # topic_id = "your-topic-id"
     # reservation_id = "your-reservation-id"
     # num_partitions = 1
-    # regional = true
+    # regional = True
 
     cloud_region = CloudRegion(cloud_region)
     reservation_path = ReservationPath(project_number, cloud_region, reservation_id)
