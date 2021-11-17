@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 
-from pubsublite_v1.types.common import Reservation
+from google.cloud.pubsublite_v1.types.common import Reservation
 from .location import CloudRegion, CloudZone
 from .partition import Partition
 from .paths import LocationPath, ReservationPath, TopicPath, SubscriptionPath
