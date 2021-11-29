@@ -2,7 +2,7 @@
     "name": "pubsublite",
     "name_pretty": "Pub/Sub Lite",
     "product_documentation": "https://https://cloud.google.com/pubsub/lite",
-    "client_documentation": "https://googleapis.dev/python/pubsublite/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/pubsublite/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
