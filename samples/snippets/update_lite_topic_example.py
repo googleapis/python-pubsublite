@@ -26,8 +26,12 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id, reservati
     # [START pubsublite_update_topic]
     from google.api_core.exceptions import NotFound
     from google.cloud.pubsublite import AdminClient, Topic
-    from google.cloud.pubsublite.types import CloudRegion, CloudZone, TopicPath
-    from google.cloud.pubsublite.types.paths import ReservationPath
+    from google.cloud.pubsublite.types import (
+        CloudRegion,
+        CloudZone,
+        ReservationPath,
+        TopicPath,
+    )
     from google.protobuf.duration_pb2 import Duration
     from google.protobuf.field_mask_pb2 import FieldMask
 

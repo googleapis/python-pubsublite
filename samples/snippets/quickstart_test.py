@@ -20,16 +20,15 @@ import uuid
 
 import backoff
 from google.api_core.exceptions import AlreadyExists, FailedPrecondition, NotFound
-from google.cloud.pubsublite import AdminClient, Subscription, Topic
+from google.cloud.pubsublite import AdminClient, Reservation, Subscription, Topic
 from google.cloud.pubsublite.types import (
     BacklogLocation,
     CloudRegion,
     CloudZone,
+    ReservationPath,
     SubscriptionPath,
     TopicPath,
 )
-from google.cloud.pubsublite.types.paths import ReservationPath
-from google.cloud.pubsublite_v1.types.common import Reservation
 from google.protobuf.duration_pb2 import Duration
 import pytest
 

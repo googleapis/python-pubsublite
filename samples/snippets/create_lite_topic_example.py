@@ -34,8 +34,12 @@ def create_lite_topic(
     # [START pubsublite_create_topic]
     from google.api_core.exceptions import AlreadyExists
     from google.cloud.pubsublite import AdminClient, Topic
-    from google.cloud.pubsublite.types import CloudRegion, CloudZone, TopicPath
-    from google.cloud.pubsublite.types.paths import ReservationPath
+    from google.cloud.pubsublite.types import (
+        CloudRegion,
+        CloudZone,
+        ReservationPath,
+        TopicPath,
+    )
     from google.protobuf.duration_pb2 import Duration
 
     # TODO(developer):
