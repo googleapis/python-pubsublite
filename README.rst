@@ -15,7 +15,7 @@ Python Client for Pub/Sub Lite
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsublite.svg
    :target: https://pypi.org/project/google-cloud-pubsublite/
 .. _Pub/Sub Lite API: https://cloud.google.com/pubsub/lite
-.. _Client Library Documentation: https://googleapis.dev/python/pubsublite/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/pubsublite/latest
 .. _Product Documentation:  https://cloud.google.com/pubsub/lite
 
 Quick Start
