@@ -4,12 +4,13 @@
     "product_documentation": "https://https://cloud.google.com/pubsub/lite",
     "client_documentation": "https://cloud.google.com/python/docs/reference/pubsublite/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_COMBO",
     "repo": "googleapis/python-pubsublite",
     "distribution_name": "google-cloud-pubsublite",
     "api_id": "pubsublite.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "@googleapis/api-pubsublite"
+    "codeowner_team": "@googleapis/api-pubsublite",
+    "api_shortname": "pubsublite"
 }
