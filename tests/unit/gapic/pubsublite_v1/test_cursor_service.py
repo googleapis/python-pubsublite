@@ -247,20 +247,20 @@ def test_cursor_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -319,7 +319,7 @@ def test_cursor_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -414,7 +414,7 @@ def test_cursor_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -445,7 +445,7 @@ def test_cursor_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -478,9 +478,8 @@ def test_cursor_service_client_client_options_from_dict():
         )
 
 
-def test_streaming_commit_cursor(
-    transport: str = "grpc", request_type=cursor.StreamingCommitCursorRequest
-):
+@pytest.mark.parametrize("request_type", [cursor.StreamingCommitCursorRequest, dict,])
+def test_streaming_commit_cursor(request_type, transport: str = "grpc"):
     client = CursorServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -506,10 +505,6 @@ def test_streaming_commit_cursor(
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, cursor.StreamingCommitCursorResponse)
-
-
-def test_streaming_commit_cursor_from_dict():
-    test_streaming_commit_cursor(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -551,9 +546,8 @@ async def test_streaming_commit_cursor_async_from_dict():
     await test_streaming_commit_cursor_async(request_type=dict)
 
 
-def test_commit_cursor(
-    transport: str = "grpc", request_type=cursor.CommitCursorRequest
-):
+@pytest.mark.parametrize("request_type", [cursor.CommitCursorRequest, dict,])
+def test_commit_cursor(request_type, transport: str = "grpc"):
     client = CursorServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -575,10 +569,6 @@ def test_commit_cursor(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cursor.CommitCursorResponse)
-
-
-def test_commit_cursor_from_dict():
-    test_commit_cursor(request_type=dict)
 
 
 def test_commit_cursor_empty_call():
@@ -687,9 +677,8 @@ async def test_commit_cursor_field_headers_async():
     ]
 
 
-def test_list_partition_cursors(
-    transport: str = "grpc", request_type=cursor.ListPartitionCursorsRequest
-):
+@pytest.mark.parametrize("request_type", [cursor.ListPartitionCursorsRequest, dict,])
+def test_list_partition_cursors(request_type, transport: str = "grpc"):
     client = CursorServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -716,10 +705,6 @@ def test_list_partition_cursors(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPartitionCursorsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_partition_cursors_from_dict():
-    test_list_partition_cursors(request_type=dict)
 
 
 def test_list_partition_cursors_empty_call():
@@ -911,8 +896,10 @@ async def test_list_partition_cursors_flattened_error_async():
         )
 
 
-def test_list_partition_cursors_pager():
-    client = CursorServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_partition_cursors_pager(transport_name: str = "grpc"):
+    client = CursorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -953,8 +940,10 @@ def test_list_partition_cursors_pager():
         assert all(isinstance(i, cursor.PartitionCursor) for i in results)
 
 
-def test_list_partition_cursors_pages():
-    client = CursorServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_partition_cursors_pages(transport_name: str = "grpc"):
+    client = CursorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1579,7 +1568,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
