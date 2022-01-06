@@ -22,7 +22,9 @@ documentation at https://cloud.google.com/pubsub/lite/docs/topics.
 import argparse
 
 
-def update_lite_topic(project_number, cloud_region, zone_id, topic_id, reservation_id):
+def update_lite_topic(
+    project_number, cloud_region, zone_id, topic_id, reservation_id, regional
+):
     # [START pubsublite_update_topic]
     from google.api_core.exceptions import NotFound
     from google.cloud.pubsublite import AdminClient, Topic
@@ -41,9 +43,16 @@ def update_lite_topic(project_number, cloud_region, zone_id, topic_id, reservati
     # zone_id = "a"
     # topic_id = "your-topic-id"
     # reservation_id = "your-reservation-id"
+    # regional = True
 
-    cloud_region = CloudRegion(cloud_region)
-    location = CloudZone(cloud_region, zone_id)
+    location = None
+    if regional:
+        #  A region.
+        location = CloudRegion(cloud_region)
+    else:
+        #  A zone.
+        location = CloudZone(CloudRegion(cloud_region), zone_id)
+
     topic_path = TopicPath(project_number, location, topic_id)
     reservation_path = ReservationPath(project_number, cloud_region, reservation_id)
 
@@ -98,6 +107,7 @@ if __name__ == "__main__":
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("topic_id", help="Your topic ID")
     parser.add_argument("reservation_id", help="Your reservation ID")
+    parser.add_argument("regional", type=bool, help="Regional topic or not")
 
     args = parser.parse_args()
 
@@ -107,4 +117,5 @@ if __name__ == "__main__":
         args.zone_id,
         args.topic_id,
         args.reservation_id,
+        args.regional,
     )

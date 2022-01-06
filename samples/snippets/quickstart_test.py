@@ -209,26 +209,46 @@ def test_create_lite_topic_example(reservation, capsys):
     assert f"{wanted_zonal_topic_path} (zonal topic) created successfully." in out
 
 
-def test_update_lite_topic_example(zonal_topic, reservation, capsys):
+def test_update_lite_topic_example(zonal_topic, regional_topic, reservation, capsys):
     import update_lite_topic_example
 
     reservation_path_object = ReservationPath.parse(reservation.name)
 
     update_lite_topic_example.update_lite_topic(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, reservation_path_object.name,
+        PROJECT_NUMBER,
+        CLOUD_REGION,
+        ZONE_ID,
+        TOPIC_ID,
+        reservation_path_object.name,
+        True,
+    )
+
+    update_lite_topic_example.update_lite_topic(
+        PROJECT_NUMBER,
+        CLOUD_REGION,
+        ZONE_ID,
+        TOPIC_ID,
+        reservation_path_object.name,
+        False,
     )
     out, _ = capsys.readouterr()
     assert f"{zonal_topic.name} updated successfully." in out
+    assert f"{regional_topic.name} updated successfully." in out
 
 
-def test_get_lite_topic_example(zonal_topic, capsys):
+def test_get_lite_topic_example(zonal_topic, regional_topic, capsys):
     import get_lite_topic_example
 
     get_lite_topic_example.get_lite_topic(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, True
+    )
+
+    get_lite_topic_example.get_lite_topic(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, False
     )
     out, _ = capsys.readouterr()
     assert f"{zonal_topic.name} has {NUM_PARTITIONS} partition(s)." in out
+    assert f"{regional_topic.name} has {NUM_PARTITIONS} partition(s)." in out
 
 
 def test_list_lite_topics_example(zonal_topic, regional_topic, capsys):
