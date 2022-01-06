@@ -245,20 +245,20 @@ def test_admin_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -315,7 +315,7 @@ def test_admin_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -410,7 +410,7 @@ def test_admin_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -441,7 +441,7 @@ def test_admin_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -472,7 +472,8 @@ def test_admin_service_client_client_options_from_dict():
         )
 
 
-def test_create_topic(transport: str = "grpc", request_type=admin.CreateTopicRequest):
+@pytest.mark.parametrize("request_type", [admin.CreateTopicRequest, dict,])
+def test_create_topic(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -495,10 +496,6 @@ def test_create_topic(transport: str = "grpc", request_type=admin.CreateTopicReq
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.Topic)
     assert response.name == "name_value"
-
-
-def test_create_topic_from_dict():
-    test_create_topic(request_type=dict)
 
 
 def test_create_topic_empty_call():
@@ -692,7 +689,8 @@ async def test_create_topic_flattened_error_async():
         )
 
 
-def test_get_topic(transport: str = "grpc", request_type=admin.GetTopicRequest):
+@pytest.mark.parametrize("request_type", [admin.GetTopicRequest, dict,])
+def test_get_topic(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -715,10 +713,6 @@ def test_get_topic(transport: str = "grpc", request_type=admin.GetTopicRequest):
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.Topic)
     assert response.name == "name_value"
-
-
-def test_get_topic_from_dict():
-    test_get_topic(request_type=dict)
 
 
 def test_get_topic_empty_call():
@@ -886,9 +880,8 @@ async def test_get_topic_flattened_error_async():
         )
 
 
-def test_get_topic_partitions(
-    transport: str = "grpc", request_type=admin.GetTopicPartitionsRequest
-):
+@pytest.mark.parametrize("request_type", [admin.GetTopicPartitionsRequest, dict,])
+def test_get_topic_partitions(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -913,10 +906,6 @@ def test_get_topic_partitions(
     # Establish that the response is the type that we expect.
     assert isinstance(response, admin.TopicPartitions)
     assert response.partition_count == 1634
-
-
-def test_get_topic_partitions_from_dict():
-    test_get_topic_partitions(request_type=dict)
 
 
 def test_get_topic_partitions_empty_call():
@@ -1100,7 +1089,8 @@ async def test_get_topic_partitions_flattened_error_async():
         )
 
 
-def test_list_topics(transport: str = "grpc", request_type=admin.ListTopicsRequest):
+@pytest.mark.parametrize("request_type", [admin.ListTopicsRequest, dict,])
+def test_list_topics(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1125,10 +1115,6 @@ def test_list_topics(transport: str = "grpc", request_type=admin.ListTopicsReque
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTopicsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_topics_from_dict():
-    test_list_topics(request_type=dict)
 
 
 def test_list_topics_empty_call():
@@ -1300,8 +1286,10 @@ async def test_list_topics_flattened_error_async():
         )
 
 
-def test_list_topics_pager():
-    client = AdminServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_topics_pager(transport_name: str = "grpc"):
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_topics), "__call__") as call:
@@ -1330,8 +1318,10 @@ def test_list_topics_pager():
         assert all(isinstance(i, common.Topic) for i in results)
 
 
-def test_list_topics_pages():
-    client = AdminServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_topics_pages(transport_name: str = "grpc"):
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_topics), "__call__") as call:
@@ -1406,7 +1396,8 @@ async def test_list_topics_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_update_topic(transport: str = "grpc", request_type=admin.UpdateTopicRequest):
+@pytest.mark.parametrize("request_type", [admin.UpdateTopicRequest, dict,])
+def test_update_topic(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1429,10 +1420,6 @@ def test_update_topic(transport: str = "grpc", request_type=admin.UpdateTopicReq
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.Topic)
     assert response.name == "name_value"
-
-
-def test_update_topic_from_dict():
-    test_update_topic(request_type=dict)
 
 
 def test_update_topic_empty_call():
@@ -1616,7 +1603,8 @@ async def test_update_topic_flattened_error_async():
         )
 
 
-def test_delete_topic(transport: str = "grpc", request_type=admin.DeleteTopicRequest):
+@pytest.mark.parametrize("request_type", [admin.DeleteTopicRequest, dict,])
+def test_delete_topic(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1638,10 +1626,6 @@ def test_delete_topic(transport: str = "grpc", request_type=admin.DeleteTopicReq
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_topic_from_dict():
-    test_delete_topic(request_type=dict)
 
 
 def test_delete_topic_empty_call():
@@ -1806,9 +1790,8 @@ async def test_delete_topic_flattened_error_async():
         )
 
 
-def test_list_topic_subscriptions(
-    transport: str = "grpc", request_type=admin.ListTopicSubscriptionsRequest
-):
+@pytest.mark.parametrize("request_type", [admin.ListTopicSubscriptionsRequest, dict,])
+def test_list_topic_subscriptions(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1837,10 +1820,6 @@ def test_list_topic_subscriptions(
     assert isinstance(response, pagers.ListTopicSubscriptionsPager)
     assert response.subscriptions == ["subscriptions_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_topic_subscriptions_from_dict():
-    test_list_topic_subscriptions(request_type=dict)
 
 
 def test_list_topic_subscriptions_empty_call():
@@ -2028,8 +2007,10 @@ async def test_list_topic_subscriptions_flattened_error_async():
         )
 
 
-def test_list_topic_subscriptions_pager():
-    client = AdminServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_topic_subscriptions_pager(transport_name: str = "grpc"):
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2063,8 +2044,10 @@ def test_list_topic_subscriptions_pager():
         assert all(isinstance(i, str) for i in results)
 
 
-def test_list_topic_subscriptions_pages():
-    client = AdminServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_topic_subscriptions_pages(transport_name: str = "grpc"):
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2154,9 +2137,8 @@ async def test_list_topic_subscriptions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_create_subscription(
-    transport: str = "grpc", request_type=admin.CreateSubscriptionRequest
-):
+@pytest.mark.parametrize("request_type", [admin.CreateSubscriptionRequest, dict,])
+def test_create_subscription(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2182,10 +2164,6 @@ def test_create_subscription(
     assert isinstance(response, common.Subscription)
     assert response.name == "name_value"
     assert response.topic == "topic_value"
-
-
-def test_create_subscription_from_dict():
-    test_create_subscription(request_type=dict)
 
 
 def test_create_subscription_empty_call():
@@ -2392,9 +2370,8 @@ async def test_create_subscription_flattened_error_async():
         )
 
 
-def test_get_subscription(
-    transport: str = "grpc", request_type=admin.GetSubscriptionRequest
-):
+@pytest.mark.parametrize("request_type", [admin.GetSubscriptionRequest, dict,])
+def test_get_subscription(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2418,10 +2395,6 @@ def test_get_subscription(
     assert isinstance(response, common.Subscription)
     assert response.name == "name_value"
     assert response.topic == "topic_value"
-
-
-def test_get_subscription_from_dict():
-    test_get_subscription(request_type=dict)
 
 
 def test_get_subscription_empty_call():
@@ -2590,9 +2563,8 @@ async def test_get_subscription_flattened_error_async():
         )
 
 
-def test_list_subscriptions(
-    transport: str = "grpc", request_type=admin.ListSubscriptionsRequest
-):
+@pytest.mark.parametrize("request_type", [admin.ListSubscriptionsRequest, dict,])
+def test_list_subscriptions(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2619,10 +2591,6 @@ def test_list_subscriptions(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSubscriptionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_subscriptions_from_dict():
-    test_list_subscriptions(request_type=dict)
 
 
 def test_list_subscriptions_empty_call():
@@ -2806,8 +2774,10 @@ async def test_list_subscriptions_flattened_error_async():
         )
 
 
-def test_list_subscriptions_pager():
-    client = AdminServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_subscriptions_pager(transport_name: str = "grpc"):
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2846,8 +2816,10 @@ def test_list_subscriptions_pager():
         assert all(isinstance(i, common.Subscription) for i in results)
 
 
-def test_list_subscriptions_pages():
-    client = AdminServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_subscriptions_pages(transport_name: str = "grpc"):
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2952,9 +2924,8 @@ async def test_list_subscriptions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_update_subscription(
-    transport: str = "grpc", request_type=admin.UpdateSubscriptionRequest
-):
+@pytest.mark.parametrize("request_type", [admin.UpdateSubscriptionRequest, dict,])
+def test_update_subscription(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2980,10 +2951,6 @@ def test_update_subscription(
     assert isinstance(response, common.Subscription)
     assert response.name == "name_value"
     assert response.topic == "topic_value"
-
-
-def test_update_subscription_from_dict():
-    test_update_subscription(request_type=dict)
 
 
 def test_update_subscription_empty_call():
@@ -3186,9 +3153,8 @@ async def test_update_subscription_flattened_error_async():
         )
 
 
-def test_delete_subscription(
-    transport: str = "grpc", request_type=admin.DeleteSubscriptionRequest
-):
+@pytest.mark.parametrize("request_type", [admin.DeleteSubscriptionRequest, dict,])
+def test_delete_subscription(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3212,10 +3178,6 @@ def test_delete_subscription(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_subscription_from_dict():
-    test_delete_subscription(request_type=dict)
 
 
 def test_delete_subscription_empty_call():
@@ -3392,9 +3354,8 @@ async def test_delete_subscription_flattened_error_async():
         )
 
 
-def test_seek_subscription(
-    transport: str = "grpc", request_type=admin.SeekSubscriptionRequest
-):
+@pytest.mark.parametrize("request_type", [admin.SeekSubscriptionRequest, dict,])
+def test_seek_subscription(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3418,10 +3379,6 @@ def test_seek_subscription(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_seek_subscription_from_dict():
-    test_seek_subscription(request_type=dict)
 
 
 def test_seek_subscription_empty_call():
@@ -3532,9 +3489,8 @@ async def test_seek_subscription_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_create_reservation(
-    transport: str = "grpc", request_type=admin.CreateReservationRequest
-):
+@pytest.mark.parametrize("request_type", [admin.CreateReservationRequest, dict,])
+def test_create_reservation(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3562,10 +3518,6 @@ def test_create_reservation(
     assert isinstance(response, common.Reservation)
     assert response.name == "name_value"
     assert response.throughput_capacity == 2055
-
-
-def test_create_reservation_from_dict():
-    test_create_reservation(request_type=dict)
 
 
 def test_create_reservation_empty_call():
@@ -3772,9 +3724,8 @@ async def test_create_reservation_flattened_error_async():
         )
 
 
-def test_get_reservation(
-    transport: str = "grpc", request_type=admin.GetReservationRequest
-):
+@pytest.mark.parametrize("request_type", [admin.GetReservationRequest, dict,])
+def test_get_reservation(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3800,10 +3751,6 @@ def test_get_reservation(
     assert isinstance(response, common.Reservation)
     assert response.name == "name_value"
     assert response.throughput_capacity == 2055
-
-
-def test_get_reservation_from_dict():
-    test_get_reservation(request_type=dict)
 
 
 def test_get_reservation_empty_call():
@@ -3972,9 +3919,8 @@ async def test_get_reservation_flattened_error_async():
         )
 
 
-def test_list_reservations(
-    transport: str = "grpc", request_type=admin.ListReservationsRequest
-):
+@pytest.mark.parametrize("request_type", [admin.ListReservationsRequest, dict,])
+def test_list_reservations(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4001,10 +3947,6 @@ def test_list_reservations(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReservationsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_reservations_from_dict():
-    test_list_reservations(request_type=dict)
 
 
 def test_list_reservations_empty_call():
@@ -4188,8 +4130,10 @@ async def test_list_reservations_flattened_error_async():
         )
 
 
-def test_list_reservations_pager():
-    client = AdminServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_reservations_pager(transport_name: str = "grpc"):
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4228,8 +4172,10 @@ def test_list_reservations_pager():
         assert all(isinstance(i, common.Reservation) for i in results)
 
 
-def test_list_reservations_pages():
-    client = AdminServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_reservations_pages(transport_name: str = "grpc"):
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4334,9 +4280,8 @@ async def test_list_reservations_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_update_reservation(
-    transport: str = "grpc", request_type=admin.UpdateReservationRequest
-):
+@pytest.mark.parametrize("request_type", [admin.UpdateReservationRequest, dict,])
+def test_update_reservation(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4364,10 +4309,6 @@ def test_update_reservation(
     assert isinstance(response, common.Reservation)
     assert response.name == "name_value"
     assert response.throughput_capacity == 2055
-
-
-def test_update_reservation_from_dict():
-    test_update_reservation(request_type=dict)
 
 
 def test_update_reservation_empty_call():
@@ -4568,9 +4509,8 @@ async def test_update_reservation_flattened_error_async():
         )
 
 
-def test_delete_reservation(
-    transport: str = "grpc", request_type=admin.DeleteReservationRequest
-):
+@pytest.mark.parametrize("request_type", [admin.DeleteReservationRequest, dict,])
+def test_delete_reservation(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4594,10 +4534,6 @@ def test_delete_reservation(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_reservation_from_dict():
-    test_delete_reservation(request_type=dict)
 
 
 def test_delete_reservation_empty_call():
@@ -4774,9 +4710,8 @@ async def test_delete_reservation_flattened_error_async():
         )
 
 
-def test_list_reservation_topics(
-    transport: str = "grpc", request_type=admin.ListReservationTopicsRequest
-):
+@pytest.mark.parametrize("request_type", [admin.ListReservationTopicsRequest, dict,])
+def test_list_reservation_topics(request_type, transport: str = "grpc"):
     client = AdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4804,10 +4739,6 @@ def test_list_reservation_topics(
     assert isinstance(response, pagers.ListReservationTopicsPager)
     assert response.topics == ["topics_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_reservation_topics_from_dict():
-    test_list_reservation_topics(request_type=dict)
 
 
 def test_list_reservation_topics_empty_call():
@@ -4994,8 +4925,10 @@ async def test_list_reservation_topics_flattened_error_async():
         )
 
 
-def test_list_reservation_topics_pager():
-    client = AdminServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_reservation_topics_pager(transport_name: str = "grpc"):
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5027,8 +4960,10 @@ def test_list_reservation_topics_pager():
         assert all(isinstance(i, str) for i in results)
 
 
-def test_list_reservation_topics_pages():
-    client = AdminServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_reservation_topics_pages(transport_name: str = "grpc"):
+    client = AdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5712,7 +5647,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
