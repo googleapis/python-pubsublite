@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-pubsublite/compare/v1.2.0...v1.3.0) (2022-01-11)
+
+
+### Features
+
+* add context manager support in client ([#255](https://github.com/googleapis/python-pubsublite/issues/255)) ([9ad887f](https://github.com/googleapis/python-pubsublite/commit/9ad887f16b4eb93d822db2ea831f7e8ea8a195e0))
+* Add ReassignmentHandler which is notified on client reassignment ([#242](https://github.com/googleapis/python-pubsublite/issues/242)) ([80fd5f6](https://github.com/googleapis/python-pubsublite/commit/80fd5f631f3667b8b38a3f459e48cb177874f86d))
+* remove warnings from reservation methods ([#249](https://github.com/googleapis/python-pubsublite/issues/249)) ([2defd91](https://github.com/googleapis/python-pubsublite/commit/2defd91cc0becc904bba3fc4c66ca2ccac5e89c8))
+* surface ReservationPath and Reservation ([#274](https://github.com/googleapis/python-pubsublite/issues/274)) ([eb50503](https://github.com/googleapis/python-pubsublite/commit/eb5050333a414267ef1ae9cf5a2af6fb700403a6))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([e2f7b98](https://github.com/googleapis/python-pubsublite/commit/e2f7b9864109ce9ce08d2e4740bc71888805f467))
+* add 'dict' annotation type to 'request' ([c69dc30](https://github.com/googleapis/python-pubsublite/commit/c69dc309f289bed566d0f34050920dfa951819ee))
+* **deps:** drop packaging dependency ([ce2e5ef](https://github.com/googleapis/python-pubsublite/commit/ce2e5ef952708776fccc6652fb2c485c35b48e2f))
+* improper types in pagers generation ([e2f7b98](https://github.com/googleapis/python-pubsublite/commit/e2f7b9864109ce9ce08d2e4740bc71888805f467))
+
 ## [1.2.0](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.4...v1.2.0) (2021-09-15)
 
 
