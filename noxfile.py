@@ -24,27 +24,26 @@ import shutil
 import nox
 
 
+PYTYPE_VERSION = "pytype==2021.09.09"
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-PYTYPE_VERSION = "pytype==2021.09.09"
-
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9", "3.10"]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
     "unit",
+    "pytype",  # Custom pytype session
     "system",
     "cover",
     "lint",
     "lint_setup_py",
     "blacken",
     "docs",
-    "pytype",  # Custom pytype session
 ]
 
 # Error if a python version is missing
@@ -108,13 +107,12 @@ def default(session):
         "py.test",
         "--quiet",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
-        "--cov=google/cloud",
+        "--cov=google",
         "--cov=tests/unit",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
         "--cov-fail-under=0",
-        "-v",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
@@ -185,7 +183,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=70")
+    session.run("coverage", "report", "--show-missing", "--fail-under=96")
 
     session.run("coverage", "erase")
 
@@ -210,6 +208,14 @@ def docs(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def pytype(session):
+    """Run type checks."""
+    install_test_deps(session)
+    session.install(PYTYPE_VERSION)
+    session.run("pytype", "google/cloud/pubsublite")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -245,11 +251,3 @@ def docfx(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def pytype(session):
-    """Run type checks."""
-    install_test_deps(session)
-    session.install(PYTYPE_VERSION)
-    session.run("pytype", "google/cloud/pubsublite")

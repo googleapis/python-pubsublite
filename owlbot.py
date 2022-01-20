@@ -24,30 +24,6 @@ common = gcp.CommonTemplates()
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
-    # Work around gapic generator bug: https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(library / f"google/cloud/pubsublite_{library.name}/types/common.py",
-                r""".
-    Attributes:""",
-                r""".\n
-    Attributes:"""
-    )
-
-    # Work around gapic generator bug: https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(library / f"google/cloud/pubsublite_{library.name}/types/common.py",
-                r""".
-        Attributes:""",
-                r""".\n
-        Attributes:""",
-    )
-
-    # Work around gapic generator bug: https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(library / f"google/cloud/pubsublite_{library.name}/types/common.py",
-                r""".
-            Attributes:""",
-                r""".\n
-            Attributes:""",
-    )
-
     excludes = [
         "docs/pubsublite_v1",  # generated GAPIC docs should be ignored
         "docs/index.rst",
@@ -65,20 +41,81 @@ s.remove_staging_dirs()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    cov_level=70,
+    cov_level=96,
     microgenerator=True,
     system_test_external_dependencies=["asynctest"],
     unit_test_external_dependencies=["asynctest"],
 )
-python.py_samples(skip_readmes=True)
+
 s.move(
     templated_files, 
     excludes=[
         ".coveragerc", # the microgenerator has a good coveragerc file
         "docs/multiprocessing.rst",  # exclude multiprocessing note
-        "noxfile.py",  # exclude to opt-in to pytype
     ]
 )  
 
+
+s.replace(
+    "noxfile.py",
+    """\
+BLACK_VERSION = "black==19.10b0"
+""",
+    """\
+PYTYPE_VERSION = "pytype==2021.09.09"
+BLACK_VERSION = "black==19.10b0"
+""",
+)
+
+# add pytype to nox.options.sessions
+s.replace("noxfile.py",
+    """nox.options.sessions = \[
+    "unit",""",
+    """nox.options.sessions = [
+    "unit",
+    "pytype", # Custom pytype session""",
+)
+
+# Extract installing dependencies into separate function
+s.replace("noxfile.py",
+"""def default\(session\):
+    # Install all test dependencies, then install this package in-place.
+""",
+
+"""def install_test_deps(session):"""
+)
+
+# Restore function `default()``
+s.replace("noxfile.py",
+"""# Run py.test against the unit tests.""",
+"""
+def default(session):
+    # Install all test dependencies, then install this package in-place.
+    install_test_deps(session)
+
+    # Run py.test against the unit tests."""
+)
+
+# add pytype nox session
+s.replace("noxfile.py",
+"""
+@nox.session\(python=DEFAULT_PYTHON_VERSION\)
+def docfx\(session\):""",
+"""
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def pytype(session):
+    \"\"\"Run type checks.\"\"\"
+    install_test_deps(session)
+    session.install(PYTYPE_VERSION)
+    session.run("pytype", "google/cloud/pubsublite")
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def docfx(session):"""
+)
+
+# Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
+s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=96")
+
+python.py_samples(skip_readmes=True)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
