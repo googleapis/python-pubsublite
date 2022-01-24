@@ -30,7 +30,6 @@ branchProtectionRules:
   requiredStatusCheckContexts:
     - 'Kokoro'
     - 'cla/google'
-    - 'Samples - Python 3.6'
     - 'Samples - Python 3.7'
     - 'Samples - Python 3.8'
     - 'Samples - Lint'
