@@ -37,9 +37,9 @@ __protobuf__ = proto.module(
 
 
 class InitialCommitCursorRequest(proto.Message):
-    r"""The first streaming request that must be sent on a newly-
-    pened stream. The client must wait for the response before
-    sending subsequent requests on the stream.
+    r"""The first streaming request that must be sent on a
+    newly-opened stream. The client must wait for the response
+    before sending subsequent requests on the stream.
 
     Attributes:
         subscription (str):
