@@ -22,7 +22,14 @@ documentation at https://cloud.google.com/pubsub/lite/docs/seek.
 import argparse
 
 
-def seek_lite_subscription(project_number, cloud_region, zone_id, subscription_id, seek_target, wait_for_operation):
+def seek_lite_subscription(
+    project_number,
+    cloud_region,
+    zone_id,
+    subscription_id,
+    seek_target,
+    wait_for_operation,
+):
     # [START pubsublite_seek_subscription]
     from google.api_core.exceptions import NotFound
     from google.cloud.pubsublite import AdminClient
@@ -83,8 +90,14 @@ if __name__ == "__main__":
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("subscription_id", help="Your subscription ID")
-    parser.add_argument("--target", default="BEGINNING", help="Seek target, e.g. 'BEGINNING, 'END' or a timestamp")
-    parser.add_argument("--wait_for_operation", help="Wait for the seek operation to complete")
+    parser.add_argument(
+        "--target",
+        default="BEGINNING",
+        help="Seek target, e.g. 'BEGINNING, 'END' or a timestamp",
+    )
+    parser.add_argument(
+        "--wait_for_operation", help="Wait for the seek operation to complete"
+    )
 
     args = parser.parse_args()
 
@@ -96,6 +109,10 @@ if __name__ == "__main__":
         seek_target = PublishTime(datetime.strptime(args.target, "%Y-%m-%d %H:%M:%S"))
 
     seek_lite_subscription(
-        args.project_number, args.cloud_region, args.zone_id,
-        args.subscription_id, seek_target, args.wait_for_operation
+        args.project_number,
+        args.cloud_region,
+        args.zone_id,
+        args.subscription_id,
+        seek_target,
+        args.wait_for_operation,
     )
