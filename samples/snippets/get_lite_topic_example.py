@@ -22,7 +22,7 @@ documentation at https://cloud.google.com/pubsub/lite/docs/topics.
 import argparse
 
 
-def get_lite_topic(project_number, cloud_region, zone_id, topic_id, regional):
+def get_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # [START pubsublite_get_topic]
     from google.api_core.exceptions import NotFound
     from google.cloud.pubsublite import AdminClient
@@ -33,16 +33,9 @@ def get_lite_topic(project_number, cloud_region, zone_id, topic_id, regional):
     # cloud_region = "us-central1"
     # zone_id = "a"
     # topic_id = "your-topic-id"
-    # regional = True
 
-    location = None
-    if regional:
-        #  A region.
-        location = CloudRegion(cloud_region)
-    else:
-        #  A zone.
-        location = CloudZone(CloudRegion(cloud_region), zone_id)
-
+    cloud_region = CloudRegion(cloud_region)
+    location = CloudZone(cloud_region, zone_id)
     topic_path = TopicPath(project_number, location, topic_id)
 
     client = AdminClient(cloud_region)
@@ -63,14 +56,9 @@ if __name__ == "__main__":
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("topic_id", help="Your topic ID")
-    parser.add_argument("regional", type=bool, help="Regional topic or not")
 
     args = parser.parse_args()
 
     get_lite_topic(
-        args.project_number,
-        args.cloud_region,
-        args.zone_id,
-        args.topic_id,
-        args.regional,
+        args.project_number, args.cloud_region, args.zone_id, args.topic_id,
     )

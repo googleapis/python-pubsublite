@@ -60,9 +60,7 @@ def receive_messages(
     def callback(message: PubsubMessage):
         message_data = message.data.decode("utf-8")
         metadata = MessageMetadata.decode(message.message_id)
-        print(
-            f"Received {message_data} of ordering key {message.ordering_key} with id {metadata}."
-        )
+        print(f"Received {message_data} of ordering key {message.ordering_key} with id {metadata}.")
         message.ack()
 
     # SubscriberClient() must be used in a `with` block or have __enter__() called before use.

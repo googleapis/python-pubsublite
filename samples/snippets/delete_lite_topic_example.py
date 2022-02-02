@@ -14,15 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This application demonstrates how to delete both a regional and zonal topic
-with the Pub/Sub Lite API. For more information, see the root level README.md
-and the documentation at https://cloud.google.com/pubsub/lite/docs/topics.
+"""This application demonstrates how to delete a topic with the Pub/Sub
+Lite API. For more information, see the root level README.md and the
+documentation at https://cloud.google.com/pubsub/lite/docs/topics.
 """
 
 import argparse
 
 
-def delete_lite_topic(project_number, cloud_region, zone_id, topic_id, regional):
+def delete_lite_topic(project_number, cloud_region, zone_id, topic_id):
     # [START pubsublite_delete_topic]
     from google.api_core.exceptions import NotFound
     from google.cloud.pubsublite import AdminClient
@@ -33,26 +33,15 @@ def delete_lite_topic(project_number, cloud_region, zone_id, topic_id, regional)
     # cloud_region = "us-central1"
     # zone_id = "a"
     # topic_id = "your-topic-id"
-    # regional = True
 
     cloud_region = CloudRegion(cloud_region)
-    topic_path = None
-    if regional:
-        #  A regional topic.
-        topic_path = TopicPath(project_number, cloud_region, topic_id)
-    else:
-        #  A zonal topic
-        topic_path = TopicPath(
-            project_number, CloudZone(cloud_region, zone_id), topic_id
-        )
+    location = CloudZone(cloud_region, zone_id)
+    topic_path = TopicPath(project_number, location, topic_id)
 
     client = AdminClient(cloud_region)
     try:
         client.delete_topic(topic_path)
-        if regional:
-            print(f"{topic_path} (regional topic) deleted successfully.")
-        else:
-            print(f"{topic_path} (zonal topic) deleted successfully.")
+        print(f"{topic_path} deleted successfully.")
     except NotFound:
         print(f"{topic_path} not found.")
     # [END pubsublite_delete_topic]
@@ -66,14 +55,9 @@ if __name__ == "__main__":
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("topic_id", help="Your topic ID")
-    parser.add_argument("regional", help="Regional topic or not")
 
     args = parser.parse_args()
 
     delete_lite_topic(
-        args.project_number,
-        args.cloud_region,
-        args.zone_id,
-        args.topic_id,
-        args.regional,
+        args.project_number, args.cloud_region, args.zone_id, args.topic_id,
     )
