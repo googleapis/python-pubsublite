@@ -71,9 +71,9 @@ class ComputeMessageStatsResponse(proto.Message):
         minimum_publish_time (google.protobuf.timestamp_pb2.Timestamp):
             The minimum publish timestamp across these
             messages. Note that publish timestamps within a
-            partition are not guaranteed to be non-
-            decreasing. The timestamp will be unset if there
-            are no messages.
+            partition are not guaranteed to be
+            non-decreasing. The timestamp will be unset if
+            there are no messages.
         minimum_event_time (google.protobuf.timestamp_pb2.Timestamp):
             The minimum event timestamp across these
             messages. For the purposes of this computation,
