@@ -236,6 +236,33 @@ class PartitionAssignmentServiceAsyncClient:
         updating the partitions it is connected to to reflect
         the new assignment.
 
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_assign_partitions():
+                # Create a client
+                client = pubsublite_v1.PartitionAssignmentServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.PartitionAssignmentRequest(
+                )
+
+                # This method expects an iterator which contains
+                # 'pubsublite_v1.PartitionAssignmentRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.assign_partitions(requests=request_generator())
+                for response in stream:
+                    print(response)
+
         Args:
             requests (AsyncIterator[`google.cloud.pubsublite_v1.types.PartitionAssignmentRequest`]):
                 The request object AsyncIterator. A request on the PartitionAssignment

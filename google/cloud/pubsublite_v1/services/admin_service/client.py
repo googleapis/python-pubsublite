@@ -449,6 +449,27 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Topic:
         r"""Creates a new topic.
 
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_create_topic():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.CreateTopicRequest(
+                    parent="parent_value",
+                    topic_id="topic_id_value",
+                )
+
+                # Make the request
+                response = client.create_topic(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.CreateTopicRequest, dict]):
                 The request object. Request for CreateTopic.
@@ -538,6 +559,26 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Topic:
         r"""Returns the topic configuration.
 
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_get_topic():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.GetTopicRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_topic(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.GetTopicRequest, dict]):
                 The request object. Request for GetTopic.
@@ -607,6 +648,27 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         r"""Returns the partition information for the requested
         topic.
 
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_get_topic_partitions():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.GetTopicPartitionsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_topic_partitions(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.GetTopicPartitionsRequest, dict]):
                 The request object. Request for GetTopicPartitions.
@@ -674,6 +736,25 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicsPager:
         r"""Returns the list of topics for the given project.
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_list_topics():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.ListTopicsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_topics(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.ListTopicsRequest, dict]):
@@ -755,6 +836,25 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Topic:
         r"""Updates properties of the specified topic.
 
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_update_topic():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.UpdateTopicRequest(
+                )
+
+                # Make the request
+                response = client.update_topic(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.UpdateTopicRequest, dict]):
                 The request object. Request for UpdateTopic.
@@ -834,6 +934,23 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> None:
         r"""Deletes the specified topic.
 
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_delete_topic():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.DeleteTopicRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_topic(request=request)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.DeleteTopicRequest, dict]):
                 The request object. Request for DeleteTopic.
@@ -897,6 +1014,26 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> pagers.ListTopicSubscriptionsPager:
         r"""Lists the subscriptions attached to the specified
         topic.
+
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_list_topic_subscriptions():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.ListTopicSubscriptionsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_topic_subscriptions(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.ListTopicSubscriptionsRequest, dict]):
@@ -977,6 +1114,27 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Subscription:
         r"""Creates a new subscription.
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_create_subscription():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.CreateSubscriptionRequest(
+                    parent="parent_value",
+                    subscription_id="subscription_id_value",
+                )
+
+                # Make the request
+                response = client.create_subscription(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.CreateSubscriptionRequest, dict]):
@@ -1069,6 +1227,26 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Subscription:
         r"""Returns the subscription configuration.
 
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_get_subscription():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.GetSubscriptionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_subscription(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.GetSubscriptionRequest, dict]):
                 The request object. Request for GetSubscription.
@@ -1140,6 +1318,26 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> pagers.ListSubscriptionsPager:
         r"""Returns the list of subscriptions for the given
         project.
+
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_list_subscriptions():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.ListSubscriptionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_subscriptions(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.ListSubscriptionsRequest, dict]):
@@ -1221,6 +1419,25 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Subscription:
         r"""Updates properties of the specified subscription.
 
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_update_subscription():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.UpdateSubscriptionRequest(
+                )
+
+                # Make the request
+                response = client.update_subscription(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.UpdateSubscriptionRequest, dict]):
                 The request object. Request for UpdateSubscription.
@@ -1301,6 +1518,23 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified subscription.
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_delete_subscription():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.DeleteSubscriptionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_subscription(request=request)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.DeleteSubscriptionRequest, dict]):
@@ -1390,6 +1624,30 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         will be aborted and the new invocation of seek will
         supersede it.
 
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_seek_subscription():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.SeekSubscriptionRequest(
+                    named_target="HEAD",
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.seek_subscription(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.SeekSubscriptionRequest, dict]):
                 The request object. Request for SeekSubscription.
@@ -1452,6 +1710,27 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Reservation:
         r"""Creates a new reservation.
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_create_reservation():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.CreateReservationRequest(
+                    parent="parent_value",
+                    reservation_id="reservation_id_value",
+                )
+
+                # Make the request
+                response = client.create_reservation(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.CreateReservationRequest, dict]):
@@ -1544,6 +1823,26 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Reservation:
         r"""Returns the reservation configuration.
 
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_get_reservation():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.GetReservationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_reservation(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.GetReservationRequest, dict]):
                 The request object. Request for GetReservation.
@@ -1615,6 +1914,26 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> pagers.ListReservationsPager:
         r"""Returns the list of reservations for the given
         project.
+
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_list_reservations():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.ListReservationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_reservations(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.ListReservationsRequest, dict]):
@@ -1695,6 +2014,25 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Reservation:
         r"""Updates properties of the specified reservation.
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_update_reservation():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.UpdateReservationRequest(
+                )
+
+                # Make the request
+                response = client.update_reservation(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.UpdateReservationRequest, dict]):
@@ -1777,6 +2115,23 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> None:
         r"""Deletes the specified reservation.
 
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_delete_reservation():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.DeleteReservationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_reservation(request=request)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.DeleteReservationRequest, dict]):
                 The request object. Request for DeleteReservation.
@@ -1841,6 +2196,26 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> pagers.ListReservationTopicsPager:
         r"""Lists the topics attached to the specified
         reservation.
+
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_list_reservation_topics():
+                # Create a client
+                client = pubsublite_v1.AdminServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.ListReservationTopicsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_reservation_topics(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.ListReservationTopicsRequest, dict]):

@@ -227,6 +227,33 @@ class CursorServiceAsyncClient:
         r"""Establishes a stream with the server for managing
         committed cursors.
 
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_streaming_commit_cursor():
+                # Create a client
+                client = pubsublite_v1.CursorServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.StreamingCommitCursorRequest(
+                )
+
+                # This method expects an iterator which contains
+                # 'pubsublite_v1.StreamingCommitCursorRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.streaming_commit_cursor(requests=request_generator())
+                for response in stream:
+                    print(response)
+
         Args:
             requests (AsyncIterator[`google.cloud.pubsublite_v1.types.StreamingCommitCursorRequest`]):
                 The request object AsyncIterator. A request sent from the client to
@@ -267,6 +294,24 @@ class CursorServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cursor.CommitCursorResponse:
         r"""Updates the committed cursor.
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_commit_cursor():
+                # Create a client
+                client = pubsublite_v1.CursorServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.CommitCursorRequest(
+                )
+
+                # Make the request
+                response = client.commit_cursor(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.CommitCursorRequest, dict]):
@@ -330,6 +375,25 @@ class CursorServiceAsyncClient:
     ) -> pagers.ListPartitionCursorsAsyncPager:
         r"""Returns all committed cursor information for a
         subscription.
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_list_partition_cursors():
+                # Create a client
+                client = pubsublite_v1.CursorServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.ListPartitionCursorsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_partition_cursors(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest, dict]):
