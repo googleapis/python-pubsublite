@@ -405,6 +405,37 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
         they will be processed by the server in the order that
         they are sent by the client on a given stream.
 
+
+
+        .. code-block::
+
+            from google.cloud import pubsublite_v1
+
+            def sample_publish():
+                # Create a client
+                client = pubsublite_v1.PublisherServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.PublishRequest(
+                )
+
+                # This method expects an iterator which contains
+                # 'pubsublite_v1.PublishRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.publish(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             requests (Iterator[google.cloud.pubsublite_v1.types.PublishRequest]):
                 The request object iterator. Request sent from the client to the
