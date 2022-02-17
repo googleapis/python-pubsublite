@@ -93,6 +93,9 @@ class PermanentFailable:
     def fail(self, err: GoogleAPICallError):
         if not self._failure_task.done():
             self._failure_task.set_exception(err)
+            # Ensure that even if _failure_task is never used, the exception is
+            # retrieved and the asyncio runtime doesn't print an error.
+            self._failure_task.exception()
 
     def error(self) -> Optional[GoogleAPICallError]:
         if not self._failure_task.done():
