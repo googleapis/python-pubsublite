@@ -42,3 +42,17 @@ def test_add_remove():
     restart_2 = batcher.request_for_restart()
     assert restart_2.allowed_bytes == 5
     assert restart_2.allowed_messages == 1
+
+
+def test_negative_bytes_not_negative_request():
+    batcher = FlowControlBatcher()
+    batcher.add(FlowControlRequest(allowed_bytes=10, allowed_messages=3))
+    restart_1 = batcher.request_for_restart()
+    assert restart_1.allowed_bytes == 10
+    assert restart_1.allowed_messages == 3
+    batcher.on_messages(
+        [SequencedMessage(size_bytes=10000), SequencedMessage(size_bytes=3)]
+    )
+    restart_2 = batcher.request_for_restart()
+    assert restart_2.allowed_bytes == 0
+    assert restart_2.allowed_messages == 1
