@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-pubsublite/compare/v1.3.0...v1.4.0) (2022-02-18)
+
+
+### Features
+
+* add api key support ([#291](https://github.com/googleapis/python-pubsublite/issues/291)) ([f0d65ca](https://github.com/googleapis/python-pubsublite/commit/f0d65ca7b1efec9eae2dda1481c4bfe978eaa2dd))
+
+
+### Bug Fixes
+
+* ensure bytes cannot go negative on requests sent to the server ([#300](https://github.com/googleapis/python-pubsublite/issues/300)) ([6d3690a](https://github.com/googleapis/python-pubsublite/commit/6d3690adbe3b55a9313ce62360d83a4da93a5958)), closes [#294](https://github.com/googleapis/python-pubsublite/issues/294)
+* ensure that _failure_task exception is always retrieved ([#301](https://github.com/googleapis/python-pubsublite/issues/301)) ([579abf3](https://github.com/googleapis/python-pubsublite/commit/579abf38902a8d5c8d66a07fe1607cb62b12132d))
+* resolve DuplicateCredentialArgs error when using credentials_file ([b7ed9ad](https://github.com/googleapis/python-pubsublite/commit/b7ed9adf8cad6bf9b52bbbacbec0d1bdf8af93fa))
+
 ## [1.3.0](https://www.github.com/googleapis/python-pubsublite/compare/v1.2.0...v1.3.0) (2022-01-06)
 
 
