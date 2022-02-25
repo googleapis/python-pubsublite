@@ -10,8 +10,8 @@
           "shortName": "CreateReservation"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_create_reservation_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_CreateReservation_async",
+      "file": "pubsublite_v1_generated_admin_service_create_reservation_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateReservation_async",
       "segments": [
         {
           "end": 45,
@@ -54,8 +54,8 @@
           "shortName": "CreateReservation"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_create_reservation_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_CreateReservation_sync",
+      "file": "pubsublite_v1_generated_admin_service_create_reservation_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateReservation_sync",
       "segments": [
         {
           "end": 45,
@@ -99,8 +99,8 @@
           "shortName": "CreateSubscription"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_create_subscription_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_CreateSubscription_async",
+      "file": "pubsublite_v1_generated_admin_service_create_subscription_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateSubscription_async",
       "segments": [
         {
           "end": 45,
@@ -143,8 +143,8 @@
           "shortName": "CreateSubscription"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_create_subscription_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_CreateSubscription_sync",
+      "file": "pubsublite_v1_generated_admin_service_create_subscription_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateSubscription_sync",
       "segments": [
         {
           "end": 45,
@@ -188,8 +188,8 @@
           "shortName": "CreateTopic"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_create_topic_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_CreateTopic_async",
+      "file": "pubsublite_v1_generated_admin_service_create_topic_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateTopic_async",
       "segments": [
         {
           "end": 45,
@@ -232,8 +232,8 @@
           "shortName": "CreateTopic"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_create_topic_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_CreateTopic_sync",
+      "file": "pubsublite_v1_generated_admin_service_create_topic_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateTopic_sync",
       "segments": [
         {
           "end": 45,
@@ -277,8 +277,8 @@
           "shortName": "DeleteReservation"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_delete_reservation_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_DeleteReservation_async",
+      "file": "pubsublite_v1_generated_admin_service_delete_reservation_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteReservation_async",
       "segments": [
         {
           "end": 42,
@@ -319,8 +319,8 @@
           "shortName": "DeleteReservation"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_delete_reservation_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_DeleteReservation_sync",
+      "file": "pubsublite_v1_generated_admin_service_delete_reservation_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteReservation_sync",
       "segments": [
         {
           "end": 42,
@@ -362,8 +362,8 @@
           "shortName": "DeleteSubscription"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_delete_subscription_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_DeleteSubscription_async",
+      "file": "pubsublite_v1_generated_admin_service_delete_subscription_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteSubscription_async",
       "segments": [
         {
           "end": 42,
@@ -404,8 +404,8 @@
           "shortName": "DeleteSubscription"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_delete_subscription_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_DeleteSubscription_sync",
+      "file": "pubsublite_v1_generated_admin_service_delete_subscription_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteSubscription_sync",
       "segments": [
         {
           "end": 42,
@@ -447,8 +447,8 @@
           "shortName": "DeleteTopic"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_delete_topic_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_DeleteTopic_async",
+      "file": "pubsublite_v1_generated_admin_service_delete_topic_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteTopic_async",
       "segments": [
         {
           "end": 42,
@@ -489,8 +489,8 @@
           "shortName": "DeleteTopic"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_delete_topic_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_DeleteTopic_sync",
+      "file": "pubsublite_v1_generated_admin_service_delete_topic_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteTopic_sync",
       "segments": [
         {
           "end": 42,
@@ -532,8 +532,8 @@
           "shortName": "GetReservation"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_get_reservation_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_GetReservation_async",
+      "file": "pubsublite_v1_generated_admin_service_get_reservation_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetReservation_async",
       "segments": [
         {
           "end": 44,
@@ -576,8 +576,8 @@
           "shortName": "GetReservation"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_get_reservation_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_GetReservation_sync",
+      "file": "pubsublite_v1_generated_admin_service_get_reservation_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetReservation_sync",
       "segments": [
         {
           "end": 44,
@@ -621,8 +621,8 @@
           "shortName": "GetSubscription"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_get_subscription_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_GetSubscription_async",
+      "file": "pubsublite_v1_generated_admin_service_get_subscription_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetSubscription_async",
       "segments": [
         {
           "end": 44,
@@ -665,8 +665,8 @@
           "shortName": "GetSubscription"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_get_subscription_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_GetSubscription_sync",
+      "file": "pubsublite_v1_generated_admin_service_get_subscription_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetSubscription_sync",
       "segments": [
         {
           "end": 44,
@@ -710,8 +710,8 @@
           "shortName": "GetTopicPartitions"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_get_topic_partitions_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_GetTopicPartitions_async",
+      "file": "pubsublite_v1_generated_admin_service_get_topic_partitions_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetTopicPartitions_async",
       "segments": [
         {
           "end": 44,
@@ -754,8 +754,8 @@
           "shortName": "GetTopicPartitions"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_get_topic_partitions_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_GetTopicPartitions_sync",
+      "file": "pubsublite_v1_generated_admin_service_get_topic_partitions_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetTopicPartitions_sync",
       "segments": [
         {
           "end": 44,
@@ -799,8 +799,8 @@
           "shortName": "GetTopic"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_get_topic_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_GetTopic_async",
+      "file": "pubsublite_v1_generated_admin_service_get_topic_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetTopic_async",
       "segments": [
         {
           "end": 44,
@@ -843,8 +843,8 @@
           "shortName": "GetTopic"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_get_topic_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_GetTopic_sync",
+      "file": "pubsublite_v1_generated_admin_service_get_topic_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetTopic_sync",
       "segments": [
         {
           "end": 44,
@@ -888,8 +888,8 @@
           "shortName": "ListReservationTopics"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_list_reservation_topics_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_ListReservationTopics_async",
+      "file": "pubsublite_v1_generated_admin_service_list_reservation_topics_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListReservationTopics_async",
       "segments": [
         {
           "end": 45,
@@ -932,8 +932,8 @@
           "shortName": "ListReservationTopics"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_list_reservation_topics_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_ListReservationTopics_sync",
+      "file": "pubsublite_v1_generated_admin_service_list_reservation_topics_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListReservationTopics_sync",
       "segments": [
         {
           "end": 45,
@@ -977,8 +977,8 @@
           "shortName": "ListReservations"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_list_reservations_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_ListReservations_async",
+      "file": "pubsublite_v1_generated_admin_service_list_reservations_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListReservations_async",
       "segments": [
         {
           "end": 45,
@@ -1021,8 +1021,8 @@
           "shortName": "ListReservations"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_list_reservations_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_ListReservations_sync",
+      "file": "pubsublite_v1_generated_admin_service_list_reservations_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListReservations_sync",
       "segments": [
         {
           "end": 45,
@@ -1066,8 +1066,8 @@
           "shortName": "ListSubscriptions"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_list_subscriptions_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_ListSubscriptions_async",
+      "file": "pubsublite_v1_generated_admin_service_list_subscriptions_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListSubscriptions_async",
       "segments": [
         {
           "end": 45,
@@ -1110,8 +1110,8 @@
           "shortName": "ListSubscriptions"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_list_subscriptions_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_ListSubscriptions_sync",
+      "file": "pubsublite_v1_generated_admin_service_list_subscriptions_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListSubscriptions_sync",
       "segments": [
         {
           "end": 45,
@@ -1155,8 +1155,8 @@
           "shortName": "ListTopicSubscriptions"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_list_topic_subscriptions_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_ListTopicSubscriptions_async",
+      "file": "pubsublite_v1_generated_admin_service_list_topic_subscriptions_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListTopicSubscriptions_async",
       "segments": [
         {
           "end": 45,
@@ -1199,8 +1199,8 @@
           "shortName": "ListTopicSubscriptions"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_list_topic_subscriptions_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_ListTopicSubscriptions_sync",
+      "file": "pubsublite_v1_generated_admin_service_list_topic_subscriptions_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListTopicSubscriptions_sync",
       "segments": [
         {
           "end": 45,
@@ -1244,8 +1244,8 @@
           "shortName": "ListTopics"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_list_topics_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_ListTopics_async",
+      "file": "pubsublite_v1_generated_admin_service_list_topics_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListTopics_async",
       "segments": [
         {
           "end": 45,
@@ -1288,8 +1288,8 @@
           "shortName": "ListTopics"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_list_topics_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_ListTopics_sync",
+      "file": "pubsublite_v1_generated_admin_service_list_topics_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListTopics_sync",
       "segments": [
         {
           "end": 45,
@@ -1333,8 +1333,8 @@
           "shortName": "SeekSubscription"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_seek_subscription_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_SeekSubscription_async",
+      "file": "pubsublite_v1_generated_admin_service_seek_subscription_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_SeekSubscription_async",
       "segments": [
         {
           "end": 49,
@@ -1377,8 +1377,8 @@
           "shortName": "SeekSubscription"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_seek_subscription_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_SeekSubscription_sync",
+      "file": "pubsublite_v1_generated_admin_service_seek_subscription_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_SeekSubscription_sync",
       "segments": [
         {
           "end": 49,
@@ -1422,8 +1422,8 @@
           "shortName": "UpdateReservation"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_update_reservation_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_UpdateReservation_async",
+      "file": "pubsublite_v1_generated_admin_service_update_reservation_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateReservation_async",
       "segments": [
         {
           "end": 43,
@@ -1466,8 +1466,8 @@
           "shortName": "UpdateReservation"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_update_reservation_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_UpdateReservation_sync",
+      "file": "pubsublite_v1_generated_admin_service_update_reservation_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateReservation_sync",
       "segments": [
         {
           "end": 43,
@@ -1511,8 +1511,8 @@
           "shortName": "UpdateSubscription"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_update_subscription_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_UpdateSubscription_async",
+      "file": "pubsublite_v1_generated_admin_service_update_subscription_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateSubscription_async",
       "segments": [
         {
           "end": 43,
@@ -1555,8 +1555,8 @@
           "shortName": "UpdateSubscription"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_update_subscription_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_UpdateSubscription_sync",
+      "file": "pubsublite_v1_generated_admin_service_update_subscription_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateSubscription_sync",
       "segments": [
         {
           "end": 43,
@@ -1600,8 +1600,8 @@
           "shortName": "UpdateTopic"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_update_topic_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_UpdateTopic_async",
+      "file": "pubsublite_v1_generated_admin_service_update_topic_async.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateTopic_async",
       "segments": [
         {
           "end": 43,
@@ -1644,8 +1644,8 @@
           "shortName": "UpdateTopic"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_admin_service_update_topic_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_AdminService_UpdateTopic_sync",
+      "file": "pubsublite_v1_generated_admin_service_update_topic_sync.py",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateTopic_sync",
       "segments": [
         {
           "end": 43,
@@ -1689,8 +1689,8 @@
           "shortName": "CommitCursor"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_cursor_service_commit_cursor_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_CursorService_CommitCursor_async",
+      "file": "pubsublite_v1_generated_cursor_service_commit_cursor_async.py",
+      "regionTag": "pubsublite_v1_generated_CursorService_CommitCursor_async",
       "segments": [
         {
           "end": 43,
@@ -1733,8 +1733,8 @@
           "shortName": "CommitCursor"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_cursor_service_commit_cursor_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_CursorService_CommitCursor_sync",
+      "file": "pubsublite_v1_generated_cursor_service_commit_cursor_sync.py",
+      "regionTag": "pubsublite_v1_generated_CursorService_CommitCursor_sync",
       "segments": [
         {
           "end": 43,
@@ -1778,8 +1778,8 @@
           "shortName": "ListPartitionCursors"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_cursor_service_list_partition_cursors_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_CursorService_ListPartitionCursors_async",
+      "file": "pubsublite_v1_generated_cursor_service_list_partition_cursors_async.py",
+      "regionTag": "pubsublite_v1_generated_CursorService_ListPartitionCursors_async",
       "segments": [
         {
           "end": 45,
@@ -1822,8 +1822,8 @@
           "shortName": "ListPartitionCursors"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_cursor_service_list_partition_cursors_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_CursorService_ListPartitionCursors_sync",
+      "file": "pubsublite_v1_generated_cursor_service_list_partition_cursors_sync.py",
+      "regionTag": "pubsublite_v1_generated_CursorService_ListPartitionCursors_sync",
       "segments": [
         {
           "end": 45,
@@ -1867,8 +1867,8 @@
           "shortName": "StreamingCommitCursor"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_cursor_service_streaming_commit_cursor_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_CursorService_StreamingCommitCursor_async",
+      "file": "pubsublite_v1_generated_cursor_service_streaming_commit_cursor_async.py",
+      "regionTag": "pubsublite_v1_generated_CursorService_StreamingCommitCursor_async",
       "segments": [
         {
           "end": 54,
@@ -1911,8 +1911,8 @@
           "shortName": "StreamingCommitCursor"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_cursor_service_streaming_commit_cursor_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_CursorService_StreamingCommitCursor_sync",
+      "file": "pubsublite_v1_generated_cursor_service_streaming_commit_cursor_sync.py",
+      "regionTag": "pubsublite_v1_generated_CursorService_StreamingCommitCursor_sync",
       "segments": [
         {
           "end": 54,
@@ -1956,8 +1956,8 @@
           "shortName": "AssignPartitions"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_partition_assignment_service_assign_partitions_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_PartitionAssignmentService_AssignPartitions_async",
+      "file": "pubsublite_v1_generated_partition_assignment_service_assign_partitions_async.py",
+      "regionTag": "pubsublite_v1_generated_PartitionAssignmentService_AssignPartitions_async",
       "segments": [
         {
           "end": 54,
@@ -2000,8 +2000,8 @@
           "shortName": "AssignPartitions"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_partition_assignment_service_assign_partitions_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_PartitionAssignmentService_AssignPartitions_sync",
+      "file": "pubsublite_v1_generated_partition_assignment_service_assign_partitions_sync.py",
+      "regionTag": "pubsublite_v1_generated_PartitionAssignmentService_AssignPartitions_sync",
       "segments": [
         {
           "end": 54,
@@ -2045,8 +2045,8 @@
           "shortName": "Publish"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_publisher_service_publish_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_PublisherService_Publish_async",
+      "file": "pubsublite_v1_generated_publisher_service_publish_async.py",
+      "regionTag": "pubsublite_v1_generated_PublisherService_Publish_async",
       "segments": [
         {
           "end": 54,
@@ -2089,8 +2089,8 @@
           "shortName": "Publish"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_publisher_service_publish_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_PublisherService_Publish_sync",
+      "file": "pubsublite_v1_generated_publisher_service_publish_sync.py",
+      "regionTag": "pubsublite_v1_generated_PublisherService_Publish_sync",
       "segments": [
         {
           "end": 54,
@@ -2134,8 +2134,8 @@
           "shortName": "Subscribe"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_subscriber_service_subscribe_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_SubscriberService_Subscribe_async",
+      "file": "pubsublite_v1_generated_subscriber_service_subscribe_async.py",
+      "regionTag": "pubsublite_v1_generated_SubscriberService_Subscribe_async",
       "segments": [
         {
           "end": 54,
@@ -2178,8 +2178,8 @@
           "shortName": "Subscribe"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_subscriber_service_subscribe_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_SubscriberService_Subscribe_sync",
+      "file": "pubsublite_v1_generated_subscriber_service_subscribe_sync.py",
+      "regionTag": "pubsublite_v1_generated_SubscriberService_Subscribe_sync",
       "segments": [
         {
           "end": 54,
@@ -2223,8 +2223,8 @@
           "shortName": "ComputeHeadCursor"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_topic_stats_service_compute_head_cursor_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_TopicStatsService_ComputeHeadCursor_async",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_head_cursor_async.py",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeHeadCursor_async",
       "segments": [
         {
           "end": 45,
@@ -2267,8 +2267,8 @@
           "shortName": "ComputeHeadCursor"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_topic_stats_service_compute_head_cursor_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_TopicStatsService_ComputeHeadCursor_sync",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_head_cursor_sync.py",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeHeadCursor_sync",
       "segments": [
         {
           "end": 45,
@@ -2312,8 +2312,8 @@
           "shortName": "ComputeMessageStats"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_topic_stats_service_compute_message_stats_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_TopicStatsService_ComputeMessageStats_async",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_message_stats_async.py",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeMessageStats_async",
       "segments": [
         {
           "end": 45,
@@ -2356,8 +2356,8 @@
           "shortName": "ComputeMessageStats"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_topic_stats_service_compute_message_stats_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_TopicStatsService_ComputeMessageStats_sync",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_message_stats_sync.py",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeMessageStats_sync",
       "segments": [
         {
           "end": 45,
@@ -2401,8 +2401,8 @@
           "shortName": "ComputeTimeCursor"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_topic_stats_service_compute_time_cursor_async.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_TopicStatsService_ComputeTimeCursor_async",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_time_cursor_async.py",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeTimeCursor_async",
       "segments": [
         {
           "end": 45,
@@ -2445,8 +2445,8 @@
           "shortName": "ComputeTimeCursor"
         }
       },
-      "file": "pubsublite_generated_pubsublite_v1_topic_stats_service_compute_time_cursor_sync.py",
-      "regionTag": "pubsublite_generated_pubsublite_v1_TopicStatsService_ComputeTimeCursor_sync",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_time_cursor_sync.py",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeTimeCursor_sync",
       "segments": [
         {
           "end": 45,

@@ -449,8 +449,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Topic:
         r"""Creates a new topic.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -559,8 +558,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Topic:
         r"""Returns the topic configuration.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -649,8 +647,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         topic.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -737,8 +734,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> pagers.ListTopicsPager:
         r"""Returns the list of topics for the given project.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -838,8 +834,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Topic:
         r"""Updates properties of the specified topic.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -936,8 +931,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> None:
         r"""Deletes the specified topic.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -1018,8 +1012,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         topic.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -1119,8 +1112,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Subscription:
         r"""Creates a new subscription.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -1231,8 +1223,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Subscription:
         r"""Returns the subscription configuration.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -1324,8 +1315,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -1425,8 +1415,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Subscription:
         r"""Updates properties of the specified subscription.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -1525,8 +1514,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> None:
         r"""Deletes the specified subscription.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -1631,8 +1619,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         supersede it.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -1719,8 +1706,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Reservation:
         r"""Creates a new reservation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -1831,8 +1817,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Reservation:
         r"""Returns the reservation configuration.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -1924,8 +1909,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         project.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -2025,8 +2009,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> common.Reservation:
         r"""Updates properties of the specified reservation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -2125,8 +2108,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
     ) -> None:
         r"""Deletes the specified reservation.
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -2208,8 +2190,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         reservation.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 

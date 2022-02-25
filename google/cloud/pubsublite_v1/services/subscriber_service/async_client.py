@@ -223,7 +223,7 @@ class SubscriberServiceAsyncClient:
         messages.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 

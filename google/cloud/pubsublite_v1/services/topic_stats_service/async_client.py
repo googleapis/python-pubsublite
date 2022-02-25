@@ -217,7 +217,7 @@ class TopicStatsServiceAsyncClient:
         given topic and partition.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -294,7 +294,7 @@ class TopicStatsServiceAsyncClient:
         messages in the partition.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -365,7 +365,7 @@ class TopicStatsServiceAsyncClient:
         event time in a topic partition.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
