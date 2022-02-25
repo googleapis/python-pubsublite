@@ -233,7 +233,7 @@ class PublisherServiceAsyncClient:
         they are sent by the client on a given stream.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 

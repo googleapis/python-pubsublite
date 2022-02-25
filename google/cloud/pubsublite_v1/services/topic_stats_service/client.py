@@ -416,8 +416,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         given topic and partition.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -495,8 +494,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         messages in the partition.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -568,8 +566,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         event time in a topic partition.
 
 
-
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 

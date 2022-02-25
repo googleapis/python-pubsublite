@@ -237,7 +237,7 @@ class PartitionAssignmentServiceAsyncClient:
         the new assignment.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 

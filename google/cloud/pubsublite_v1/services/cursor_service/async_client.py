@@ -228,7 +228,7 @@ class CursorServiceAsyncClient:
         committed cursors.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -298,7 +298,7 @@ class CursorServiceAsyncClient:
     ) -> cursor.CommitCursorResponse:
         r"""Updates the committed cursor.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
@@ -380,7 +380,7 @@ class CursorServiceAsyncClient:
         subscription.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import pubsublite_v1
 
