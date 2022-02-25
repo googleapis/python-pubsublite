@@ -415,6 +415,27 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         r"""Compute statistics about a range of messages in a
         given topic and partition.
 
+
+        .. code-block:: python
+
+            from google.cloud import pubsublite_v1
+
+            def sample_compute_message_stats():
+                # Create a client
+                client = pubsublite_v1.TopicStatsServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.ComputeMessageStatsRequest(
+                    topic="topic_value",
+                    partition=986,
+                )
+
+                # Make the request
+                response = client.compute_message_stats(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest, dict]):
                 The request object. Compute statistics about a range of
@@ -472,6 +493,27 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         acknowledged. It is zero if there have never been
         messages in the partition.
 
+
+        .. code-block:: python
+
+            from google.cloud import pubsublite_v1
+
+            def sample_compute_head_cursor():
+                # Create a client
+                client = pubsublite_v1.TopicStatsServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.ComputeHeadCursorRequest(
+                    topic="topic_value",
+                    partition=986,
+                )
+
+                # Make the request
+                response = client.compute_head_cursor(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest, dict]):
                 The request object. Compute the current head cursor for
@@ -522,6 +564,27 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
     ) -> topic_stats.ComputeTimeCursorResponse:
         r"""Compute the corresponding cursor for a publish or
         event time in a topic partition.
+
+
+        .. code-block:: python
+
+            from google.cloud import pubsublite_v1
+
+            def sample_compute_time_cursor():
+                # Create a client
+                client = pubsublite_v1.TopicStatsServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.ComputeTimeCursorRequest(
+                    topic="topic_value",
+                    partition=986,
+                )
+
+                # Make the request
+                response = client.compute_time_cursor(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.ComputeTimeCursorRequest, dict]):

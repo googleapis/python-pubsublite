@@ -222,6 +222,36 @@ class SubscriberServiceAsyncClient:
         r"""Establishes a stream with the server for receiving
         messages.
 
+
+        .. code-block:: python
+
+            from google.cloud import pubsublite_v1
+
+            def sample_subscribe():
+                # Create a client
+                client = pubsublite_v1.SubscriberServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsublite_v1.SubscribeRequest(
+                )
+
+                # This method expects an iterator which contains
+                # 'pubsublite_v1.SubscribeRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.subscribe(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             requests (AsyncIterator[`google.cloud.pubsublite_v1.types.SubscribeRequest`]):
                 The request object AsyncIterator. A request sent from the client to
