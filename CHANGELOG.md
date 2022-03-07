@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.1](https://github.com/googleapis/python-pubsublite/compare/v1.4.0...v1.4.1) (2022-03-07)
+
+
+### Bug Fixes
+
+* ignore the implementation details of message acknowledgements from the cloud Pub/Sub Message ([#312](https://github.com/googleapis/python-pubsublite/issues/312)) ([19da693](https://github.com/googleapis/python-pubsublite/commit/19da69375de4feadf4575028f0f76d1ffb9623d7)), closes [#311](https://github.com/googleapis/python-pubsublite/issues/311)
+
 ## [1.4.0](https://github.com/googleapis/python-pubsublite/compare/v1.3.0...v1.4.0) (2022-02-18)
 
 
