@@ -105,7 +105,8 @@ class SinglePartitionSingleSubscriber(
     def _on_ack_threadsafe(self, ack_id: AckId, should_ack: bool) -> None:
         """A function called when a message is acked, may happen from any thread."""
         if should_ack:
-            return self._loop.call_soon_threadsafe(lambda: self._handle_ack(ack_id))
+            self._loop.call_soon_threadsafe(lambda: self._handle_ack(ack_id))
+            return
         try:
             sized_message = self._messages_by_ack_id[ack_id]
             # Call the threadsafe version on ack since the callback may be called from another thread.
@@ -114,7 +115,7 @@ class SinglePartitionSingleSubscriber(
             )
         except Exception as e:
             e2 = adapt_error(e)
-            return self._loop.call_soon_threadsafe(lambda: self.fail(e2))
+            self._loop.call_soon_threadsafe(lambda: self.fail(e2))
 
     async def read(self) -> List[Message]:
         try:
