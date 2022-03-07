@@ -25,7 +25,7 @@ from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker import AckSetTracker
 from google.cloud.pubsublite.cloudpubsub.internal.single_partition_subscriber import (
     SinglePartitionSingleSubscriber,
-    _AckId,
+    AckId,
 )
 from google.cloud.pubsublite.cloudpubsub.message_transformer import MessageTransformer
 from google.cloud.pubsublite.cloudpubsub.nack_handler import NackHandler
@@ -48,7 +48,7 @@ def mock_async_context_manager(cm):
 
 
 def ack_id(generation, offset) -> str:
-    return _AckId(generation, offset).encode()
+    return AckId(generation, offset).encode()
 
 
 @pytest.fixture()
