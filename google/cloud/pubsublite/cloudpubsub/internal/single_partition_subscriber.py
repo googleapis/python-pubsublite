@@ -59,7 +59,7 @@ class SinglePartitionSingleSubscriber(
     _ack_generation_id: int
     _messages_by_ack_id: Dict[AckId, _SizedMessage]
 
-    _loop: asyncio.BaseEventLoop
+    _loop: asyncio.AbstractEventLoop
 
     def __init__(
         self,
