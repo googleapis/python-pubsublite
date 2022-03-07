@@ -6,8 +6,6 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 from google.pubsub_v1 import PubsubMessage
 from google.cloud.pubsub_v1.subscriber.exceptions import AcknowledgeStatus
 
-from google.cloud.pubsublite.internal import fast_serialize
-
 
 class AckId(NamedTuple):
     generation: int

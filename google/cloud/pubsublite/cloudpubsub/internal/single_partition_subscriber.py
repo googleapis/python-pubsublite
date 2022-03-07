@@ -13,16 +13,13 @@
 # limitations under the License.
 
 import asyncio
-from typing import Callable, Union, List, Dict, NamedTuple
-import queue
+from typing import Callable, List, Dict, NamedTuple
 
-from google.api_core.exceptions import FailedPrecondition, GoogleAPICallError
+from google.api_core.exceptions import GoogleAPICallError
 from google.cloud.pubsub_v1.subscriber.message import Message
 from google.pubsub_v1 import PubsubMessage
 
-from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_cancelled
 from google.cloud.pubsublite.internal.wire.permanent_failable import adapt_error
-from google.cloud.pubsublite.internal import fast_serialize
 from google.cloud.pubsublite.types import FlowControlSettings
 from google.cloud.pubsublite.cloudpubsub.internal.ack_set_tracker import AckSetTracker
 from google.cloud.pubsublite.cloudpubsub.internal.wrapped_message import (
@@ -40,7 +37,6 @@ from google.cloud.pubsublite.internal.wire.subscriber_reset_handler import (
     SubscriberResetHandler,
 )
 from google.cloud.pubsublite_v1 import FlowControlRequest, SequencedMessage
-from google.cloud.pubsub_v1.subscriber._protocol import requests
 
 
 class _SizedMessage(NamedTuple):
@@ -141,29 +137,6 @@ class SinglePartitionSingleSubscriber(
                 self._ack_set_tracker.ack(ack_id.offset)
             except GoogleAPICallError as e:
                 self.fail(e)
-
-    async def _handle_queue_message(
-        self,
-        message: Union[
-            requests.AckRequest,
-            requests.DropRequest,
-            requests.ModAckRequest,
-            requests.NackRequest,
-        ],
-    ):
-        if isinstance(message, requests.DropRequest) or isinstance(
-            message, requests.ModAckRequest
-        ):
-            self.fail(
-                FailedPrecondition(
-                    "Called internal method of google.cloud.pubsub_v1.subscriber.message.Message "
-                    f"Pub/Sub Lite does not support: {message}"
-                )
-            )
-        elif isinstance(message, requests.AckRequest):
-            self._handle_ack(message)
-        else:
-            self._handle_nack(message)
 
     async def __aenter__(self):
         self._loop = asyncio.get_event_loop()
