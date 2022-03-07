@@ -118,7 +118,6 @@ class SinglePartitionSingleSubscriber(
             )
         except Exception as e:
             e2 = adapt_error(e)
-            do_fail = lambda: self.fail(e2)
             return self._loop.call_soon_threadsafe(lambda: self.fail(e2))
 
     async def read(self) -> List[Message]:
