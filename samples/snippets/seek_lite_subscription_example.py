@@ -29,6 +29,7 @@ def seek_lite_subscription(
     subscription_id,
     seek_target,
     wait_for_operation,
+    regional,
 ):
     # [START pubsublite_seek_subscription]
     from google.api_core.exceptions import NotFound
@@ -42,6 +43,7 @@ def seek_lite_subscription(
     # subscription_id = "your-subscription-id"
     # seek_target = BacklogLocation.BEGINNING
     # wait_for_operation = False
+    # regional = True
 
     # Possible values for seek_target:
     # - BacklogLocation.BEGINNING: replays from the beginning of all retained
@@ -57,8 +59,11 @@ def seek_lite_subscription(
     # target. If subscribers are offline, the operation will complete once they
     # are online.
 
-    cloud_region = CloudRegion(cloud_region)
-    location = CloudZone(cloud_region, zone_id)
+    if regional:
+        location = CloudRegion(cloud_region)
+    else:
+        location = CloudZone(CloudRegion(cloud_region), zone_id)
+
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
 
     client = AdminClient(cloud_region)
@@ -98,6 +103,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--wait_for_operation", help="Wait for the seek operation to complete"
     )
+    parser.add_argument("regional", help="True if using a regional resource else zonal")
 
     args = parser.parse_args()
 
@@ -115,4 +121,5 @@ if __name__ == "__main__":
         args.subscription_id,
         seek_target,
         args.wait_for_operation,
+        args.regional,
     )

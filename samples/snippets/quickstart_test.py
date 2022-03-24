@@ -145,14 +145,43 @@ def regional_topic(client, reservation):
 
 
 @pytest.fixture(scope="module")
-def subscription(client, zonal_topic):
-    """Creates a subscription resource"""
+def zonal_subscription(client, zonal_topic):
+    """Creates a zonal subscription resource"""
     location = CloudZone(CloudRegion(CLOUD_REGION), ZONE_ID)
     subscription_path_object = SubscriptionPath(
         PROJECT_NUMBER, location, SUBSCRIPTION_ID
     )
     subscription_path = str(subscription_path_object)
     zonal_topic_path = zonal_topic.name
+    subscription = Subscription(
+        name=subscription_path,
+        topic=zonal_topic_path,
+        delivery_config=Subscription.DeliveryConfig(
+            delivery_requirement=Subscription.DeliveryConfig.DeliveryRequirement.DELIVER_IMMEDIATELY,
+        ),
+    )
+
+    try:
+        response = client.create_subscription(subscription)
+    except AlreadyExists:
+        response = client.get_subscription(subscription_path)
+
+    yield response
+    try:
+        client.delete_subscription(response.name)
+    except NotFound:
+        print(f"Subscription {response.name} has been cleaned up.")
+
+
+@pytest.fixture(scope="module")
+def regional_subscription(client, regional_topic):
+    """Creates a regional subscription resource"""
+    location = CloudRegion(CLOUD_REGION)
+    subscription_path_object = SubscriptionPath(
+        PROJECT_NUMBER, location, SUBSCRIPTION_ID
+    )
+    subscription_path = str(subscription_path_object)
+    zonal_topic_path = regional_topic.name
     subscription = Subscription(
         name=subscription_path,
         topic=zonal_topic_path,
@@ -321,119 +350,178 @@ def test_list_lite_topics_example(zonal_topic, regional_topic, capsys):
 def test_create_lite_subscription(capsys):
     import create_lite_subscription_example
 
-    wanted_subscription_path = f"projects/{PROJECT_NUMBER}/locations/{CLOUD_REGION}-{ZONE_ID}/subscriptions/{SUBSCRIPTION_ID}"
+    wanted_regional_subscription_path = f"projects/{PROJECT_NUMBER}/locations/{CLOUD_REGION}/subscriptions/{SUBSCRIPTION_ID}"
+    wanted_zonal_subscription_path = f"projects/{PROJECT_NUMBER}/locations/{CLOUD_REGION}-{ZONE_ID}/subscriptions/{SUBSCRIPTION_ID}"
 
     create_lite_subscription_example.create_lite_subscription(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, SUBSCRIPTION_ID,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, SUBSCRIPTION_ID, True
+    )
+    create_lite_subscription_example.create_lite_subscription(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, SUBSCRIPTION_ID, False
     )
     out, _ = capsys.readouterr()
-    assert f"{wanted_subscription_path} created successfully." in out
+    assert f"{wanted_regional_subscription_path} created successfully." in out
+    assert f"{wanted_zonal_subscription_path} created successfully." in out
 
 
-def test_update_lite_subscription_example(subscription, capsys):
+def test_update_lite_subscription_example(
+    zonal_subscription, regional_subscription, capsys
+):
     import update_lite_subscription_example
 
     update_lite_subscription_example.update_lite_subscription(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, True
+    )
+    update_lite_subscription_example.update_lite_subscription(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, False
     )
     out, _ = capsys.readouterr()
-    assert f"{subscription.name} updated successfully." in out
+    assert f"{zonal_subscription.name} updated successfully." in out
+    assert f"{regional_subscription.name} updated successfully." in out
 
 
-def test_get_lite_subscription(subscription, capsys):
+def test_get_lite_subscription(zonal_subscription, regional_subscription, capsys):
     import get_lite_subscription_example
 
     get_lite_subscription_example.get_lite_subscription(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, True
+    )
+    get_lite_subscription_example.get_lite_subscription(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, False
     )
     out, _ = capsys.readouterr()
-    assert f"{subscription.name} exists." in out
+    assert f"{zonal_subscription.name} exists." in out
+    assert f"{regional_subscription.name} exists." in out
 
 
-def test_list_lite_subscriptions_in_project(subscription, capsys):
+def test_list_lite_subscriptions_in_project(
+    zonal_subscription, regional_subscription, capsys
+):
     import list_lite_subscriptions_in_project_example
 
     list_lite_subscriptions_in_project_example.list_lite_subscriptions_in_project(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, True
+    )
+    list_lite_subscriptions_in_project_example.list_lite_subscriptions_in_project(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, False
     )
     out, _ = capsys.readouterr()
-    assert f"{subscription.name}" in out
+    assert f"{zonal_subscription.name}" in out
+    assert f"{regional_subscription.name}" in out
     assert "subscription(s) listed in your project and location." in out
 
 
-def test_list_lite_subscriptions_in_topic(subscription, capsys):
+def test_list_lite_subscriptions_in_topic(
+    zonal_subscription, regional_subscription, capsys
+):
     import list_lite_subscriptions_in_topic_example
 
     list_lite_subscriptions_in_topic_example.list_lite_subscriptions_in_topic(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, True
+    )
+    list_lite_subscriptions_in_topic_example.list_lite_subscriptions_in_topic(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, False
     )
     out, _ = capsys.readouterr()
-    assert f"{subscription.name}" in out
+    assert f"{zonal_subscription.name}" in out
+    assert f"{regional_subscription.name}" in out
     assert "subscription(s) listed in your topic." in out
 
 
-def test_publisher_example(capsys):
+def test_publisher_example(zonal_topic, regional_topic, capsys):
     import publisher_example
 
     publisher_example.publish_messages(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, True
+    )
+    publisher_example.publish_messages(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, False
     )
     out, _ = capsys.readouterr()
     assert "Published a message" in out
+    assert f"{zonal_topic.name}" in out
+    assert f"{regional_topic.name}" in out
 
 
-def test_publish_with_custom_attributes_example(zonal_topic, capsys):
+def test_publish_with_custom_attributes_example(zonal_topic, regional_topic, capsys):
     import publish_with_custom_attributes_example
 
     publish_with_custom_attributes_example.publish_with_custom_attributes(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, True
+    )
+    publish_with_custom_attributes_example.publish_with_custom_attributes(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, False
     )
     out, _ = capsys.readouterr()
     assert (
         f"Finished publishing a message with custom attributes to {zonal_topic.name}."
         in out
     )
+    assert (
+        f"Finished publishing a message with custom attributes to {regional_topic.name}."
+        in out
+    )
 
 
-def test_publish_with_odering_key_example(zonal_topic, capsys):
+def test_publish_with_odering_key_example(zonal_topic, regional_topic, capsys):
     import publish_with_ordering_key_example
 
     publish_with_ordering_key_example.publish_with_odering_key(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, 10,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, 10, True
+    )
+    publish_with_ordering_key_example.publish_with_odering_key(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, 10, False
     )
     out, _ = capsys.readouterr()
     assert (
         f"Finished publishing {NUM_MESSAGES} messages with an ordering key to {zonal_topic.name}."
         in out
     )
+    assert (
+        f"Finished publishing {NUM_MESSAGES} messages with an ordering key to {regional_topic.name}."
+        in out
+    )
 
 
-def test_publish_with_batch_settings_example(zonal_topic, capsys):
+def test_publish_with_batch_settings_example(zonal_topic, regional_topic, capsys):
     import publish_with_batch_settings_example
 
     publish_with_batch_settings_example.publish_with_batch_settings(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, NUM_MESSAGES,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, NUM_MESSAGES, True
+    )
+    publish_with_batch_settings_example.publish_with_batch_settings(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, NUM_MESSAGES, False
     )
     out, _ = capsys.readouterr()
     assert (
         f"Finished publishing {NUM_MESSAGES} messages with batch settings to {zonal_topic.name}."
         in out
     )
+    assert (
+        f"Finished publishing {NUM_MESSAGES} messages with batch settings to {regional_topic.name}."
+        in out
+    )
 
 
-def test_subscriber_example(subscription, capsys):
+def test_subscriber_example(zonal_subscription, regional_subscription, capsys):
     import subscriber_example
 
     subscriber_example.receive_messages(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, 45,
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, 45, True
+    )
+    subscriber_example.receive_messages(
+        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, 45, False
     )
     out, _ = capsys.readouterr()
-    assert f"Listening for messages on {subscription.name}..." in out
+    assert f"Listening for messages on {zonal_subscription.name}..." in out
+    assert f"Listening for messages on {regional_subscription.name}..." in out
     for message in range(NUM_MESSAGES):
         assert f"Received {message}" in out
 
 
-def test_seek_lite_subscription_example(subscription, capsys):
+def test_seek_lite_subscription_example(
+    zonal_subscription, regional_subscription, capsys
+):
     import seek_lite_subscription_example
 
     seek_lite_subscription_example.seek_lite_subscription(
@@ -443,23 +531,42 @@ def test_seek_lite_subscription_example(subscription, capsys):
         SUBSCRIPTION_ID,
         BacklogLocation.BEGINNING,
         False,
+        True,
+    )
+    seek_lite_subscription_example.seek_lite_subscription(
+        PROJECT_NUMBER,
+        CLOUD_REGION,
+        ZONE_ID,
+        SUBSCRIPTION_ID,
+        BacklogLocation.BEGINNING,
+        False,
+        False,
     )
     out, _ = capsys.readouterr()
     assert "Seek operation" in out
 
 
-def test_delete_lite_subscription_example(subscription, capsys):
+def test_delete_lite_subscription_example(
+    zonal_subscription, regional_subscription, capsys
+):
     import delete_lite_subscription_example
 
     @backoff.on_exception(backoff.expo, AssertionError, max_time=MAX_TIME)
     def eventually_consistent_test():
         delete_lite_subscription_example.delete_lite_subscription(
-            PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID,
+            PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, True
+        )
+        delete_lite_subscription_example.delete_lite_subscription(
+            PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, SUBSCRIPTION_ID, False
         )
         out, _ = capsys.readouterr()
         assert (
-            f"{subscription.name} deleted successfully."
-            or f"{subscription.name} not found." in out
+            f"{zonal_subscription.name} deleted successfully."
+            or f"{zonal_subscription.name} not found." in out
+        )
+        assert (
+            f"{regional_subscription.name} deleted successfully."
+            or f"{regional_subscription.name} not found." in out
         )
 
     eventually_consistent_test()

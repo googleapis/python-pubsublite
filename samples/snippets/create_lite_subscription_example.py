@@ -23,7 +23,7 @@ import argparse
 
 
 def create_lite_subscription(
-    project_number, cloud_region, zone_id, topic_id, subscription_id
+    project_number, cloud_region, zone_id, topic_id, subscription_id, regional
 ):
     # [START pubsublite_create_subscription]
     from google.api_core.exceptions import AlreadyExists
@@ -41,11 +41,16 @@ def create_lite_subscription(
     # zone_id = "a"
     # topic_id = "your-topic-id"
     # subscription_id = "your-subscription-id"
+    # regional = True
 
-    cloud_region = CloudRegion(cloud_region)
-    location = CloudZone(cloud_region, zone_id)
+    if regional:
+        location = CloudRegion(cloud_region)
+    else:
+        location = CloudZone(CloudRegion(cloud_region), zone_id)
+
     topic_path = TopicPath(project_number, location, topic_id)
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
+
     subscription = Subscription(
         name=str(subscription_path),
         topic=str(topic_path),
@@ -78,6 +83,7 @@ if __name__ == "__main__":
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("topic_id", help="Your topic ID")
     parser.add_argument("subscription_id", help="Your subscription ID")
+    parser.add_argument("regional", help="True if the resource is regional else zonal")
 
     args = parser.parse_args()
 
@@ -87,4 +93,5 @@ if __name__ == "__main__":
         args.zone_id,
         args.topic_id,
         args.subscription_id,
+        args.regional,
     )

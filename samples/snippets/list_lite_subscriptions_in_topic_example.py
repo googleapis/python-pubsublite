@@ -22,7 +22,9 @@ documentation at https://cloud.google.com/pubsub/lite/docs/subscriptions.
 import argparse
 
 
-def list_lite_subscriptions_in_topic(project_number, cloud_region, zone_id, topic_id):
+def list_lite_subscriptions_in_topic(
+    project_number, cloud_region, zone_id, topic_id, regional
+):
     # [START pubsublite_list_subscriptions_in_topic]
     from google.cloud.pubsublite import AdminClient
     from google.cloud.pubsublite.types import CloudRegion, CloudZone, TopicPath
@@ -32,9 +34,13 @@ def list_lite_subscriptions_in_topic(project_number, cloud_region, zone_id, topi
     # cloud_region = "us-central1"
     # zone_id = "a"
     # topic_id = "your-topic-id"
+    # regional = True
 
-    cloud_region = CloudRegion(cloud_region)
-    location = CloudZone(cloud_region, zone_id)
+    if regional:
+        location = CloudRegion(cloud_region)
+    else:
+        location = CloudZone(CloudRegion(cloud_region), zone_id)
+
     topic_path = TopicPath(project_number, location, topic_id)
 
     client = AdminClient(cloud_region)
@@ -55,9 +61,14 @@ if __name__ == "__main__":
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("topic_id", help="Your topic ID")
+    parser.add_argument("regional", help="True if using a regional location else zonal")
 
     args = parser.parse_args()
 
     list_lite_subscriptions_in_topic(
-        args.project_number, args.cloud_region, args.zone_id, args.topic_id,
+        args.project_number,
+        args.cloud_region,
+        args.zone_id,
+        args.topic_id,
+        args.regional,
     )
