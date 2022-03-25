@@ -23,7 +23,7 @@ import argparse
 
 
 def receive_messages(
-    project_number, cloud_region, zone_id, subscription_id, timeout=90
+    project_number, cloud_region, zone_id, subscription_id, timeout, regional
 ):
     # [START pubsublite_quickstart_subscriber]
     from concurrent.futures._base import TimeoutError
@@ -43,8 +43,13 @@ def receive_messages(
     # zone_id = "a"
     # subscription_id = "your-subscription-id"
     # timeout = 90
+    # regional = True
 
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    if regional:
+        location = CloudRegion(cloud_region)
+    else:
+        location = CloudZone(CloudRegion(cloud_region), zone_id)
+
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
     # Configure when to pause the message stream for more incoming messages based on the
     # maximum size or number of messages that a single-partition subscriber has received,
@@ -92,12 +97,9 @@ if __name__ == "__main__":
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("subscription_id", help="Your subscription ID")
     parser.add_argument(
-        "timeout",
-        nargs="?",
-        default=90,
-        type=int,
-        help="Timeout in second (default to 90s)",
+        "timeout", nargs="?", type=int, help="Timeout in second",
     )
+    parser.add_argument("regional", "True if using a regional resource else zonal")
 
     args = parser.parse_args()
 
@@ -107,4 +109,5 @@ if __name__ == "__main__":
         args.zone_id,
         args.subscription_id,
         args.timeout,
+        args.regional,
     )

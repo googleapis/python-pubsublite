@@ -22,7 +22,9 @@ documentation at https://cloud.google.com/pubsub/lite/docs/subscriptions.
 import argparse
 
 
-def delete_lite_subscription(project_number, cloud_region, zone_id, subscription_id):
+def delete_lite_subscription(
+    project_number, cloud_region, zone_id, subscription_id, regional
+):
     # [START pubsublite_delete_subscription]
     from google.api_core.exceptions import NotFound
     from google.cloud.pubsublite import AdminClient
@@ -33,9 +35,13 @@ def delete_lite_subscription(project_number, cloud_region, zone_id, subscription
     # cloud_region = "us-central1"
     # zone_id = "a"
     # subscription_id = "your-subscription-id"
+    # regional = True
 
-    cloud_region = CloudRegion(cloud_region)
-    location = CloudZone(cloud_region, zone_id)
+    if regional:
+        location = CloudRegion(cloud_region)
+    else:
+        location = CloudZone(CloudRegion(cloud_region), zone_id)
+
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
 
     client = AdminClient(cloud_region)
@@ -55,9 +61,14 @@ if __name__ == "__main__":
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("subscription_id", help="Your subscription ID")
+    parser.add_argument("regional", help="True if using a regional resource else zonal")
 
     args = parser.parse_args()
 
     delete_lite_subscription(
-        args.project_number, args.cloud_region, args.zone_id, args.subscription_id,
+        args.project_number,
+        args.cloud_region,
+        args.zone_id,
+        args.subscription_id,
+        args.regional,
     )
