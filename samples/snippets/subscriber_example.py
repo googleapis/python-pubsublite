@@ -21,20 +21,19 @@ documentation at https://cloud.google.com/pubsub/lite/docs/subscribing.
 
 import argparse
 
-from google.cloud.pubsublite.types import MessageMetadata
-from google.pubsub_v1 import PubsubMessage
-
 
 def receive_messages(
     project_number, cloud_region, zone_id, subscription_id, timeout, regional
 ):
     # [START pubsublite_quickstart_subscriber]
     from concurrent.futures._base import TimeoutError
+    from google.pubsub_v1 import PubsubMessage
     from google.cloud.pubsublite.cloudpubsub import SubscriberClient
     from google.cloud.pubsublite.types import (
         CloudRegion,
         CloudZone,
         FlowControlSettings,
+        MessageMetadata,
         SubscriptionPath,
     )
 
