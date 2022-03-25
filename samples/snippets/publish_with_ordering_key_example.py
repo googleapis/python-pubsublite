@@ -23,7 +23,7 @@ import argparse
 
 
 def publish_with_odering_key(
-    project_number, cloud_region, zone_id, topic_id, num_messages
+    project_number, cloud_region, zone_id, topic_id, num_messages, regional
 ):
     # [START pubsublite_publish_ordering_key]
     from google.cloud.pubsublite.cloudpubsub import PublisherClient
@@ -40,8 +40,13 @@ def publish_with_odering_key(
     # zone_id = "a"
     # topic_id = "your-topic-id"
     # num_messages = 100
+    # regional = True
 
-    location = CloudZone(CloudRegion(cloud_region), zone_id)
+    if regional:
+        location = CloudRegion(cloud_region)
+    else:
+        location = CloudZone(CloudRegion(cloud_region), zone_id)
+
     topic_path = TopicPath(project_number, location, topic_id)
 
     # PublisherClient() must be used in a `with` block or have __enter__() called before use.
@@ -76,6 +81,7 @@ if __name__ == "__main__":
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("topic_id", help="Your topic ID")
     parser.add_argument("num_messages", type=int, help="Number of messages to publish")
+    parser.add_argument("regional", help="True if using a regional resource else zonal")
 
     args = parser.parse_args()
 
@@ -85,4 +91,5 @@ if __name__ == "__main__":
         args.zone_id,
         args.topic_id,
         args.num_messages,
+        args.regional,
     )

@@ -22,7 +22,9 @@ documentation at https://cloud.google.com/pubsub/lite/docs/subscriptions.
 import argparse
 
 
-def update_lite_subscription(project_number, cloud_region, zone_id, subscription_id):
+def update_lite_subscription(
+    project_number, cloud_region, zone_id, subscription_id, regional
+):
     # [START pubsublite_update_subscription]
     from google.api_core.exceptions import NotFound
     from google.cloud.pubsublite import AdminClient, Subscription
@@ -35,9 +37,13 @@ def update_lite_subscription(project_number, cloud_region, zone_id, subscription
     # zone_id = "a"
     # topic_id = "your-topic-id"
     # subscription_id = "your-subscription-id"
+    # regional = True
 
-    cloud_region = CloudRegion(cloud_region)
-    location = CloudZone(cloud_region, zone_id)
+    if regional:
+        location = CloudRegion(cloud_region)
+    else:
+        location = CloudZone(CloudRegion(cloud_region), zone_id)
+
     subscription_path = SubscriptionPath(project_number, location, subscription_id)
     field_mask = FieldMask(paths=["delivery_config.delivery_requirement"])
 
@@ -70,9 +76,14 @@ if __name__ == "__main__":
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("subscription_id", help="Your subscription ID")
+    parser.add_argument("regional", help="True if the resource is regional else zonal")
 
     args = parser.parse_args()
 
     update_lite_subscription(
-        args.project_number, args.cloud_region, args.zone_id, args.subscription_id,
+        args.project_number,
+        args.cloud_region,
+        args.zone_id,
+        args.subscription_id,
+        args.regional,
     )
