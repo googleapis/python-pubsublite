@@ -33,7 +33,7 @@ def receive_messages(
         CloudRegion,
         CloudZone,
         FlowControlSettings,
-        MessageMetaData,
+        MessageMetadata,
         SubscriptionPath,
     )
 
