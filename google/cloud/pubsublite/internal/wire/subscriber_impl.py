@@ -164,7 +164,8 @@ class SubscriberImpl(
                 allowed_bytes = sum(message.size_bytes for message in batch)
                 self._outstanding_flow_control.add(
                     FlowControlRequest(
-                        allowed_messages=len(batch), allowed_bytes=allowed_bytes,
+                        allowed_messages=len(batch),
+                        allowed_bytes=allowed_bytes,
                     )
                 )
 

@@ -57,7 +57,10 @@ class AdminServiceClientMeta(type):
     _transport_registry["grpc"] = AdminServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AdminServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[AdminServiceTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[AdminServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -165,10 +168,18 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def reservation_path(project: str, location: str, reservation: str,) -> str:
+    def reservation_path(
+        project: str,
+        location: str,
+        reservation: str,
+    ) -> str:
         """Returns a fully-qualified reservation string."""
-        return "projects/{project}/locations/{location}/reservations/{reservation}".format(
-            project=project, location=location, reservation=reservation,
+        return (
+            "projects/{project}/locations/{location}/reservations/{reservation}".format(
+                project=project,
+                location=location,
+                reservation=reservation,
+            )
         )
 
     @staticmethod
@@ -181,10 +192,16 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def subscription_path(project: str, location: str, subscription: str,) -> str:
+    def subscription_path(
+        project: str,
+        location: str,
+        subscription: str,
+    ) -> str:
         """Returns a fully-qualified subscription string."""
         return "projects/{project}/locations/{location}/subscriptions/{subscription}".format(
-            project=project, location=location, subscription=subscription,
+            project=project,
+            location=location,
+            subscription=subscription,
         )
 
     @staticmethod
@@ -197,10 +214,16 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def topic_path(project: str, location: str, topic: str,) -> str:
+    def topic_path(
+        project: str,
+        location: str,
+        topic: str,
+    ) -> str:
         """Returns a fully-qualified topic string."""
         return "projects/{project}/locations/{location}/topics/{topic}".format(
-            project=project, location=location, topic=topic,
+            project=project,
+            location=location,
+            topic=topic,
         )
 
     @staticmethod
@@ -213,7 +236,9 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -226,9 +251,13 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -237,9 +266,13 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -248,9 +281,13 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -259,10 +296,14 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -542,7 +583,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -629,7 +675,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -718,7 +769,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -811,12 +867,20 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTopicsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -915,7 +979,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -996,7 +1065,10 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_topic_subscriptions(
@@ -1088,12 +1160,20 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTopicSubscriptionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1207,7 +1287,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1297,7 +1382,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1392,12 +1482,20 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSubscriptionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1498,7 +1596,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1579,7 +1682,10 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def seek_subscription(
@@ -1680,7 +1786,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1801,7 +1912,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1891,7 +2007,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1986,12 +2107,20 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListReservationsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2092,7 +2221,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2174,7 +2308,10 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_reservation_topics(
@@ -2267,12 +2404,20 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListReservationTopicsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.

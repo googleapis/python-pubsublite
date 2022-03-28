@@ -43,13 +43,18 @@ class InitialPublishRequest(proto.Message):
             be in the range [0, topic.num_partitions).
     """
 
-    topic = proto.Field(proto.STRING, number=1,)
-    partition = proto.Field(proto.INT64, number=2,)
+    topic = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    partition = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class InitialPublishResponse(proto.Message):
-    r"""Response to an InitialPublishRequest.
-    """
+    r"""Response to an InitialPublishRequest."""
 
 
 class MessagePublishRequest(proto.Message):
@@ -61,7 +66,9 @@ class MessagePublishRequest(proto.Message):
     """
 
     messages = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=common.PubSubMessage,
+        proto.MESSAGE,
+        number=1,
+        message=common.PubSubMessage,
     )
 
 
@@ -76,7 +83,11 @@ class MessagePublishResponse(proto.Message):
             sequential.
     """
 
-    start_cursor = proto.Field(proto.MESSAGE, number=1, message=common.Cursor,)
+    start_cursor = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.Cursor,
+    )
 
 
 class PublishRequest(proto.Message):
@@ -101,10 +112,16 @@ class PublishRequest(proto.Message):
     """
 
     initial_request = proto.Field(
-        proto.MESSAGE, number=1, oneof="request_type", message="InitialPublishRequest",
+        proto.MESSAGE,
+        number=1,
+        oneof="request_type",
+        message="InitialPublishRequest",
     )
     message_publish_request = proto.Field(
-        proto.MESSAGE, number=2, oneof="request_type", message="MessagePublishRequest",
+        proto.MESSAGE,
+        number=2,
+        oneof="request_type",
+        message="MessagePublishRequest",
     )
 
 

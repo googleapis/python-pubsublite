@@ -115,7 +115,8 @@ class AssignerImpl(
 
     @overrides
     async def reinitialize(
-        self, connection: Connection[PartitionAssignmentRequest, PartitionAssignment],
+        self,
+        connection: Connection[PartitionAssignmentRequest, PartitionAssignment],
     ):
         await connection.write(PartitionAssignmentRequest(initial=self._initial))
         self._start_receiver()

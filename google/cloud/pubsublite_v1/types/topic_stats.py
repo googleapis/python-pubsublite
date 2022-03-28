@@ -52,10 +52,24 @@ class ComputeMessageStatsRequest(proto.Message):
             will retrieve all messages.
     """
 
-    topic = proto.Field(proto.STRING, number=1,)
-    partition = proto.Field(proto.INT64, number=2,)
-    start_cursor = proto.Field(proto.MESSAGE, number=3, message=common.Cursor,)
-    end_cursor = proto.Field(proto.MESSAGE, number=4, message=common.Cursor,)
+    topic = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    partition = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    start_cursor = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common.Cursor,
+    )
+    end_cursor = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=common.Cursor,
+    )
 
 
 class ComputeMessageStatsResponse(proto.Message):
@@ -82,13 +96,23 @@ class ComputeMessageStatsResponse(proto.Message):
             there are no messages.
     """
 
-    message_count = proto.Field(proto.INT64, number=1,)
-    message_bytes = proto.Field(proto.INT64, number=2,)
+    message_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    message_bytes = proto.Field(
+        proto.INT64,
+        number=2,
+    )
     minimum_publish_time = proto.Field(
-        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
     minimum_event_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -104,8 +128,14 @@ class ComputeHeadCursorRequest(proto.Message):
             compute the head cursor.
     """
 
-    topic = proto.Field(proto.STRING, number=1,)
-    partition = proto.Field(proto.INT64, number=2,)
+    topic = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    partition = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class ComputeHeadCursorResponse(proto.Message):
@@ -117,7 +147,11 @@ class ComputeHeadCursorResponse(proto.Message):
             The head cursor.
     """
 
-    head_cursor = proto.Field(proto.MESSAGE, number=1, message=common.Cursor,)
+    head_cursor = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.Cursor,
+    )
 
 
 class ComputeTimeCursorRequest(proto.Message):
@@ -137,9 +171,19 @@ class ComputeTimeCursorRequest(proto.Message):
             cursor.
     """
 
-    topic = proto.Field(proto.STRING, number=1,)
-    partition = proto.Field(proto.INT64, number=2,)
-    target = proto.Field(proto.MESSAGE, number=3, message=common.TimeTarget,)
+    topic = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    partition = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    target = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common.TimeTarget,
+    )
 
 
 class ComputeTimeCursorResponse(proto.Message):
@@ -154,7 +198,11 @@ class ComputeTimeCursorResponse(proto.Message):
             (i.e. ``cursor`` is not present).
     """
 
-    cursor = proto.Field(proto.MESSAGE, number=1, message=common.Cursor,)
+    cursor = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.Cursor,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

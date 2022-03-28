@@ -306,9 +306,24 @@ async def test_handle_reset(
         await ack_queue.get()
         underlying.allow_flow.assert_has_calls(
             [
-                call(FlowControlRequest(allowed_messages=1000, allowed_bytes=1000,)),
-                call(FlowControlRequest(allowed_messages=1, allowed_bytes=5,)),
-                call(FlowControlRequest(allowed_messages=1, allowed_bytes=10,)),
+                call(
+                    FlowControlRequest(
+                        allowed_messages=1000,
+                        allowed_bytes=1000,
+                    )
+                ),
+                call(
+                    FlowControlRequest(
+                        allowed_messages=1,
+                        allowed_bytes=5,
+                    )
+                ),
+                call(
+                    FlowControlRequest(
+                        allowed_messages=1,
+                        allowed_bytes=10,
+                    )
+                ),
             ]
         )
         ack_set_tracker.ack.assert_has_calls([call(2)])

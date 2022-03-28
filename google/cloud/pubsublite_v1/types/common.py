@@ -42,7 +42,10 @@ class AttributeValues(proto.Message):
             The list of values associated with a key.
     """
 
-    values = proto.RepeatedField(proto.BYTES, number=1,)
+    values = proto.RepeatedField(
+        proto.BYTES,
+        number=1,
+    )
 
 
 class PubSubMessage(proto.Message):
@@ -64,12 +67,25 @@ class PubSubMessage(proto.Message):
             An optional, user-specified event time.
     """
 
-    key = proto.Field(proto.BYTES, number=1,)
-    data = proto.Field(proto.BYTES, number=2,)
-    attributes = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=3, message="AttributeValues",
+    key = proto.Field(
+        proto.BYTES,
+        number=1,
     )
-    event_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    data = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    attributes = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=3,
+        message="AttributeValues",
+    )
+    event_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class Cursor(proto.Message):
@@ -82,7 +98,10 @@ class Cursor(proto.Message):
             partition. Must be greater than or equal 0.
     """
 
-    offset = proto.Field(proto.INT64, number=1,)
+    offset = proto.Field(
+        proto.INT64,
+        number=1,
+    )
 
 
 class SequencedMessage(proto.Message):
@@ -103,12 +122,25 @@ class SequencedMessage(proto.Message):
             control and quota purposes.
     """
 
-    cursor = proto.Field(proto.MESSAGE, number=1, message="Cursor",)
-    publish_time = proto.Field(
-        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+    cursor = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Cursor",
     )
-    message = proto.Field(proto.MESSAGE, number=3, message="PubSubMessage",)
-    size_bytes = proto.Field(proto.INT64, number=4,)
+    publish_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    message = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="PubSubMessage",
+    )
+    size_bytes = proto.Field(
+        proto.INT64,
+        number=4,
+    )
 
 
 class Reservation(proto.Message):
@@ -130,8 +162,14 @@ class Reservation(proto.Message):
             individually.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    throughput_capacity = proto.Field(proto.INT64, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    throughput_capacity = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class Topic(proto.Message):
@@ -199,11 +237,24 @@ class Topic(proto.Message):
                     in MiB/s. Must be >= 4 and <= 32.
             """
 
-            publish_mib_per_sec = proto.Field(proto.INT32, number=1,)
-            subscribe_mib_per_sec = proto.Field(proto.INT32, number=2,)
+            publish_mib_per_sec = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            subscribe_mib_per_sec = proto.Field(
+                proto.INT32,
+                number=2,
+            )
 
-        count = proto.Field(proto.INT64, number=1,)
-        scale = proto.Field(proto.INT32, number=2, oneof="dimension",)
+        count = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        scale = proto.Field(
+            proto.INT32,
+            number=2,
+            oneof="dimension",
+        )
         capacity = proto.Field(
             proto.MESSAGE,
             number=3,
@@ -227,8 +278,15 @@ class Topic(proto.Message):
                 partition is below ``per_partition_bytes``.
         """
 
-        per_partition_bytes = proto.Field(proto.INT64, number=1,)
-        period = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
+        per_partition_bytes = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        period = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
+        )
 
     class ReservationConfig(proto.Message):
         r"""The settings for this topic's Reservation usage.
@@ -240,13 +298,29 @@ class Topic(proto.Message):
                 projects/{project_number}/locations/{location}/reservations/{reservation_id}
         """
 
-        throughput_reservation = proto.Field(proto.STRING, number=1,)
+        throughput_reservation = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    partition_config = proto.Field(proto.MESSAGE, number=2, message=PartitionConfig,)
-    retention_config = proto.Field(proto.MESSAGE, number=3, message=RetentionConfig,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    partition_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=PartitionConfig,
+    )
+    retention_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=RetentionConfig,
+    )
     reservation_config = proto.Field(
-        proto.MESSAGE, number=4, message=ReservationConfig,
+        proto.MESSAGE,
+        number=4,
+        message=ReservationConfig,
     )
 
 
@@ -290,9 +364,19 @@ class Subscription(proto.Message):
             enum="Subscription.DeliveryConfig.DeliveryRequirement",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    topic = proto.Field(proto.STRING, number=2,)
-    delivery_config = proto.Field(proto.MESSAGE, number=3, message=DeliveryConfig,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    topic = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    delivery_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=DeliveryConfig,
+    )
 
 
 class TimeTarget(proto.Message):
@@ -326,10 +410,16 @@ class TimeTarget(proto.Message):
     """
 
     publish_time = proto.Field(
-        proto.MESSAGE, number=1, oneof="time", message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=1,
+        oneof="time",
+        message=timestamp_pb2.Timestamp,
     )
     event_time = proto.Field(
-        proto.MESSAGE, number=2, oneof="time", message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=2,
+        oneof="time",
+        message=timestamp_pb2.Timestamp,
     )
 
 

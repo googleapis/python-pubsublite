@@ -51,13 +51,18 @@ class InitialCommitCursorRequest(proto.Message):
             range [0, topic.num_partitions).
     """
 
-    subscription = proto.Field(proto.STRING, number=1,)
-    partition = proto.Field(proto.INT64, number=2,)
+    subscription = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    partition = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class InitialCommitCursorResponse(proto.Message):
-    r"""Response to an InitialCommitCursorRequest.
-    """
+    r"""Response to an InitialCommitCursorRequest."""
 
 
 class SequencedCommitCursorRequest(proto.Message):
@@ -69,7 +74,11 @@ class SequencedCommitCursorRequest(proto.Message):
             The new value for the committed cursor.
     """
 
-    cursor = proto.Field(proto.MESSAGE, number=1, message=common.Cursor,)
+    cursor = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.Cursor,
+    )
 
 
 class SequencedCommitCursorResponse(proto.Message):
@@ -84,7 +93,10 @@ class SequencedCommitCursorResponse(proto.Message):
             in the order that they are received.
     """
 
-    acknowledged_commits = proto.Field(proto.INT64, number=1,)
+    acknowledged_commits = proto.Field(
+        proto.INT64,
+        number=1,
+    )
 
 
 class StreamingCommitCursorRequest(proto.Message):
@@ -109,7 +121,10 @@ class StreamingCommitCursorRequest(proto.Message):
     """
 
     initial = proto.Field(
-        proto.MESSAGE, number=1, oneof="request", message="InitialCommitCursorRequest",
+        proto.MESSAGE,
+        number=1,
+        oneof="request",
+        message="InitialCommitCursorRequest",
     )
     commit = proto.Field(
         proto.MESSAGE,
@@ -141,7 +156,10 @@ class StreamingCommitCursorResponse(proto.Message):
     """
 
     initial = proto.Field(
-        proto.MESSAGE, number=1, oneof="request", message="InitialCommitCursorResponse",
+        proto.MESSAGE,
+        number=1,
+        oneof="request",
+        message="InitialCommitCursorResponse",
     )
     commit = proto.Field(
         proto.MESSAGE,
@@ -166,14 +184,23 @@ class CommitCursorRequest(proto.Message):
             The new value for the committed cursor.
     """
 
-    subscription = proto.Field(proto.STRING, number=1,)
-    partition = proto.Field(proto.INT64, number=2,)
-    cursor = proto.Field(proto.MESSAGE, number=3, message=common.Cursor,)
+    subscription = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    partition = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    cursor = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common.Cursor,
+    )
 
 
 class CommitCursorResponse(proto.Message):
-    r"""Response for CommitCursor.
-    """
+    r"""Response for CommitCursor."""
 
 
 class ListPartitionCursorsRequest(proto.Message):
@@ -199,9 +226,18 @@ class ListPartitionCursorsRequest(proto.Message):
             the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class PartitionCursor(proto.Message):
@@ -214,8 +250,15 @@ class PartitionCursor(proto.Message):
             The value of the cursor.
     """
 
-    partition = proto.Field(proto.INT64, number=1,)
-    cursor = proto.Field(proto.MESSAGE, number=2, message=common.Cursor,)
+    partition = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    cursor = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.Cursor,
+    )
 
 
 class ListPartitionCursorsResponse(proto.Message):
@@ -235,9 +278,14 @@ class ListPartitionCursorsResponse(proto.Message):
         return self
 
     partition_cursors = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="PartitionCursor",
+        proto.MESSAGE,
+        number=1,
+        message="PartitionCursor",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
