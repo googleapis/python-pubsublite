@@ -57,9 +57,19 @@ class InitialSubscribeRequest(proto.Message):
             subscription and partition.
     """
 
-    subscription = proto.Field(proto.STRING, number=1,)
-    partition = proto.Field(proto.INT64, number=2,)
-    initial_location = proto.Field(proto.MESSAGE, number=4, message="SeekRequest",)
+    subscription = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    partition = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    initial_location = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="SeekRequest",
+    )
 
 
 class InitialSubscribeResponse(proto.Message):
@@ -72,7 +82,11 @@ class InitialSubscribeResponse(proto.Message):
             tokens become available.
     """
 
-    cursor = proto.Field(proto.MESSAGE, number=1, message=common.Cursor,)
+    cursor = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.Cursor,
+    )
 
 
 class SeekRequest(proto.Message):
@@ -111,9 +125,17 @@ class SeekRequest(proto.Message):
         HEAD = 1
         COMMITTED_CURSOR = 2
 
-    named_target = proto.Field(proto.ENUM, number=1, oneof="target", enum=NamedTarget,)
+    named_target = proto.Field(
+        proto.ENUM,
+        number=1,
+        oneof="target",
+        enum=NamedTarget,
+    )
     cursor = proto.Field(
-        proto.MESSAGE, number=2, oneof="target", message=common.Cursor,
+        proto.MESSAGE,
+        number=2,
+        oneof="target",
+        message=common.Cursor,
     )
 
 
@@ -126,7 +148,11 @@ class SeekResponse(proto.Message):
             stream.
     """
 
-    cursor = proto.Field(proto.MESSAGE, number=1, message=common.Cursor,)
+    cursor = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.Cursor,
+    )
 
 
 class FlowControlRequest(proto.Message):
@@ -142,8 +168,14 @@ class FlowControlRequest(proto.Message):
             greater than or equal to 0.
     """
 
-    allowed_messages = proto.Field(proto.INT64, number=1,)
-    allowed_bytes = proto.Field(proto.INT64, number=2,)
+    allowed_messages = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    allowed_bytes = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class SubscribeRequest(proto.Message):
@@ -173,11 +205,22 @@ class SubscribeRequest(proto.Message):
     """
 
     initial = proto.Field(
-        proto.MESSAGE, number=1, oneof="request", message="InitialSubscribeRequest",
+        proto.MESSAGE,
+        number=1,
+        oneof="request",
+        message="InitialSubscribeRequest",
     )
-    seek = proto.Field(proto.MESSAGE, number=2, oneof="request", message="SeekRequest",)
+    seek = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="request",
+        message="SeekRequest",
+    )
     flow_control = proto.Field(
-        proto.MESSAGE, number=3, oneof="request", message="FlowControlRequest",
+        proto.MESSAGE,
+        number=3,
+        oneof="request",
+        message="FlowControlRequest",
     )
 
 
@@ -196,7 +239,9 @@ class MessageResponse(proto.Message):
     """
 
     messages = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=common.SequencedMessage,
+        proto.MESSAGE,
+        number=1,
+        message=common.SequencedMessage,
     )
 
 
@@ -227,13 +272,22 @@ class SubscribeResponse(proto.Message):
     """
 
     initial = proto.Field(
-        proto.MESSAGE, number=1, oneof="response", message="InitialSubscribeResponse",
+        proto.MESSAGE,
+        number=1,
+        oneof="response",
+        message="InitialSubscribeResponse",
     )
     seek = proto.Field(
-        proto.MESSAGE, number=2, oneof="response", message="SeekResponse",
+        proto.MESSAGE,
+        number=2,
+        oneof="response",
+        message="SeekResponse",
     )
     messages = proto.Field(
-        proto.MESSAGE, number=3, oneof="response", message="MessageResponse",
+        proto.MESSAGE,
+        number=3,
+        oneof="response",
+        message="MessageResponse",
     )
 
 
@@ -261,8 +315,14 @@ class InitialPartitionAssignmentRequest(proto.Message):
             disconnections with retryable stream errors.
     """
 
-    subscription = proto.Field(proto.STRING, number=1,)
-    client_id = proto.Field(proto.BYTES, number=2,)
+    subscription = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    client_id = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
 
 
 class PartitionAssignment(proto.Message):
@@ -276,7 +336,10 @@ class PartitionAssignment(proto.Message):
             is assigned to.
     """
 
-    partitions = proto.RepeatedField(proto.INT64, number=1,)
+    partitions = proto.RepeatedField(
+        proto.INT64,
+        number=1,
+    )
 
 
 class PartitionAssignmentAck(proto.Message):
@@ -317,7 +380,10 @@ class PartitionAssignmentRequest(proto.Message):
         message="InitialPartitionAssignmentRequest",
     )
     ack = proto.Field(
-        proto.MESSAGE, number=2, oneof="request", message="PartitionAssignmentAck",
+        proto.MESSAGE,
+        number=2,
+        oneof="request",
+        message="PartitionAssignmentAck",
     )
 
 

@@ -59,11 +59,11 @@ s.move(
 s.replace(
     "noxfile.py",
     """\
-BLACK_VERSION = "black==19.10b0"
+BLACK_VERSION = "black==22.3.0"
 """,
     """\
 PYTYPE_VERSION = "pytype==2021.09.09"
-BLACK_VERSION = "black==19.10b0"
+BLACK_VERSION = "black==22.3.0"
 """,
 )
 

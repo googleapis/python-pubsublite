@@ -125,10 +125,14 @@ class AdminServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_topic: gapic_v1.method.wrap_method(
-                self.create_topic, default_timeout=None, client_info=client_info,
+                self.create_topic,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_topic: gapic_v1.method.wrap_method(
-                self.get_topic, default_timeout=None, client_info=client_info,
+                self.get_topic,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_topic_partitions: gapic_v1.method.wrap_method(
                 self.get_topic_partitions,
@@ -136,13 +140,19 @@ class AdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_topics: gapic_v1.method.wrap_method(
-                self.list_topics, default_timeout=None, client_info=client_info,
+                self.list_topics,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_topic: gapic_v1.method.wrap_method(
-                self.update_topic, default_timeout=None, client_info=client_info,
+                self.update_topic,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_topic: gapic_v1.method.wrap_method(
-                self.delete_topic, default_timeout=None, client_info=client_info,
+                self.delete_topic,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_topic_subscriptions: gapic_v1.method.wrap_method(
                 self.list_topic_subscriptions,
@@ -150,37 +160,59 @@ class AdminServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_subscription: gapic_v1.method.wrap_method(
-                self.create_subscription, default_timeout=None, client_info=client_info,
+                self.create_subscription,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_subscription: gapic_v1.method.wrap_method(
-                self.get_subscription, default_timeout=None, client_info=client_info,
+                self.get_subscription,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_subscriptions: gapic_v1.method.wrap_method(
-                self.list_subscriptions, default_timeout=None, client_info=client_info,
+                self.list_subscriptions,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_subscription: gapic_v1.method.wrap_method(
-                self.update_subscription, default_timeout=None, client_info=client_info,
+                self.update_subscription,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_subscription: gapic_v1.method.wrap_method(
-                self.delete_subscription, default_timeout=None, client_info=client_info,
+                self.delete_subscription,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.seek_subscription: gapic_v1.method.wrap_method(
-                self.seek_subscription, default_timeout=None, client_info=client_info,
+                self.seek_subscription,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_reservation: gapic_v1.method.wrap_method(
-                self.create_reservation, default_timeout=None, client_info=client_info,
+                self.create_reservation,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_reservation: gapic_v1.method.wrap_method(
-                self.get_reservation, default_timeout=None, client_info=client_info,
+                self.get_reservation,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_reservations: gapic_v1.method.wrap_method(
-                self.list_reservations, default_timeout=None, client_info=client_info,
+                self.list_reservations,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_reservation: gapic_v1.method.wrap_method(
-                self.update_reservation, default_timeout=None, client_info=client_info,
+                self.update_reservation,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_reservation: gapic_v1.method.wrap_method(
-                self.delete_reservation, default_timeout=None, client_info=client_info,
+                self.delete_reservation,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_reservation_topics: gapic_v1.method.wrap_method(
                 self.list_reservation_topics,
@@ -192,9 +224,9 @@ class AdminServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

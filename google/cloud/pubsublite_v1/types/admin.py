@@ -72,9 +72,19 @@ class CreateTopicRequest(proto.Message):
             This value is structured like: ``my-topic-name``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    topic = proto.Field(proto.MESSAGE, number=2, message=common.Topic,)
-    topic_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    topic = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.Topic,
+    )
+    topic_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetTopicRequest(proto.Message):
@@ -86,7 +96,10 @@ class GetTopicRequest(proto.Message):
             configuration to return.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetTopicPartitionsRequest(proto.Message):
@@ -98,7 +111,10 @@ class GetTopicPartitionsRequest(proto.Message):
             information to return.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class TopicPartitions(proto.Message):
@@ -109,7 +125,10 @@ class TopicPartitions(proto.Message):
             The number of partitions in the topic.
     """
 
-    partition_count = proto.Field(proto.INT64, number=1,)
+    partition_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
 
 
 class ListTopicsRequest(proto.Message):
@@ -134,9 +153,18 @@ class ListTopicsRequest(proto.Message):
             token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListTopicsResponse(proto.Message):
@@ -156,8 +184,15 @@ class ListTopicsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    topics = proto.RepeatedField(proto.MESSAGE, number=1, message=common.Topic,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    topics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=common.Topic,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateTopicRequest(proto.Message):
@@ -172,9 +207,15 @@ class UpdateTopicRequest(proto.Message):
             to change.
     """
 
-    topic = proto.Field(proto.MESSAGE, number=1, message=common.Topic,)
+    topic = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.Topic,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -186,7 +227,10 @@ class DeleteTopicRequest(proto.Message):
             Required. The name of the topic to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListTopicSubscriptionsRequest(proto.Message):
@@ -211,9 +255,18 @@ class ListTopicSubscriptionsRequest(proto.Message):
             the page token.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListTopicSubscriptionsResponse(proto.Message):
@@ -234,8 +287,14 @@ class ListTopicSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    subscriptions = proto.RepeatedField(proto.STRING, number=1,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    subscriptions = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateSubscriptionRequest(proto.Message):
@@ -262,10 +321,23 @@ class CreateSubscriptionRequest(proto.Message):
             subscription. Defaults to false.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    subscription = proto.Field(proto.MESSAGE, number=2, message=common.Subscription,)
-    subscription_id = proto.Field(proto.STRING, number=3,)
-    skip_backlog = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subscription = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.Subscription,
+    )
+    subscription_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    skip_backlog = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class GetSubscriptionRequest(proto.Message):
@@ -277,7 +349,10 @@ class GetSubscriptionRequest(proto.Message):
             configuration to return.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListSubscriptionsRequest(proto.Message):
@@ -302,9 +377,18 @@ class ListSubscriptionsRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListSubscriptionsResponse(proto.Message):
@@ -326,9 +410,14 @@ class ListSubscriptionsResponse(proto.Message):
         return self
 
     subscriptions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=common.Subscription,
+        proto.MESSAGE,
+        number=1,
+        message=common.Subscription,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateSubscriptionRequest(proto.Message):
@@ -343,9 +432,15 @@ class UpdateSubscriptionRequest(proto.Message):
             fields to change.
     """
 
-    subscription = proto.Field(proto.MESSAGE, number=1, message=common.Subscription,)
+    subscription = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.Subscription,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -358,7 +453,10 @@ class DeleteSubscriptionRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class SeekSubscriptionRequest(proto.Message):
@@ -396,16 +494,26 @@ class SeekSubscriptionRequest(proto.Message):
         TAIL = 1
         HEAD = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    named_target = proto.Field(proto.ENUM, number=2, oneof="target", enum=NamedTarget,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    named_target = proto.Field(
+        proto.ENUM,
+        number=2,
+        oneof="target",
+        enum=NamedTarget,
+    )
     time_target = proto.Field(
-        proto.MESSAGE, number=3, oneof="target", message=common.TimeTarget,
+        proto.MESSAGE,
+        number=3,
+        oneof="target",
+        message=common.TimeTarget,
     )
 
 
 class SeekSubscriptionResponse(proto.Message):
-    r"""Response for SeekSubscription long running operation.
-    """
+    r"""Response for SeekSubscription long running operation."""
 
 
 class OperationMetadata(proto.Message):
@@ -426,10 +534,24 @@ class OperationMetadata(proto.Message):
             Name of the verb executed by the operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class CreateReservationRequest(proto.Message):
@@ -450,9 +572,19 @@ class CreateReservationRequest(proto.Message):
             This value is structured like: ``my-reservation-name``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    reservation = proto.Field(proto.MESSAGE, number=2, message=common.Reservation,)
-    reservation_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    reservation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.Reservation,
+    )
+    reservation_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetReservationRequest(proto.Message):
@@ -465,7 +597,10 @@ class GetReservationRequest(proto.Message):
             projects/{project_number}/locations/{location}/reservations/{reservation_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListReservationsRequest(proto.Message):
@@ -490,9 +625,18 @@ class ListReservationsRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListReservationsResponse(proto.Message):
@@ -514,9 +658,14 @@ class ListReservationsResponse(proto.Message):
         return self
 
     reservations = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=common.Reservation,
+        proto.MESSAGE,
+        number=1,
+        message=common.Reservation,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateReservationRequest(proto.Message):
@@ -531,9 +680,15 @@ class UpdateReservationRequest(proto.Message):
             fields to change.
     """
 
-    reservation = proto.Field(proto.MESSAGE, number=1, message=common.Reservation,)
+    reservation = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.Reservation,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -547,7 +702,10 @@ class DeleteReservationRequest(proto.Message):
             projects/{project_number}/locations/{location}/reservations/{reservation_id}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListReservationTopicsRequest(proto.Message):
@@ -573,9 +731,18 @@ class ListReservationTopicsRequest(proto.Message):
             the page token.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListReservationTopicsResponse(proto.Message):
@@ -596,8 +763,14 @@ class ListReservationTopicsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    topics = proto.RepeatedField(proto.STRING, number=1,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    topics = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

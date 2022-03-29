@@ -175,7 +175,8 @@ class SinglePartitionPublisher(
 
     @overrides
     async def reinitialize(
-        self, connection: Connection[PublishRequest, PublishResponse],
+        self,
+        connection: Connection[PublishRequest, PublishResponse],
     ):
         await connection.write(PublishRequest(initial_request=self._initial))
         response = await connection.read()
