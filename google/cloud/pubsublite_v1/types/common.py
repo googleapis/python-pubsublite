@@ -60,7 +60,7 @@ class PubSubMessage(proto.Message):
             the message is routed to an arbitrary partition.
         data (bytes):
             The payload of the message.
-        attributes (Sequence[google.cloud.pubsublite_v1.types.PubSubMessage.AttributesEntry]):
+        attributes (Mapping[str, google.cloud.pubsublite_v1.types.AttributeValues]):
             Optional attributes that can be used for
             message metadata/headers.
         event_time (google.protobuf.timestamp_pb2.Timestamp):
