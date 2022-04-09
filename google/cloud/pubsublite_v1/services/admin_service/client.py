@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -492,7 +492,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_create_topic():
                 # Create a client
@@ -606,7 +606,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_get_topic():
                 # Create a client
@@ -700,7 +700,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_get_topic_partitions():
                 # Create a client
@@ -792,7 +792,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_list_topics():
                 # Create a client
@@ -900,7 +900,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_update_topic():
                 # Create a client
@@ -1002,7 +1002,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_delete_topic():
                 # Create a client
@@ -1086,7 +1086,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_list_topic_subscriptions():
                 # Create a client
@@ -1194,7 +1194,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_create_subscription():
                 # Create a client
@@ -1310,7 +1310,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_get_subscription():
                 # Create a client
@@ -1407,7 +1407,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_list_subscriptions():
                 # Create a client
@@ -1515,7 +1515,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_update_subscription():
                 # Create a client
@@ -1619,7 +1619,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_delete_subscription():
                 # Create a client
@@ -1727,7 +1727,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_seek_subscription():
                 # Create a client
@@ -1819,7 +1819,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_create_reservation():
                 # Create a client
@@ -1935,7 +1935,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_get_reservation():
                 # Create a client
@@ -2032,7 +2032,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_list_reservations():
                 # Create a client
@@ -2140,7 +2140,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_update_reservation():
                 # Create a client
@@ -2244,7 +2244,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_delete_reservation():
                 # Create a client
@@ -2329,7 +2329,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_list_reservation_topics():
                 # Create a client

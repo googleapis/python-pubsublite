@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -419,7 +429,7 @@ class SubscriberServiceClient(metaclass=SubscriberServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import pubsublite_v1
+                    from google.cloud import pubsublite_v1
 
             def sample_subscribe():
                 # Create a client

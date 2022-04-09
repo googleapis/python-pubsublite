@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -346,11 +347,7 @@ class CursorServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -461,11 +458,7 @@ class CursorServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.Aborted,
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
