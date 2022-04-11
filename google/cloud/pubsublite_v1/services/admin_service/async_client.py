@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -429,7 +429,6 @@ class AdminServiceAsyncClient:
         r"""Returns the partition information for the requested
         topic.
 
-
         .. code-block:: python
 
             from google.cloud import pubsublite_v1
@@ -815,7 +814,6 @@ class AdminServiceAsyncClient:
         r"""Lists the subscriptions attached to the specified
         topic.
 
-
         .. code-block:: python
 
             from google.cloud import pubsublite_v1
@@ -1136,7 +1134,6 @@ class AdminServiceAsyncClient:
         r"""Returns the list of subscriptions for the given
         project.
 
-
         .. code-block:: python
 
             from google.cloud import pubsublite_v1
@@ -1456,7 +1453,6 @@ class AdminServiceAsyncClient:
         will be aborted and the new invocation of seek will
         supersede it.
 
-
         .. code-block:: python
 
             from google.cloud import pubsublite_v1
@@ -1760,7 +1756,6 @@ class AdminServiceAsyncClient:
         r"""Returns the list of reservations for the given
         project.
 
-
         .. code-block:: python
 
             from google.cloud import pubsublite_v1
@@ -2056,7 +2051,6 @@ class AdminServiceAsyncClient:
     ) -> pagers.ListReservationTopicsAsyncPager:
         r"""Lists the topics attached to the specified
         reservation.
-
 
         .. code-block:: python
 

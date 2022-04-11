@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -221,7 +222,6 @@ class SubscriberServiceAsyncClient:
     ) -> Awaitable[AsyncIterable[subscriber.SubscribeResponse]]:
         r"""Establishes a stream with the server for receiving
         messages.
-
 
         .. code-block:: python
 
