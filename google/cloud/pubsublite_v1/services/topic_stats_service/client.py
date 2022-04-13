@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -440,7 +440,6 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         r"""Compute statistics about a range of messages in a
         given topic and partition.
 
-
         .. code-block:: python
 
             from google.cloud import pubsublite_v1
@@ -523,7 +522,6 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         acknowledged. It is zero if there have never been
         messages in the partition.
 
-
         .. code-block:: python
 
             from google.cloud import pubsublite_v1
@@ -599,7 +597,6 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
     ) -> topic_stats.ComputeTimeCursorResponse:
         r"""Compute the corresponding cursor for a publish or
         event time in a topic partition.
-
 
         .. code-block:: python
 

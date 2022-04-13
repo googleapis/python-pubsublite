@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -216,7 +216,6 @@ class TopicStatsServiceAsyncClient:
         r"""Compute statistics about a range of messages in a
         given topic and partition.
 
-
         .. code-block:: python
 
             from google.cloud import pubsublite_v1
@@ -298,7 +297,6 @@ class TopicStatsServiceAsyncClient:
         acknowledged. It is zero if there have never been
         messages in the partition.
 
-
         .. code-block:: python
 
             from google.cloud import pubsublite_v1
@@ -373,7 +371,6 @@ class TopicStatsServiceAsyncClient:
     ) -> topic_stats.ComputeTimeCursorResponse:
         r"""Compute the corresponding cursor for a publish or
         event time in a topic partition.
-
 
         .. code-block:: python
 

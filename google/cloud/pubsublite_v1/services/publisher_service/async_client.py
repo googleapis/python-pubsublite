@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -231,7 +232,6 @@ class PublisherServiceAsyncClient:
         PublishRequests can be in flight simultaneously, but
         they will be processed by the server in the order that
         they are sent by the client on a given stream.
-
 
         .. code-block:: python
 
