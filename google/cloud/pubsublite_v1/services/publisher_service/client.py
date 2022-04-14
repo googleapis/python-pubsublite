@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -425,7 +435,6 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
         PublishRequests can be in flight simultaneously, but
         they will be processed by the server in the order that
         they are sent by the client on a given stream.
-
 
         .. code-block:: python
 

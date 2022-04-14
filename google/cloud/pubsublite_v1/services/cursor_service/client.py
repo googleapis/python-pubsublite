@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -439,7 +449,6 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         r"""Establishes a stream with the server for managing
         committed cursors.
 
-
         .. code-block:: python
 
             from google.cloud import pubsublite_v1
@@ -584,7 +593,6 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
     ) -> pagers.ListPartitionCursorsPager:
         r"""Returns all committed cursor information for a
         subscription.
-
 
         .. code-block:: python
 

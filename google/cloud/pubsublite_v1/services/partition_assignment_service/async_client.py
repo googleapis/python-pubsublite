@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -235,7 +236,6 @@ class PartitionAssignmentServiceAsyncClient:
         The client should send a PartitionAssignmentAck after
         updating the partitions it is connected to to reflect
         the new assignment.
-
 
         .. code-block:: python
 

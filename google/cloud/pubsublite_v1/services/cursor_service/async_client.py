@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -227,7 +228,6 @@ class CursorServiceAsyncClient:
         r"""Establishes a stream with the server for managing
         committed cursors.
 
-
         .. code-block:: python
 
             from google.cloud import pubsublite_v1
@@ -388,7 +388,6 @@ class CursorServiceAsyncClient:
     ) -> pagers.ListPartitionCursorsAsyncPager:
         r"""Returns all committed cursor information for a
         subscription.
-
 
         .. code-block:: python
 
