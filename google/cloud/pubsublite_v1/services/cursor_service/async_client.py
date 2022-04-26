@@ -232,9 +232,9 @@ class CursorServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_streaming_commit_cursor():
+            async def sample_streaming_commit_cursor():
                 # Create a client
-                client = pubsublite_v1.CursorServiceClient()
+                client = pubsublite_v1.CursorServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.StreamingCommitCursorRequest(
@@ -251,10 +251,10 @@ class CursorServiceAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.streaming_commit_cursor(requests=request_generator())
+                stream = await client.streaming_commit_cursor(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
@@ -307,16 +307,16 @@ class CursorServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_commit_cursor():
+            async def sample_commit_cursor():
                 # Create a client
-                client = pubsublite_v1.CursorServiceClient()
+                client = pubsublite_v1.CursorServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.CommitCursorRequest(
                 )
 
                 # Make the request
-                response = client.commit_cursor(request=request)
+                response = await client.commit_cursor(request=request)
 
                 # Handle the response
                 print(response)
@@ -393,9 +393,9 @@ class CursorServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_list_partition_cursors():
+            async def sample_list_partition_cursors():
                 # Create a client
-                client = pubsublite_v1.CursorServiceClient()
+                client = pubsublite_v1.CursorServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.ListPartitionCursorsRequest(
@@ -406,7 +406,7 @@ class CursorServiceAsyncClient:
                 page_result = client.list_partition_cursors(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

@@ -241,9 +241,9 @@ class PartitionAssignmentServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_assign_partitions():
+            async def sample_assign_partitions():
                 # Create a client
-                client = pubsublite_v1.PartitionAssignmentServiceClient()
+                client = pubsublite_v1.PartitionAssignmentServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.PartitionAssignmentRequest(
@@ -260,10 +260,10 @@ class PartitionAssignmentServiceAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.assign_partitions(requests=request_generator())
+                stream = await client.assign_partitions(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:

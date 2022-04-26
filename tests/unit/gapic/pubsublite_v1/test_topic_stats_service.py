@@ -773,7 +773,7 @@ def test_compute_message_stats_field_headers():
     # a field header. Set these to a non-empty value.
     request = topic_stats.ComputeMessageStatsRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -791,7 +791,7 @@ def test_compute_message_stats_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -805,7 +805,7 @@ async def test_compute_message_stats_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = topic_stats.ComputeMessageStatsRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -825,7 +825,7 @@ async def test_compute_message_stats_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -927,7 +927,7 @@ def test_compute_head_cursor_field_headers():
     # a field header. Set these to a non-empty value.
     request = topic_stats.ComputeHeadCursorRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -945,7 +945,7 @@ def test_compute_head_cursor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -959,7 +959,7 @@ async def test_compute_head_cursor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = topic_stats.ComputeHeadCursorRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -979,7 +979,7 @@ async def test_compute_head_cursor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -1081,7 +1081,7 @@ def test_compute_time_cursor_field_headers():
     # a field header. Set these to a non-empty value.
     request = topic_stats.ComputeTimeCursorRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1099,7 +1099,7 @@ def test_compute_time_cursor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -1113,7 +1113,7 @@ async def test_compute_time_cursor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = topic_stats.ComputeTimeCursorRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1133,7 +1133,7 @@ async def test_compute_time_cursor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 

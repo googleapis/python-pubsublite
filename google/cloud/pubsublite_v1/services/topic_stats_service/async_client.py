@@ -220,9 +220,9 @@ class TopicStatsServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_compute_message_stats():
+            async def sample_compute_message_stats():
                 # Create a client
-                client = pubsublite_v1.TopicStatsServiceClient()
+                client = pubsublite_v1.TopicStatsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.ComputeMessageStatsRequest(
@@ -231,7 +231,7 @@ class TopicStatsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.compute_message_stats(request=request)
+                response = await client.compute_message_stats(request=request)
 
                 # Handle the response
                 print(response)
@@ -301,9 +301,9 @@ class TopicStatsServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_compute_head_cursor():
+            async def sample_compute_head_cursor():
                 # Create a client
-                client = pubsublite_v1.TopicStatsServiceClient()
+                client = pubsublite_v1.TopicStatsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.ComputeHeadCursorRequest(
@@ -312,7 +312,7 @@ class TopicStatsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.compute_head_cursor(request=request)
+                response = await client.compute_head_cursor(request=request)
 
                 # Handle the response
                 print(response)
@@ -376,9 +376,9 @@ class TopicStatsServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_compute_time_cursor():
+            async def sample_compute_time_cursor():
                 # Create a client
-                client = pubsublite_v1.TopicStatsServiceClient()
+                client = pubsublite_v1.TopicStatsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.ComputeTimeCursorRequest(
@@ -387,7 +387,7 @@ class TopicStatsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.compute_time_cursor(request=request)
+                response = await client.compute_time_cursor(request=request)
 
                 # Handle the response
                 print(response)
