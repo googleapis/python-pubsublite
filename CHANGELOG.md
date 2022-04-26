@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.2](https://github.com/googleapis/python-pubsublite/compare/v1.4.1...v1.4.2) (2022-04-26)
+
+
+### Bug Fixes
+
+* retry Cancelled stream errors ([#335](https://github.com/googleapis/python-pubsublite/issues/335)) ([3543759](https://github.com/googleapis/python-pubsublite/commit/3543759db0dac00dbf1993fab20957cdb051c898))
+
 ### [1.4.1](https://github.com/googleapis/python-pubsublite/compare/v1.4.0...v1.4.1) (2022-03-07)
 
 
