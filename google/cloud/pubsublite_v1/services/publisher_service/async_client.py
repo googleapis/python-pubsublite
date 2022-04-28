@@ -237,9 +237,9 @@ class PublisherServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_publish():
+            async def sample_publish():
                 # Create a client
-                client = pubsublite_v1.PublisherServiceClient()
+                client = pubsublite_v1.PublisherServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.PublishRequest(
@@ -256,10 +256,10 @@ class PublisherServiceAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.publish(requests=request_generator())
+                stream = await client.publish(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:

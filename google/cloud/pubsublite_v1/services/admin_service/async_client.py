@@ -226,9 +226,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_create_topic():
+            async def sample_create_topic():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.CreateTopicRequest(
@@ -237,7 +237,7 @@ class AdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_topic(request=request)
+                response = await client.create_topic(request=request)
 
                 # Handle the response
                 print(response)
@@ -340,9 +340,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_get_topic():
+            async def sample_get_topic():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.GetTopicRequest(
@@ -350,7 +350,7 @@ class AdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_topic(request=request)
+                response = await client.get_topic(request=request)
 
                 # Handle the response
                 print(response)
@@ -433,9 +433,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_get_topic_partitions():
+            async def sample_get_topic_partitions():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.GetTopicPartitionsRequest(
@@ -443,7 +443,7 @@ class AdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_topic_partitions(request=request)
+                response = await client.get_topic_partitions(request=request)
 
                 # Handle the response
                 print(response)
@@ -525,9 +525,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_list_topics():
+            async def sample_list_topics():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.ListTopicsRequest(
@@ -538,7 +538,7 @@ class AdminServiceAsyncClient:
                 page_result = client.list_topics(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -633,16 +633,16 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_update_topic():
+            async def sample_update_topic():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.UpdateTopicRequest(
                 )
 
                 # Make the request
-                response = client.update_topic(request=request)
+                response = await client.update_topic(request=request)
 
                 # Handle the response
                 print(response)
@@ -735,9 +735,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_delete_topic():
+            async def sample_delete_topic():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.DeleteTopicRequest(
@@ -745,7 +745,7 @@ class AdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_topic(request=request)
+                await client.delete_topic(request=request)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.DeleteTopicRequest, dict]):
@@ -818,9 +818,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_list_topic_subscriptions():
+            async def sample_list_topic_subscriptions():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.ListTopicSubscriptionsRequest(
@@ -831,7 +831,7 @@ class AdminServiceAsyncClient:
                 page_result = client.list_topic_subscriptions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -926,9 +926,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_create_subscription():
+            async def sample_create_subscription():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.CreateSubscriptionRequest(
@@ -937,7 +937,7 @@ class AdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_subscription(request=request)
+                response = await client.create_subscription(request=request)
 
                 # Handle the response
                 print(response)
@@ -1042,9 +1042,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_get_subscription():
+            async def sample_get_subscription():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.GetSubscriptionRequest(
@@ -1052,7 +1052,7 @@ class AdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_subscription(request=request)
+                response = await client.get_subscription(request=request)
 
                 # Handle the response
                 print(response)
@@ -1138,9 +1138,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_list_subscriptions():
+            async def sample_list_subscriptions():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.ListSubscriptionsRequest(
@@ -1151,7 +1151,7 @@ class AdminServiceAsyncClient:
                 page_result = client.list_subscriptions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1246,16 +1246,16 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_update_subscription():
+            async def sample_update_subscription():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.UpdateSubscriptionRequest(
                 )
 
                 # Make the request
-                response = client.update_subscription(request=request)
+                response = await client.update_subscription(request=request)
 
                 # Handle the response
                 print(response)
@@ -1350,9 +1350,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_delete_subscription():
+            async def sample_delete_subscription():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.DeleteSubscriptionRequest(
@@ -1360,7 +1360,7 @@ class AdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_subscription(request=request)
+                await client.delete_subscription(request=request)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.DeleteSubscriptionRequest, dict]):
@@ -1457,9 +1457,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_seek_subscription():
+            async def sample_seek_subscription():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.SeekSubscriptionRequest(
@@ -1472,7 +1472,7 @@ class AdminServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1548,9 +1548,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_create_reservation():
+            async def sample_create_reservation():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.CreateReservationRequest(
@@ -1559,7 +1559,7 @@ class AdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_reservation(request=request)
+                response = await client.create_reservation(request=request)
 
                 # Handle the response
                 print(response)
@@ -1664,9 +1664,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_get_reservation():
+            async def sample_get_reservation():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.GetReservationRequest(
@@ -1674,7 +1674,7 @@ class AdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_reservation(request=request)
+                response = await client.get_reservation(request=request)
 
                 # Handle the response
                 print(response)
@@ -1760,9 +1760,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_list_reservations():
+            async def sample_list_reservations():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.ListReservationsRequest(
@@ -1773,7 +1773,7 @@ class AdminServiceAsyncClient:
                 page_result = client.list_reservations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1868,16 +1868,16 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_update_reservation():
+            async def sample_update_reservation():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.UpdateReservationRequest(
                 )
 
                 # Make the request
-                response = client.update_reservation(request=request)
+                response = await client.update_reservation(request=request)
 
                 # Handle the response
                 print(response)
@@ -1972,9 +1972,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_delete_reservation():
+            async def sample_delete_reservation():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.DeleteReservationRequest(
@@ -1982,7 +1982,7 @@ class AdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_reservation(request=request)
+                await client.delete_reservation(request=request)
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.DeleteReservationRequest, dict]):
@@ -2056,9 +2056,9 @@ class AdminServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_list_reservation_topics():
+            async def sample_list_reservation_topics():
                 # Create a client
-                client = pubsublite_v1.AdminServiceClient()
+                client = pubsublite_v1.AdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.ListReservationTopicsRequest(
@@ -2069,7 +2069,7 @@ class AdminServiceAsyncClient:
                 page_result = client.list_reservation_topics(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

@@ -227,9 +227,9 @@ class SubscriberServiceAsyncClient:
 
             from google.cloud import pubsublite_v1
 
-            def sample_subscribe():
+            async def sample_subscribe():
                 # Create a client
-                client = pubsublite_v1.SubscriberServiceClient()
+                client = pubsublite_v1.SubscriberServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsublite_v1.SubscribeRequest(
@@ -246,10 +246,10 @@ class SubscriberServiceAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.subscribe(requests=request_generator())
+                stream = await client.subscribe(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:

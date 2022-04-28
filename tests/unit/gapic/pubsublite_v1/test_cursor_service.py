@@ -814,7 +814,7 @@ def test_commit_cursor_field_headers():
     # a field header. Set these to a non-empty value.
     request = cursor.CommitCursorRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.commit_cursor), "__call__") as call:
@@ -830,7 +830,7 @@ def test_commit_cursor_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -844,7 +844,7 @@ async def test_commit_cursor_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cursor.CommitCursorRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.commit_cursor), "__call__") as call:
@@ -862,7 +862,7 @@ async def test_commit_cursor_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -970,7 +970,7 @@ def test_list_partition_cursors_field_headers():
     # a field header. Set these to a non-empty value.
     request = cursor.ListPartitionCursorsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -988,7 +988,7 @@ def test_list_partition_cursors_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1002,7 +1002,7 @@ async def test_list_partition_cursors_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cursor.ListPartitionCursorsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1022,7 +1022,7 @@ async def test_list_partition_cursors_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1159,7 +1159,7 @@ def test_list_partition_cursors_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cursor.PartitionCursor) for i in results)
 
