@@ -1,13 +1,13 @@
 # Changelog
 
-### [1.4.2](https://github.com/googleapis/python-pubsublite/compare/v1.4.1...v1.4.2) (2022-04-26)
+## [1.4.2](https://github.com/googleapis/python-pubsublite/compare/v1.4.1...v1.4.2) (2022-04-26)
 
 
 ### Bug Fixes
 
 * retry Cancelled stream errors ([#335](https://github.com/googleapis/python-pubsublite/issues/335)) ([3543759](https://github.com/googleapis/python-pubsublite/commit/3543759db0dac00dbf1993fab20957cdb051c898))
 
-### [1.4.1](https://github.com/googleapis/python-pubsublite/compare/v1.4.0...v1.4.1) (2022-03-07)
+## [1.4.1](https://github.com/googleapis/python-pubsublite/compare/v1.4.0...v1.4.1) (2022-03-07)
 
 
 ### Bug Fixes
@@ -58,21 +58,21 @@
 
 * Add cloud region path handling for when this is allowed by the backend ([#240](https://www.github.com/googleapis/python-pubsublite/issues/240)) ([4cad460](https://www.github.com/googleapis/python-pubsublite/commit/4cad4603e7d24037b401259be9ebcd116984f7c8))
 
-### [1.1.4](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.3...v1.1.4) (2021-09-14)
+## [1.1.4](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.3...v1.1.4) (2021-09-14)
 
 
 ### Bug Fixes
 
 * Race conditions and performance issues ([#237](https://www.github.com/googleapis/python-pubsublite/issues/237)) ([ec76272](https://www.github.com/googleapis/python-pubsublite/commit/ec7627295bbd26a4ac910f88f4dadc5492b48fa3))
 
-### [1.1.3](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.2...v1.1.3) (2021-09-13)
+## [1.1.3](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.2...v1.1.3) (2021-09-13)
 
 
 ### Bug Fixes
 
 * ensure ack() doesn't wait on stream messages ([#234](https://www.github.com/googleapis/python-pubsublite/issues/234)) ([03db702](https://www.github.com/googleapis/python-pubsublite/commit/03db702c1f88982ed424bec3d99ae9d4bdc353bd))
 
-### [1.1.2](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.1...v1.1.2) (2021-09-13)
+## [1.1.2](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.1...v1.1.2) (2021-09-13)
 
 
 ### Bug Fixes
@@ -80,7 +80,7 @@
 * Enable pytype on Pub/Sub Lite repo and fix all errors ([#214](https://www.github.com/googleapis/python-pubsublite/issues/214)) ([df58fdf](https://www.github.com/googleapis/python-pubsublite/commit/df58fdfc83bdc4f6f753f664365a0ff26d3201e7))
 * performance issues with subscriber client ([#232](https://www.github.com/googleapis/python-pubsublite/issues/232)) ([78a47b2](https://www.github.com/googleapis/python-pubsublite/commit/78a47b2817bee4a468f8ce15fe437165be1d1458))
 
-### [1.1.1](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.0...v1.1.1) (2021-09-07)
+## [1.1.1](https://www.github.com/googleapis/python-pubsublite/compare/v1.1.0...v1.1.1) (2021-09-07)
 
 
 ### Bug Fixes
@@ -95,7 +95,7 @@
 
 * Support seek subscription in AdminClient ([#176](https://www.github.com/googleapis/python-pubsublite/issues/176)) ([fc648ae](https://www.github.com/googleapis/python-pubsublite/commit/fc648ae224c22564fa86fbc0eceaf40a0b109d4c))
 
-### [1.0.2](https://www.github.com/googleapis/python-pubsublite/compare/v1.0.1...v1.0.2) (2021-08-04)
+## [1.0.2](https://www.github.com/googleapis/python-pubsublite/compare/v1.0.1...v1.0.2) (2021-08-04)
 
 
 ### Bug Fixes
@@ -103,7 +103,7 @@
 * Backlog never zero despite messages received ([#204](https://www.github.com/googleapis/python-pubsublite/issues/204)) ([b93a0bf](https://www.github.com/googleapis/python-pubsublite/commit/b93a0bf1fda1079900278a022455b001d6fde86f))
 * Increment ack generation id ([#203](https://www.github.com/googleapis/python-pubsublite/issues/203)) ([644163d](https://www.github.com/googleapis/python-pubsublite/commit/644163d2adc067372c379c617d570497b3f9354e))
 
-### [1.0.1](https://www.github.com/googleapis/python-pubsublite/compare/v1.0.0...v1.0.1) (2021-07-28)
+## [1.0.1](https://www.github.com/googleapis/python-pubsublite/compare/v1.0.0...v1.0.1) (2021-07-28)
 
 
 ### Bug Fixes
@@ -132,7 +132,7 @@
 
 * release as 1.0.0 ([#193](https://www.github.com/googleapis/python-pubsublite/issues/193)) ([88368c6](https://www.github.com/googleapis/python-pubsublite/commit/88368c6826525ee74fe63efc89dda3acb670c130))
 
-### [0.6.1](https://www.github.com/googleapis/python-pubsublite/compare/v0.6.0...v0.6.1) (2021-07-16)
+## [0.6.1](https://www.github.com/googleapis/python-pubsublite/compare/v0.6.0...v0.6.1) (2021-07-16)
 
 
 ### Bug Fixes
@@ -177,7 +177,7 @@
 * shutdown event loop if publisher fails to start and set exception on result future ([#124](https://www.github.com/googleapis/python-pubsublite/issues/124)) ([c2c2b00](https://www.github.com/googleapis/python-pubsublite/commit/c2c2b00f0141af6f6d26ff095431de547deab96d))
 * Version bump overrides library past fix and undo workarounds ([#137](https://www.github.com/googleapis/python-pubsublite/issues/137)) ([94ae2f0](https://www.github.com/googleapis/python-pubsublite/commit/94ae2f04a85f94b6cffa2241d68068c292157c56))
 
-### [0.4.1](https://www.github.com/googleapis/python-pubsublite/compare/v0.4.0...v0.4.1) (2021-05-05)
+## [0.4.1](https://www.github.com/googleapis/python-pubsublite/compare/v0.4.0...v0.4.1) (2021-05-05)
 
 
 ### Bug Fixes
