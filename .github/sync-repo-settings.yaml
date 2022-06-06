@@ -33,6 +33,7 @@ branchProtectionRules:
     - 'Samples - Python 3.7'
     - 'Samples - Python 3.8'
     - 'Samples - Lint'
+    - 'OwlBot Post Processor'
 # List of explicit permissions to add (additive only)
 permissionRules:
     # Team slug to add to repository permissions
