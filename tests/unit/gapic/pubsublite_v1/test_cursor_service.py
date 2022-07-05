@@ -1569,7 +1569,6 @@ def test_cursor_service_transport_auth_adc(transport_class):
     [
         transports.CursorServiceGrpcTransport,
         transports.CursorServiceGrpcAsyncIOTransport,
-        transports.CursorServiceRestTransport,
     ],
 )
 def test_cursor_service_transport_auth_gdch_credentials(transport_class):

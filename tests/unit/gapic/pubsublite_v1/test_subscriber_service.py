@@ -993,7 +993,6 @@ def test_subscriber_service_transport_auth_adc(transport_class):
     [
         transports.SubscriberServiceGrpcTransport,
         transports.SubscriberServiceGrpcAsyncIOTransport,
-        transports.SubscriberServiceRestTransport,
     ],
 )
 def test_subscriber_service_transport_auth_gdch_credentials(transport_class):

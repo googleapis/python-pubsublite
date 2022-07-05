@@ -1013,7 +1013,6 @@ def test_partition_assignment_service_transport_auth_adc(transport_class):
     [
         transports.PartitionAssignmentServiceGrpcTransport,
         transports.PartitionAssignmentServiceGrpcAsyncIOTransport,
-        transports.PartitionAssignmentServiceRestTransport,
     ],
 )
 def test_partition_assignment_service_transport_auth_gdch_credentials(transport_class):

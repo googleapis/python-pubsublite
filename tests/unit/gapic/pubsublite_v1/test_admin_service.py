@@ -6429,7 +6429,6 @@ def test_admin_service_transport_auth_adc(transport_class):
     [
         transports.AdminServiceGrpcTransport,
         transports.AdminServiceGrpcAsyncIOTransport,
-        transports.AdminServiceRestTransport,
     ],
 )
 def test_admin_service_transport_auth_gdch_credentials(transport_class):

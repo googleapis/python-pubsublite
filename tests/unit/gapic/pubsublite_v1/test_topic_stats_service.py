@@ -1398,7 +1398,6 @@ def test_topic_stats_service_transport_auth_adc(transport_class):
     [
         transports.TopicStatsServiceGrpcTransport,
         transports.TopicStatsServiceGrpcAsyncIOTransport,
-        transports.TopicStatsServiceRestTransport,
     ],
 )
 def test_topic_stats_service_transport_auth_gdch_credentials(transport_class):
