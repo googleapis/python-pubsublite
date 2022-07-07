@@ -3,7 +3,20 @@ Python Client for Pub/Sub Lite API
 
 |stable| |pypi| |versions|
 
-`Pub/Sub Lite API`_: 
+`Pub/Sub Lite API`_: is designed to provide reliable,
+many-to-many, asynchronous messaging between applications. Publisher
+applications can send messages to a topic and other applications can
+subscribe to that topic to receive the messages. By decoupling senders and
+receivers, Google Cloud Pub/Sub allows developers to communicate between
+independently written applications.
+
+Compared to Google Pub/Sub, Pub/Sub Lite provides partitioned zonal data
+storage with predefined capacity. Both products present a similar API, but
+Pub/Sub Lite has more usage caveats.
+
+See the [Google Pub/Sub Lite docs](https://cloud.google.com/pubsub/quickstart-console#before-you-begin) for more details on how to activate
+Pub/Sub Lite for your project, as well as guidance on how to choose between
+Cloud Pub/Sub and Pub/Sub Lite.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
