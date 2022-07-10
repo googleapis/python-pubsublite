@@ -32,6 +32,7 @@ dependencies = [
     "grpcio >= 1.18.0",
     "grpcio-status >= 1.18.0",
     "overrides>=6.0.1, <7.0.0",
+    "google-api-core[grpc] >= 2.8.0, <3.0.0dev",
 ]
 
 setuptools.setup(
