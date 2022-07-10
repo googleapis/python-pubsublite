@@ -29,8 +29,8 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 
 dependencies = [
     "google-cloud-pubsub >= 2.1.0, <3.0.0dev",
-    "grpcio >= 1.18.0",
-    "grpcio-status >= 1.18.0",
+    "grpcio >= 1.18.0, <2.0.0dev",
+    "grpcio-status >= 1.18.0, <2.0.0dev",
     "overrides>=6.0.1, <7.0.0",
     "google-api-core[grpc] >= 2.8.0, <3.0.0dev",
 ]

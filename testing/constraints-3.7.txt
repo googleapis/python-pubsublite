@@ -5,4 +5,8 @@
 #
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
+google-cloud-pubsub==2.1.0
+grpcio==1.18.0
+grpcio-status==1.18.0
+overrides==6.0.1
 google-api-core==2.8.0
