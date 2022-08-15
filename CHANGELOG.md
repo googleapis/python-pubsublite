@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.3](https://github.com/googleapis/python-pubsublite/compare/v1.4.2...v1.4.3) (2022-08-15)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#353](https://github.com/googleapis/python-pubsublite/issues/353)) ([a865f6c](https://github.com/googleapis/python-pubsublite/commit/a865f6c0c65eb9c1a1d7198f6c47fb0484e2fe51))
+* Don't leave a bad future in place when client creation fails ([#362](https://github.com/googleapis/python-pubsublite/issues/362)) ([86cf1c0](https://github.com/googleapis/python-pubsublite/commit/86cf1c069159a003a05d4c282c5e3c5649298926))
+* require python 3.7+ ([#355](https://github.com/googleapis/python-pubsublite/issues/355)) ([7a8e050](https://github.com/googleapis/python-pubsublite/commit/7a8e0502ee161e9b985ed4bf53542140bfaab93d))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#346](https://github.com/googleapis/python-pubsublite/issues/346)) ([d04840a](https://github.com/googleapis/python-pubsublite/commit/d04840ab38402fe7a2f44148203852a45578f091))
+
 ## [1.4.2](https://github.com/googleapis/python-pubsublite/compare/v1.4.1...v1.4.2) (2022-04-26)
 
 
