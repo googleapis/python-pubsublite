@@ -45,6 +45,7 @@ from .admin import (
 from .common import (
     AttributeValues,
     Cursor,
+    ExportConfig,
     PubSubMessage,
     Reservation,
     SequencedMessage,
@@ -126,6 +127,7 @@ __all__ = (
     "UpdateTopicRequest",
     "AttributeValues",
     "Cursor",
+    "ExportConfig",
     "PubSubMessage",
     "Reservation",
     "SequencedMessage",
