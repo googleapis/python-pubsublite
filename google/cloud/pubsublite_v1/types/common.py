@@ -17,6 +17,7 @@ import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -29,6 +30,7 @@ __protobuf__ = proto.module(
         "Reservation",
         "Topic",
         "Subscription",
+        "ExportConfig",
         "TimeTarget",
     },
 )
@@ -338,6 +340,10 @@ class Subscription(proto.Message):
         delivery_config (google.cloud.pubsublite_v1.types.Subscription.DeliveryConfig):
             The settings for this subscription's message
             delivery.
+        export_config (google.cloud.pubsublite_v1.types.ExportConfig):
+            If present, messages are automatically
+            written from the Pub/Sub Lite topic associated
+            with this subscription to a destination.
     """
 
     class DeliveryConfig(proto.Message):
@@ -376,6 +382,117 @@ class Subscription(proto.Message):
         proto.MESSAGE,
         number=3,
         message=DeliveryConfig,
+    )
+    export_config = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ExportConfig",
+    )
+
+
+class ExportConfig(proto.Message):
+    r"""Configuration for a Pub/Sub Lite subscription that writes
+    messages to a destination. User subscriber clients must not
+    connect to this subscription.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        desired_state (google.cloud.pubsublite_v1.types.ExportConfig.State):
+            The desired state of this export.
+        statuses (Sequence[google.cloud.pubsublite_v1.types.ExportConfig.PartitionStatus]):
+            Output only. The export statuses of each
+            partition. This field is output only.
+        dead_letter_topic (str):
+            Optional. The name of an optional Pub/Sub Lite topic to
+            publish messages that can not be exported to the
+            destination. For example, the message can not be published
+            to the Pub/Sub service because it does not satisfy the
+            constraints documented at
+            https://cloud.google.com/pubsub/docs/publisher.
+
+            Structured like:
+            projects/{project_number}/locations/{location}/topics/{topic_id}.
+            Must be within the same project and location as the
+            subscription. The topic may be changed or removed.
+        pubsub_config (google.cloud.pubsublite_v1.types.ExportConfig.PubSubConfig):
+            Messages are automatically written from the
+            Pub/Sub Lite topic associated with this
+            subscription to a Pub/Sub topic.
+
+            This field is a member of `oneof`_ ``destination``.
+    """
+
+    class State(proto.Enum):
+        r"""An export state."""
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        PAUSED = 2
+
+    class PartitionStatus(proto.Message):
+        r"""The export status of a partition.
+
+        Attributes:
+            partition (int):
+                The partition number.
+            status (google.rpc.status_pb2.Status):
+                If the export for a partition is healthy and the desired
+                state is ``ACTIVE``, the status code will be ``OK`` (zero).
+                If the desired state of the export is ``PAUSED``, the status
+                code will be ``CANCELLED``.
+
+                If the export has been suspended due to an error, the status
+                will be populated with an error code and details. The
+                service will automatically retry after a period of time, and
+                will update the status code to ``OK`` if export subsequently
+                succeeds.
+        """
+
+        partition = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        status = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=status_pb2.Status,
+        )
+
+    class PubSubConfig(proto.Message):
+        r"""Configuration for exporting to a Pub/Sub topic.
+
+        Attributes:
+            topic (str):
+                The name of the Pub/Sub topic. Structured like:
+                projects/{project_number}/topics/{topic_id}. The topic may
+                be changed.
+        """
+
+        topic = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    desired_state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    statuses = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=PartitionStatus,
+    )
+    dead_letter_topic = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    pubsub_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="destination",
+        message=PubSubConfig,
     )
 
 

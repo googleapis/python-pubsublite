@@ -56,6 +56,7 @@ from .types.admin import UpdateSubscriptionRequest
 from .types.admin import UpdateTopicRequest
 from .types.common import AttributeValues
 from .types.common import Cursor
+from .types.common import ExportConfig
 from .types.common import PubSubMessage
 from .types.common import Reservation
 from .types.common import SequencedMessage
@@ -123,6 +124,7 @@ __all__ = (
     "DeleteReservationRequest",
     "DeleteSubscriptionRequest",
     "DeleteTopicRequest",
+    "ExportConfig",
     "FlowControlRequest",
     "GetReservationRequest",
     "GetSubscriptionRequest",
