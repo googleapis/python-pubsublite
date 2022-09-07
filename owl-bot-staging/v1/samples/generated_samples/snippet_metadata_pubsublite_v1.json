@@ -1,0 +1,4504 @@
+{
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.pubsublite.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-pubsublite"
+  },
+  "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.create_reservation",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.CreateReservation",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "CreateReservation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.CreateReservationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "reservation",
+            "type": "google.cloud.pubsublite_v1.types.Reservation"
+          },
+          {
+            "name": "reservation_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Reservation",
+        "shortName": "create_reservation"
+      },
+      "description": "Sample for CreateReservation",
+      "file": "pubsublite_v1_generated_admin_service_create_reservation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateReservation_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_create_reservation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.create_reservation",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.CreateReservation",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "CreateReservation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.CreateReservationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "reservation",
+            "type": "google.cloud.pubsublite_v1.types.Reservation"
+          },
+          {
+            "name": "reservation_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Reservation",
+        "shortName": "create_reservation"
+      },
+      "description": "Sample for CreateReservation",
+      "file": "pubsublite_v1_generated_admin_service_create_reservation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateReservation_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_create_reservation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.create_subscription",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.CreateSubscription",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "CreateSubscription"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.CreateSubscriptionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "subscription",
+            "type": "google.cloud.pubsublite_v1.types.Subscription"
+          },
+          {
+            "name": "subscription_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Subscription",
+        "shortName": "create_subscription"
+      },
+      "description": "Sample for CreateSubscription",
+      "file": "pubsublite_v1_generated_admin_service_create_subscription_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateSubscription_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_create_subscription_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.create_subscription",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.CreateSubscription",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "CreateSubscription"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.CreateSubscriptionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "subscription",
+            "type": "google.cloud.pubsublite_v1.types.Subscription"
+          },
+          {
+            "name": "subscription_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Subscription",
+        "shortName": "create_subscription"
+      },
+      "description": "Sample for CreateSubscription",
+      "file": "pubsublite_v1_generated_admin_service_create_subscription_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateSubscription_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_create_subscription_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.create_topic",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.CreateTopic",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "CreateTopic"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.CreateTopicRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "topic",
+            "type": "google.cloud.pubsublite_v1.types.Topic"
+          },
+          {
+            "name": "topic_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Topic",
+        "shortName": "create_topic"
+      },
+      "description": "Sample for CreateTopic",
+      "file": "pubsublite_v1_generated_admin_service_create_topic_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateTopic_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_create_topic_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.create_topic",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.CreateTopic",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "CreateTopic"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.CreateTopicRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "topic",
+            "type": "google.cloud.pubsublite_v1.types.Topic"
+          },
+          {
+            "name": "topic_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Topic",
+        "shortName": "create_topic"
+      },
+      "description": "Sample for CreateTopic",
+      "file": "pubsublite_v1_generated_admin_service_create_topic_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_CreateTopic_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_create_topic_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.delete_reservation",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.DeleteReservation",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "DeleteReservation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.DeleteReservationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_reservation"
+      },
+      "description": "Sample for DeleteReservation",
+      "file": "pubsublite_v1_generated_admin_service_delete_reservation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteReservation_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_delete_reservation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.delete_reservation",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.DeleteReservation",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "DeleteReservation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.DeleteReservationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_reservation"
+      },
+      "description": "Sample for DeleteReservation",
+      "file": "pubsublite_v1_generated_admin_service_delete_reservation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteReservation_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_delete_reservation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.delete_subscription",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.DeleteSubscription",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "DeleteSubscription"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.DeleteSubscriptionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_subscription"
+      },
+      "description": "Sample for DeleteSubscription",
+      "file": "pubsublite_v1_generated_admin_service_delete_subscription_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteSubscription_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_delete_subscription_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.delete_subscription",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.DeleteSubscription",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "DeleteSubscription"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.DeleteSubscriptionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_subscription"
+      },
+      "description": "Sample for DeleteSubscription",
+      "file": "pubsublite_v1_generated_admin_service_delete_subscription_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteSubscription_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_delete_subscription_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.delete_topic",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.DeleteTopic",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "DeleteTopic"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.DeleteTopicRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_topic"
+      },
+      "description": "Sample for DeleteTopic",
+      "file": "pubsublite_v1_generated_admin_service_delete_topic_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteTopic_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_delete_topic_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.delete_topic",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.DeleteTopic",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "DeleteTopic"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.DeleteTopicRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_topic"
+      },
+      "description": "Sample for DeleteTopic",
+      "file": "pubsublite_v1_generated_admin_service_delete_topic_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_DeleteTopic_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_delete_topic_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.get_reservation",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.GetReservation",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "GetReservation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.GetReservationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Reservation",
+        "shortName": "get_reservation"
+      },
+      "description": "Sample for GetReservation",
+      "file": "pubsublite_v1_generated_admin_service_get_reservation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetReservation_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_get_reservation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.get_reservation",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.GetReservation",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "GetReservation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.GetReservationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Reservation",
+        "shortName": "get_reservation"
+      },
+      "description": "Sample for GetReservation",
+      "file": "pubsublite_v1_generated_admin_service_get_reservation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetReservation_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_get_reservation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.get_subscription",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.GetSubscription",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "GetSubscription"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.GetSubscriptionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Subscription",
+        "shortName": "get_subscription"
+      },
+      "description": "Sample for GetSubscription",
+      "file": "pubsublite_v1_generated_admin_service_get_subscription_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetSubscription_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_get_subscription_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.get_subscription",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.GetSubscription",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "GetSubscription"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.GetSubscriptionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Subscription",
+        "shortName": "get_subscription"
+      },
+      "description": "Sample for GetSubscription",
+      "file": "pubsublite_v1_generated_admin_service_get_subscription_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetSubscription_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_get_subscription_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.get_topic_partitions",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.GetTopicPartitions",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "GetTopicPartitions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.GetTopicPartitionsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.TopicPartitions",
+        "shortName": "get_topic_partitions"
+      },
+      "description": "Sample for GetTopicPartitions",
+      "file": "pubsublite_v1_generated_admin_service_get_topic_partitions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetTopicPartitions_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_get_topic_partitions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.get_topic_partitions",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.GetTopicPartitions",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "GetTopicPartitions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.GetTopicPartitionsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.TopicPartitions",
+        "shortName": "get_topic_partitions"
+      },
+      "description": "Sample for GetTopicPartitions",
+      "file": "pubsublite_v1_generated_admin_service_get_topic_partitions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetTopicPartitions_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_get_topic_partitions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.get_topic",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.GetTopic",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "GetTopic"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.GetTopicRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Topic",
+        "shortName": "get_topic"
+      },
+      "description": "Sample for GetTopic",
+      "file": "pubsublite_v1_generated_admin_service_get_topic_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetTopic_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_get_topic_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.get_topic",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.GetTopic",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "GetTopic"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.GetTopicRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Topic",
+        "shortName": "get_topic"
+      },
+      "description": "Sample for GetTopic",
+      "file": "pubsublite_v1_generated_admin_service_get_topic_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_GetTopic_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_get_topic_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.list_reservation_topics",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.ListReservationTopics",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "ListReservationTopics"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListReservationTopicsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.admin_service.pagers.ListReservationTopicsAsyncPager",
+        "shortName": "list_reservation_topics"
+      },
+      "description": "Sample for ListReservationTopics",
+      "file": "pubsublite_v1_generated_admin_service_list_reservation_topics_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListReservationTopics_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_list_reservation_topics_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.list_reservation_topics",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.ListReservationTopics",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "ListReservationTopics"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListReservationTopicsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.admin_service.pagers.ListReservationTopicsPager",
+        "shortName": "list_reservation_topics"
+      },
+      "description": "Sample for ListReservationTopics",
+      "file": "pubsublite_v1_generated_admin_service_list_reservation_topics_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListReservationTopics_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_list_reservation_topics_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.list_reservations",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.ListReservations",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "ListReservations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListReservationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.admin_service.pagers.ListReservationsAsyncPager",
+        "shortName": "list_reservations"
+      },
+      "description": "Sample for ListReservations",
+      "file": "pubsublite_v1_generated_admin_service_list_reservations_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListReservations_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_list_reservations_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.list_reservations",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.ListReservations",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "ListReservations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListReservationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.admin_service.pagers.ListReservationsPager",
+        "shortName": "list_reservations"
+      },
+      "description": "Sample for ListReservations",
+      "file": "pubsublite_v1_generated_admin_service_list_reservations_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListReservations_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_list_reservations_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.list_subscriptions",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.ListSubscriptions",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "ListSubscriptions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListSubscriptionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.admin_service.pagers.ListSubscriptionsAsyncPager",
+        "shortName": "list_subscriptions"
+      },
+      "description": "Sample for ListSubscriptions",
+      "file": "pubsublite_v1_generated_admin_service_list_subscriptions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListSubscriptions_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_list_subscriptions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.list_subscriptions",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.ListSubscriptions",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "ListSubscriptions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListSubscriptionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.admin_service.pagers.ListSubscriptionsPager",
+        "shortName": "list_subscriptions"
+      },
+      "description": "Sample for ListSubscriptions",
+      "file": "pubsublite_v1_generated_admin_service_list_subscriptions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListSubscriptions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_list_subscriptions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.list_topic_subscriptions",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.ListTopicSubscriptions",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "ListTopicSubscriptions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListTopicSubscriptionsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.admin_service.pagers.ListTopicSubscriptionsAsyncPager",
+        "shortName": "list_topic_subscriptions"
+      },
+      "description": "Sample for ListTopicSubscriptions",
+      "file": "pubsublite_v1_generated_admin_service_list_topic_subscriptions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListTopicSubscriptions_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_list_topic_subscriptions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.list_topic_subscriptions",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.ListTopicSubscriptions",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "ListTopicSubscriptions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListTopicSubscriptionsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.admin_service.pagers.ListTopicSubscriptionsPager",
+        "shortName": "list_topic_subscriptions"
+      },
+      "description": "Sample for ListTopicSubscriptions",
+      "file": "pubsublite_v1_generated_admin_service_list_topic_subscriptions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListTopicSubscriptions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_list_topic_subscriptions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.list_topics",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.ListTopics",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "ListTopics"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListTopicsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.admin_service.pagers.ListTopicsAsyncPager",
+        "shortName": "list_topics"
+      },
+      "description": "Sample for ListTopics",
+      "file": "pubsublite_v1_generated_admin_service_list_topics_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListTopics_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_list_topics_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.list_topics",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.ListTopics",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "ListTopics"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListTopicsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.admin_service.pagers.ListTopicsPager",
+        "shortName": "list_topics"
+      },
+      "description": "Sample for ListTopics",
+      "file": "pubsublite_v1_generated_admin_service_list_topics_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_ListTopics_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_list_topics_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.seek_subscription",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.SeekSubscription",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "SeekSubscription"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.SeekSubscriptionRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "seek_subscription"
+      },
+      "description": "Sample for SeekSubscription",
+      "file": "pubsublite_v1_generated_admin_service_seek_subscription_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_SeekSubscription_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_seek_subscription_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.seek_subscription",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.SeekSubscription",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "SeekSubscription"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.SeekSubscriptionRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "seek_subscription"
+      },
+      "description": "Sample for SeekSubscription",
+      "file": "pubsublite_v1_generated_admin_service_seek_subscription_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_SeekSubscription_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_seek_subscription_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.update_reservation",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.UpdateReservation",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "UpdateReservation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.UpdateReservationRequest"
+          },
+          {
+            "name": "reservation",
+            "type": "google.cloud.pubsublite_v1.types.Reservation"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Reservation",
+        "shortName": "update_reservation"
+      },
+      "description": "Sample for UpdateReservation",
+      "file": "pubsublite_v1_generated_admin_service_update_reservation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateReservation_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_update_reservation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.update_reservation",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.UpdateReservation",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "UpdateReservation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.UpdateReservationRequest"
+          },
+          {
+            "name": "reservation",
+            "type": "google.cloud.pubsublite_v1.types.Reservation"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Reservation",
+        "shortName": "update_reservation"
+      },
+      "description": "Sample for UpdateReservation",
+      "file": "pubsublite_v1_generated_admin_service_update_reservation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateReservation_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_update_reservation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.update_subscription",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.UpdateSubscription",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "UpdateSubscription"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.UpdateSubscriptionRequest"
+          },
+          {
+            "name": "subscription",
+            "type": "google.cloud.pubsublite_v1.types.Subscription"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Subscription",
+        "shortName": "update_subscription"
+      },
+      "description": "Sample for UpdateSubscription",
+      "file": "pubsublite_v1_generated_admin_service_update_subscription_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateSubscription_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_update_subscription_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.update_subscription",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.UpdateSubscription",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "UpdateSubscription"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.UpdateSubscriptionRequest"
+          },
+          {
+            "name": "subscription",
+            "type": "google.cloud.pubsublite_v1.types.Subscription"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Subscription",
+        "shortName": "update_subscription"
+      },
+      "description": "Sample for UpdateSubscription",
+      "file": "pubsublite_v1_generated_admin_service_update_subscription_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateSubscription_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_update_subscription_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient",
+          "shortName": "AdminServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceAsyncClient.update_topic",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.UpdateTopic",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "UpdateTopic"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.UpdateTopicRequest"
+          },
+          {
+            "name": "topic",
+            "type": "google.cloud.pubsublite_v1.types.Topic"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Topic",
+        "shortName": "update_topic"
+      },
+      "description": "Sample for UpdateTopic",
+      "file": "pubsublite_v1_generated_admin_service_update_topic_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateTopic_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_update_topic_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.AdminServiceClient",
+          "shortName": "AdminServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.AdminServiceClient.update_topic",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.AdminService.UpdateTopic",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.AdminService",
+            "shortName": "AdminService"
+          },
+          "shortName": "UpdateTopic"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.UpdateTopicRequest"
+          },
+          {
+            "name": "topic",
+            "type": "google.cloud.pubsublite_v1.types.Topic"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.Topic",
+        "shortName": "update_topic"
+      },
+      "description": "Sample for UpdateTopic",
+      "file": "pubsublite_v1_generated_admin_service_update_topic_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_AdminService_UpdateTopic_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_admin_service_update_topic_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.CursorServiceAsyncClient",
+          "shortName": "CursorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.CursorServiceAsyncClient.commit_cursor",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.CursorService.CommitCursor",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.CursorService",
+            "shortName": "CursorService"
+          },
+          "shortName": "CommitCursor"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.CommitCursorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.CommitCursorResponse",
+        "shortName": "commit_cursor"
+      },
+      "description": "Sample for CommitCursor",
+      "file": "pubsublite_v1_generated_cursor_service_commit_cursor_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_CursorService_CommitCursor_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_cursor_service_commit_cursor_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.CursorServiceClient",
+          "shortName": "CursorServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.CursorServiceClient.commit_cursor",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.CursorService.CommitCursor",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.CursorService",
+            "shortName": "CursorService"
+          },
+          "shortName": "CommitCursor"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.CommitCursorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.CommitCursorResponse",
+        "shortName": "commit_cursor"
+      },
+      "description": "Sample for CommitCursor",
+      "file": "pubsublite_v1_generated_cursor_service_commit_cursor_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_CursorService_CommitCursor_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_cursor_service_commit_cursor_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.CursorServiceAsyncClient",
+          "shortName": "CursorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.CursorServiceAsyncClient.list_partition_cursors",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.CursorService.ListPartitionCursors",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.CursorService",
+            "shortName": "CursorService"
+          },
+          "shortName": "ListPartitionCursors"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.cursor_service.pagers.ListPartitionCursorsAsyncPager",
+        "shortName": "list_partition_cursors"
+      },
+      "description": "Sample for ListPartitionCursors",
+      "file": "pubsublite_v1_generated_cursor_service_list_partition_cursors_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_CursorService_ListPartitionCursors_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_cursor_service_list_partition_cursors_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.CursorServiceClient",
+          "shortName": "CursorServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.CursorServiceClient.list_partition_cursors",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.CursorService.ListPartitionCursors",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.CursorService",
+            "shortName": "CursorService"
+          },
+          "shortName": "ListPartitionCursors"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.services.cursor_service.pagers.ListPartitionCursorsPager",
+        "shortName": "list_partition_cursors"
+      },
+      "description": "Sample for ListPartitionCursors",
+      "file": "pubsublite_v1_generated_cursor_service_list_partition_cursors_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_CursorService_ListPartitionCursors_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_cursor_service_list_partition_cursors_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.CursorServiceAsyncClient",
+          "shortName": "CursorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.CursorServiceAsyncClient.streaming_commit_cursor",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.CursorService.StreamingCommitCursor",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.CursorService",
+            "shortName": "CursorService"
+          },
+          "shortName": "StreamingCommitCursor"
+        },
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "Iterator[google.cloud.pubsublite_v1.types.StreamingCommitCursorRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.pubsublite_v1.types.StreamingCommitCursorResponse]",
+        "shortName": "streaming_commit_cursor"
+      },
+      "description": "Sample for StreamingCommitCursor",
+      "file": "pubsublite_v1_generated_cursor_service_streaming_commit_cursor_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_CursorService_StreamingCommitCursor_async",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_cursor_service_streaming_commit_cursor_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.CursorServiceClient",
+          "shortName": "CursorServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.CursorServiceClient.streaming_commit_cursor",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.CursorService.StreamingCommitCursor",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.CursorService",
+            "shortName": "CursorService"
+          },
+          "shortName": "StreamingCommitCursor"
+        },
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "Iterator[google.cloud.pubsublite_v1.types.StreamingCommitCursorRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.pubsublite_v1.types.StreamingCommitCursorResponse]",
+        "shortName": "streaming_commit_cursor"
+      },
+      "description": "Sample for StreamingCommitCursor",
+      "file": "pubsublite_v1_generated_cursor_service_streaming_commit_cursor_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_CursorService_StreamingCommitCursor_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_cursor_service_streaming_commit_cursor_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.PartitionAssignmentServiceAsyncClient",
+          "shortName": "PartitionAssignmentServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.PartitionAssignmentServiceAsyncClient.assign_partitions",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.PartitionAssignmentService.AssignPartitions",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.PartitionAssignmentService",
+            "shortName": "PartitionAssignmentService"
+          },
+          "shortName": "AssignPartitions"
+        },
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "Iterator[google.cloud.pubsublite_v1.types.PartitionAssignmentRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.pubsublite_v1.types.PartitionAssignment]",
+        "shortName": "assign_partitions"
+      },
+      "description": "Sample for AssignPartitions",
+      "file": "pubsublite_v1_generated_partition_assignment_service_assign_partitions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_PartitionAssignmentService_AssignPartitions_async",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_partition_assignment_service_assign_partitions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.PartitionAssignmentServiceClient",
+          "shortName": "PartitionAssignmentServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.PartitionAssignmentServiceClient.assign_partitions",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.PartitionAssignmentService.AssignPartitions",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.PartitionAssignmentService",
+            "shortName": "PartitionAssignmentService"
+          },
+          "shortName": "AssignPartitions"
+        },
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "Iterator[google.cloud.pubsublite_v1.types.PartitionAssignmentRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.pubsublite_v1.types.PartitionAssignment]",
+        "shortName": "assign_partitions"
+      },
+      "description": "Sample for AssignPartitions",
+      "file": "pubsublite_v1_generated_partition_assignment_service_assign_partitions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_PartitionAssignmentService_AssignPartitions_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_partition_assignment_service_assign_partitions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.PublisherServiceAsyncClient",
+          "shortName": "PublisherServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.PublisherServiceAsyncClient.publish",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.PublisherService.Publish",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.PublisherService",
+            "shortName": "PublisherService"
+          },
+          "shortName": "Publish"
+        },
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "Iterator[google.cloud.pubsublite_v1.types.PublishRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.pubsublite_v1.types.PublishResponse]",
+        "shortName": "publish"
+      },
+      "description": "Sample for Publish",
+      "file": "pubsublite_v1_generated_publisher_service_publish_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_PublisherService_Publish_async",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_publisher_service_publish_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.PublisherServiceClient",
+          "shortName": "PublisherServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.PublisherServiceClient.publish",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.PublisherService.Publish",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.PublisherService",
+            "shortName": "PublisherService"
+          },
+          "shortName": "Publish"
+        },
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "Iterator[google.cloud.pubsublite_v1.types.PublishRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.pubsublite_v1.types.PublishResponse]",
+        "shortName": "publish"
+      },
+      "description": "Sample for Publish",
+      "file": "pubsublite_v1_generated_publisher_service_publish_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_PublisherService_Publish_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_publisher_service_publish_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.SubscriberServiceAsyncClient",
+          "shortName": "SubscriberServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.SubscriberServiceAsyncClient.subscribe",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.SubscriberService.Subscribe",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.SubscriberService",
+            "shortName": "SubscriberService"
+          },
+          "shortName": "Subscribe"
+        },
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "Iterator[google.cloud.pubsublite_v1.types.SubscribeRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.pubsublite_v1.types.SubscribeResponse]",
+        "shortName": "subscribe"
+      },
+      "description": "Sample for Subscribe",
+      "file": "pubsublite_v1_generated_subscriber_service_subscribe_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_SubscriberService_Subscribe_async",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_subscriber_service_subscribe_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.SubscriberServiceClient",
+          "shortName": "SubscriberServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.SubscriberServiceClient.subscribe",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.SubscriberService.Subscribe",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.SubscriberService",
+            "shortName": "SubscriberService"
+          },
+          "shortName": "Subscribe"
+        },
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "Iterator[google.cloud.pubsublite_v1.types.SubscribeRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.pubsublite_v1.types.SubscribeResponse]",
+        "shortName": "subscribe"
+      },
+      "description": "Sample for Subscribe",
+      "file": "pubsublite_v1_generated_subscriber_service_subscribe_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_SubscriberService_Subscribe_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_subscriber_service_subscribe_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceAsyncClient",
+          "shortName": "TopicStatsServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceAsyncClient.compute_head_cursor",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.TopicStatsService.ComputeHeadCursor",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.TopicStatsService",
+            "shortName": "TopicStatsService"
+          },
+          "shortName": "ComputeHeadCursor"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.ComputeHeadCursorResponse",
+        "shortName": "compute_head_cursor"
+      },
+      "description": "Sample for ComputeHeadCursor",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_head_cursor_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeHeadCursor_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_topic_stats_service_compute_head_cursor_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceClient",
+          "shortName": "TopicStatsServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceClient.compute_head_cursor",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.TopicStatsService.ComputeHeadCursor",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.TopicStatsService",
+            "shortName": "TopicStatsService"
+          },
+          "shortName": "ComputeHeadCursor"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.ComputeHeadCursorResponse",
+        "shortName": "compute_head_cursor"
+      },
+      "description": "Sample for ComputeHeadCursor",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_head_cursor_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeHeadCursor_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_topic_stats_service_compute_head_cursor_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceAsyncClient",
+          "shortName": "TopicStatsServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceAsyncClient.compute_message_stats",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.TopicStatsService.ComputeMessageStats",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.TopicStatsService",
+            "shortName": "TopicStatsService"
+          },
+          "shortName": "ComputeMessageStats"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.ComputeMessageStatsResponse",
+        "shortName": "compute_message_stats"
+      },
+      "description": "Sample for ComputeMessageStats",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_message_stats_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeMessageStats_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_topic_stats_service_compute_message_stats_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceClient",
+          "shortName": "TopicStatsServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceClient.compute_message_stats",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.TopicStatsService.ComputeMessageStats",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.TopicStatsService",
+            "shortName": "TopicStatsService"
+          },
+          "shortName": "ComputeMessageStats"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.ComputeMessageStatsResponse",
+        "shortName": "compute_message_stats"
+      },
+      "description": "Sample for ComputeMessageStats",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_message_stats_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeMessageStats_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_topic_stats_service_compute_message_stats_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceAsyncClient",
+          "shortName": "TopicStatsServiceAsyncClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceAsyncClient.compute_time_cursor",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.TopicStatsService.ComputeTimeCursor",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.TopicStatsService",
+            "shortName": "TopicStatsService"
+          },
+          "shortName": "ComputeTimeCursor"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ComputeTimeCursorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.ComputeTimeCursorResponse",
+        "shortName": "compute_time_cursor"
+      },
+      "description": "Sample for ComputeTimeCursor",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_time_cursor_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeTimeCursor_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_topic_stats_service_compute_time_cursor_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceClient",
+          "shortName": "TopicStatsServiceClient"
+        },
+        "fullName": "google.cloud.pubsublite_v1.TopicStatsServiceClient.compute_time_cursor",
+        "method": {
+          "fullName": "google.cloud.pubsublite.v1.TopicStatsService.ComputeTimeCursor",
+          "service": {
+            "fullName": "google.cloud.pubsublite.v1.TopicStatsService",
+            "shortName": "TopicStatsService"
+          },
+          "shortName": "ComputeTimeCursor"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.pubsublite_v1.types.ComputeTimeCursorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.pubsublite_v1.types.ComputeTimeCursorResponse",
+        "shortName": "compute_time_cursor"
+      },
+      "description": "Sample for ComputeTimeCursor",
+      "file": "pubsublite_v1_generated_topic_stats_service_compute_time_cursor_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "pubsublite_v1_generated_TopicStatsService_ComputeTimeCursor_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "pubsublite_v1_generated_topic_stats_service_compute_time_cursor_sync.py"
+    }
+  ]
+}
