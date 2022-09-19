@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-pubsublite/compare/v1.4.3...v1.5.0) (2022-09-13)
+
+
+### Features
+
+* Add export config protos to API ([#364](https://github.com/googleapis/python-pubsublite/issues/364)) ([b77cf6d](https://github.com/googleapis/python-pubsublite/commit/b77cf6ddeaae4e950ed069b652a22a1fc79f74ea))
+
 ## [1.4.3](https://github.com/googleapis/python-pubsublite/compare/v1.4.2...v1.4.3) (2022-08-15)
 
 
