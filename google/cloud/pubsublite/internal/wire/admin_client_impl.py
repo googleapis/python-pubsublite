@@ -110,7 +110,7 @@ class AdminClientImpl(AdminClientInterface):
         # Request 1 - Create the subscription.
         skip_backlog = False
         if isinstance(target, BacklogLocation):
-            skip_backlog = starting_offset == BacklogLocation.END
+            skip_backlog = target == BacklogLocation.END
         response = self._underlying.create_subscription(
             request=CreateSubscriptionRequest(
                 parent=str(path.to_location_path()),
