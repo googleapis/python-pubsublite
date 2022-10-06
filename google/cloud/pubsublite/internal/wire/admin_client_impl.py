@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import logging
-from typing import List, Union
+from typing import List, Optional, Union
 
 from google.api_core.exceptions import InvalidArgument
 from google.api_core.operation import Operation
@@ -90,7 +90,7 @@ class AdminClientImpl(AdminClientInterface):
         self,
         subscription: Subscription,
         target: Union[BacklogLocation, PublishTime, EventTime] = BacklogLocation.END,
-        starting_offset: BacklogLocation = None,
+        starting_offset: Optional[BacklogLocation] = None,
     ) -> Subscription:
         if starting_offset:
             log.warning("starting_offset is deprecated. Use target instead.")

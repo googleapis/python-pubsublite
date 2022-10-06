@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from abc import ABC, abstractmethod
-from typing import List, Union
+from typing import List, Optional, Union
 
 from google.api_core.operation import Operation
 from google.cloud.pubsublite.types import (
@@ -72,7 +72,7 @@ class AdminClientInterface(ABC):
         self,
         subscription: Subscription,
         target: Union[BacklogLocation, PublishTime, EventTime] = BacklogLocation.END,
-        starting_offset: BacklogLocation = None,
+        starting_offset: Optional[BacklogLocation] = None,
     ) -> Subscription:
         """Create a subscription, returns the created subscription. By default
         a subscription will only receive messages published after the

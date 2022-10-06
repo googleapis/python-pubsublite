@@ -115,7 +115,7 @@ class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
         self,
         subscription: Subscription,
         target: Union[BacklogLocation, PublishTime, EventTime] = BacklogLocation.END,
-        starting_offset: BacklogLocation = None,
+        starting_offset: Optional[BacklogLocation] = None,
     ) -> Subscription:
         return self._impl.create_subscription(subscription, target, starting_offset)
 
