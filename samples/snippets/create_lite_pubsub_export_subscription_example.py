@@ -19,40 +19,29 @@ messages to a Pub/Sub topic. For more information, see documentation at
 https://cloud.google.com/pubsub/lite/docs/export-subscriptions.
 """
 
-import argparse
+# [START pubsublite_create_pubsub_export_subscription]
+from google.api_core.exceptions import AlreadyExists
+from google.cloud.pubsub_v1 import PublisherClient
+from google.cloud.pubsublite import AdminClient, Subscription, ExportConfig
+from google.cloud.pubsublite.types import (
+    BacklogLocation,
+    CloudRegion,
+    CloudZone,
+    SubscriptionPath,
+    TopicPath,
+)
 
 
 def create_lite_pubsub_export_subscription(
     project_number,
-    cloud_region,
-    zone_id,
-    topic_id,
-    subscription_id,
-    pubsub_topic_id,
-    regional,
-    target_location,
+    cloud_region="us-central1",
+    zone_id="a",
+    topic_id="my-topic-id",
+    subscription_id="my-subscription-id",
+    pubsub_topic_id="destination-topic-id",
+    regional=True,
+    target_location=BacklogLocation.END,
 ):
-    # [START pubsublite_create_pubsub_export_subscription]
-    from google.api_core.exceptions import AlreadyExists
-    from google.cloud.pubsub_v1 import PublisherClient
-    from google.cloud.pubsublite import AdminClient, Subscription, ExportConfig
-    from google.cloud.pubsublite.types import (
-        CloudRegion,
-        CloudZone,
-        SubscriptionPath,
-        TopicPath,
-    )
-
-    # TODO(developer):
-    # project_number = 1122334455
-    # cloud_region = "us-central1"
-    # zone_id = "a"
-    # topic_id = "your-topic-id"
-    # subscription_id = "your-subscription-id"
-    # pubsub_topic_id = "destination-topic-id"
-    # regional = True
-    # target_location = BacklogLocation.BEGINNING
-
     if regional:
         location = CloudRegion(cloud_region)
     else:
@@ -85,58 +74,13 @@ def create_lite_pubsub_export_subscription(
         ),
     )
 
+    # Initialize client that will be used to send requests across threads. This
+    # client only needs to be created once, and can be reused for multiple requests.
     client = AdminClient(cloud_region)
     try:
         response = client.create_subscription(subscription, target_location)
         print(f"{response.name} created successfully.")
     except AlreadyExists:
         print(f"{subscription_path} already exists.")
-    # [END pubsublite_create_pubsub_export_subscription]
 
-
-if __name__ == "__main__":
-    from datetime import datetime
-    from google.cloud.pubsublite.types import BacklogLocation, PublishTime
-
-    parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-    )
-    parser.add_argument("project_number", help="Your Google Cloud Project Number")
-    parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
-    parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
-    parser.add_argument("topic_id", help="Your Lite topic ID")
-    parser.add_argument("subscription_id", help="Your Lite subscription ID")
-    parser.add_argument("pubsub_topic_id", help="The destination Pub/Sub topic ID")
-    parser.add_argument(
-        "--regional",
-        default=False,
-        help="True if the Lite resource is regional else zonal",
-    )
-    parser.add_argument(
-        "--target",
-        default="BEGINNING",
-        help="Initial location in the message backlog, e.g. 'BEGINNING, 'END' or a timestamp",
-    )
-
-    args = parser.parse_args()
-
-    if args.target == "BEGINNING":
-        target_location = BacklogLocation.BEGINNING
-    elif args.target == "END":
-        target_location = BacklogLocation.END
-    else:
-        target_location = PublishTime(
-            datetime.strptime(args.target, "%Y-%m-%d %H:%M:%S")
-        )
-
-    create_lite_pubsub_export_subscription(
-        args.project_number,
-        args.cloud_region,
-        args.zone_id,
-        args.topic_id,
-        args.subscription_id,
-        args.pubsub_topic_id,
-        args.regional,
-        target_location,
-    )
+# [END pubsublite_create_pubsub_export_subscription]

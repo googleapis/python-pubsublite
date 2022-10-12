@@ -218,7 +218,7 @@ def pubsub_topic(publisher_client):
     try:
         publisher_client.create_topic(request={"name": destination_topic_path})
     except AlreadyExists:
-        None
+        print(f"Pub/Sub topic {destination_topic_path} already exists.")
 
     yield destination_topic_path
     try:
