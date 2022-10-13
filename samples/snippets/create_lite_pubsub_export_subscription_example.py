@@ -63,6 +63,7 @@ def create_lite_pubsub_export_subscription(
             # suitable for applications that need higher throughput.
             delivery_requirement=Subscription.DeliveryConfig.DeliveryRequirement.DELIVER_IMMEDIATELY,
         ),
+        # Configures an export subscription that writes messages to a Pub/Sub topic.
         export_config=ExportConfig(
             # Possible values for desired_state:
             # - `ACTIVE`: enable message processing.
