@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-pubsublite/compare/v1.5.0...v1.6.0) (2022-10-06)
+
+
+### Features
+
+* Create subscriptions at a seek target ([#383](https://github.com/googleapis/python-pubsublite/issues/383)) ([864c0cc](https://github.com/googleapis/python-pubsublite/commit/864c0ccbd9f6575fc8aa96f80bd7959c1e78e66e))
+
 ## [1.5.0](https://github.com/googleapis/python-pubsublite/compare/v1.4.3...v1.5.0) (2022-09-13)
 
 
