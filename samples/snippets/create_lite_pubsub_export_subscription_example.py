@@ -40,7 +40,7 @@ def create_lite_pubsub_export_subscription(
     subscription_id="my-subscription-id",
     pubsub_topic_id="destination-topic-id",
     regional=True,
-    target_location=BacklogLocation.END,
+    target_location=BacklogLocation.BEGINNING,
 ):
     if regional:
         location = CloudRegion(cloud_region)
