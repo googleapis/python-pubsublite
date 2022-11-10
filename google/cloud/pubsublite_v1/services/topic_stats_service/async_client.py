@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -161,9 +171,9 @@ class TopicStatsServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TopicStatsServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the topic stats service client.
@@ -207,10 +217,10 @@ class TopicStatsServiceAsyncClient:
 
     async def compute_message_stats(
         self,
-        request: Union[topic_stats.ComputeMessageStatsRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeMessageStatsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeMessageStatsResponse:
         r"""Compute statistics about a range of messages in a
@@ -244,7 +254,7 @@ class TopicStatsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest, dict]]):
                 The request object. Compute statistics about a range of
                 messages in a given topic and partition.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -290,10 +300,10 @@ class TopicStatsServiceAsyncClient:
 
     async def compute_head_cursor(
         self,
-        request: Union[topic_stats.ComputeHeadCursorRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeHeadCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeHeadCursorResponse:
         r"""Compute the head cursor for the partition.
@@ -332,7 +342,7 @@ class TopicStatsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest, dict]]):
                 The request object. Compute the current head cursor for
                 a partition.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -377,10 +387,10 @@ class TopicStatsServiceAsyncClient:
 
     async def compute_time_cursor(
         self,
-        request: Union[topic_stats.ComputeTimeCursorRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeTimeCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeTimeCursorResponse:
         r"""Compute the corresponding cursor for a publish or
@@ -414,7 +424,7 @@ class TopicStatsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ComputeTimeCursorRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ComputeTimeCursorRequest, dict]]):
                 The request object. Compute the corresponding cursor for
                 a publish or event time in a topic partition.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

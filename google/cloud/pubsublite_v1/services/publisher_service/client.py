@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     Iterable,
     Iterator,
@@ -67,7 +69,7 @@ class PublisherServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[PublisherServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -325,7 +327,7 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, PublisherServiceTransport, None] = None,
+        transport: Optional[Union[str, PublisherServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -423,10 +425,10 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
 
     def publish(
         self,
-        requests: Iterator[publisher.PublishRequest] = None,
+        requests: Optional[Iterator[publisher.PublishRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[publisher.PublishResponse]:
         r"""Establishes a stream with the server for publishing

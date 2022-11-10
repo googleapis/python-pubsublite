@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -58,7 +69,7 @@ class TopicStatsServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[TopicStatsServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -335,7 +346,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TopicStatsServiceTransport, None] = None,
+        transport: Optional[Union[str, TopicStatsServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -433,10 +444,10 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
 
     def compute_message_stats(
         self,
-        request: Union[topic_stats.ComputeMessageStatsRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeMessageStatsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeMessageStatsResponse:
         r"""Compute statistics about a range of messages in a
@@ -517,10 +528,10 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
 
     def compute_head_cursor(
         self,
-        request: Union[topic_stats.ComputeHeadCursorRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeHeadCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeHeadCursorResponse:
         r"""Compute the head cursor for the partition.
@@ -605,10 +616,10 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
 
     def compute_time_cursor(
         self,
-        request: Union[topic_stats.ComputeTimeCursorRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeTimeCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeTimeCursorResponse:
         r"""Compute the corresponding cursor for a publish or

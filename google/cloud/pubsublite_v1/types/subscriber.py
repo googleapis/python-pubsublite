@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.pubsublite_v1.types import common
@@ -57,15 +59,15 @@ class InitialSubscribeRequest(proto.Message):
             subscription and partition.
     """
 
-    subscription = proto.Field(
+    subscription: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    partition = proto.Field(
+    partition: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    initial_location = proto.Field(
+    initial_location: "SeekRequest" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="SeekRequest",
@@ -82,7 +84,7 @@ class InitialSubscribeResponse(proto.Message):
             tokens become available.
     """
 
-    cursor = proto.Field(
+    cursor: common.Cursor = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.Cursor,
@@ -125,13 +127,13 @@ class SeekRequest(proto.Message):
         HEAD = 1
         COMMITTED_CURSOR = 2
 
-    named_target = proto.Field(
+    named_target: NamedTarget = proto.Field(
         proto.ENUM,
         number=1,
         oneof="target",
         enum=NamedTarget,
     )
-    cursor = proto.Field(
+    cursor: common.Cursor = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="target",
@@ -148,7 +150,7 @@ class SeekResponse(proto.Message):
             stream.
     """
 
-    cursor = proto.Field(
+    cursor: common.Cursor = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.Cursor,
@@ -168,11 +170,11 @@ class FlowControlRequest(proto.Message):
             greater than or equal to 0.
     """
 
-    allowed_messages = proto.Field(
+    allowed_messages: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    allowed_bytes = proto.Field(
+    allowed_bytes: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -204,19 +206,19 @@ class SubscribeRequest(proto.Message):
             This field is a member of `oneof`_ ``request``.
     """
 
-    initial = proto.Field(
+    initial: "InitialSubscribeRequest" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="request",
         message="InitialSubscribeRequest",
     )
-    seek = proto.Field(
+    seek: "SeekRequest" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="request",
         message="SeekRequest",
     )
-    flow_control = proto.Field(
+    flow_control: "FlowControlRequest" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="request",
@@ -234,11 +236,11 @@ class MessageResponse(proto.Message):
        available to the server.
 
     Attributes:
-        messages (Sequence[google.cloud.pubsublite_v1.types.SequencedMessage]):
+        messages (MutableSequence[google.cloud.pubsublite_v1.types.SequencedMessage]):
             Messages from the topic partition.
     """
 
-    messages = proto.RepeatedField(
+    messages: MutableSequence[common.SequencedMessage] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=common.SequencedMessage,
@@ -271,19 +273,19 @@ class SubscribeResponse(proto.Message):
             This field is a member of `oneof`_ ``response``.
     """
 
-    initial = proto.Field(
+    initial: "InitialSubscribeResponse" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="response",
         message="InitialSubscribeResponse",
     )
-    seek = proto.Field(
+    seek: "SeekResponse" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="response",
         message="SeekResponse",
     )
-    messages = proto.Field(
+    messages: "MessageResponse" = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="response",
@@ -315,11 +317,11 @@ class InitialPartitionAssignmentRequest(proto.Message):
             disconnections with retryable stream errors.
     """
 
-    subscription = proto.Field(
+    subscription: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    client_id = proto.Field(
+    client_id: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
@@ -331,12 +333,12 @@ class PartitionAssignment(proto.Message):
     at a time. If not, the client must break the stream.
 
     Attributes:
-        partitions (Sequence[int]):
+        partitions (MutableSequence[int]):
             The list of partition numbers this subscriber
             is assigned to.
     """
 
-    partitions = proto.RepeatedField(
+    partitions: MutableSequence[int] = proto.RepeatedField(
         proto.INT64,
         number=1,
     )
@@ -373,13 +375,13 @@ class PartitionAssignmentRequest(proto.Message):
             This field is a member of `oneof`_ ``request``.
     """
 
-    initial = proto.Field(
+    initial: "InitialPartitionAssignmentRequest" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="request",
         message="InitialPartitionAssignmentRequest",
     )
-    ack = proto.Field(
+    ack: "PartitionAssignmentAck" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="request",

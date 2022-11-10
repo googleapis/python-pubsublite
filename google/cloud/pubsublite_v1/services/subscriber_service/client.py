@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     Iterable,
     Iterator,
@@ -67,7 +69,7 @@ class SubscriberServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[SubscriberServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -322,7 +324,7 @@ class SubscriberServiceClient(metaclass=SubscriberServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SubscriberServiceTransport, None] = None,
+        transport: Optional[Union[str, SubscriberServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -420,10 +422,10 @@ class SubscriberServiceClient(metaclass=SubscriberServiceClientMeta):
 
     def subscribe(
         self,
-        requests: Iterator[subscriber.SubscribeRequest] = None,
+        requests: Optional[Iterator[subscriber.SubscribeRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[subscriber.SubscribeResponse]:
         r"""Establishes a stream with the server for receiving

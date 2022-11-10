@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.pubsublite_v1.types import common
@@ -72,16 +74,16 @@ class CreateTopicRequest(proto.Message):
             This value is structured like: ``my-topic-name``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    topic = proto.Field(
+    topic: common.Topic = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.Topic,
     )
-    topic_id = proto.Field(
+    topic_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -96,7 +98,7 @@ class GetTopicRequest(proto.Message):
             configuration to return.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -111,7 +113,7 @@ class GetTopicPartitionsRequest(proto.Message):
             information to return.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -125,7 +127,7 @@ class TopicPartitions(proto.Message):
             The number of partitions in the topic.
     """
 
-    partition_count = proto.Field(
+    partition_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
@@ -153,15 +155,15 @@ class ListTopicsRequest(proto.Message):
             token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -171,7 +173,7 @@ class ListTopicsResponse(proto.Message):
     r"""Response for ListTopics.
 
     Attributes:
-        topics (Sequence[google.cloud.pubsublite_v1.types.Topic]):
+        topics (MutableSequence[google.cloud.pubsublite_v1.types.Topic]):
             The list of topic in the requested parent.
             The order of the topics is unspecified.
         next_page_token (str):
@@ -184,12 +186,12 @@ class ListTopicsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    topics = proto.RepeatedField(
+    topics: MutableSequence[common.Topic] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=common.Topic,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -207,12 +209,12 @@ class UpdateTopicRequest(proto.Message):
             to change.
     """
 
-    topic = proto.Field(
+    topic: common.Topic = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.Topic,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -227,7 +229,7 @@ class DeleteTopicRequest(proto.Message):
             Required. The name of the topic to delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -255,15 +257,15 @@ class ListTopicSubscriptionsRequest(proto.Message):
             the page token.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -273,7 +275,7 @@ class ListTopicSubscriptionsResponse(proto.Message):
     r"""Response for ListTopicSubscriptions.
 
     Attributes:
-        subscriptions (Sequence[str]):
+        subscriptions (MutableSequence[str]):
             The names of subscriptions attached to the
             topic. The order of the subscriptions is
             unspecified.
@@ -287,11 +289,11 @@ class ListTopicSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    subscriptions = proto.RepeatedField(
+    subscriptions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -321,20 +323,20 @@ class CreateSubscriptionRequest(proto.Message):
             subscription. Defaults to false.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    subscription = proto.Field(
+    subscription: common.Subscription = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.Subscription,
     )
-    subscription_id = proto.Field(
+    subscription_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    skip_backlog = proto.Field(
+    skip_backlog: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -349,7 +351,7 @@ class GetSubscriptionRequest(proto.Message):
             configuration to return.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -377,15 +379,15 @@ class ListSubscriptionsRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -395,7 +397,7 @@ class ListSubscriptionsResponse(proto.Message):
     r"""Response for ListSubscriptions.
 
     Attributes:
-        subscriptions (Sequence[google.cloud.pubsublite_v1.types.Subscription]):
+        subscriptions (MutableSequence[google.cloud.pubsublite_v1.types.Subscription]):
             The list of subscriptions in the requested
             parent. The order of the subscriptions is
             unspecified.
@@ -409,12 +411,12 @@ class ListSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    subscriptions = proto.RepeatedField(
+    subscriptions: MutableSequence[common.Subscription] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=common.Subscription,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -432,12 +434,12 @@ class UpdateSubscriptionRequest(proto.Message):
             fields to change.
     """
 
-    subscription = proto.Field(
+    subscription: common.Subscription = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.Subscription,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -453,7 +455,7 @@ class DeleteSubscriptionRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -494,17 +496,17 @@ class SeekSubscriptionRequest(proto.Message):
         TAIL = 1
         HEAD = 2
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    named_target = proto.Field(
+    named_target: NamedTarget = proto.Field(
         proto.ENUM,
         number=2,
         oneof="target",
         enum=NamedTarget,
     )
-    time_target = proto.Field(
+    time_target: common.TimeTarget = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="target",
@@ -534,21 +536,21 @@ class OperationMetadata(proto.Message):
             Name of the verb executed by the operation.
     """
 
-    create_time = proto.Field(
+    create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    end_time = proto.Field(
+    end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    target = proto.Field(
+    target: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    verb = proto.Field(
+    verb: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -572,16 +574,16 @@ class CreateReservationRequest(proto.Message):
             This value is structured like: ``my-reservation-name``.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    reservation = proto.Field(
+    reservation: common.Reservation = proto.Field(
         proto.MESSAGE,
         number=2,
         message=common.Reservation,
     )
-    reservation_id = proto.Field(
+    reservation_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -597,7 +599,7 @@ class GetReservationRequest(proto.Message):
             projects/{project_number}/locations/{location}/reservations/{reservation_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -625,15 +627,15 @@ class ListReservationsRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(
+    parent: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -643,7 +645,7 @@ class ListReservationsResponse(proto.Message):
     r"""Response for ListReservations.
 
     Attributes:
-        reservations (Sequence[google.cloud.pubsublite_v1.types.Reservation]):
+        reservations (MutableSequence[google.cloud.pubsublite_v1.types.Reservation]):
             The list of reservation in the requested
             parent. The order of the reservations is
             unspecified.
@@ -657,12 +659,12 @@ class ListReservationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    reservations = proto.RepeatedField(
+    reservations: MutableSequence[common.Reservation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=common.Reservation,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -680,12 +682,12 @@ class UpdateReservationRequest(proto.Message):
             fields to change.
     """
 
-    reservation = proto.Field(
+    reservation: common.Reservation = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.Reservation,
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
@@ -702,7 +704,7 @@ class DeleteReservationRequest(proto.Message):
             projects/{project_number}/locations/{location}/reservations/{reservation_id}
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -731,15 +733,15 @@ class ListReservationTopicsRequest(proto.Message):
             the page token.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -749,7 +751,7 @@ class ListReservationTopicsResponse(proto.Message):
     r"""Response for ListReservationTopics.
 
     Attributes:
-        topics (Sequence[str]):
+        topics (MutableSequence[str]):
             The names of topics attached to the
             reservation. The order of the topics is
             unspecified.
@@ -763,11 +765,11 @@ class ListReservationTopicsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    topics = proto.RepeatedField(
+    topics: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )

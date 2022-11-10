@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -175,9 +177,9 @@ class PartitionAssignmentServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, PartitionAssignmentServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the partition assignment service client.
@@ -221,10 +223,10 @@ class PartitionAssignmentServiceAsyncClient:
 
     def assign_partitions(
         self,
-        requests: AsyncIterator[subscriber.PartitionAssignmentRequest] = None,
+        requests: Optional[AsyncIterator[subscriber.PartitionAssignmentRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[subscriber.PartitionAssignment]]:
         r"""Assign partitions for this client to handle for the

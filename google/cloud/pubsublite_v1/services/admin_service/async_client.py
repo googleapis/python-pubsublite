@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -165,9 +175,9 @@ class AdminServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AdminServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the admin service client.
@@ -211,13 +221,13 @@ class AdminServiceAsyncClient:
 
     async def create_topic(
         self,
-        request: Union[admin.CreateTopicRequest, dict] = None,
+        request: Optional[Union[admin.CreateTopicRequest, dict]] = None,
         *,
-        parent: str = None,
-        topic: common.Topic = None,
-        topic_id: str = None,
+        parent: Optional[str] = None,
+        topic: Optional[common.Topic] = None,
+        topic_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Topic:
         r"""Creates a new topic.
@@ -250,7 +260,7 @@ class AdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.CreateTopicRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.CreateTopicRequest, dict]]):
                 The request object. Request for CreateTopic.
             parent (:class:`str`):
                 Required. The parent location in which to create the
@@ -334,11 +344,11 @@ class AdminServiceAsyncClient:
 
     async def get_topic(
         self,
-        request: Union[admin.GetTopicRequest, dict] = None,
+        request: Optional[Union[admin.GetTopicRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Topic:
         r"""Returns the topic configuration.
@@ -370,7 +380,7 @@ class AdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.GetTopicRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.GetTopicRequest, dict]]):
                 The request object. Request for GetTopic.
             name (:class:`str`):
                 Required. The name of the topic whose
@@ -433,11 +443,11 @@ class AdminServiceAsyncClient:
 
     async def get_topic_partitions(
         self,
-        request: Union[admin.GetTopicPartitionsRequest, dict] = None,
+        request: Optional[Union[admin.GetTopicPartitionsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> admin.TopicPartitions:
         r"""Returns the partition information for the requested
@@ -470,7 +480,7 @@ class AdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.GetTopicPartitionsRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.GetTopicPartitionsRequest, dict]]):
                 The request object. Request for GetTopicPartitions.
             name (:class:`str`):
                 Required. The topic whose partition
@@ -533,11 +543,11 @@ class AdminServiceAsyncClient:
 
     async def list_topics(
         self,
-        request: Union[admin.ListTopicsRequest, dict] = None,
+        request: Optional[Union[admin.ListTopicsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicsAsyncPager:
         r"""Returns the list of topics for the given project.
@@ -570,7 +580,7 @@ class AdminServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ListTopicsRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ListTopicsRequest, dict]]):
                 The request object. Request for ListTopics.
             parent (:class:`str`):
                 Required. The parent whose topics are to be listed.
@@ -647,12 +657,12 @@ class AdminServiceAsyncClient:
 
     async def update_topic(
         self,
-        request: Union[admin.UpdateTopicRequest, dict] = None,
+        request: Optional[Union[admin.UpdateTopicRequest, dict]] = None,
         *,
-        topic: common.Topic = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        topic: Optional[common.Topic] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Topic:
         r"""Updates properties of the specified topic.
@@ -683,7 +693,7 @@ class AdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.UpdateTopicRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.UpdateTopicRequest, dict]]):
                 The request object. Request for UpdateTopic.
             topic (:class:`google.cloud.pubsublite_v1.types.Topic`):
                 Required. The topic to update. Its ``name`` field must
@@ -757,11 +767,11 @@ class AdminServiceAsyncClient:
 
     async def delete_topic(
         self,
-        request: Union[admin.DeleteTopicRequest, dict] = None,
+        request: Optional[Union[admin.DeleteTopicRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified topic.
@@ -790,7 +800,7 @@ class AdminServiceAsyncClient:
                 await client.delete_topic(request=request)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.DeleteTopicRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.DeleteTopicRequest, dict]]):
                 The request object. Request for DeleteTopic.
             name (:class:`str`):
                 Required. The name of the topic to
@@ -846,11 +856,11 @@ class AdminServiceAsyncClient:
 
     async def list_topic_subscriptions(
         self,
-        request: Union[admin.ListTopicSubscriptionsRequest, dict] = None,
+        request: Optional[Union[admin.ListTopicSubscriptionsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicSubscriptionsAsyncPager:
         r"""Lists the subscriptions attached to the specified
@@ -884,7 +894,7 @@ class AdminServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ListTopicSubscriptionsRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ListTopicSubscriptionsRequest, dict]]):
                 The request object. Request for ListTopicSubscriptions.
             name (:class:`str`):
                 Required. The name of the topic whose
@@ -960,13 +970,13 @@ class AdminServiceAsyncClient:
 
     async def create_subscription(
         self,
-        request: Union[admin.CreateSubscriptionRequest, dict] = None,
+        request: Optional[Union[admin.CreateSubscriptionRequest, dict]] = None,
         *,
-        parent: str = None,
-        subscription: common.Subscription = None,
-        subscription_id: str = None,
+        parent: Optional[str] = None,
+        subscription: Optional[common.Subscription] = None,
+        subscription_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Subscription:
         r"""Creates a new subscription.
@@ -999,7 +1009,7 @@ class AdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.CreateSubscriptionRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.CreateSubscriptionRequest, dict]]):
                 The request object. Request for CreateSubscription.
             parent (:class:`str`):
                 Required. The parent location in which to create the
@@ -1085,11 +1095,11 @@ class AdminServiceAsyncClient:
 
     async def get_subscription(
         self,
-        request: Union[admin.GetSubscriptionRequest, dict] = None,
+        request: Optional[Union[admin.GetSubscriptionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Subscription:
         r"""Returns the subscription configuration.
@@ -1121,7 +1131,7 @@ class AdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.GetSubscriptionRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.GetSubscriptionRequest, dict]]):
                 The request object. Request for GetSubscription.
             name (:class:`str`):
                 Required. The name of the
@@ -1187,11 +1197,11 @@ class AdminServiceAsyncClient:
 
     async def list_subscriptions(
         self,
-        request: Union[admin.ListSubscriptionsRequest, dict] = None,
+        request: Optional[Union[admin.ListSubscriptionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSubscriptionsAsyncPager:
         r"""Returns the list of subscriptions for the given
@@ -1225,7 +1235,7 @@ class AdminServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ListSubscriptionsRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ListSubscriptionsRequest, dict]]):
                 The request object. Request for ListSubscriptions.
             parent (:class:`str`):
                 Required. The parent whose subscriptions are to be
@@ -1302,12 +1312,12 @@ class AdminServiceAsyncClient:
 
     async def update_subscription(
         self,
-        request: Union[admin.UpdateSubscriptionRequest, dict] = None,
+        request: Optional[Union[admin.UpdateSubscriptionRequest, dict]] = None,
         *,
-        subscription: common.Subscription = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        subscription: Optional[common.Subscription] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Subscription:
         r"""Updates properties of the specified subscription.
@@ -1338,7 +1348,7 @@ class AdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.UpdateSubscriptionRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.UpdateSubscriptionRequest, dict]]):
                 The request object. Request for UpdateSubscription.
             subscription (:class:`google.cloud.pubsublite_v1.types.Subscription`):
                 Required. The subscription to update. Its ``name`` field
@@ -1414,11 +1424,11 @@ class AdminServiceAsyncClient:
 
     async def delete_subscription(
         self,
-        request: Union[admin.DeleteSubscriptionRequest, dict] = None,
+        request: Optional[Union[admin.DeleteSubscriptionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified subscription.
@@ -1447,7 +1457,7 @@ class AdminServiceAsyncClient:
                 await client.delete_subscription(request=request)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.DeleteSubscriptionRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.DeleteSubscriptionRequest, dict]]):
                 The request object. Request for DeleteSubscription.
             name (:class:`str`):
                 Required. The name of the
@@ -1503,10 +1513,10 @@ class AdminServiceAsyncClient:
 
     async def seek_subscription(
         self,
-        request: Union[admin.SeekSubscriptionRequest, dict] = None,
+        request: Optional[Union[admin.SeekSubscriptionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Performs an out-of-band seek for a subscription to a
@@ -1569,7 +1579,7 @@ class AdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.SeekSubscriptionRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.SeekSubscriptionRequest, dict]]):
                 The request object. Request for SeekSubscription.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1624,13 +1634,13 @@ class AdminServiceAsyncClient:
 
     async def create_reservation(
         self,
-        request: Union[admin.CreateReservationRequest, dict] = None,
+        request: Optional[Union[admin.CreateReservationRequest, dict]] = None,
         *,
-        parent: str = None,
-        reservation: common.Reservation = None,
-        reservation_id: str = None,
+        parent: Optional[str] = None,
+        reservation: Optional[common.Reservation] = None,
+        reservation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Reservation:
         r"""Creates a new reservation.
@@ -1663,7 +1673,7 @@ class AdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.CreateReservationRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.CreateReservationRequest, dict]]):
                 The request object. Request for CreateReservation.
             parent (:class:`str`):
                 Required. The parent location in which to create the
@@ -1749,11 +1759,11 @@ class AdminServiceAsyncClient:
 
     async def get_reservation(
         self,
-        request: Union[admin.GetReservationRequest, dict] = None,
+        request: Optional[Union[admin.GetReservationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Reservation:
         r"""Returns the reservation configuration.
@@ -1785,7 +1795,7 @@ class AdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.GetReservationRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.GetReservationRequest, dict]]):
                 The request object. Request for GetReservation.
             name (:class:`str`):
                 Required. The name of the reservation whose
@@ -1851,11 +1861,11 @@ class AdminServiceAsyncClient:
 
     async def list_reservations(
         self,
-        request: Union[admin.ListReservationsRequest, dict] = None,
+        request: Optional[Union[admin.ListReservationsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReservationsAsyncPager:
         r"""Returns the list of reservations for the given
@@ -1889,7 +1899,7 @@ class AdminServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ListReservationsRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ListReservationsRequest, dict]]):
                 The request object. Request for ListReservations.
             parent (:class:`str`):
                 Required. The parent whose reservations are to be
@@ -1966,12 +1976,12 @@ class AdminServiceAsyncClient:
 
     async def update_reservation(
         self,
-        request: Union[admin.UpdateReservationRequest, dict] = None,
+        request: Optional[Union[admin.UpdateReservationRequest, dict]] = None,
         *,
-        reservation: common.Reservation = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        reservation: Optional[common.Reservation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Reservation:
         r"""Updates properties of the specified reservation.
@@ -2002,7 +2012,7 @@ class AdminServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.UpdateReservationRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.UpdateReservationRequest, dict]]):
                 The request object. Request for UpdateReservation.
             reservation (:class:`google.cloud.pubsublite_v1.types.Reservation`):
                 Required. The reservation to update. Its ``name`` field
@@ -2078,11 +2088,11 @@ class AdminServiceAsyncClient:
 
     async def delete_reservation(
         self,
-        request: Union[admin.DeleteReservationRequest, dict] = None,
+        request: Optional[Union[admin.DeleteReservationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified reservation.
@@ -2111,7 +2121,7 @@ class AdminServiceAsyncClient:
                 await client.delete_reservation(request=request)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.DeleteReservationRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.DeleteReservationRequest, dict]]):
                 The request object. Request for DeleteReservation.
             name (:class:`str`):
                 Required. The name of the reservation to delete.
@@ -2168,11 +2178,11 @@ class AdminServiceAsyncClient:
 
     async def list_reservation_topics(
         self,
-        request: Union[admin.ListReservationTopicsRequest, dict] = None,
+        request: Optional[Union[admin.ListReservationTopicsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReservationTopicsAsyncPager:
         r"""Lists the topics attached to the specified
@@ -2206,7 +2216,7 @@ class AdminServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ListReservationTopicsRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ListReservationTopicsRequest, dict]]):
                 The request object. Request for ListReservationTopics.
             name (:class:`str`):
                 Required. The name of the reservation whose topics to

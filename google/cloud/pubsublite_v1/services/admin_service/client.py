@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -59,7 +70,7 @@ class AdminServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[AdminServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -383,7 +394,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AdminServiceTransport, None] = None,
+        transport: Optional[Union[str, AdminServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -481,13 +492,13 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def create_topic(
         self,
-        request: Union[admin.CreateTopicRequest, dict] = None,
+        request: Optional[Union[admin.CreateTopicRequest, dict]] = None,
         *,
-        parent: str = None,
-        topic: common.Topic = None,
-        topic_id: str = None,
+        parent: Optional[str] = None,
+        topic: Optional[common.Topic] = None,
+        topic_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Topic:
         r"""Creates a new topic.
@@ -604,11 +615,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def get_topic(
         self,
-        request: Union[admin.GetTopicRequest, dict] = None,
+        request: Optional[Union[admin.GetTopicRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Topic:
         r"""Returns the topic configuration.
@@ -703,11 +714,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def get_topic_partitions(
         self,
-        request: Union[admin.GetTopicPartitionsRequest, dict] = None,
+        request: Optional[Union[admin.GetTopicPartitionsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> admin.TopicPartitions:
         r"""Returns the partition information for the requested
@@ -803,11 +814,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def list_topics(
         self,
-        request: Union[admin.ListTopicsRequest, dict] = None,
+        request: Optional[Union[admin.ListTopicsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicsPager:
         r"""Returns the list of topics for the given project.
@@ -917,12 +928,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def update_topic(
         self,
-        request: Union[admin.UpdateTopicRequest, dict] = None,
+        request: Optional[Union[admin.UpdateTopicRequest, dict]] = None,
         *,
-        topic: common.Topic = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        topic: Optional[common.Topic] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Topic:
         r"""Updates properties of the specified topic.
@@ -1027,11 +1038,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def delete_topic(
         self,
-        request: Union[admin.DeleteTopicRequest, dict] = None,
+        request: Optional[Union[admin.DeleteTopicRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified topic.
@@ -1116,11 +1127,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def list_topic_subscriptions(
         self,
-        request: Union[admin.ListTopicSubscriptionsRequest, dict] = None,
+        request: Optional[Union[admin.ListTopicSubscriptionsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicSubscriptionsPager:
         r"""Lists the subscriptions attached to the specified
@@ -1230,13 +1241,13 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def create_subscription(
         self,
-        request: Union[admin.CreateSubscriptionRequest, dict] = None,
+        request: Optional[Union[admin.CreateSubscriptionRequest, dict]] = None,
         *,
-        parent: str = None,
-        subscription: common.Subscription = None,
-        subscription_id: str = None,
+        parent: Optional[str] = None,
+        subscription: Optional[common.Subscription] = None,
+        subscription_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Subscription:
         r"""Creates a new subscription.
@@ -1355,11 +1366,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def get_subscription(
         self,
-        request: Union[admin.GetSubscriptionRequest, dict] = None,
+        request: Optional[Union[admin.GetSubscriptionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Subscription:
         r"""Returns the subscription configuration.
@@ -1457,11 +1468,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def list_subscriptions(
         self,
-        request: Union[admin.ListSubscriptionsRequest, dict] = None,
+        request: Optional[Union[admin.ListSubscriptionsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSubscriptionsPager:
         r"""Returns the list of subscriptions for the given
@@ -1572,12 +1583,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def update_subscription(
         self,
-        request: Union[admin.UpdateSubscriptionRequest, dict] = None,
+        request: Optional[Union[admin.UpdateSubscriptionRequest, dict]] = None,
         *,
-        subscription: common.Subscription = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        subscription: Optional[common.Subscription] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Subscription:
         r"""Updates properties of the specified subscription.
@@ -1684,11 +1695,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def delete_subscription(
         self,
-        request: Union[admin.DeleteSubscriptionRequest, dict] = None,
+        request: Optional[Union[admin.DeleteSubscriptionRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified subscription.
@@ -1773,10 +1784,10 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def seek_subscription(
         self,
-        request: Union[admin.SeekSubscriptionRequest, dict] = None,
+        request: Optional[Union[admin.SeekSubscriptionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Performs an out-of-band seek for a subscription to a
@@ -1895,13 +1906,13 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def create_reservation(
         self,
-        request: Union[admin.CreateReservationRequest, dict] = None,
+        request: Optional[Union[admin.CreateReservationRequest, dict]] = None,
         *,
-        parent: str = None,
-        reservation: common.Reservation = None,
-        reservation_id: str = None,
+        parent: Optional[str] = None,
+        reservation: Optional[common.Reservation] = None,
+        reservation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Reservation:
         r"""Creates a new reservation.
@@ -2020,11 +2031,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def get_reservation(
         self,
-        request: Union[admin.GetReservationRequest, dict] = None,
+        request: Optional[Union[admin.GetReservationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Reservation:
         r"""Returns the reservation configuration.
@@ -2122,11 +2133,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def list_reservations(
         self,
-        request: Union[admin.ListReservationsRequest, dict] = None,
+        request: Optional[Union[admin.ListReservationsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReservationsPager:
         r"""Returns the list of reservations for the given
@@ -2237,12 +2248,12 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def update_reservation(
         self,
-        request: Union[admin.UpdateReservationRequest, dict] = None,
+        request: Optional[Union[admin.UpdateReservationRequest, dict]] = None,
         *,
-        reservation: common.Reservation = None,
-        update_mask: field_mask_pb2.FieldMask = None,
+        reservation: Optional[common.Reservation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Reservation:
         r"""Updates properties of the specified reservation.
@@ -2349,11 +2360,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def delete_reservation(
         self,
-        request: Union[admin.DeleteReservationRequest, dict] = None,
+        request: Optional[Union[admin.DeleteReservationRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified reservation.
@@ -2439,11 +2450,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
     def list_reservation_topics(
         self,
-        request: Union[admin.ListReservationTopicsRequest, dict] = None,
+        request: Optional[Union[admin.ListReservationTopicsRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReservationTopicsPager:
         r"""Lists the topics attached to the specified

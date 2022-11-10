@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.pubsublite_v1.types import common
@@ -43,11 +45,11 @@ class InitialPublishRequest(proto.Message):
             be in the range [0, topic.num_partitions).
     """
 
-    topic = proto.Field(
+    topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    partition = proto.Field(
+    partition: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -61,11 +63,11 @@ class MessagePublishRequest(proto.Message):
     r"""Request to publish messages to the topic.
 
     Attributes:
-        messages (Sequence[google.cloud.pubsublite_v1.types.PubSubMessage]):
+        messages (MutableSequence[google.cloud.pubsublite_v1.types.PubSubMessage]):
             The messages to publish.
     """
 
-    messages = proto.RepeatedField(
+    messages: MutableSequence[common.PubSubMessage] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=common.PubSubMessage,
@@ -83,7 +85,7 @@ class MessagePublishResponse(proto.Message):
             sequential.
     """
 
-    start_cursor = proto.Field(
+    start_cursor: common.Cursor = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.Cursor,
@@ -111,13 +113,13 @@ class PublishRequest(proto.Message):
             This field is a member of `oneof`_ ``request_type``.
     """
 
-    initial_request = proto.Field(
+    initial_request: "InitialPublishRequest" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="request_type",
         message="InitialPublishRequest",
     )
-    message_publish_request = proto.Field(
+    message_publish_request: "MessagePublishRequest" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="request_type",
@@ -146,13 +148,13 @@ class PublishResponse(proto.Message):
             This field is a member of `oneof`_ ``response_type``.
     """
 
-    initial_response = proto.Field(
+    initial_response: "InitialPublishResponse" = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="response_type",
         message="InitialPublishResponse",
     )
-    message_response = proto.Field(
+    message_response: "MessagePublishResponse" = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="response_type",

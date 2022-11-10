@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -173,9 +175,9 @@ class CursorServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CursorServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cursor service client.
@@ -219,10 +221,10 @@ class CursorServiceAsyncClient:
 
     def streaming_commit_cursor(
         self,
-        requests: AsyncIterator[cursor.StreamingCommitCursorRequest] = None,
+        requests: Optional[AsyncIterator[cursor.StreamingCommitCursorRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[cursor.StreamingCommitCursorResponse]]:
         r"""Establishes a stream with the server for managing
@@ -302,10 +304,10 @@ class CursorServiceAsyncClient:
 
     async def commit_cursor(
         self,
-        request: Union[cursor.CommitCursorRequest, dict] = None,
+        request: Optional[Union[cursor.CommitCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cursor.CommitCursorResponse:
         r"""Updates the committed cursor.
@@ -336,7 +338,7 @@ class CursorServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.CommitCursorRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.CommitCursorRequest, dict]]):
                 The request object. Request for CommitCursor.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -393,11 +395,11 @@ class CursorServiceAsyncClient:
 
     async def list_partition_cursors(
         self,
-        request: Union[cursor.ListPartitionCursorsRequest, dict] = None,
+        request: Optional[Union[cursor.ListPartitionCursorsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPartitionCursorsAsyncPager:
         r"""Returns all committed cursor information for a
@@ -431,7 +433,7 @@ class CursorServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest, dict]]):
                 The request object. Request for ListPartitionCursors.
             parent (:class:`str`):
                 Required. The subscription for which to retrieve

@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     Iterable,
     Iterator,
@@ -66,7 +68,7 @@ class CursorServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[CursorServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -345,7 +347,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CursorServiceTransport, None] = None,
+        transport: Optional[Union[str, CursorServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -443,10 +445,10 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
 
     def streaming_commit_cursor(
         self,
-        requests: Iterator[cursor.StreamingCommitCursorRequest] = None,
+        requests: Optional[Iterator[cursor.StreamingCommitCursorRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[cursor.StreamingCommitCursorResponse]:
         r"""Establishes a stream with the server for managing
@@ -522,10 +524,10 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
 
     def commit_cursor(
         self,
-        request: Union[cursor.CommitCursorRequest, dict] = None,
+        request: Optional[Union[cursor.CommitCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cursor.CommitCursorResponse:
         r"""Updates the committed cursor.
@@ -601,11 +603,11 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
 
     def list_partition_cursors(
         self,
-        request: Union[cursor.ListPartitionCursorsRequest, dict] = None,
+        request: Optional[Union[cursor.ListPartitionCursorsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPartitionCursorsPager:
         r"""Returns all committed cursor information for a
