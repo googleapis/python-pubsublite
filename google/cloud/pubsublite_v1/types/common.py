@@ -404,10 +404,17 @@ class ExportConfig(proto.Message):
 
     Attributes:
         desired_state (google.cloud.pubsublite_v1.types.ExportConfig.State):
-            The desired state of this export.
+            The desired state of this export. Setting this to values
+            other than ``ACTIVE`` and ``PAUSED`` will result in an
+            error.
+        current_state (google.cloud.pubsublite_v1.types.ExportConfig.State):
+            Output only. The current state of the export,
+            which may be different to the desired state due
+            to errors.
         statuses (MutableSequence[google.cloud.pubsublite_v1.types.ExportConfig.PartitionStatus]):
-            Output only. The export statuses of each
-            partition. This field is output only.
+            Output only. Deprecated: replaced by ``current_state``.
+
+            The export statuses of each partition.
         dead_letter_topic (str):
             Optional. The name of an optional Pub/Sub Lite topic to
             publish messages that can not be exported to the
@@ -429,10 +436,12 @@ class ExportConfig(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""An export state."""
+        r"""The desired export state."""
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PAUSED = 2
+        PERMISSION_DENIED = 3
+        NOT_FOUND = 4
 
     class PartitionStatus(proto.Message):
         r"""The export status of a partition.
@@ -481,6 +490,11 @@ class ExportConfig(proto.Message):
     desired_state: State = proto.Field(
         proto.ENUM,
         number=1,
+        enum=State,
+    )
+    current_state: State = proto.Field(
+        proto.ENUM,
+        number=6,
         enum=State,
     )
     statuses: MutableSequence[PartitionStatus] = proto.RepeatedField(
