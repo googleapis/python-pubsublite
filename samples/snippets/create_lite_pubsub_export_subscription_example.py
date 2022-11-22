@@ -16,7 +16,7 @@
 
 """This application demonstrates how to create a subscription that writes
 messages to a Pub/Sub topic. For more information, see documentation at
-https://cloud.google.com/pubsub/lite/docs/export-subscriptions.
+https://cloud.google.com/pubsub/lite/docs/export-pubsub.
 """
 
 # [START pubsublite_create_pubsub_export_subscription]
