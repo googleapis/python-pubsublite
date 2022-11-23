@@ -19,7 +19,6 @@ import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -411,10 +410,6 @@ class ExportConfig(proto.Message):
             Output only. The current state of the export,
             which may be different to the desired state due
             to errors.
-        statuses (MutableSequence[google.cloud.pubsublite_v1.types.ExportConfig.PartitionStatus]):
-            Output only. Deprecated: replaced by ``current_state``.
-
-            The export statuses of each partition.
         dead_letter_topic (str):
             Optional. The name of an optional Pub/Sub Lite topic to
             publish messages that can not be exported to the
@@ -443,35 +438,6 @@ class ExportConfig(proto.Message):
         PERMISSION_DENIED = 3
         NOT_FOUND = 4
 
-    class PartitionStatus(proto.Message):
-        r"""The export status of a partition.
-
-        Attributes:
-            partition (int):
-                The partition number.
-            status (google.rpc.status_pb2.Status):
-                If the export for a partition is healthy and the desired
-                state is ``ACTIVE``, the status code will be ``OK`` (zero).
-                If the desired state of the export is ``PAUSED``, the status
-                code will be ``CANCELLED``.
-
-                If the export has been suspended due to an error, the status
-                will be populated with an error code and details. The
-                service will automatically retry after a period of time, and
-                will update the status code to ``OK`` if export subsequently
-                succeeds.
-        """
-
-        partition: int = proto.Field(
-            proto.INT64,
-            number=1,
-        )
-        status: status_pb2.Status = proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=status_pb2.Status,
-        )
-
     class PubSubConfig(proto.Message):
         r"""Configuration for exporting to a Pub/Sub topic.
 
@@ -496,11 +462,6 @@ class ExportConfig(proto.Message):
         proto.ENUM,
         number=6,
         enum=State,
-    )
-    statuses: MutableSequence[PartitionStatus] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=PartitionStatus,
     )
     dead_letter_topic: str = proto.Field(
         proto.STRING,
