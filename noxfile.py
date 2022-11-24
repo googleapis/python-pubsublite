@@ -281,12 +281,16 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python="3.9")
 def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx==4.0.1", "alabaster", "recommonmark")
+    session.install(
+        "sphinx==4.0.1",
+        "alabaster",
+        "recommonmark",
+    )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
@@ -303,21 +307,16 @@ def docs(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def pytype(session):
-    """Run type checks."""
-    install_test_deps(session)
-    session.install(PYTYPE_VERSION)
-    session.run("pytype", "google/cloud/pubsublite")
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python="3.9")
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
     session.install("-e", ".")
     session.install(
-        "sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml"
+        "sphinx==4.0.1",
+        "alabaster",
+        "recommonmark",
+        "gcp-sphinx-docfx-yaml",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
