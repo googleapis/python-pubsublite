@@ -90,14 +90,18 @@ def receive_messages(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("project_number", help="Your Google Cloud Project Number")
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
     parser.add_argument("zone_id", help="Your Zone ID, e.g. 'a'")
     parser.add_argument("subscription_id", help="Your subscription ID")
     parser.add_argument(
-        "timeout", nargs="?", type=int, help="Timeout in second",
+        "timeout",
+        nargs="?",
+        type=int,
+        help="Timeout in second",
     )
     parser.add_argument("regional", "True if using a regional resource else zonal")
 

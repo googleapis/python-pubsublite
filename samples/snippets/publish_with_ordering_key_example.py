@@ -74,7 +74,8 @@ def publish_with_odering_key(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("project_number", help="Your Google Cloud Project Number")
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")

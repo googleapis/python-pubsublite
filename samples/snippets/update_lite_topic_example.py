@@ -71,7 +71,8 @@ def update_lite_topic(
         name=str(topic_path),
         partition_config=Topic.PartitionConfig(
             capacity=Topic.PartitionConfig.Capacity(
-                publish_mib_per_sec=16, subscribe_mib_per_sec=32,
+                publish_mib_per_sec=16,
+                subscribe_mib_per_sec=32,
             )
         ),
         retention_config=Topic.RetentionConfig(
@@ -100,7 +101,8 @@ def update_lite_topic(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("project_number", help="Your Google Cloud Project Number")
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
