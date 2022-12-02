@@ -34,6 +34,13 @@ for library in s.get_staging_dirs(default_version):
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
 
+    # temporarily workaround issue with generated code
+    s.replace(
+        library / "google/cloud/pubsublite_v1/__init__.py",
+        "from google.cloud.pubsublite import gapic_version as package_version",
+        "from google.cloud.pubsublite_v1 import gapic_version as package_version",
+    )
+
     s.move(
         [library],
         excludes=[
