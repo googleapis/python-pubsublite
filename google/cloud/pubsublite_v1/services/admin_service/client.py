@@ -28,7 +28,8 @@ from typing import (
     Union,
     cast,
 )
-import pkg_resources
+
+from google.cloud.pubsublite_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -498,7 +499,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         topic: Optional[common.Topic] = None,
         topic_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Topic:
         r"""Creates a new topic.
@@ -619,7 +620,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Topic:
         r"""Returns the topic configuration.
@@ -718,7 +719,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> admin.TopicPartitions:
         r"""Returns the partition information for the requested
@@ -818,7 +819,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicsPager:
         r"""Returns the list of topics for the given project.
@@ -933,7 +934,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         topic: Optional[common.Topic] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Topic:
         r"""Updates properties of the specified topic.
@@ -1042,7 +1043,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified topic.
@@ -1131,7 +1132,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicSubscriptionsPager:
         r"""Lists the subscriptions attached to the specified
@@ -1247,7 +1248,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         subscription: Optional[common.Subscription] = None,
         subscription_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Subscription:
         r"""Creates a new subscription.
@@ -1370,7 +1371,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Subscription:
         r"""Returns the subscription configuration.
@@ -1472,7 +1473,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSubscriptionsPager:
         r"""Returns the list of subscriptions for the given
@@ -1588,7 +1589,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         subscription: Optional[common.Subscription] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Subscription:
         r"""Updates properties of the specified subscription.
@@ -1699,7 +1700,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified subscription.
@@ -1787,7 +1788,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         request: Optional[Union[admin.SeekSubscriptionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Performs an out-of-band seek for a subscription to a
@@ -1912,7 +1913,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         reservation: Optional[common.Reservation] = None,
         reservation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Reservation:
         r"""Creates a new reservation.
@@ -2035,7 +2036,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Reservation:
         r"""Returns the reservation configuration.
@@ -2137,7 +2138,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReservationsPager:
         r"""Returns the list of reservations for the given
@@ -2253,7 +2254,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         reservation: Optional[common.Reservation] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.Reservation:
         r"""Updates properties of the specified reservation.
@@ -2364,7 +2365,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified reservation.
@@ -2454,7 +2455,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReservationTopicsPager:
         r"""Lists the topics attached to the specified
@@ -2577,14 +2578,9 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-pubsublite",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("AdminServiceClient",)

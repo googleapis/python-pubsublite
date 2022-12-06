@@ -30,7 +30,8 @@ from typing import (
     Union,
     cast,
 )
-import pkg_resources
+
+from google.cloud.pubsublite_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -428,7 +429,7 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
         requests: Optional[Iterator[publisher.PublishRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[publisher.PublishResponse]:
         r"""Establishes a stream with the server for publishing
@@ -521,14 +522,9 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-pubsublite",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("PublisherServiceClient",)

@@ -27,7 +27,8 @@ from typing import (
     Type,
     Union,
 )
-import pkg_resources
+
+from google.cloud.pubsublite_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -220,7 +221,7 @@ class TopicStatsServiceAsyncClient:
         request: Optional[Union[topic_stats.ComputeMessageStatsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeMessageStatsResponse:
         r"""Compute statistics about a range of messages in a
@@ -303,7 +304,7 @@ class TopicStatsServiceAsyncClient:
         request: Optional[Union[topic_stats.ComputeHeadCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeHeadCursorResponse:
         r"""Compute the head cursor for the partition.
@@ -390,7 +391,7 @@ class TopicStatsServiceAsyncClient:
         request: Optional[Union[topic_stats.ComputeTimeCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeTimeCursorResponse:
         r"""Compute the corresponding cursor for a publish or
@@ -475,14 +476,9 @@ class TopicStatsServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-pubsublite",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("TopicStatsServiceAsyncClient",)

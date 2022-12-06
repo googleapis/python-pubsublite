@@ -30,7 +30,8 @@ from typing import (
     Union,
     cast,
 )
-import pkg_resources
+
+from google.cloud.pubsublite_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -448,7 +449,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         requests: Optional[Iterator[cursor.StreamingCommitCursorRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[cursor.StreamingCommitCursorResponse]:
         r"""Establishes a stream with the server for managing
@@ -527,7 +528,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         request: Optional[Union[cursor.CommitCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cursor.CommitCursorResponse:
         r"""Updates the committed cursor.
@@ -607,7 +608,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPartitionCursorsPager:
         r"""Returns all committed cursor information for a
@@ -730,14 +731,9 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-pubsublite",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("CursorServiceClient",)
