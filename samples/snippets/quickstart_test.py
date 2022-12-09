@@ -20,11 +20,13 @@ import uuid
 
 import backoff
 from google.api_core.exceptions import AlreadyExists, FailedPrecondition, NotFound
+from google.cloud.pubsub_v1 import PublisherClient
 from google.cloud.pubsublite import AdminClient, Reservation, Subscription, Topic
 from google.cloud.pubsublite.types import (
     BacklogLocation,
     CloudRegion,
     CloudZone,
+    PublishTime,
     ReservationPath,
     SubscriptionPath,
     TopicPath,
@@ -39,6 +41,8 @@ UUID = uuid.uuid4().hex
 TOPIC_ID = "py-lite-topic-" + UUID
 SUBSCRIPTION_ID = "py-lite-subscription-" + UUID
 RESERVATION_ID = "py-lite-reservation-" + UUID
+EXPORT_SUBSCRIPTION_ID = "py-lite-export-subscription-" + UUID
+PUBSUB_TOPIC_ID = "py-pubsub-topic-" + UUID
 NUM_PARTITIONS = 1
 NUM_MESSAGES = 10
 # Allow 90s for tests to finish.
@@ -202,6 +206,27 @@ def regional_subscription(client, regional_topic):
         print(f"Subscription {response.name} has been cleaned up.")
 
 
+@pytest.fixture(scope="module")
+def publisher_client():
+    yield PublisherClient()
+
+
+@pytest.fixture(scope="module")
+def pubsub_topic(publisher_client):
+    """Creates a Pub/Sub topic resource"""
+    destination_topic_path = publisher_client.topic_path(PROJECT_NUMBER, PUBSUB_TOPIC_ID)
+    try:
+        publisher_client.create_topic(request={"name": destination_topic_path})
+    except AlreadyExists:
+        print(f"Pub/Sub topic {destination_topic_path} already exists.")
+
+    yield destination_topic_path
+    try:
+        publisher_client.delete_topic(request={"topic": destination_topic_path})
+    except NotFound:
+        print(f"Pub/Sub topic {destination_topic_path} has been cleaned up.")
+
+
 def test_create_lite_reservation_example(capsys):
     import create_lite_reservation_example
 
@@ -360,6 +385,41 @@ def test_create_lite_subscription(capsys):
         PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, SUBSCRIPTION_ID, False
     )
     out, _ = capsys.readouterr()
+    assert f"{wanted_regional_subscription_path} created successfully." in out
+    assert f"{wanted_zonal_subscription_path} created successfully." in out
+
+
+def test_create_lite_pubsub_export_subscription(client, pubsub_topic, capsys):
+    import create_lite_pubsub_export_subscription_example as example
+    from datetime import datetime
+
+    wanted_regional_subscription_path = f"projects/{PROJECT_NUMBER}/locations/{CLOUD_REGION}/subscriptions/{EXPORT_SUBSCRIPTION_ID}"
+    wanted_zonal_subscription_path = f"projects/{PROJECT_NUMBER}/locations/{CLOUD_REGION}-{ZONE_ID}/subscriptions/{EXPORT_SUBSCRIPTION_ID}"
+
+    target = PublishTime(datetime.now())
+    example.create_lite_pubsub_export_subscription(
+        PROJECT_NUMBER,
+        CLOUD_REGION,
+        ZONE_ID,
+        TOPIC_ID,
+        EXPORT_SUBSCRIPTION_ID,
+        PUBSUB_TOPIC_ID,
+        True,
+        target,
+    )
+    example.create_lite_pubsub_export_subscription(
+        PROJECT_NUMBER,
+        CLOUD_REGION,
+        ZONE_ID,
+        TOPIC_ID,
+        EXPORT_SUBSCRIPTION_ID,
+        PUBSUB_TOPIC_ID,
+        False,
+        target,
+    )
+    out, _ = capsys.readouterr()
+    client.delete_subscription(wanted_regional_subscription_path)
+    client.delete_subscription(wanted_zonal_subscription_path)
     assert f"{wanted_regional_subscription_path} created successfully." in out
     assert f"{wanted_zonal_subscription_path} created successfully." in out
 
