@@ -491,7 +491,17 @@ class SeekSubscriptionRequest(proto.Message):
     """
 
     class NamedTarget(proto.Enum):
-        r"""A named position with respect to the message backlog."""
+        r"""A named position with respect to the message backlog.
+
+        Values:
+            NAMED_TARGET_UNSPECIFIED (0):
+                Unspecified named target. Do not use.
+            TAIL (1):
+                Seek to the oldest retained message.
+            HEAD (2):
+                Seek past all recently published messages,
+                skipping the entire message backlog.
+        """
         NAMED_TARGET_UNSPECIFIED = 0
         TAIL = 1
         HEAD = 2

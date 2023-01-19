@@ -360,6 +360,20 @@ class Subscription(proto.Message):
             r"""When this subscription should send messages to subscribers relative
             to messages persistence in storage. For details, see `Creating Lite
             subscriptions <https://cloud.google.com/pubsub/lite/docs/subscriptions#creating_lite_subscriptions>`__.
+
+            Values:
+                DELIVERY_REQUIREMENT_UNSPECIFIED (0):
+                    Default value. This value is unused.
+                DELIVER_IMMEDIATELY (1):
+                    The server does not wait for a published
+                    message to be successfully written to storage
+                    before delivering it to subscribers.
+                DELIVER_AFTER_STORED (2):
+                    The server will not deliver a published
+                    message to subscribers until the message has
+                    been successfully written to storage. This will
+                    result in higher end-to-end latency, but
+                    consistent delivery.
             """
             DELIVERY_REQUIREMENT_UNSPECIFIED = 0
             DELIVER_IMMEDIATELY = 1
@@ -431,7 +445,22 @@ class ExportConfig(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The desired export state."""
+        r"""The desired export state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            ACTIVE (1):
+                Messages are being exported.
+            PAUSED (2):
+                Exporting messages is suspended.
+            PERMISSION_DENIED (3):
+                Messages cannot be exported due to permission
+                denied errors. Output only.
+            NOT_FOUND (4):
+                Messages cannot be exported due to missing
+                resources. Output only.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PAUSED = 2
