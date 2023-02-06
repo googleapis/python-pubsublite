@@ -423,7 +423,7 @@ class ExportConfig(proto.Message):
         current_state (google.cloud.pubsublite_v1.types.ExportConfig.State):
             Output only. The current state of the export,
             which may be different to the desired state due
-            to errors.
+            to errors. This field is output only.
         dead_letter_topic (str):
             Optional. The name of an optional Pub/Sub Lite topic to
             publish messages that can not be exported to the
