@@ -13,12 +13,15 @@
 # limitations under the License.
 
 import asyncio
-from typing import Optional, List
+from typing import Optional, List, NamedTuple
 
 from overrides import overrides
 import logging
 from google.cloud.pubsub_v1.types import BatchSettings
 
+from google.cloud.pubsublite.internal.publish_sequence_number import (
+    PublishSequenceNumber,
+)
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.publisher import Publisher
 from google.cloud.pubsublite.internal.wire.retrying_connection import (
@@ -54,17 +57,27 @@ _MAX_BYTES = int(3.5 * 1024 * 1024)
 _MAX_MESSAGES = 1000
 
 
+class _SequencedMessage(NamedTuple):
+    message: PubSubMessage
+    sequence_number: PublishSequenceNumber
+
+
+def _get_start_index(cursor_range):
+    return cursor_range.start_index or 0
+
+
 class SinglePartitionPublisher(
     Publisher,
     ConnectionReinitializer[PublishRequest, PublishResponse],
-    RequestSizer[PubSubMessage],
+    RequestSizer[_SequencedMessage],
 ):
     _initial: InitialPublishRequest
     _batching_settings: BatchSettings
     _connection: RetryingConnection[PublishRequest, PublishResponse]
 
-    _batcher: SerialBatcher[PubSubMessage, Cursor]
-    _outstanding_writes: List[List[WorkItem[PubSubMessage, Cursor]]]
+    _next_sequence: PublishSequenceNumber
+    _batcher: SerialBatcher[_SequencedMessage, Cursor]
+    _outstanding_writes: List[List[WorkItem[_SequencedMessage, Cursor]]]
 
     _receiver: Optional[asyncio.Future]
     _flusher: Optional[asyncio.Future]
@@ -74,10 +87,12 @@ class SinglePartitionPublisher(
         initial: InitialPublishRequest,
         batching_settings: BatchSettings,
         factory: ConnectionFactory[PublishRequest, PublishResponse],
+        initial_sequence: PublishSequenceNumber = PublishSequenceNumber(0),
     ):
         self._initial = initial
         self._batching_settings = batching_settings
         self._connection = RetryingConnection(factory, self)
+        self._next_sequence = initial_sequence
         self._batcher = SerialBatcher(self)
         self._outstanding_writes = []
         self._receiver = None
@@ -120,11 +135,25 @@ class SinglePartitionPublisher(
                     "Received an publish response on the stream with no outstanding publishes."
                 )
             )
-        next_offset: Cursor = response.message_response.start_cursor.offset
-        batch: List[WorkItem[PubSubMessage]] = self._outstanding_writes.pop(0)
-        for item in batch:
-            item.response_future.set_result(Cursor(offset=next_offset))
-            next_offset += 1
+        ranges = response.message_response.cursor_ranges
+        ranges.sort(key=_get_start_index)
+        batch: List[WorkItem[_SequencedMessage]] = self._outstanding_writes.pop(0)
+        rangeIdx = 0
+        for msgIdx, item in enumerate(batch):
+            if rangeIdx < len(ranges) and ranges[rangeIdx].end_index <= msgIdx:
+                rangeIdx += 1
+            offset = -1
+            if (
+                rangeIdx < len(ranges)
+                and msgIdx >= ranges[rangeIdx].start_index
+                and msgIdx < ranges[rangeIdx].end_index
+            ):
+                offset = (
+                    (ranges[rangeIdx].start_cursor.offset or 0)
+                    + msgIdx
+                    - ranges[rangeIdx].start_index
+                )
+            item.response_future.set_result(Cursor(offset=offset))
 
     async def _receive_loop(self):
         while True:
@@ -156,7 +185,13 @@ class SinglePartitionPublisher(
             return
         self._outstanding_writes.append(batch)
         aggregate = PublishRequest()
-        aggregate.message_publish_request.messages = [item.request for item in batch]
+        aggregate.message_publish_request.messages = [
+            item.request.message for item in batch
+        ]
+        if len(self._initial.client_id) > 0:
+            aggregate.message_publish_request.first_sequence_number = batch[
+                0
+            ].request.sequence_number.value
         try:
             await self._connection.write(aggregate)
         except GoogleAPICallError as e:
@@ -164,7 +199,8 @@ class SinglePartitionPublisher(
             self._fail_if_retrying_failed()
 
     async def publish(self, message: PubSubMessage) -> MessageMetadata:
-        future = self._batcher.add(message)
+        future = self._batcher.add(_SequencedMessage(message, self._next_sequence))
+        self._next_sequence = self._next_sequence.next()
         if self._should_flush():
             await self._flush()
         return MessageMetadata(self._partition, await future)
@@ -189,15 +225,15 @@ class SinglePartitionPublisher(
         for batch in self._outstanding_writes:
             aggregate = PublishRequest()
             aggregate.message_publish_request.messages = [
-                item.request for item in batch
+                item.request.message for item in batch
             ]
             await connection.write(aggregate)
         self._start_loopers()
 
     @overrides
-    def get_size(self, request: PubSubMessage) -> BatchSize:
+    def get_size(self, request: _SequencedMessage) -> BatchSize:
         return BatchSize(
-            element_count=1, byte_count=PubSubMessage.pb(request).ByteSize()
+            element_count=1, byte_count=PubSubMessage.pb(request.message).ByteSize()
         )
 
     def _should_flush(self) -> bool:

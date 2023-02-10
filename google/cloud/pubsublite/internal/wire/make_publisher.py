@@ -18,6 +18,7 @@ from google.cloud.pubsub_v1.types import BatchSettings
 
 from google.cloud.pubsublite.admin_client import AdminClient
 from google.cloud.pubsublite.internal.endpoints import regional_endpoint
+from google.cloud.pubsublite.internal.publisher_client_id import PublisherClientId
 from google.cloud.pubsublite.internal.wire.client_cache import ClientCache
 from google.cloud.pubsublite.internal.wire.default_routing_policy import (
     DefaultRoutingPolicy,
@@ -60,6 +61,7 @@ def make_publisher(
     credentials: Optional[Credentials] = None,
     client_options: Optional[ClientOptions] = None,
     metadata: Optional[Mapping[str, str]] = None,
+    client_id: Optional[PublisherClientId] = None,
 ) -> Publisher:
     """
     Make a new publisher for the given topic.
@@ -71,6 +73,7 @@ def make_publisher(
       credentials: The credentials to use to connect. GOOGLE_DEFAULT_CREDENTIALS is used if None.
       client_options: Other options to pass to the client. Note that if you pass any you must set api_endpoint.
       metadata: Additional metadata to send with the RPC.
+      client_id: 128-bit unique client id. If set, enables publish idempotency for the session.
 
     Returns:
       A new Publisher.
@@ -104,8 +107,13 @@ def make_publisher(
                 requests, metadata=list(final_metadata.items())
             )
 
+        initial_request = InitialPublishRequest(
+            topic=str(topic), partition=partition.value
+        )
+        if client_id:
+            initial_request.client_id = client_id.value
         return SinglePartitionPublisher(
-            InitialPublishRequest(topic=str(topic), partition=partition.value),
+            initial_request,
             per_partition_batching_settings,
             GapicConnectionFactory(connection_factory),
         )
