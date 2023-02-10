@@ -16,8 +16,20 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
+
+from google.cloud.pubsublite_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -58,7 +70,7 @@ class TopicStatsServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[TopicStatsServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -280,7 +292,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         The API endpoint is determined in the following order:
         (1) if `client_options.api_endpoint` if provided, use the provided one.
         (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
-        default mTLS endpoint; if the environment variabel is "never", use the default API
+        default mTLS endpoint; if the environment variable is "never", use the default API
         endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
         use the default API endpoint.
 
@@ -335,8 +347,8 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, TopicStatsServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, TopicStatsServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the topic stats service client.
@@ -350,7 +362,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
             transport (Union[str, TopicStatsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -380,6 +392,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -432,10 +445,10 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
 
     def compute_message_stats(
         self,
-        request: Union[topic_stats.ComputeMessageStatsRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeMessageStatsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeMessageStatsResponse:
         r"""Compute statistics about a range of messages in a
@@ -516,10 +529,10 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
 
     def compute_head_cursor(
         self,
-        request: Union[topic_stats.ComputeHeadCursorRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeHeadCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeHeadCursorResponse:
         r"""Compute the head cursor for the partition.
@@ -604,10 +617,10 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
 
     def compute_time_cursor(
         self,
-        request: Union[topic_stats.ComputeTimeCursorRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeTimeCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeTimeCursorResponse:
         r"""Compute the corresponding cursor for a publish or
@@ -686,7 +699,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "TopicStatsServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -700,14 +713,9 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-pubsublite",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("TopicStatsServiceClient",)

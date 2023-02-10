@@ -7,7 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-pubsublite"
+    "name": "google-cloud-pubsublite",
+    "version": "0.1.0"
   },
   "snippets": [
     {

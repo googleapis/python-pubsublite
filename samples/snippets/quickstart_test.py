@@ -63,7 +63,10 @@ def reservation(client):
     reservation_path = str(reservation_path_object)
     try:
         response = client.create_reservation(
-            Reservation(name=reservation_path, throughput_capacity=10,)
+            Reservation(
+                name=reservation_path,
+                throughput_capacity=10,
+            )
         )
     except AlreadyExists:
         response = client.get_reservation(reservation_path)
@@ -87,7 +90,8 @@ def zonal_topic(client, reservation):
         partition_config=Topic.PartitionConfig(
             count=NUM_PARTITIONS,
             capacity=Topic.PartitionConfig.Capacity(
-                publish_mib_per_sec=4, subscribe_mib_per_sec=8,
+                publish_mib_per_sec=4,
+                subscribe_mib_per_sec=8,
             ),
         ),
         retention_config=Topic.RetentionConfig(
@@ -124,7 +128,8 @@ def regional_topic(client, reservation):
         partition_config=Topic.PartitionConfig(
             count=NUM_PARTITIONS,
             capacity=Topic.PartitionConfig.Capacity(
-                publish_mib_per_sec=4, subscribe_mib_per_sec=8,
+                publish_mib_per_sec=4,
+                subscribe_mib_per_sec=8,
             ),
         ),
         retention_config=Topic.RetentionConfig(
@@ -231,7 +236,10 @@ def test_create_lite_reservation_example(capsys):
     import create_lite_reservation_example
 
     create_lite_reservation_example.create_lite_reservation(
-        PROJECT_NUMBER, CLOUD_REGION, RESERVATION_ID, 4,
+        PROJECT_NUMBER,
+        CLOUD_REGION,
+        RESERVATION_ID,
+        4,
     )
 
     wanted_reservation_path = f"projects/{PROJECT_NUMBER}/locations/{CLOUD_REGION}/reservations/{RESERVATION_ID}"
@@ -243,7 +251,10 @@ def test_update_lite_reservation_example(reservation, capsys):
     import update_lite_reservation_example
 
     update_lite_reservation_example.update_lite_reservation(
-        PROJECT_NUMBER, CLOUD_REGION, RESERVATION_ID, 8,
+        PROJECT_NUMBER,
+        CLOUD_REGION,
+        RESERVATION_ID,
+        8,
     )
 
     reservation_path_object = ReservationPath.parse(reservation.name)
@@ -256,7 +267,9 @@ def test_get_lite_reservation_example(reservation, capsys):
     import get_lite_reservation_example
 
     get_lite_reservation_example.get_lite_reservation(
-        PROJECT_NUMBER, CLOUD_REGION, RESERVATION_ID,
+        PROJECT_NUMBER,
+        CLOUD_REGION,
+        RESERVATION_ID,
     )
 
     reservation_path_object = ReservationPath.parse(reservation.name)
@@ -268,7 +281,8 @@ def test_list_reservations_example(reservation, capsys):
     import list_lite_reservations_example
 
     list_lite_reservations_example.list_lite_reservations(
-        PROJECT_NUMBER, CLOUD_REGION,
+        PROJECT_NUMBER,
+        CLOUD_REGION,
     )
 
     reservation_path_object = ReservationPath.parse(reservation.name)
@@ -360,11 +374,17 @@ def test_list_lite_topics_example(zonal_topic, regional_topic, capsys):
 
     # List regional topics
     list_lite_topics_example.list_lite_topics(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, True,
+        PROJECT_NUMBER,
+        CLOUD_REGION,
+        ZONE_ID,
+        True,
     )
     # List zonal topics
     list_lite_topics_example.list_lite_topics(
-        PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, False,
+        PROJECT_NUMBER,
+        CLOUD_REGION,
+        ZONE_ID,
+        False,
     )
     out, _ = capsys.readouterr()
     assert f"{zonal_topic.name}"
@@ -638,10 +658,18 @@ def test_delete_lite_topic_example(regional_topic, zonal_topic, capsys):
     @backoff.on_exception(backoff.expo, AssertionError, max_time=MAX_TIME)
     def eventually_consistent_test():
         delete_lite_topic_example.delete_lite_topic(
-            PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, True,
+            PROJECT_NUMBER,
+            CLOUD_REGION,
+            ZONE_ID,
+            TOPIC_ID,
+            True,
         )
         delete_lite_topic_example.delete_lite_topic(
-            PROJECT_NUMBER, CLOUD_REGION, ZONE_ID, TOPIC_ID, False,
+            PROJECT_NUMBER,
+            CLOUD_REGION,
+            ZONE_ID,
+            TOPIC_ID,
+            False,
         )
         out, _ = capsys.readouterr()
         assert (
@@ -664,7 +692,9 @@ def test_delete_lite_reservation_example(reservation, capsys):
     @backoff.on_exception(backoff.expo, AssertionError, max_time=MAX_TIME)
     def eventually_consistent_test():
         delete_lite_reservation_example.delete_lite_reservation(
-            PROJECT_NUMBER, CLOUD_REGION, RESERVATION_ID,
+            PROJECT_NUMBER,
+            CLOUD_REGION,
+            RESERVATION_ID,
         )
         out, _ = capsys.readouterr()
         assert f"{reservation_path_object.name} deleted successfully." in out

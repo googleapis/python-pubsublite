@@ -52,7 +52,10 @@ def publish_with_custom_attributes(
     with PublisherClient() as publisher_client:
         data = "Hello world!"
         api_future = publisher_client.publish(
-            topic_path, data.encode("utf-8"), year="2020", author="unknown",
+            topic_path,
+            data.encode("utf-8"),
+            year="2020",
+            author="unknown",
         )
         # result() blocks. To resolve api futures asynchronously, use add_done_callback().
         message_id = api_future.result()
@@ -67,7 +70,8 @@ def publish_with_custom_attributes(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("project_number", help="Your Google Cloud Project Number")
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")

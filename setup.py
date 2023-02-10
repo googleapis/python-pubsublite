@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2019  Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +13,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import io
 import os
+
 import setuptools  # type: ignore
 
-version = "1.6.0"
+package_root = os.path.abspath(os.path.dirname(__file__))
+
+name = "google-cloud-pubsublite"
+
+
+description = "Google Cloud Pubsublite API client library"
+
+version = {}
+with open(os.path.join(package_root, "google/cloud/pubsublite/gapic_version.py")) as fp:
+    exec(fp.read(), version)
+version = version["__version__"]
+
+if version[0] == "0":
+    release_status = "Development Status :: 4 - Beta"
+else:
+    release_status = "Development Status :: 5 - Production/Stable"
+
+dependencies = [
+    "google-cloud-pubsub >= 2.10.0, <3.0.0dev",
+    "grpcio >= 1.38.1, <2.0.0dev",
+    "grpcio-status >= 1.38.1, <2.0.0dev",
+    "overrides>=6.0.1, <7.0.0",
+    "google-api-core[grpc] >= 1.33.2, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
+]
+url = "https://github.com/googleapis/python-pubsublite"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -27,42 +50,43 @@ readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
-dependencies = [
-    "google-cloud-pubsub >= 2.10.0, <3.0.0dev",
-    "grpcio >= 1.38.1, <2.0.0dev",
-    "grpcio-status >= 1.38.1, <2.0.0dev",
-    "overrides>=6.0.1, <7.0.0",
-    "google-api-core[grpc] >= 1.32.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
+packages = [
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
 ]
 
+namespaces = ["google"]
+if "google.cloud" in packages:
+    namespaces.append("google.cloud")
+
 setuptools.setup(
-    name="google-cloud-pubsublite",
+    name=name,
     version=version,
+    description=description,
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-pubsublite",
-    packages=[
-        package
-        for package in setuptools.PEP420PackageFinder.find()
-        if package.startswith("google")
-    ],
-    namespace_packages=("google", "google.cloud"),
-    platforms="Posix; MacOS X; Windows",
-    include_package_data=True,
-    install_requires=dependencies,
-    python_requires=">=3.7",
+    url=url,
     classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        release_status,
         "Intended Audience :: Developers",
-        "Operating System :: OS Independent",
+        "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Operating System :: OS Independent",
         "Topic :: Internet",
-        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
+    platforms="Posix; MacOS X; Windows",
+    packages=packages,
+    python_requires=">=3.7",
+    namespace_packages=namespaces,
+    install_requires=dependencies,
+    include_package_data=True,
     zip_safe=False,
 )

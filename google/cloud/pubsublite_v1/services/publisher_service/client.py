@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     Iterable,
     Iterator,
@@ -26,8 +28,10 @@ from typing import (
     Tuple,
     Type,
     Union,
+    cast,
 )
-import pkg_resources
+
+from google.cloud.pubsublite_v1 import gapic_version as package_version
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -66,7 +70,7 @@ class PublisherServiceClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[PublisherServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -269,7 +273,7 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
         The API endpoint is determined in the following order:
         (1) if `client_options.api_endpoint` if provided, use the provided one.
         (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
-        default mTLS endpoint; if the environment variabel is "never", use the default API
+        default mTLS endpoint; if the environment variable is "never", use the default API
         endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
         use the default API endpoint.
 
@@ -324,8 +328,8 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, PublisherServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        transport: Optional[Union[str, PublisherServiceTransport]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the publisher service client.
@@ -339,7 +343,7 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
             transport (Union[str, PublisherServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -369,6 +373,7 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
+        client_options = cast(client_options_lib.ClientOptions, client_options)
 
         api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
             client_options
@@ -421,10 +426,10 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
 
     def publish(
         self,
-        requests: Iterator[publisher.PublishRequest] = None,
+        requests: Optional[Iterator[publisher.PublishRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[publisher.PublishResponse]:
         r"""Establishes a stream with the server for publishing
@@ -503,7 +508,7 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    def __enter__(self) -> "PublisherServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -517,14 +522,9 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
         self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-pubsublite",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("PublisherServiceClient",)
