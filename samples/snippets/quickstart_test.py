@@ -219,7 +219,9 @@ def publisher_client():
 @pytest.fixture(scope="module")
 def pubsub_topic(publisher_client):
     """Creates a Pub/Sub topic resource"""
-    destination_topic_path = publisher_client.topic_path(PROJECT_NUMBER, PUBSUB_TOPIC_ID)
+    destination_topic_path = publisher_client.topic_path(
+        PROJECT_NUMBER, PUBSUB_TOPIC_ID
+    )
     try:
         publisher_client.create_topic(request={"name": destination_topic_path})
     except AlreadyExists:
