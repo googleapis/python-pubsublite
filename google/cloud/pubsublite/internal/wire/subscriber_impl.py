@@ -111,7 +111,9 @@ class SubscriberImpl(
             )
             return
         # Workaround for incredibly slow proto-plus-python accesses
-        messages = list(response.messages.messages._pb)
+        messages = list(
+            response.messages.messages._pb  # pytype: disable=attribute-error
+        )
         self._outstanding_flow_control.on_messages(messages)
         for message in messages:
             if (

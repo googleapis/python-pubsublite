@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -40,11 +41,11 @@ class AttributeValues(proto.Message):
     r"""The values associated with a key of an attribute.
 
     Attributes:
-        values (Sequence[bytes]):
+        values (MutableSequence[bytes]):
             The list of values associated with a key.
     """
 
-    values = proto.RepeatedField(
+    values: MutableSequence[bytes] = proto.RepeatedField(
         proto.BYTES,
         number=1,
     )
@@ -62,28 +63,28 @@ class PubSubMessage(proto.Message):
             the message is routed to an arbitrary partition.
         data (bytes):
             The payload of the message.
-        attributes (Mapping[str, google.cloud.pubsublite_v1.types.AttributeValues]):
+        attributes (MutableMapping[str, google.cloud.pubsublite_v1.types.AttributeValues]):
             Optional attributes that can be used for
             message metadata/headers.
         event_time (google.protobuf.timestamp_pb2.Timestamp):
             An optional, user-specified event time.
     """
 
-    key = proto.Field(
+    key: bytes = proto.Field(
         proto.BYTES,
         number=1,
     )
-    data = proto.Field(
+    data: bytes = proto.Field(
         proto.BYTES,
         number=2,
     )
-    attributes = proto.MapField(
+    attributes: MutableMapping[str, "AttributeValues"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=3,
         message="AttributeValues",
     )
-    event_time = proto.Field(
+    event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -100,7 +101,7 @@ class Cursor(proto.Message):
             partition. Must be greater than or equal 0.
     """
 
-    offset = proto.Field(
+    offset: int = proto.Field(
         proto.INT64,
         number=1,
     )
@@ -124,22 +125,22 @@ class SequencedMessage(proto.Message):
             control and quota purposes.
     """
 
-    cursor = proto.Field(
+    cursor: "Cursor" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="Cursor",
     )
-    publish_time = proto.Field(
+    publish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    message = proto.Field(
+    message: "PubSubMessage" = proto.Field(
         proto.MESSAGE,
         number=3,
         message="PubSubMessage",
     )
-    size_bytes = proto.Field(
+    size_bytes: int = proto.Field(
         proto.INT64,
         number=4,
     )
@@ -164,11 +165,11 @@ class Reservation(proto.Message):
             individually.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    throughput_capacity = proto.Field(
+    throughput_capacity: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -239,25 +240,25 @@ class Topic(proto.Message):
                     in MiB/s. Must be >= 4 and <= 32.
             """
 
-            publish_mib_per_sec = proto.Field(
+            publish_mib_per_sec: int = proto.Field(
                 proto.INT32,
                 number=1,
             )
-            subscribe_mib_per_sec = proto.Field(
+            subscribe_mib_per_sec: int = proto.Field(
                 proto.INT32,
                 number=2,
             )
 
-        count = proto.Field(
+        count: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        scale = proto.Field(
+        scale: int = proto.Field(
             proto.INT32,
             number=2,
             oneof="dimension",
         )
-        capacity = proto.Field(
+        capacity: "Topic.PartitionConfig.Capacity" = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="dimension",
@@ -280,11 +281,11 @@ class Topic(proto.Message):
                 partition is below ``per_partition_bytes``.
         """
 
-        per_partition_bytes = proto.Field(
+        per_partition_bytes: int = proto.Field(
             proto.INT64,
             number=1,
         )
-        period = proto.Field(
+        period: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
@@ -300,26 +301,26 @@ class Topic(proto.Message):
                 projects/{project_number}/locations/{location}/reservations/{reservation_id}
         """
 
-        throughput_reservation = proto.Field(
+        throughput_reservation: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    partition_config = proto.Field(
+    partition_config: PartitionConfig = proto.Field(
         proto.MESSAGE,
         number=2,
         message=PartitionConfig,
     )
-    retention_config = proto.Field(
+    retention_config: RetentionConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=RetentionConfig,
     )
-    reservation_config = proto.Field(
+    reservation_config: ReservationConfig = proto.Field(
         proto.MESSAGE,
         number=4,
         message=ReservationConfig,
@@ -359,31 +360,47 @@ class Subscription(proto.Message):
             r"""When this subscription should send messages to subscribers relative
             to messages persistence in storage. For details, see `Creating Lite
             subscriptions <https://cloud.google.com/pubsub/lite/docs/subscriptions#creating_lite_subscriptions>`__.
+
+            Values:
+                DELIVERY_REQUIREMENT_UNSPECIFIED (0):
+                    Default value. This value is unused.
+                DELIVER_IMMEDIATELY (1):
+                    The server does not wait for a published
+                    message to be successfully written to storage
+                    before delivering it to subscribers.
+                DELIVER_AFTER_STORED (2):
+                    The server will not deliver a published
+                    message to subscribers until the message has
+                    been successfully written to storage. This will
+                    result in higher end-to-end latency, but
+                    consistent delivery.
             """
             DELIVERY_REQUIREMENT_UNSPECIFIED = 0
             DELIVER_IMMEDIATELY = 1
             DELIVER_AFTER_STORED = 2
 
-        delivery_requirement = proto.Field(
-            proto.ENUM,
-            number=3,
-            enum="Subscription.DeliveryConfig.DeliveryRequirement",
+        delivery_requirement: "Subscription.DeliveryConfig.DeliveryRequirement" = (
+            proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="Subscription.DeliveryConfig.DeliveryRequirement",
+            )
         )
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    topic = proto.Field(
+    topic: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    delivery_config = proto.Field(
+    delivery_config: DeliveryConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         message=DeliveryConfig,
     )
-    export_config = proto.Field(
+    export_config: "ExportConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
         message="ExportConfig",
@@ -400,10 +417,13 @@ class ExportConfig(proto.Message):
 
     Attributes:
         desired_state (google.cloud.pubsublite_v1.types.ExportConfig.State):
-            The desired state of this export.
-        statuses (Sequence[google.cloud.pubsublite_v1.types.ExportConfig.PartitionStatus]):
-            Output only. The export statuses of each
-            partition. This field is output only.
+            The desired state of this export. Setting this to values
+            other than ``ACTIVE`` and ``PAUSED`` will result in an
+            error.
+        current_state (google.cloud.pubsublite_v1.types.ExportConfig.State):
+            Output only. The current state of the export,
+            which may be different to the desired state due
+            to errors. This field is output only.
         dead_letter_topic (str):
             Optional. The name of an optional Pub/Sub Lite topic to
             publish messages that can not be exported to the
@@ -425,39 +445,27 @@ class ExportConfig(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""An export state."""
+        r"""The desired export state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            ACTIVE (1):
+                Messages are being exported.
+            PAUSED (2):
+                Exporting messages is suspended.
+            PERMISSION_DENIED (3):
+                Messages cannot be exported due to permission
+                denied errors. Output only.
+            NOT_FOUND (4):
+                Messages cannot be exported due to missing
+                resources. Output only.
+        """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PAUSED = 2
-
-    class PartitionStatus(proto.Message):
-        r"""The export status of a partition.
-
-        Attributes:
-            partition (int):
-                The partition number.
-            status (google.rpc.status_pb2.Status):
-                If the export for a partition is healthy and the desired
-                state is ``ACTIVE``, the status code will be ``OK`` (zero).
-                If the desired state of the export is ``PAUSED``, the status
-                code will be ``CANCELLED``.
-
-                If the export has been suspended due to an error, the status
-                will be populated with an error code and details. The
-                service will automatically retry after a period of time, and
-                will update the status code to ``OK`` if export subsequently
-                succeeds.
-        """
-
-        partition = proto.Field(
-            proto.INT64,
-            number=1,
-        )
-        status = proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=status_pb2.Status,
-        )
+        PERMISSION_DENIED = 3
+        NOT_FOUND = 4
 
     class PubSubConfig(proto.Message):
         r"""Configuration for exporting to a Pub/Sub topic.
@@ -469,26 +477,26 @@ class ExportConfig(proto.Message):
                 be changed.
         """
 
-        topic = proto.Field(
+        topic: str = proto.Field(
             proto.STRING,
             number=1,
         )
 
-    desired_state = proto.Field(
+    desired_state: State = proto.Field(
         proto.ENUM,
         number=1,
         enum=State,
     )
-    statuses = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=PartitionStatus,
+    current_state: State = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
     )
-    dead_letter_topic = proto.Field(
+    dead_letter_topic: str = proto.Field(
         proto.STRING,
         number=5,
     )
-    pubsub_config = proto.Field(
+    pubsub_config: PubSubConfig = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="destination",
@@ -526,13 +534,13 @@ class TimeTarget(proto.Message):
             This field is a member of `oneof`_ ``time``.
     """
 
-    publish_time = proto.Field(
+    publish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="time",
         message=timestamp_pb2.Timestamp,
     )
-    event_time = proto.Field(
+    event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="time",

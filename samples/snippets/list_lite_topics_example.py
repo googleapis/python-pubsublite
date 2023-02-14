@@ -55,7 +55,8 @@ def list_lite_topics(project_number, cloud_region, zone_id, regional):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("project_number", help="Your Google Cloud Project Number")
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")
@@ -65,5 +66,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     list_lite_topics(
-        args.project_number, args.cloud_region, args.zone_id, args.regional,
+        args.project_number,
+        args.cloud_region,
+        args.zone_id,
+        args.regional,
     )
