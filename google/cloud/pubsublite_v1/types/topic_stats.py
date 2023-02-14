@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 import proto  # type: ignore
 
 from google.cloud.pubsublite_v1.types import common
@@ -52,20 +54,20 @@ class ComputeMessageStatsRequest(proto.Message):
             will retrieve all messages.
     """
 
-    topic = proto.Field(
+    topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    partition = proto.Field(
+    partition: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    start_cursor = proto.Field(
+    start_cursor: common.Cursor = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.Cursor,
     )
-    end_cursor = proto.Field(
+    end_cursor: common.Cursor = proto.Field(
         proto.MESSAGE,
         number=4,
         message=common.Cursor,
@@ -96,20 +98,20 @@ class ComputeMessageStatsResponse(proto.Message):
             there are no messages.
     """
 
-    message_count = proto.Field(
+    message_count: int = proto.Field(
         proto.INT64,
         number=1,
     )
-    message_bytes = proto.Field(
+    message_bytes: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    minimum_publish_time = proto.Field(
+    minimum_publish_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
     )
-    minimum_event_time = proto.Field(
+    minimum_event_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
@@ -128,11 +130,11 @@ class ComputeHeadCursorRequest(proto.Message):
             compute the head cursor.
     """
 
-    topic = proto.Field(
+    topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    partition = proto.Field(
+    partition: int = proto.Field(
         proto.INT64,
         number=2,
     )
@@ -147,7 +149,7 @@ class ComputeHeadCursorResponse(proto.Message):
             The head cursor.
     """
 
-    head_cursor = proto.Field(
+    head_cursor: common.Cursor = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.Cursor,
@@ -171,15 +173,15 @@ class ComputeTimeCursorRequest(proto.Message):
             cursor.
     """
 
-    topic = proto.Field(
+    topic: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    partition = proto.Field(
+    partition: int = proto.Field(
         proto.INT64,
         number=2,
     )
-    target = proto.Field(
+    target: common.TimeTarget = proto.Field(
         proto.MESSAGE,
         number=3,
         message=common.TimeTarget,
@@ -198,7 +200,7 @@ class ComputeTimeCursorResponse(proto.Message):
             (i.e. ``cursor`` is not present).
     """
 
-    cursor = proto.Field(
+    cursor: common.Cursor = proto.Field(
         proto.MESSAGE,
         number=1,
         message=common.Cursor,

@@ -16,8 +16,19 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
+
+from google.cloud.pubsublite_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -125,7 +136,7 @@ class TopicStatsServiceAsyncClient:
         The API endpoint is determined in the following order:
         (1) if `client_options.api_endpoint` if provided, use the provided one.
         (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
-        default mTLS endpoint; if the environment variabel is "never", use the default API
+        default mTLS endpoint; if the environment variable is "never", use the default API
         endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
         use the default API endpoint.
 
@@ -161,9 +172,9 @@ class TopicStatsServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TopicStatsServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the topic stats service client.
@@ -207,10 +218,10 @@ class TopicStatsServiceAsyncClient:
 
     async def compute_message_stats(
         self,
-        request: Union[topic_stats.ComputeMessageStatsRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeMessageStatsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeMessageStatsResponse:
         r"""Compute statistics about a range of messages in a
@@ -244,7 +255,7 @@ class TopicStatsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ComputeMessageStatsRequest, dict]]):
                 The request object. Compute statistics about a range of
                 messages in a given topic and partition.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -290,10 +301,10 @@ class TopicStatsServiceAsyncClient:
 
     async def compute_head_cursor(
         self,
-        request: Union[topic_stats.ComputeHeadCursorRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeHeadCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeHeadCursorResponse:
         r"""Compute the head cursor for the partition.
@@ -332,7 +343,7 @@ class TopicStatsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest, dict]]):
                 The request object. Compute the current head cursor for
                 a partition.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -377,10 +388,10 @@ class TopicStatsServiceAsyncClient:
 
     async def compute_time_cursor(
         self,
-        request: Union[topic_stats.ComputeTimeCursorRequest, dict] = None,
+        request: Optional[Union[topic_stats.ComputeTimeCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> topic_stats.ComputeTimeCursorResponse:
         r"""Compute the corresponding cursor for a publish or
@@ -414,7 +425,7 @@ class TopicStatsServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ComputeTimeCursorRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ComputeTimeCursorRequest, dict]]):
                 The request object. Compute the corresponding cursor for
                 a publish or event time in a topic partition.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -465,14 +476,9 @@ class TopicStatsServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-pubsublite",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("TopicStatsServiceAsyncClient",)

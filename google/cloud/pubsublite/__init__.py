@@ -15,6 +15,11 @@
 # limitations under the License.
 #
 
+from google.cloud.pubsublite import gapic_version as package_version
+
+__version__ = package_version.__version__
+
+
 from google.cloud.pubsublite_v1.services.admin_service.async_client import (
     AdminServiceAsyncClient,
 )

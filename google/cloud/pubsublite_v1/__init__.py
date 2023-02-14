@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.cloud.pubsublite_v1 import gapic_version as package_version
+
+__version__ = package_version.__version__
+
 
 from .services.admin_service import AdminServiceClient
 from .services.admin_service import AdminServiceAsyncClient

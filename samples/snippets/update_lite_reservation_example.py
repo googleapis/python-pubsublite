@@ -23,7 +23,10 @@ import argparse
 
 
 def update_lite_reservation(
-    project_number, cloud_region, reservation_id, throughput_capacity,
+    project_number,
+    cloud_region,
+    reservation_id,
+    throughput_capacity,
 ):
     # [START pubsublite_update_reservation]
     from google.api_core.exceptions import NotFound
@@ -63,7 +66,8 @@ def update_lite_reservation(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("project_number", help="Your Google Cloud Project Number")
     parser.add_argument("cloud_region", help="Your Cloud Region, e.g. 'us-central1'")

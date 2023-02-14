@@ -19,6 +19,8 @@ import re
 from typing import (
     Dict,
     Mapping,
+    MutableMapping,
+    MutableSequence,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -28,7 +30,8 @@ from typing import (
     Type,
     Union,
 )
-import pkg_resources
+
+from google.cloud.pubsublite_v1 import gapic_version as package_version
 
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
@@ -137,7 +140,7 @@ class CursorServiceAsyncClient:
         The API endpoint is determined in the following order:
         (1) if `client_options.api_endpoint` if provided, use the provided one.
         (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
-        default mTLS endpoint; if the environment variabel is "never", use the default API
+        default mTLS endpoint; if the environment variable is "never", use the default API
         endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
         use the default API endpoint.
 
@@ -173,9 +176,9 @@ class CursorServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: ga_credentials.Credentials = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CursorServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the cursor service client.
@@ -219,10 +222,10 @@ class CursorServiceAsyncClient:
 
     def streaming_commit_cursor(
         self,
-        requests: AsyncIterator[cursor.StreamingCommitCursorRequest] = None,
+        requests: Optional[AsyncIterator[cursor.StreamingCommitCursorRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[cursor.StreamingCommitCursorResponse]]:
         r"""Establishes a stream with the server for managing
@@ -302,10 +305,10 @@ class CursorServiceAsyncClient:
 
     async def commit_cursor(
         self,
-        request: Union[cursor.CommitCursorRequest, dict] = None,
+        request: Optional[Union[cursor.CommitCursorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cursor.CommitCursorResponse:
         r"""Updates the committed cursor.
@@ -336,7 +339,7 @@ class CursorServiceAsyncClient:
                 print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.CommitCursorRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.CommitCursorRequest, dict]]):
                 The request object. Request for CommitCursor.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -393,11 +396,11 @@ class CursorServiceAsyncClient:
 
     async def list_partition_cursors(
         self,
-        request: Union[cursor.ListPartitionCursorsRequest, dict] = None,
+        request: Optional[Union[cursor.ListPartitionCursorsRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPartitionCursorsAsyncPager:
         r"""Returns all committed cursor information for a
@@ -431,7 +434,7 @@ class CursorServiceAsyncClient:
                     print(response)
 
         Args:
-            request (Union[google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest, dict]):
+            request (Optional[Union[google.cloud.pubsublite_v1.types.ListPartitionCursorsRequest, dict]]):
                 The request object. Request for ListPartitionCursors.
             parent (:class:`str`):
                 Required. The subscription for which to retrieve
@@ -526,14 +529,9 @@ class CursorServiceAsyncClient:
         await self.transport.close()
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-pubsublite",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("CursorServiceAsyncClient",)
