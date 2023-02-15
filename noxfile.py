@@ -32,7 +32,7 @@ LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
 
-UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -40,9 +40,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest-cov",
     "pytest-asyncio",
 ]
-UNIT_TEST_EXTERNAL_DEPENDENCIES = [
-    "asynctest",
-]
+UNIT_TEST_EXTERNAL_DEPENDENCIES = []
 UNIT_TEST_LOCAL_DEPENDENCIES = []
 UNIT_TEST_DEPENDENCIES = []
 UNIT_TEST_EXTRAS = []
@@ -54,9 +52,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "google-cloud-testutils",
 ]
-SYSTEM_TEST_EXTERNAL_DEPENDENCIES = [
-    "asynctest",
-]
+SYSTEM_TEST_EXTERNAL_DEPENDENCIES = []
 SYSTEM_TEST_LOCAL_DEPENDENCIES = []
 SYSTEM_TEST_DEPENDENCIES = []
 SYSTEM_TEST_EXTRAS = []

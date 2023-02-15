@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from asynctest.mock import MagicMock
+from unittest.mock import MagicMock
 import pytest
 
 from google.cloud.pubsublite.internal.wire.partition_count_watcher import (
