@@ -1,6 +1,11 @@
-# -*- coding: utf-8 -*-
-# This constraints file is required for unit tests.
+# This constraints file is used to check that lower bounds
+# are correct in setup.py
 # List all library dependencies and extras in this file.
-google-api-core
-proto-plus
-protobuf
+# Pin the version to the lower bound.
+# e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0dev",
+# Then this file should have google-cloud-foo==1.14.0
+google-cloud-pubsub==2.10.0
+grpcio==1.38.1
+grpcio-status==1.38.1
+overrides==6.0.1
+google-api-core==1.33.2

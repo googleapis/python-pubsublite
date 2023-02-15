@@ -15,7 +15,7 @@
 from typing import Set
 
 from asyncio import Future
-from asynctest.mock import MagicMock, call
+from unittest.mock import MagicMock, call
 import threading
 import pytest
 from google.api_core.exceptions import FailedPrecondition

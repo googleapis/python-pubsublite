@@ -13,9 +13,8 @@
 # limitations under the License.
 
 import asyncio
-from unittest.mock import call
+from unittest.mock import AsyncMock, call, MagicMock
 
-from asynctest.mock import MagicMock, CoroutineMock
 import pytest
 from google.api_core.exceptions import InternalServerError, InvalidArgument, Unknown
 from google.cloud.pubsublite.internal.wire.connection import (
@@ -62,9 +61,9 @@ def retrying_connection(connection_factory, reinitializer):
 @pytest.fixture
 def asyncio_sleep(monkeypatch):
     """Requests.get() mocked to return {'mock_key':'mock_response'}."""
-    mock = CoroutineMock()
-    monkeypatch.setattr(asyncio, "sleep", mock)
-    return mock
+    mock_sleep = AsyncMock()
+    monkeypatch.setattr(asyncio, "sleep", mock_sleep)
+    return mock_sleep
 
 
 async def test_permanent_error_on_reinitializer(

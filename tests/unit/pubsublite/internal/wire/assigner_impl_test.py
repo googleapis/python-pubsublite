@@ -13,11 +13,10 @@
 # limitations under the License.
 
 import asyncio
-from unittest.mock import call
+from unittest.mock import AsyncMock, call, MagicMock
 from collections import defaultdict
 from typing import Dict, Set
 
-from asynctest.mock import MagicMock, CoroutineMock
 import pytest
 
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
@@ -80,16 +79,16 @@ def sleep_queues() -> Dict[float, QueuePair]:
 @pytest.fixture
 def asyncio_sleep(monkeypatch, sleep_queues):
     """Requests.get() mocked to return {'mock_key':'mock_response'}."""
-    mock = CoroutineMock()
-    monkeypatch.setattr(asyncio, "sleep", mock)
+    mock_sleep = AsyncMock()
+    monkeypatch.setattr(asyncio, "sleep", mock_sleep)
 
     async def sleeper(delay: float):
         await make_queue_waiter(
             sleep_queues[delay].called, sleep_queues[delay].results
         )(delay)
 
-    mock.side_effect = sleeper
-    return mock
+    mock_sleep.side_effect = sleeper
+    return mock_sleep
 
 
 @pytest.fixture()
