@@ -13,7 +13,7 @@
 # limitations under the License.
 import asyncio
 import queue
-from asynctest.mock import MagicMock
+from unittest.mock import MagicMock
 import pytest
 
 from google.cloud.pubsublite import AdminClientInterface

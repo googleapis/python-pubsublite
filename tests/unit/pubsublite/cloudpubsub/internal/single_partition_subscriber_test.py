@@ -15,7 +15,7 @@
 import asyncio
 from typing import Callable, List
 
-from asynctest.mock import MagicMock, call
+from unittest.mock import MagicMock, call
 import pytest
 from google.api_core.exceptions import FailedPrecondition
 from google.cloud.pubsub_v1.subscriber.message import Message

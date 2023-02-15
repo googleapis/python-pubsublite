@@ -18,7 +18,11 @@ from concurrent.futures.thread import ThreadPoolExecutor
 from queue import Queue
 from typing import List
 
-from asynctest.mock import MagicMock
+try:
+    from unittest.mock import MagicMock, AsyncMock
+except:
+    import mock
+
 import pytest
 from google.api_core.exceptions import FailedPrecondition
 from google.cloud.pubsub_v1.subscriber.message import Message

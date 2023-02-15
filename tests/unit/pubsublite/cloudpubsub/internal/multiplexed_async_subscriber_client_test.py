@@ -16,7 +16,7 @@ import asyncio
 
 import pytest
 
-from asynctest.mock import call, MagicMock
+from unittest.mock import call, MagicMock
 
 from google.api_core.exceptions import FailedPrecondition
 from google.cloud.pubsub_v1.subscriber.message import Message

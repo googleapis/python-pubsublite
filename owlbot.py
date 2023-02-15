@@ -61,8 +61,6 @@ s.remove_staging_dirs()
 templated_files = gcp.CommonTemplates().py_library(
     cov_level=96,
     microgenerator=True,
-    system_test_external_dependencies=["asynctest"],
-    unit_test_external_dependencies=["asynctest"],
     versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
 s.move(

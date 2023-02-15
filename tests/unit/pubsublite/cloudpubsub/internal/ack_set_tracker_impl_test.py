@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from asynctest.mock import MagicMock, call
+from unittest.mock import MagicMock, call
 import pytest
 
 from google.api_core.exceptions import FailedPrecondition

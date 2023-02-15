@@ -18,7 +18,12 @@ from unittest.mock import call
 from collections import defaultdict
 from typing import Dict, List
 
-from asynctest.mock import MagicMock, CoroutineMock
+try:
+    from unittest import mock
+    from unittest.mock import MagicMock, AsyncMock
+except:
+    import mock
+
 import pytest
 from grpc import StatusCode
 
@@ -98,16 +103,16 @@ def sleep_queues() -> Dict[float, QueuePair]:
 @pytest.fixture
 def asyncio_sleep(monkeypatch, sleep_queues):
     """Requests.get() mocked to return {'mock_key':'mock_response'}."""
-    mock = CoroutineMock()
-    monkeypatch.setattr(asyncio, "sleep", mock)
+    mock_sleep = mock.AsyncMock()
+    monkeypatch.setattr(asyncio, "sleep", mock_sleep)
 
     async def sleeper(delay: float):
         await make_queue_waiter(
             sleep_queues[delay].called, sleep_queues[delay].results
         )(delay)
 
-    mock.side_effect = sleeper
-    return mock
+    mock_sleep.side_effect = sleeper
+    return mock_sleep
 
 
 @pytest.fixture()

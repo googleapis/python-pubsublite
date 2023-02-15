@@ -14,7 +14,11 @@
 
 import pytest
 
-from asynctest.mock import call, CoroutineMock
+try:
+    from unittest import mock
+    from unittest.mock import call, AsyncMock
+except:
+    import mock
 
 from google.cloud.pubsublite.cloudpubsub.internal.client_multiplexer import (
     AsyncClientMultiplexer,
@@ -30,12 +34,12 @@ class Client:
 
 @pytest.fixture()
 def client_factory():
-    return CoroutineMock()
+    return mock.AsyncMock()
 
 
 @pytest.fixture()
 def client_closer():
-    return CoroutineMock()
+    return mock.AsyncMock()
 
 
 @pytest.fixture()
