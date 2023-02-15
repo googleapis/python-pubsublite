@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-pubsublite/compare/v1.6.0...v1.7.0) (2023-02-15)
+
+
+### Features
+
+* Add current state of export subscriptions to API ([bb111fd](https://github.com/googleapis/python-pubsublite/commit/bb111fd179c3c85a2ba0b886ab52db3328f86003))
+* API for publish idempotence ([bb111fd](https://github.com/googleapis/python-pubsublite/commit/bb111fd179c3c85a2ba0b886ab52db3328f86003))
+* Replace export subscription statuses with current state field in API ([bb111fd](https://github.com/googleapis/python-pubsublite/commit/bb111fd179c3c85a2ba0b886ab52db3328f86003))
+
+
+### Bug Fixes
+
+* Add context manager return types ([bb111fd](https://github.com/googleapis/python-pubsublite/commit/bb111fd179c3c85a2ba0b886ab52db3328f86003))
+
+
+### Documentation
+
+* Add documentation for enums ([bb111fd](https://github.com/googleapis/python-pubsublite/commit/bb111fd179c3c85a2ba0b886ab52db3328f86003))
+
 ## [1.6.0](https://github.com/googleapis/python-pubsublite/compare/v1.5.0...v1.6.0) (2022-10-06)
 
 
