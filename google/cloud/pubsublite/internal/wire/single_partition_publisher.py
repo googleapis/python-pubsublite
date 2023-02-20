@@ -188,7 +188,7 @@ class SinglePartitionPublisher(
         aggregate.message_publish_request.messages = [
             item.request.message for item in batch
         ]
-        if len(self._initial.client_id) > 0:
+        if self._initial.client_id:
             aggregate.message_publish_request.first_sequence_number = batch[
                 0
             ].request.sequence_number.value
