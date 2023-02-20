@@ -57,27 +57,23 @@ _MAX_BYTES = int(3.5 * 1024 * 1024)
 _MAX_MESSAGES = 1000
 
 
-class _SequencedMessage(NamedTuple):
+class _MessageWithSequence(NamedTuple):
     message: PubSubMessage
     sequence_number: PublishSequenceNumber
-
-
-def _get_start_index(cursor_range):
-    return cursor_range.start_index or 0
 
 
 class SinglePartitionPublisher(
     Publisher,
     ConnectionReinitializer[PublishRequest, PublishResponse],
-    RequestSizer[_SequencedMessage],
+    RequestSizer[_MessageWithSequence],
 ):
     _initial: InitialPublishRequest
     _batching_settings: BatchSettings
     _connection: RetryingConnection[PublishRequest, PublishResponse]
 
     _next_sequence: PublishSequenceNumber
-    _batcher: SerialBatcher[_SequencedMessage, Cursor]
-    _outstanding_writes: List[List[WorkItem[_SequencedMessage, Cursor]]]
+    _batcher: SerialBatcher[_MessageWithSequence, Cursor]
+    _outstanding_writes: List[List[WorkItem[_MessageWithSequence, Cursor]]]
 
     _receiver: Optional[asyncio.Future]
     _flusher: Optional[asyncio.Future]
@@ -136,23 +132,20 @@ class SinglePartitionPublisher(
                 )
             )
         ranges = response.message_response.cursor_ranges
-        ranges.sort(key=_get_start_index)
-        batch: List[WorkItem[_SequencedMessage]] = self._outstanding_writes.pop(0)
-        rangeIdx = 0
-        for msgIdx, item in enumerate(batch):
-            if rangeIdx < len(ranges) and ranges[rangeIdx].end_index <= msgIdx:
-                rangeIdx += 1
+        ranges.sort(key=lambda r: r.start_index)
+        batch: List[WorkItem[_MessageWithSequence]] = self._outstanding_writes.pop(0)
+        range_idx = 0
+        for msg_idx, item in enumerate(batch):
+            if range_idx < len(ranges) and ranges[range_idx].end_index <= msg_idx:
+                range_idx += 1
             offset = -1
             if (
-                rangeIdx < len(ranges)
-                and msgIdx >= ranges[rangeIdx].start_index
-                and msgIdx < ranges[rangeIdx].end_index
+                range_idx < len(ranges)
+                and msg_idx >= ranges[range_idx].start_index
+                and msg_idx < ranges[range_idx].end_index
             ):
-                offset = (
-                    (ranges[rangeIdx].start_cursor.offset or 0)
-                    + msgIdx
-                    - ranges[rangeIdx].start_index
-                )
+                offset_in_range = msg_idx - ranges[range_idx].start_index
+                offset = ranges[range_idx].start_cursor.offset + offset_in_range
             item.response_future.set_result(Cursor(offset=offset))
 
     async def _receive_loop(self):
@@ -199,7 +192,7 @@ class SinglePartitionPublisher(
             self._fail_if_retrying_failed()
 
     async def publish(self, message: PubSubMessage) -> MessageMetadata:
-        future = self._batcher.add(_SequencedMessage(message, self._next_sequence))
+        future = self._batcher.add(_MessageWithSequence(message, self._next_sequence))
         self._next_sequence = self._next_sequence.next()
         if self._should_flush():
             await self._flush()
@@ -231,7 +224,7 @@ class SinglePartitionPublisher(
         self._start_loopers()
 
     @overrides
-    def get_size(self, request: _SequencedMessage) -> BatchSize:
+    def get_size(self, request: _MessageWithSequence) -> BatchSize:
         return BatchSize(
             element_count=1, byte_count=PubSubMessage.pb(request.message).ByteSize()
         )
