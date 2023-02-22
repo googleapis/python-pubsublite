@@ -19,6 +19,9 @@ from google.cloud.pubsub_v1.types import BatchSettings
 from google.cloud.pubsublite.admin_client import AdminClient
 from google.cloud.pubsublite.internal.endpoints import regional_endpoint
 from google.cloud.pubsublite.internal.publisher_client_id import PublisherClientId
+from google.cloud.pubsublite.internal.publish_sequence_number import (
+    PublishSequenceNumber,
+)
 from google.cloud.pubsublite.internal.wire.client_cache import ClientCache
 from google.cloud.pubsublite.internal.wire.default_routing_policy import (
     DefaultRoutingPolicy,
@@ -116,6 +119,7 @@ def make_publisher(
             initial_request,
             per_partition_batching_settings,
             GapicConnectionFactory(connection_factory),
+            PublishSequenceNumber(0),
         )
 
     def policy_factory(partition_count: int):

@@ -83,7 +83,7 @@ class SinglePartitionPublisher(
         initial: InitialPublishRequest,
         batching_settings: BatchSettings,
         factory: ConnectionFactory[PublishRequest, PublishResponse],
-        initial_sequence: PublishSequenceNumber = PublishSequenceNumber(0),
+        initial_sequence: PublishSequenceNumber,
     ):
         self._initial = initial
         self._batching_settings = batching_settings

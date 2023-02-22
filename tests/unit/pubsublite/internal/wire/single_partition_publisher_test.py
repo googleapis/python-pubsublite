@@ -111,7 +111,10 @@ def asyncio_sleep(monkeypatch, sleep_queues):
 @pytest.fixture()
 def publisher(connection_factory, initial_request):
     return SinglePartitionPublisher(
-        initial_request.initial_request, BATCHING_SETTINGS, connection_factory
+        initial_request.initial_request,
+        BATCHING_SETTINGS,
+        connection_factory,
+        PublishSequenceNumber(0),
     )
 
 
