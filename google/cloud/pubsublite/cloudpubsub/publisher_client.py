@@ -83,7 +83,7 @@ class PublisherClient(PublisherClientInterface, ConstructableFromServiceAccount)
             credentials: If provided, the credentials to use when connecting.
             transport: The transport to use. Must correspond to an asyncio transport.
             client_options: The client options to use when connecting. If used, must explicitly set `api_endpoint`.
-            enable_idempotence: Whether to enable publish idempotence, where the server will ensure that unique messages within a single publisher session are stored only once.
+            enable_idempotence: Whether idempotence is enabled, where the server will ensure that unique messages within a single publisher session are stored only once.
         """
         client_id = _get_client_id(enable_idempotence)
         self._impl = MultiplexedPublisherClient(
@@ -158,7 +158,7 @@ class AsyncPublisherClient(
             credentials: If provided, the credentials to use when connecting.
             transport: The transport to use. Must correspond to an asyncio transport.
             client_options: The client options to use when connecting. If used, must explicitly set `api_endpoint`.
-            enable_idempotence: Whether to enable publish idempotence, where the server will ensure that unique messages within a single publisher session are stored only once.
+            enable_idempotence: Whether idempotence is enabled, where the server will ensure that unique messages within a single publisher session are stored only once.
         """
         client_id = _get_client_id(enable_idempotence)
         self._impl = MultiplexedAsyncPublisherClient(
