@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-pubsublite/compare/v1.7.0...v1.8.0) (2023-03-21)
+
+
+### Features
+
+* Publish idempotence ([#408](https://github.com/googleapis/python-pubsublite/issues/408)) ([3236752](https://github.com/googleapis/python-pubsublite/commit/3236752b71a4af9858d169de64f760a4a8995922))
+
+
+### Bug Fixes
+
+* Add support for python 3.11 ([#403](https://github.com/googleapis/python-pubsublite/issues/403)) ([f60f8a8](https://github.com/googleapis/python-pubsublite/commit/f60f8a8bba9bc7054971e6c5f91c9849aaf645be))
+* Drop python 3.7 ([#402](https://github.com/googleapis/python-pubsublite/issues/402)) ([261b48d](https://github.com/googleapis/python-pubsublite/commit/261b48d9a8664e82a5e5e0ef2b78c58272eb81c4))
+
 ## [1.7.0](https://github.com/googleapis/python-pubsublite/compare/v1.6.0...v1.7.0) (2023-02-15)
 
 
