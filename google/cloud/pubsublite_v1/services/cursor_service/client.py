@@ -494,8 +494,8 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
 
         Args:
             requests (Iterator[google.cloud.pubsublite_v1.types.StreamingCommitCursorRequest]):
-                The request object iterator. A request sent from the client to
-                the server on a stream.
+                The request object iterator. A request sent from the client to the
+                server on a stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
