@@ -573,8 +573,8 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
 
         Args:
             request (Union[google.cloud.pubsublite_v1.types.ComputeHeadCursorRequest, dict]):
-                The request object. Compute the current head cursor for
-                a partition.
+                The request object. Compute the current head cursor for a
+                partition.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -657,7 +657,8 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
         Args:
             request (Union[google.cloud.pubsublite_v1.types.ComputeTimeCursorRequest, dict]):
                 The request object. Compute the corresponding cursor for
-                a publish or event time in a topic partition.
+                a publish or event time in a topic
+                partition.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

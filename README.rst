@@ -1,5 +1,35 @@
-Python Client for Google Cloud Pubsublite API
-=================================================
+Python Client for Pub/Sub Lite API
+==================================
+
+|stable| |pypi| |versions|
+
+`Pub/Sub Lite API`_: is designed to provide reliable,
+many-to-many, asynchronous messaging between applications. Publisher
+applications can send messages to a topic and other applications can
+subscribe to that topic to receive the messages. By decoupling senders and
+receivers, Google Cloud Pub/Sub allows developers to communicate between
+independently written applications.
+
+Compared to Google Pub/Sub, Pub/Sub Lite provides partitioned zonal data
+storage with predefined capacity. Both products present a similar API, but
+Pub/Sub Lite has more usage caveats.
+
+See the [Google Pub/Sub Lite docs](https://cloud.google.com/pubsub/quickstart-console#before-you-begin) for more details on how to activate
+Pub/Sub Lite for your project, as well as guidance on how to choose between
+Cloud Pub/Sub and Pub/Sub Lite.
+
+- `Client Library Documentation`_
+- `Product Documentation`_
+
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-pubsublite.svg
+   :target: https://pypi.org/project/google-cloud-pubsublite/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsublite.svg
+   :target: https://pypi.org/project/google-cloud-pubsublite/
+.. _Pub/Sub Lite API: https://cloud.google.com/pubsub/lite
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/pubsublite/latest
+.. _Product Documentation:  https://cloud.google.com/pubsub/lite
 
 Quick Start
 -----------
@@ -8,11 +38,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. Enable the Google Cloud Pubsublite API.
+3. `Enable the Pub/Sub Lite API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
+.. _Enable the Pub/Sub Lite API.:  https://cloud.google.com/pubsub/lite
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -29,14 +60,40 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/` folder.
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
+Python.
+
+Python >= 3.7
+
+.. _active: https://devguide.python.org/devcycle/#in-development-main-branch
+.. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an `end-of-life`_
+version of Python, we recommend that you update as soon as possible to an actively supported version.
+
+.. _end-of-life: https://devguide.python.org/devcycle/#end-of-life-branches
+
 Mac/Linux
 ^^^^^^^^^
 
 .. code-block:: console
 
-    python3 -m venv <your-env>
+    pip install virtualenv
+    virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install /path/to/library
+    <your-env>/bin/pip install google-cloud-pubsublite
 
 
 Windows
@@ -44,6 +101,20 @@ Windows
 
 .. code-block:: console
 
-    python3 -m venv <your-env>
+    pip install virtualenv
+    virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install \path\to\library
+    <your-env>\Scripts\pip.exe install google-cloud-pubsublite
+
+Next Steps
+~~~~~~~~~~
+
+-  Read the `Client Library Documentation`_ for Pub/Sub Lite API
+   to see other available methods on the client.
+-  Read the `Pub/Sub Lite API Product documentation`_ to learn
+   more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
+
+.. _Pub/Sub Lite API Product documentation:  https://cloud.google.com/pubsub/lite
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

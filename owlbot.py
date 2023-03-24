@@ -49,7 +49,9 @@ for library in s.get_staging_dirs(default_version):
             "scripts/fixup*.py",  # new libraries do not need the keyword fixup script
             "setup.py",
             "testing/constraints-3.7.txt",
+            "testing/constraints-3.8.txt",
             "google/cloud/pubsublite/__init__.py",
+            "README.rst",
         ],
     )
 s.remove_staging_dirs()
