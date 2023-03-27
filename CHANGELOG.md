@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-pubsublite/compare/v1.8.0...v1.8.1) (2023-03-24)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#412](https://github.com/googleapis/python-pubsublite/issues/412)) ([b1126e3](https://github.com/googleapis/python-pubsublite/commit/b1126e3f7665f5232a2e3f4c7214640c5acfc2b6))
+
 ## [1.8.0](https://github.com/googleapis/python-pubsublite/compare/v1.7.0...v1.8.0) (2023-03-21)
 
 
