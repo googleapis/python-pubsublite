@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/googleapis/python-pubsublite/compare/v1.8.1...v1.8.2) (2023-05-10)
+
+
+### Bug Fixes
+
+* Disable publish idempotence by default ([#415](https://github.com/googleapis/python-pubsublite/issues/415)) ([17af3c4](https://github.com/googleapis/python-pubsublite/commit/17af3c423fa2d6c206cb0beef18b612aa7fae03c))
+
 ## [1.8.1](https://github.com/googleapis/python-pubsublite/compare/v1.8.0...v1.8.1) (2023-03-24)
 
 
