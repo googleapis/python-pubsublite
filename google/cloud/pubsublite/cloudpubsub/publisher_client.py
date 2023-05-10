@@ -73,7 +73,7 @@ class PublisherClient(PublisherClientInterface, ConstructableFromServiceAccount)
         credentials: Optional[Credentials] = None,
         transport: str = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
-        enable_idempotence: bool = True,
+        enable_idempotence: bool = False,
     ):
         """
         Create a new PublisherClient.
@@ -148,7 +148,7 @@ class AsyncPublisherClient(
         credentials: Optional[Credentials] = None,
         transport: str = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
-        enable_idempotence: bool = True,
+        enable_idempotence: bool = False,
     ):
         """
         Create a new AsyncPublisherClient.
