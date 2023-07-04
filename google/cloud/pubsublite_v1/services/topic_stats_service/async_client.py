@@ -688,7 +688,7 @@ class TopicStatsServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "TopicStatsServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

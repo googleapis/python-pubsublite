@@ -2510,7 +2510,7 @@ class AdminServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "AdminServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
