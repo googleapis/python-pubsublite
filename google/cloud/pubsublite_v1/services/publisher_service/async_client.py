@@ -524,7 +524,7 @@ class PublisherServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "PublisherServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
