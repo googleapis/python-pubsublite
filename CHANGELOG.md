@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.3](https://github.com/googleapis/python-pubsublite/compare/v1.8.2...v1.8.3) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#426](https://github.com/googleapis/python-pubsublite/issues/426)) ([ee42abd](https://github.com/googleapis/python-pubsublite/commit/ee42abd6f750a9ce05b8a8d3ed3e17c98a82a187))
+
 ## [1.8.2](https://github.com/googleapis/python-pubsublite/compare/v1.8.1...v1.8.2) (2023-05-10)
 
 
