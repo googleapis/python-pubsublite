@@ -314,6 +314,7 @@ class InitialPartitionAssignmentRequest(proto.Message):
     Attributes:
         subscription (str):
             The subscription name. Structured like:
+
             projects/<project number>/locations/<zone
             name>/subscriptions/<subscription id>
         client_id (bytes):
