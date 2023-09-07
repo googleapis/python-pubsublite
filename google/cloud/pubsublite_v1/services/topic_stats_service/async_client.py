@@ -44,7 +44,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.pubsublite_v1.types import common
 from google.cloud.pubsublite_v1.types import topic_stats
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import TopicStatsServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import TopicStatsServiceGrpcAsyncIOTransport

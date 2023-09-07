@@ -47,7 +47,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.pubsublite_v1.services.admin_service import pagers
 from google.cloud.pubsublite_v1.types import admin
 from google.cloud.pubsublite_v1.types import common
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import AdminServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AdminServiceGrpcAsyncIOTransport
@@ -601,6 +601,7 @@ class AdminServiceAsyncClient:
         Returns:
             google.cloud.pubsublite_v1.services.admin_service.pagers.ListTopicsAsyncPager:
                 Response for ListTopics.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -914,6 +915,7 @@ class AdminServiceAsyncClient:
         Returns:
             google.cloud.pubsublite_v1.services.admin_service.pagers.ListTopicSubscriptionsAsyncPager:
                 Response for ListTopicSubscriptions.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1256,6 +1258,7 @@ class AdminServiceAsyncClient:
         Returns:
             google.cloud.pubsublite_v1.services.admin_service.pagers.ListSubscriptionsAsyncPager:
                 Response for ListSubscriptions.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1920,6 +1923,7 @@ class AdminServiceAsyncClient:
         Returns:
             google.cloud.pubsublite_v1.services.admin_service.pagers.ListReservationsAsyncPager:
                 Response for ListReservations.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2237,6 +2241,7 @@ class AdminServiceAsyncClient:
         Returns:
             google.cloud.pubsublite_v1.services.admin_service.pagers.ListReservationTopicsAsyncPager:
                 Response for ListReservationTopics.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

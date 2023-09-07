@@ -49,7 +49,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.pubsublite_v1.types import subscriber
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from .transports.base import SubscriberServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SubscriberServiceGrpcTransport
 from .transports.grpc_asyncio import SubscriberServiceGrpcAsyncIOTransport

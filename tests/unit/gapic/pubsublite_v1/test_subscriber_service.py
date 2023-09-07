@@ -46,7 +46,7 @@ from google.cloud.pubsublite_v1.services.subscriber_service import (
 from google.cloud.pubsublite_v1.services.subscriber_service import transports
 from google.cloud.pubsublite_v1.types import common
 from google.cloud.pubsublite_v1.types import subscriber
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 import google.auth
 

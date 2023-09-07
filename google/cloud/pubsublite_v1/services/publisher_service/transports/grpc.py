@@ -25,7 +25,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.pubsublite_v1.types import publisher
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from .base import PublisherServiceTransport, DEFAULT_CLIENT_INFO
 
 
