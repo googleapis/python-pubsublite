@@ -25,7 +25,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.pubsublite_v1.types import subscriber
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from .base import PartitionAssignmentServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import PartitionAssignmentServiceGrpcTransport
 

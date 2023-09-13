@@ -51,7 +51,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.pubsublite_v1.services.admin_service import pagers
 from google.cloud.pubsublite_v1.types import admin
 from google.cloud.pubsublite_v1.types import common
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import AdminServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AdminServiceGrpcTransport
@@ -872,6 +872,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         Returns:
             google.cloud.pubsublite_v1.services.admin_service.pagers.ListTopicsPager:
                 Response for ListTopics.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1185,6 +1186,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         Returns:
             google.cloud.pubsublite_v1.services.admin_service.pagers.ListTopicSubscriptionsPager:
                 Response for ListTopicSubscriptions.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1527,6 +1529,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         Returns:
             google.cloud.pubsublite_v1.services.admin_service.pagers.ListSubscriptionsPager:
                 Response for ListSubscriptions.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2192,6 +2195,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         Returns:
             google.cloud.pubsublite_v1.services.admin_service.pagers.ListReservationsPager:
                 Response for ListReservations.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2509,6 +2513,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         Returns:
             google.cloud.pubsublite_v1.services.admin_service.pagers.ListReservationTopicsPager:
                 Response for ListReservationTopics.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

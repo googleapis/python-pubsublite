@@ -324,6 +324,7 @@ class InitialPartitionAssignmentRequest(proto.Message):
             Other size values will be rejected and the
             stream will be failed with a non-retryable
             error.
+
             This field is large enough to fit a uuid from
             standard uuid algorithms like uuid1 or uuid4,
             which should be used to generate this number.

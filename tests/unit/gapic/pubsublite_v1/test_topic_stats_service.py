@@ -46,7 +46,7 @@ from google.cloud.pubsublite_v1.services.topic_stats_service import (
 from google.cloud.pubsublite_v1.services.topic_stats_service import transports
 from google.cloud.pubsublite_v1.types import common
 from google.cloud.pubsublite_v1.types import topic_stats
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth

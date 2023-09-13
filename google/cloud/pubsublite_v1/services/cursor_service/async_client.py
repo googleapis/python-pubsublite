@@ -47,7 +47,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.pubsublite_v1.services.cursor_service import pagers
 from google.cloud.pubsublite_v1.types import cursor
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from .transports.base import CursorServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import CursorServiceGrpcAsyncIOTransport
 from .client import CursorServiceClient
@@ -454,6 +454,7 @@ class CursorServiceAsyncClient:
         Returns:
             google.cloud.pubsublite_v1.services.cursor_service.pagers.ListPartitionCursorsAsyncPager:
                 Response for ListPartitionCursors
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
