@@ -124,7 +124,7 @@ def default(session):
 s.replace(
     "noxfile.py",
     """
-@nox.session\(python="3.9"\)
+@nox.session\(python="3.10"\)
 def docfx\(session\):""",
     """
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -134,7 +134,7 @@ def pytype(session):
     session.install(PYTYPE_VERSION)
     session.run("pytype", "google/cloud/pubsublite")
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def docfx(session):""",
 )
 
