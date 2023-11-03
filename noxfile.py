@@ -306,6 +306,14 @@ def docs(session):
     )
 
 
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def pytype(session):
+    """Run type checks."""
+    install_test_deps(session)
+    session.install(PYTYPE_VERSION)
+    session.run("pytype", "google/cloud/pubsublite")
+
+
 @nox.session(python="3.10")
 def docfx(session):
     """Build the docfx yaml files for this library."""
