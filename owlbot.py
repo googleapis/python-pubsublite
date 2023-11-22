@@ -132,7 +132,8 @@ def pytype(session):
     \"\"\"Run type checks.\"\"\"
     install_test_deps(session)
     session.install(PYTYPE_VERSION)
-    session.run("pytype", "google/cloud/pubsublite")
+    # See https://github.com/google/pytype/issues/464
+    session.run("pytype", "-P", ".", "google/cloud/pubsublite")
 
 @nox.session(python="3.10")
 def docfx(session):""",
