@@ -139,6 +139,10 @@ def pytype(session):
 def docfx(session):""",
 )
 
+# Remove once issues with pytest-asyncio 0.23.x have been resolved
+# https://github.com/pytest-dev/pytest-asyncio/issues?q=is%3Aissue+is%3Aopen+0.23.2+
+s.replace("noxfile.py", "\"pytest-asyncio\"", "\"pytest-asyncio<0.23\"")
+
 python.py_samples(skip_readmes=True)
 
 # run format session for all directories which have a noxfile
