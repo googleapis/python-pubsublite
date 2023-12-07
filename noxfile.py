@@ -41,7 +41,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "asyncmock",
     "pytest",
     "pytest-cov",
-    "pytest-asyncio",
+    "pytest-asyncio<0.23",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
