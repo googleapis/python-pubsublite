@@ -35,13 +35,13 @@ LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
     "pytest",
     "pytest-cov",
-    "pytest-asyncio",
+    "pytest-asyncio<0.23",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -311,7 +311,8 @@ def pytype(session):
     """Run type checks."""
     install_test_deps(session)
     session.install(PYTYPE_VERSION)
-    session.run("pytype", "google/cloud/pubsublite")
+    # See https://github.com/google/pytype/issues/464
+    session.run("pytype", "-P", ".", "google/cloud/pubsublite")
 
 
 @nox.session(python="3.10")

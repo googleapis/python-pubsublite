@@ -39,7 +39,8 @@ dependencies = [
     "google-cloud-pubsub >= 2.10.0, <3.0.0dev",
     "grpcio >= 1.38.1, <2.0.0dev",
     "grpcio-status >= 1.38.1, <2.0.0dev",
-    "overrides>=6.0.1, <7.0.0",
+    "overrides>=6.0.1, <8.0.0",
+    "overrides>=7.0.1, <8.0.0; python_version>='3.12'",
     "google-api-core[grpc] >= 1.33.2, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
 ]
 url = "https://github.com/googleapis/python-pubsublite"
@@ -52,13 +53,9 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 
 packages = [
     package
-    for package in setuptools.PEP420PackageFinder.find()
+    for package in setuptools.find_namespace_packages()
     if package.startswith("google")
 ]
-
-namespaces = ["google"]
-if "google.cloud" in packages:
-    namespaces.append("google.cloud")
 
 setuptools.setup(
     name=name,
@@ -79,13 +76,13 @@ setuptools.setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
     python_requires=">=3.8",
-    namespace_packages=namespaces,
     install_requires=dependencies,
     include_package_data=True,
     zip_safe=False,
