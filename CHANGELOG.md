@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-pubsublite/compare/v1.8.3...v1.9.0) (2023-12-10)
+
+
+### Features
+
+* Add support for Python 3.12 ([#455](https://github.com/googleapis/python-pubsublite/issues/455)) ([e865cb3](https://github.com/googleapis/python-pubsublite/commit/e865cb341408c722f8f938c01a8ad863cef35cb7))
+* Introduce compatibility with native namespace packages ([#454](https://github.com/googleapis/python-pubsublite/issues/454)) ([e718522](https://github.com/googleapis/python-pubsublite/commit/e7185226a3287bd723d39d82d087214017efbeab))
+
+
+### Bug Fixes
+
+* Use `retry_async` instead of `retry` in async client ([#458](https://github.com/googleapis/python-pubsublite/issues/458)) ([ac71140](https://github.com/googleapis/python-pubsublite/commit/ac71140be49d2fc70dad43b9200096f4efd33b89))
+
+
+### Documentation
+
+* Minor formatting ([2681fb8](https://github.com/googleapis/python-pubsublite/commit/2681fb8707bb31c5eaeb43cbadba87915a4986bb))
+
 ## [1.8.3](https://github.com/googleapis/python-pubsublite/compare/v1.8.2...v1.8.3) (2023-07-05)
 
 
