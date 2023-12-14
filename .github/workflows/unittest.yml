@@ -30,6 +30,7 @@ jobs:
       with:
         name: coverage-artifact-${{ matrix.python }}
         path: .coverage-${{ matrix.python }}
+        compression-level: 0 # no compression
 
   cover:
     runs-on: ubuntu-latest
