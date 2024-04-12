@@ -19,3 +19,9 @@ For a list of all ``google-cloud-pubsublite`` releases:
    :maxdepth: 2
 
    changelog
+
+
+.. toctree::
+  :hidden:
+
+  summary_overview.md
