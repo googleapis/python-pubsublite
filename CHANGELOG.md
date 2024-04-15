@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-pubsublite/compare/v1.9.0...v1.10.0) (2024-04-15)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#474](https://github.com/googleapis/python-pubsublite/issues/474)) ([974cc10](https://github.com/googleapis/python-pubsublite/commit/974cc10fc248edada0e932cd76ba410dfd250bfc))
+
 ## [1.9.0](https://github.com/googleapis/python-pubsublite/compare/v1.8.3...v1.9.0) (2023-12-10)
 
 
