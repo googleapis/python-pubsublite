@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -201,7 +202,9 @@ class AdminServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AdminServiceTransport] = "grpc_asyncio",
+        transport: Optional[
+            Union[str, AdminServiceTransport, Callable[..., AdminServiceTransport]]
+        ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -213,9 +216,11 @@ class AdminServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.AdminServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AdminServiceTransport,Callable[..., AdminServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AdminServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -337,8 +342,8 @@ class AdminServiceAsyncClient:
                 Metadata about a topic resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, topic, topic_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -346,7 +351,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.CreateTopicRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.CreateTopicRequest):
+            request = admin.CreateTopicRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -359,11 +367,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_topic,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_topic
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -443,8 +449,8 @@ class AdminServiceAsyncClient:
                 Metadata about a topic resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -452,7 +458,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.GetTopicRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.GetTopicRequest):
+            request = admin.GetTopicRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -461,11 +470,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_topic,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_topic
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -546,8 +553,8 @@ class AdminServiceAsyncClient:
                 Response for GetTopicPartitions.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -555,7 +562,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.GetTopicPartitionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.GetTopicPartitionsRequest):
+            request = admin.GetTopicPartitionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -564,11 +574,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_topic_partitions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_topic_partitions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -655,8 +663,8 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -664,7 +672,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.ListTopicsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.ListTopicsRequest):
+            request = admin.ListTopicsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -673,11 +684,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_topics,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_topics
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -773,8 +782,8 @@ class AdminServiceAsyncClient:
                 Metadata about a topic resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -782,7 +791,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.UpdateTopicRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.UpdateTopicRequest):
+            request = admin.UpdateTopicRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -793,11 +805,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_topic,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_topic
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -872,8 +882,8 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -881,7 +891,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.DeleteTopicRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.DeleteTopicRequest):
+            request = admin.DeleteTopicRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -890,11 +903,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_topic,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_topic
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -978,8 +989,8 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -987,7 +998,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.ListTopicSubscriptionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.ListTopicSubscriptionsRequest):
+            request = admin.ListTopicSubscriptionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -996,11 +1010,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_topic_subscriptions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_topic_subscriptions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1111,8 +1123,8 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, subscription, subscription_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1120,7 +1132,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.CreateSubscriptionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.CreateSubscriptionRequest):
+            request = admin.CreateSubscriptionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1133,11 +1148,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_subscription,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_subscription
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1220,8 +1233,8 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1229,7 +1242,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.GetSubscriptionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.GetSubscriptionRequest):
+            request = admin.GetSubscriptionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1238,11 +1254,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_subscription,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_subscription
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1330,8 +1344,8 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1339,7 +1353,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.ListSubscriptionsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.ListSubscriptionsRequest):
+            request = admin.ListSubscriptionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1348,11 +1365,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_subscriptions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_subscriptions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1450,8 +1465,8 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([subscription, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1459,7 +1474,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.UpdateSubscriptionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.UpdateSubscriptionRequest):
+            request = admin.UpdateSubscriptionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1470,11 +1488,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_subscription,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_subscription
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1549,8 +1565,8 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1558,7 +1574,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.DeleteSubscriptionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.DeleteSubscriptionRequest):
+            request = admin.DeleteSubscriptionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1567,11 +1586,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_subscription,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_subscription
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1676,15 +1693,16 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        request = admin.SeekSubscriptionRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.SeekSubscriptionRequest):
+            request = admin.SeekSubscriptionRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.seek_subscription,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.seek_subscription
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1794,8 +1812,8 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, reservation, reservation_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1803,7 +1821,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.CreateReservationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.CreateReservationRequest):
+            request = admin.CreateReservationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1816,11 +1837,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_reservation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_reservation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1903,8 +1922,8 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1912,7 +1931,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.GetReservationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.GetReservationRequest):
+            request = admin.GetReservationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1921,11 +1943,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_reservation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_reservation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2013,8 +2033,8 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2022,7 +2042,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.ListReservationsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.ListReservationsRequest):
+            request = admin.ListReservationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2031,11 +2054,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_reservations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_reservations
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2133,8 +2154,8 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([reservation, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2142,7 +2163,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.UpdateReservationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.UpdateReservationRequest):
+            request = admin.UpdateReservationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2153,11 +2177,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_reservation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_reservation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2233,8 +2255,8 @@ class AdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2242,7 +2264,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.DeleteReservationRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.DeleteReservationRequest):
+            request = admin.DeleteReservationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2251,11 +2276,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_reservation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_reservation
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2340,8 +2363,8 @@ class AdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2349,7 +2372,10 @@ class AdminServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = admin.ListReservationTopicsRequest(request)
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, admin.ListReservationTopicsRequest):
+            request = admin.ListReservationTopicsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2358,11 +2384,9 @@ class AdminServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_reservation_topics,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_reservation_topics
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

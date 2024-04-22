@@ -18,6 +18,7 @@ import os
 import re
 from typing import (
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -510,7 +511,13 @@ class PartitionAssignmentServiceClient(metaclass=PartitionAssignmentServiceClien
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, PartitionAssignmentServiceTransport]] = None,
+        transport: Optional[
+            Union[
+                str,
+                PartitionAssignmentServiceTransport,
+                Callable[..., PartitionAssignmentServiceTransport],
+            ]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -522,9 +529,11 @@ class PartitionAssignmentServiceClient(metaclass=PartitionAssignmentServiceClien
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, PartitionAssignmentServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,PartitionAssignmentServiceTransport,Callable[..., PartitionAssignmentServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the PartitionAssignmentServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -635,8 +644,16 @@ class PartitionAssignmentServiceClient(metaclass=PartitionAssignmentServiceClien
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[PartitionAssignmentServiceTransport],
+                Callable[..., PartitionAssignmentServiceTransport],
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., PartitionAssignmentServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
