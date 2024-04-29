@@ -18,6 +18,7 @@ import os
 import re
 from typing import (
     Dict,
+    Callable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -578,7 +579,9 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, AdminServiceTransport]] = None,
+        transport: Optional[
+            Union[str, AdminServiceTransport, Callable[..., AdminServiceTransport]]
+        ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -590,9 +593,11 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AdminServiceTransport]): The
-                transport to use. If set to None, a transport is chosen
-                automatically.
+            transport (Optional[Union[str,AdminServiceTransport,Callable[..., AdminServiceTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport.
+                If a Callable is given, it will be called with the same set of initialization
+                arguments as used in the AdminServiceTransport constructor.
+                If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
 
@@ -698,8 +703,15 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                     api_key_value
                 )
 
-            Transport = type(self).get_transport_class(cast(str, transport))
-            self._transport = Transport(
+            transport_init: Union[
+                Type[AdminServiceTransport], Callable[..., AdminServiceTransport]
+            ] = (
+                type(self).get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., AdminServiceTransport], transport)
+            )
+            # initialize with the provided callable or the passed in class
+            self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
                 host=self._api_endpoint,
@@ -789,8 +801,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 Metadata about a topic resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, topic, topic_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -798,10 +810,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.CreateTopicRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.CreateTopicRequest):
             request = admin.CreateTopicRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -895,8 +905,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 Metadata about a topic resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -904,10 +914,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.GetTopicRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.GetTopicRequest):
             request = admin.GetTopicRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -998,8 +1006,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 Response for GetTopicPartitions.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1007,10 +1015,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.GetTopicPartitionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.GetTopicPartitionsRequest):
             request = admin.GetTopicPartitionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1107,8 +1113,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1116,10 +1122,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.ListTopicsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.ListTopicsRequest):
             request = admin.ListTopicsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1225,8 +1229,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 Metadata about a topic resource.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([topic, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1234,10 +1238,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.UpdateTopicRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.UpdateTopicRequest):
             request = admin.UpdateTopicRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1324,8 +1326,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1333,10 +1335,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.DeleteTopicRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.DeleteTopicRequest):
             request = admin.DeleteTopicRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1430,8 +1430,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1439,10 +1439,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.ListTopicSubscriptionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.ListTopicSubscriptionsRequest):
             request = admin.ListTopicSubscriptionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1563,8 +1561,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, subscription, subscription_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1572,10 +1570,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.CreateSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.CreateSubscriptionRequest):
             request = admin.CreateSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1672,8 +1668,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1681,10 +1677,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.GetSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.GetSubscriptionRequest):
             request = admin.GetSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1782,8 +1776,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1791,10 +1785,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.ListSubscriptionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.ListSubscriptionsRequest):
             request = admin.ListSubscriptionsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -1902,8 +1894,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([subscription, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -1911,10 +1903,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.UpdateSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.UpdateSubscriptionRequest):
             request = admin.UpdateSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2001,8 +1991,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2010,10 +2000,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.DeleteSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.DeleteSubscriptionRequest):
             request = admin.DeleteSubscriptionRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2128,10 +2116,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.SeekSubscriptionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.SeekSubscriptionRequest):
             request = admin.SeekSubscriptionRequest(request)
 
@@ -2247,8 +2233,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, reservation, reservation_id])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2256,10 +2242,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.CreateReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.CreateReservationRequest):
             request = admin.CreateReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2356,8 +2340,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2365,10 +2349,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.GetReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.GetReservationRequest):
             request = admin.GetReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2466,8 +2448,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2475,10 +2457,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.ListReservationsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.ListReservationsRequest):
             request = admin.ListReservationsRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2586,8 +2566,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([reservation, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2595,10 +2575,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.UpdateReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.UpdateReservationRequest):
             request = admin.UpdateReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2686,8 +2664,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2695,10 +2673,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.DeleteReservationRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.DeleteReservationRequest):
             request = admin.DeleteReservationRequest(request)
             # If we have keyword arguments corresponding to fields on the
@@ -2793,8 +2769,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -2802,10 +2778,8 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a admin.ListReservationTopicsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
         if not isinstance(request, admin.ListReservationTopicsRequest):
             request = admin.ListReservationTopicsRequest(request)
             # If we have keyword arguments corresponding to fields on the
