@@ -99,27 +99,6 @@ s.replace(
     "pytype", # Custom pytype session""",
 )
 
-# Extract installing dependencies into separate function
-s.replace(
-    "noxfile.py",
-    """def default\(session\):
-    # Install all test dependencies, then install this package in-place.
-""",
-    """def install_test_deps(session):""",
-)
-
-# Restore function `default()``
-s.replace(
-    "noxfile.py",
-    """# Run py.test against the unit tests.""",
-    """
-def default(session):
-    # Install all test dependencies, then install this package in-place.
-    install_test_deps(session)
-
-    # Run py.test against the unit tests.""",
-)
-
 # add pytype nox session
 s.replace(
     "noxfile.py",
@@ -130,7 +109,10 @@ def docfx\(session\):""",
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def pytype(session):
     \"\"\"Run type checks.\"\"\"
-    install_test_deps(session)
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, "-c", constraints_path)
     session.install(PYTYPE_VERSION)
     # See https://github.com/google/pytype/issues/464
     session.run("pytype", "-P", ".", "google/cloud/pubsublite")
