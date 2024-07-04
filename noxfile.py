@@ -183,11 +183,6 @@ def unit(session, protobuf_implementation):
     if protobuf_implementation == "cpp":
         session.install("protobuf<4")
 
-
-def default(session):
-    # Install all test dependencies, then install this package in-place.
-    install_test_deps(session)
-
     # Run py.test against the unit tests.
     session.run(
         "py.test",
