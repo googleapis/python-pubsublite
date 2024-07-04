@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-pubsublite/compare/v1.10.0...v1.11.0) (2024-07-04)
+
+
+### Features
+
+* **spanner:** Add support for Cloud Spanner Scheduled Backups ([#501](https://github.com/googleapis/python-pubsublite/issues/501)) ([87fc137](https://github.com/googleapis/python-pubsublite/commit/87fc137888662608e4c281ad76aa3fb40ee9b1d9))
+
 ## [1.10.0](https://github.com/googleapis/python-pubsublite/compare/v1.9.0...v1.10.0) (2024-04-15)
 
 
