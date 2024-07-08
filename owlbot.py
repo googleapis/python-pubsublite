@@ -77,11 +77,6 @@ s.move(
     ],
 )
 
-# Remove disutils which is deprecated.
-s.replace(".kokoro/docker/docs/Dockerfile",
-"\npython3-distutils\\",
-"")
-
 s.replace(
     "noxfile.py",
     """\
