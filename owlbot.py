@@ -130,3 +130,6 @@ python.py_samples(skip_readmes=True)
 # run format session for all directories which have a noxfile
 for noxfile in Path(".").glob("**/noxfile.py"):
     s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)
+
+# Remove disutils which is deprecated.
+s.replace(".kokoro/docker/docs/Dockerfile","\npython3-distutils\\","")
