@@ -78,7 +78,7 @@ s.move(
 )
 
 s.replace(".kokoro/docker/docs/Dockerfile",
-    "python3-disutils",
+    "python3-distutils",
     "python3-setuptools")
 
 s.replace(
