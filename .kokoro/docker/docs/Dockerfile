@@ -40,7 +40,7 @@ RUN apt-get update \
     libssl-dev \
     libsqlite3-dev \
     portaudio19-dev \
-    python3-distutils \
+    python3-setuptools \
     redis-server \
     software-properties-common \
     ssh \
