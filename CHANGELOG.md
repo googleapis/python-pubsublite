@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/googleapis/python-pubsublite/compare/v1.11.0...v1.11.1) (2024-07-31)
+
+
+### Bug Fixes
+
+* Retry and timeout values do not propagate in requests during pagination ([#511](https://github.com/googleapis/python-pubsublite/issues/511)) ([8daf5ae](https://github.com/googleapis/python-pubsublite/commit/8daf5aee106bc0225085510655bc5ac602a3469a))
+
 ## [1.11.0](https://github.com/googleapis/python-pubsublite/compare/v1.10.0...v1.11.0) (2024-07-04)
 
 
