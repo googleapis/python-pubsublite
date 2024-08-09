@@ -706,7 +706,7 @@ class AdminServiceClient(metaclass=AdminServiceClientMeta):
             transport_init: Union[
                 Type[AdminServiceTransport], Callable[..., AdminServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AdminServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AdminServiceTransport], transport)
             )

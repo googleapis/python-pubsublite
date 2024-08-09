@@ -666,7 +666,7 @@ class TopicStatsServiceClient(metaclass=TopicStatsServiceClientMeta):
                 Type[TopicStatsServiceTransport],
                 Callable[..., TopicStatsServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                TopicStatsServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TopicStatsServiceTransport], transport)
             )

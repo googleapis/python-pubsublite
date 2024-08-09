@@ -662,7 +662,7 @@ class CursorServiceClient(metaclass=CursorServiceClientMeta):
             transport_init: Union[
                 Type[CursorServiceTransport], Callable[..., CursorServiceTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                CursorServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CursorServiceTransport], transport)
             )
