@@ -644,7 +644,7 @@ class SubscriberServiceClient(metaclass=SubscriberServiceClientMeta):
                 Type[SubscriberServiceTransport],
                 Callable[..., SubscriberServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                SubscriberServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SubscriberServiceTransport], transport)
             )

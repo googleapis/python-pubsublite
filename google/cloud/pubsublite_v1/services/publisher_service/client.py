@@ -645,7 +645,7 @@ class PublisherServiceClient(metaclass=PublisherServiceClientMeta):
                 Type[PublisherServiceTransport],
                 Callable[..., PublisherServiceTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                PublisherServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PublisherServiceTransport], transport)
             )
