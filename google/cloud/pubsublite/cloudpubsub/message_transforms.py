@@ -58,14 +58,14 @@ def decode_attribute_event_time(attr: str) -> datetime.datetime:
 def _parse_attributes(values: AttributeValues) -> str:
     if not len(values.values) == 1:
         raise InvalidArgument(
-            "Received an unparseable message with multiple values for an attribute."
+            "Received an unparsable message with multiple values for an attribute."
         )
     value: bytes = values.values[0]
     try:
         return value.decode("utf-8")
     except UnicodeError:
         raise InvalidArgument(
-            "Received an unparseable message with a non-utf8 attribute."
+            "Received an unparsable message with a non-utf8 attribute."
         )
 
 
@@ -104,7 +104,7 @@ def _to_cps_publish_message_proto(
     try:
         out.ordering_key = source.key.decode("utf-8")
     except UnicodeError:
-        raise InvalidArgument("Received an unparseable message with a non-utf8 key.")
+        raise InvalidArgument("Received an unparsable message with a non-utf8 key.")
     if PUBSUB_LITE_EVENT_TIME in source.attributes:
         raise InvalidArgument(
             "Special timestamp attribute exists in wire message. Unable to parse message."

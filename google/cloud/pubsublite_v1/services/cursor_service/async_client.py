@@ -56,7 +56,7 @@ from .client import CursorServiceClient
 
 class CursorServiceAsyncClient:
     """The service that a subscriber client application uses to
-    manage committed cursors while receiving messsages. A cursor
+    manage committed cursors while receiving messages. A cursor
     represents a subscriber's progress within a topic partition for
     a given subscription.
     """
