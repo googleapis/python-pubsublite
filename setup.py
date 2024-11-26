@@ -42,6 +42,8 @@ dependencies = [
     "overrides>=6.0.1, <8.0.0",
     "overrides>=7.0.1, <8.0.0; python_version>='3.12'",
     "google-api-core[grpc] >= 1.33.2, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
+    "proto-plus >= 1.22.3, < 2.0.0dev",
+    "proto-plus >= 1.25.0, < 2.0.0dev; python_version >= '3.13'",
 ]
 url = "https://github.com/googleapis/python-pubsublite"
 
