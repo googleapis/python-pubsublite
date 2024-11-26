@@ -88,7 +88,19 @@ PYTYPE_VERSION = "pytype==2021.09.09"
 BLACK_VERSION = "black[jupyter]==23.7.0"
 """,
 )
-
+# add proto-plus to direct dependencies
+s.replace(
+    "setup.py",
+    """\
+    ]
+url = "https://github.com/googleapis/python-pubsublite"
+""",
+        """\
+    "proto-plus >= 1.22.3, < 2.0.0dev",
+    "proto-plus >= 1.25.0, < 2.0.0dev; python_version >= '3.13'",
+    ]
+url = "https://github.com/googleapis/python-pubsublite"
+""")
 # add pytype to nox.options.sessions
 s.replace(
     "noxfile.py",
