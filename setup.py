@@ -48,6 +48,8 @@ dependencies = [
     "proto-plus >= 1.25.0, < 2.0.0dev; python_version >= '3.13'",
     "proto-plus >= 1.22.3, < 2.0.0dev",
     "proto-plus >= 1.25.0, < 2.0.0dev; python_version >= '3.13'",
+    "proto-plus >= 1.22.3, < 2.0.0dev",
+    "proto-plus >= 1.25.0, < 2.0.0dev; python_version >= '3.13'",
 ]
 url = "https://github.com/googleapis/python-pubsublite"
 
