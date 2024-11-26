@@ -88,6 +88,7 @@ PYTYPE_VERSION = "pytype==2021.09.09"
 BLACK_VERSION = "black[jupyter]==23.7.0"
 """,
 )
+
 # add pytype to nox.options.sessions
 s.replace(
     "noxfile.py",
