@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/python-pubsublite/compare/v1.11.1...v1.12.0) (2025-02-24)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([#542](https://github.com/googleapis/python-pubsublite/issues/542)) ([88f5f3e](https://github.com/googleapis/python-pubsublite/commit/88f5f3ec8a6fa7c2476bde877adac640efc8ca01))
+* Add support for opt-in debug logging ([e8eb848](https://github.com/googleapis/python-pubsublite/commit/e8eb84812c74aae82def34444df8554fb82aafc8))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([e8eb848](https://github.com/googleapis/python-pubsublite/commit/e8eb84812c74aae82def34444df8554fb82aafc8))
+
 ## [1.11.1](https://github.com/googleapis/python-pubsublite/compare/v1.11.0...v1.11.1) (2024-07-31)
 
 
