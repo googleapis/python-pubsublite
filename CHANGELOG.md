@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/python-pubsublite/compare/v1.12.0...v1.12.1) (2025-03-20)
+
+
+### Bug Fixes
+
+* Remove setup.cfg configuration for creating universal wheels ([#551](https://github.com/googleapis/python-pubsublite/issues/551)) ([a45e534](https://github.com/googleapis/python-pubsublite/commit/a45e534ac0fac29f72adb2006ba640faa6a232f6))
+
 ## [1.12.0](https://github.com/googleapis/python-pubsublite/compare/v1.11.1...v1.12.0) (2025-02-24)
 
 
