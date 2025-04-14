@@ -29,6 +29,7 @@ import nox
 
 FLAKE8_VERSION = "flake8==6.1.0"
 PYTYPE_VERSION = "pytype==2021.09.09"
+PYTYPE_VERSION = "pytype==2021.09.09"
 BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
@@ -65,6 +66,7 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 nox.options.sessions = [
     "unit",
+    "pytype",  # Custom pytype session
     "pytype",  # Custom pytype session
     "system",
     "cover",
@@ -321,6 +323,18 @@ def docs(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def pytype(session):
+    """Run type checks."""
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, "-c", constraints_path)
+    session.install(PYTYPE_VERSION)
+    # See https://github.com/google/pytype/issues/464
+    session.run("pytype", "-P", ".", "google/cloud/pubsublite")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
