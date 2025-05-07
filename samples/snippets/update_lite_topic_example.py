@@ -62,7 +62,7 @@ def update_lite_topic(
             "partition_config.capacity",
             "retention_config.per_partition_bytes",
             "retention_config.period",
-            "reservation_confing.throughput_reservation",
+            "reservation_config.throughput_reservation",
         ]
     )
 
@@ -80,7 +80,7 @@ def update_lite_topic(
             # If the number of byptes stored in any of the topic's partitions grows beyond
             # this value, older messages will be dropped to make room for newer ones,
             # regardless of the value of `period`.
-            # Be careful when decreasing storage per partition as it may cuase lost messages.
+            # Be careful when decreasing storage per partition as it may cause lost messages.
             per_partition_bytes=32 * 1024 * 1024 * 1024,
             # Allow messages to be stored for 14 days.
             period=Duration(seconds=60 * 60 * 24 * 14),
