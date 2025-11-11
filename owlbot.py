@@ -48,6 +48,7 @@ for library in s.get_staging_dirs(default_version):
             "docs/**/*",  # generated GAPIC docs should be ignored
             "scripts/fixup*.py",  # new libraries do not need the keyword fixup script
             "setup.py",
+            "noxfile.py",
             "testing/constraints-3.7.txt",
             "testing/constraints-3.8.txt",
             "google/cloud/pubsublite/__init__.py",
@@ -76,54 +77,6 @@ s.move(
         "README.rst",
     ],
 )
-
-
-s.replace(
-    "noxfile.py",
-    """\
-BLACK_VERSION = "black\[jupyter\]==23.7.0"
-""",
-    """\
-PYTYPE_VERSION = "pytype==2021.09.09"
-BLACK_VERSION = "black[jupyter]==23.7.0"
-""",
-)
-
-# add pytype to nox.options.sessions
-s.replace(
-    "noxfile.py",
-    """nox.options.sessions = \[
-    "unit",""",
-    """nox.options.sessions = [
-    "unit",
-    "pytype", # Custom pytype session""",
-)
-
-# add pytype nox session
-s.replace(
-    "noxfile.py",
-    """
-@nox.session\(python="3.10"\)
-def docfx\(session\):""",
-    """
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def pytype(session):
-    \"\"\"Run type checks.\"\"\"
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
-    install_unittest_dependencies(session, "-c", constraints_path)
-    session.install(PYTYPE_VERSION)
-    # See https://github.com/google/pytype/issues/464
-    session.run("pytype", "-P", ".", "google/cloud/pubsublite")
-
-@nox.session(python="3.10")
-def docfx(session):""",
-)
-
-# Remove once issues with pytest-asyncio 0.23.x have been resolved
-# https://github.com/pytest-dev/pytest-asyncio/issues?q=is%3Aissue+is%3Aopen+0.23.2+
-s.replace("noxfile.py", "\"pytest-asyncio\"", "\"pytest-asyncio<0.23\"")
 
 python.py_samples(skip_readmes=True)
 

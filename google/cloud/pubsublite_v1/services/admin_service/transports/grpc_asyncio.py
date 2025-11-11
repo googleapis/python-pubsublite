@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
+import json
+import pickle
+import logging as std_logging
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -23,8 +27,11 @@ from google.api_core import retry_async as retries
 from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 
 import grpc  # type: ignore
+import proto  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.pubsublite_v1.types import admin
@@ -33,6 +40,82 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import AdminServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import AdminServiceGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.pubsublite.v1.AdminService",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.pubsublite.v1.AdminService",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
@@ -233,7 +316,13 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -256,7 +345,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -281,7 +370,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_topic" not in self._stubs:
-            self._stubs["create_topic"] = self.grpc_channel.unary_unary(
+            self._stubs["create_topic"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/CreateTopic",
                 request_serializer=admin.CreateTopicRequest.serialize,
                 response_deserializer=common.Topic.deserialize,
@@ -305,7 +394,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_topic" not in self._stubs:
-            self._stubs["get_topic"] = self.grpc_channel.unary_unary(
+            self._stubs["get_topic"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/GetTopic",
                 request_serializer=admin.GetTopicRequest.serialize,
                 response_deserializer=common.Topic.deserialize,
@@ -332,7 +421,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_topic_partitions" not in self._stubs:
-            self._stubs["get_topic_partitions"] = self.grpc_channel.unary_unary(
+            self._stubs["get_topic_partitions"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/GetTopicPartitions",
                 request_serializer=admin.GetTopicPartitionsRequest.serialize,
                 response_deserializer=admin.TopicPartitions.deserialize,
@@ -358,7 +447,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_topics" not in self._stubs:
-            self._stubs["list_topics"] = self.grpc_channel.unary_unary(
+            self._stubs["list_topics"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/ListTopics",
                 request_serializer=admin.ListTopicsRequest.serialize,
                 response_deserializer=admin.ListTopicsResponse.deserialize,
@@ -384,7 +473,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_topic" not in self._stubs:
-            self._stubs["update_topic"] = self.grpc_channel.unary_unary(
+            self._stubs["update_topic"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/UpdateTopic",
                 request_serializer=admin.UpdateTopicRequest.serialize,
                 response_deserializer=common.Topic.deserialize,
@@ -410,7 +499,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_topic" not in self._stubs:
-            self._stubs["delete_topic"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_topic"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/DeleteTopic",
                 request_serializer=admin.DeleteTopicRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -440,7 +529,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_topic_subscriptions" not in self._stubs:
-            self._stubs["list_topic_subscriptions"] = self.grpc_channel.unary_unary(
+            self._stubs["list_topic_subscriptions"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/ListTopicSubscriptions",
                 request_serializer=admin.ListTopicSubscriptionsRequest.serialize,
                 response_deserializer=admin.ListTopicSubscriptionsResponse.deserialize,
@@ -466,7 +555,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_subscription" not in self._stubs:
-            self._stubs["create_subscription"] = self.grpc_channel.unary_unary(
+            self._stubs["create_subscription"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/CreateSubscription",
                 request_serializer=admin.CreateSubscriptionRequest.serialize,
                 response_deserializer=common.Subscription.deserialize,
@@ -492,7 +581,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_subscription" not in self._stubs:
-            self._stubs["get_subscription"] = self.grpc_channel.unary_unary(
+            self._stubs["get_subscription"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/GetSubscription",
                 request_serializer=admin.GetSubscriptionRequest.serialize,
                 response_deserializer=common.Subscription.deserialize,
@@ -521,7 +610,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_subscriptions" not in self._stubs:
-            self._stubs["list_subscriptions"] = self.grpc_channel.unary_unary(
+            self._stubs["list_subscriptions"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/ListSubscriptions",
                 request_serializer=admin.ListSubscriptionsRequest.serialize,
                 response_deserializer=admin.ListSubscriptionsResponse.deserialize,
@@ -547,7 +636,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_subscription" not in self._stubs:
-            self._stubs["update_subscription"] = self.grpc_channel.unary_unary(
+            self._stubs["update_subscription"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/UpdateSubscription",
                 request_serializer=admin.UpdateSubscriptionRequest.serialize,
                 response_deserializer=common.Subscription.deserialize,
@@ -573,7 +662,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_subscription" not in self._stubs:
-            self._stubs["delete_subscription"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_subscription"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/DeleteSubscription",
                 request_serializer=admin.DeleteSubscriptionRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -625,7 +714,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "seek_subscription" not in self._stubs:
-            self._stubs["seek_subscription"] = self.grpc_channel.unary_unary(
+            self._stubs["seek_subscription"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/SeekSubscription",
                 request_serializer=admin.SeekSubscriptionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -651,7 +740,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_reservation" not in self._stubs:
-            self._stubs["create_reservation"] = self.grpc_channel.unary_unary(
+            self._stubs["create_reservation"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/CreateReservation",
                 request_serializer=admin.CreateReservationRequest.serialize,
                 response_deserializer=common.Reservation.deserialize,
@@ -677,7 +766,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_reservation" not in self._stubs:
-            self._stubs["get_reservation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_reservation"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/GetReservation",
                 request_serializer=admin.GetReservationRequest.serialize,
                 response_deserializer=common.Reservation.deserialize,
@@ -706,7 +795,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_reservations" not in self._stubs:
-            self._stubs["list_reservations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_reservations"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/ListReservations",
                 request_serializer=admin.ListReservationsRequest.serialize,
                 response_deserializer=admin.ListReservationsResponse.deserialize,
@@ -732,7 +821,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_reservation" not in self._stubs:
-            self._stubs["update_reservation"] = self.grpc_channel.unary_unary(
+            self._stubs["update_reservation"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/UpdateReservation",
                 request_serializer=admin.UpdateReservationRequest.serialize,
                 response_deserializer=common.Reservation.deserialize,
@@ -758,7 +847,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_reservation" not in self._stubs:
-            self._stubs["delete_reservation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_reservation"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/DeleteReservation",
                 request_serializer=admin.DeleteReservationRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -788,7 +877,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_reservation_topics" not in self._stubs:
-            self._stubs["list_reservation_topics"] = self.grpc_channel.unary_unary(
+            self._stubs["list_reservation_topics"] = self._logged_channel.unary_unary(
                 "/google.cloud.pubsublite.v1.AdminService/ListReservationTopics",
                 request_serializer=admin.ListReservationTopicsRequest.serialize,
                 response_deserializer=admin.ListReservationTopicsResponse.deserialize,
@@ -798,105 +887,134 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_topic: gapic_v1.method_async.wrap_method(
+            self.create_topic: self._wrap_method(
                 self.create_topic,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_topic: gapic_v1.method_async.wrap_method(
+            self.get_topic: self._wrap_method(
                 self.get_topic,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_topic_partitions: gapic_v1.method_async.wrap_method(
+            self.get_topic_partitions: self._wrap_method(
                 self.get_topic_partitions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_topics: gapic_v1.method_async.wrap_method(
+            self.list_topics: self._wrap_method(
                 self.list_topics,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_topic: gapic_v1.method_async.wrap_method(
+            self.update_topic: self._wrap_method(
                 self.update_topic,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_topic: gapic_v1.method_async.wrap_method(
+            self.delete_topic: self._wrap_method(
                 self.delete_topic,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_topic_subscriptions: gapic_v1.method_async.wrap_method(
+            self.list_topic_subscriptions: self._wrap_method(
                 self.list_topic_subscriptions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_subscription: gapic_v1.method_async.wrap_method(
+            self.create_subscription: self._wrap_method(
                 self.create_subscription,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_subscription: gapic_v1.method_async.wrap_method(
+            self.get_subscription: self._wrap_method(
                 self.get_subscription,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_subscriptions: gapic_v1.method_async.wrap_method(
+            self.list_subscriptions: self._wrap_method(
                 self.list_subscriptions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_subscription: gapic_v1.method_async.wrap_method(
+            self.update_subscription: self._wrap_method(
                 self.update_subscription,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_subscription: gapic_v1.method_async.wrap_method(
+            self.delete_subscription: self._wrap_method(
                 self.delete_subscription,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.seek_subscription: gapic_v1.method_async.wrap_method(
+            self.seek_subscription: self._wrap_method(
                 self.seek_subscription,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_reservation: gapic_v1.method_async.wrap_method(
+            self.create_reservation: self._wrap_method(
                 self.create_reservation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_reservation: gapic_v1.method_async.wrap_method(
+            self.get_reservation: self._wrap_method(
                 self.get_reservation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_reservations: gapic_v1.method_async.wrap_method(
+            self.list_reservations: self._wrap_method(
                 self.list_reservations,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_reservation: gapic_v1.method_async.wrap_method(
+            self.update_reservation: self._wrap_method(
                 self.update_reservation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_reservation: gapic_v1.method_async.wrap_method(
+            self.delete_reservation: self._wrap_method(
                 self.delete_reservation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_reservation_topics: gapic_v1.method_async.wrap_method(
+            self.list_reservation_topics: self._wrap_method(
                 self.list_reservation_topics,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(
@@ -908,7 +1026,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -925,7 +1043,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -942,7 +1060,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -961,7 +1079,7 @@ class AdminServiceGrpcAsyncIOTransport(AdminServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
