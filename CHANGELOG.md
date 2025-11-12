@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/python-pubsublite/compare/v1.12.0...v1.13.0) (2025-11-12)
+
+
+### Features
+
+* Add support for Python 3.14 ([#563](https://github.com/googleapis/python-pubsublite/issues/563)) ([747fd6a](https://github.com/googleapis/python-pubsublite/commit/747fd6a380a77619f4b3c1e391bae3645d48d4aa))
+
+
+### Bug Fixes
+
+* Deprecate credentials_file argument ([c4f2caf](https://github.com/googleapis/python-pubsublite/commit/c4f2cafc3c6309b523629879bdd09d9ac27d9184))
+* Deprecate credentials_file argument ([#559](https://github.com/googleapis/python-pubsublite/issues/559)) ([c4f2caf](https://github.com/googleapis/python-pubsublite/commit/c4f2cafc3c6309b523629879bdd09d9ac27d9184))
+* Remove setup.cfg configuration for creating universal wheels ([#551](https://github.com/googleapis/python-pubsublite/issues/551)) ([a45e534](https://github.com/googleapis/python-pubsublite/commit/a45e534ac0fac29f72adb2006ba640faa6a232f6))
+* Resolve issues where pre-release versions of dependencies are installed ([#548](https://github.com/googleapis/python-pubsublite/issues/548)) ([218278f](https://github.com/googleapis/python-pubsublite/commit/218278fc2524fe1cd9a9e0b317ca950ad4f150cc))
+
 ## [1.12.0](https://github.com/googleapis/python-pubsublite/compare/v1.11.1...v1.12.0) (2025-02-24)
 
 
