@@ -36,14 +36,14 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-cloud-pubsub >= 2.10.0, <3.0.0dev",
-    "grpcio >= 1.38.1, <2.0.0dev",
-    "grpcio-status >= 1.38.1, <2.0.0dev",
+    "google-cloud-pubsub >= 2.10.0, <3.0.0",
+    "grpcio >= 1.38.1, <2.0.0",
+    "grpcio-status >= 1.38.1, <2.0.0",
     "overrides>=6.0.1, <8.0.0",
     "overrides>=7.0.1, <8.0.0; python_version>='3.12'",
-    "google-api-core[grpc] >= 1.33.2, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
-    "proto-plus >= 1.22.3, < 2.0.0dev",
-    "proto-plus >= 1.25.0, < 2.0.0dev; python_version >= '3.13'",
+    "google-api-core[grpc] >= 1.33.2, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
+    "proto-plus >= 1.22.3, < 2.0.0",
+    "proto-plus >= 1.25.0, < 2.0.0; python_version >= '3.13'",
 ]
 url = "https://github.com/googleapis/python-pubsublite"
 
@@ -79,6 +79,8 @@ setuptools.setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],
