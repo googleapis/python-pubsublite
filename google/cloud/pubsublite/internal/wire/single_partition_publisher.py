@@ -13,9 +13,14 @@
 # limitations under the License.
 
 import asyncio
+import sys
 from typing import Optional, List, NamedTuple
 
-from overrides import overrides
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
+
 import logging
 from google.cloud.pubsub_v1.types import BatchSettings
 
@@ -198,11 +203,11 @@ class SinglePartitionPublisher(
             await self._flush()
         return MessageMetadata(self._partition, await future)
 
-    @overrides
+    @override
     async def stop_processing(self, error: GoogleAPICallError):
         await self._stop_loopers()
 
-    @overrides
+    @override
     async def reinitialize(
         self,
         connection: Connection[PublishRequest, PublishResponse],
@@ -223,7 +228,7 @@ class SinglePartitionPublisher(
             await connection.write(aggregate)
         self._start_loopers()
 
-    @overrides
+    @override
     def get_size(self, request: _MessageWithSequence) -> BatchSize:
         return BatchSize(
             element_count=1, byte_count=PubSubMessage.pb(request.message).ByteSize()

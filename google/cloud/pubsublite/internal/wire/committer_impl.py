@@ -13,11 +13,15 @@
 # limitations under the License.
 
 import asyncio
+import sys
 from typing import Optional, List
 
 import logging
 
-from overrides import overrides
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
 
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.committer import Committer
@@ -154,11 +158,11 @@ class CommitterImpl(
             raise self._connection.error()
         self._next_to_commit = cursor
 
-    @overrides
+    @override
     async def stop_processing(self, error: GoogleAPICallError):
         await self._stop_loopers()
 
-    @overrides
+    @override
     async def reinitialize(
         self,
         connection: Connection[

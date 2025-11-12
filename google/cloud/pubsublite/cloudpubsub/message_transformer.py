@@ -13,10 +13,15 @@
 # limitations under the License.
 
 from abc import ABC, abstractmethod
+import sys
 from typing import Callable
 
 from google.pubsub_v1 import PubsubMessage
-from overrides import overrides
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
 
 from google.cloud.pubsublite_v1 import SequencedMessage
 
@@ -41,7 +46,7 @@ class MessageTransformer(ABC):
     @staticmethod
     def of_callable(transformer: Callable[[SequencedMessage], PubsubMessage]):
         class CallableTransformer(MessageTransformer):
-            @overrides
+            @override
             def transform(self, source: SequencedMessage) -> PubsubMessage:
                 return transformer(source)
 

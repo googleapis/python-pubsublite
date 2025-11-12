@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 from typing import Callable, Union, Mapping
 
 from google.api_core.exceptions import GoogleAPICallError
@@ -26,7 +27,11 @@ from google.cloud.pubsublite.cloudpubsub.publisher_client_interface import (
     AsyncPublisherClientInterface,
 )
 from google.cloud.pubsublite.types import TopicPath
-from overrides import overrides
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
 
 
 AsyncPublisherFactory = Callable[[TopicPath], AsyncSinglePublisher]
@@ -47,7 +52,7 @@ class MultiplexedAsyncPublisherClient(AsyncPublisherClientInterface):
         await client.__aenter__()
         return client
 
-    @overrides
+    @override
     async def publish(
         self,
         topic: Union[TopicPath, str],
@@ -67,11 +72,11 @@ class MultiplexedAsyncPublisherClient(AsyncPublisherClientInterface):
             await self._multiplexer.try_erase(topic, publisher)
             raise e
 
-    @overrides
+    @override
     async def __aenter__(self):
         await self._multiplexer.__aenter__()
         return self
 
-    @overrides
+    @override
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._multiplexer.__aexit__(exc_type, exc_value, traceback)

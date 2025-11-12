@@ -13,11 +13,15 @@
 # limitations under the License.
 
 import asyncio
+import sys
 from typing import Optional, Set
 
 import logging
 
-from overrides import overrides
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
 
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.assigner import Assigner
@@ -106,14 +110,14 @@ class AssignerImpl(
         await self._stop_receiver()
         await self._connection.__aexit__(exc_type, exc_val, exc_tb)
 
-    @overrides
+    @override
     async def stop_processing(self, error: GoogleAPICallError):
         await self._stop_receiver()
         self._outstanding_assignment = False
         while not self._new_assignment.empty():
             self._new_assignment.get_nowait()
 
-    @overrides
+    @override
     async def reinitialize(
         self,
         connection: Connection[PartitionAssignmentRequest, PartitionAssignment],
