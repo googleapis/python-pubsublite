@@ -1,5 +1,9 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-pubsublite/#history
+
 ## [1.12.0](https://github.com/googleapis/python-pubsublite/compare/v1.11.1...v1.12.0) (2025-02-24)
 
 
