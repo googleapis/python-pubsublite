@@ -2,8 +2,10 @@ image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-li
 libraries:
   - id: google-cloud-pubsublite
     version: 1.12.0
+    last_generated_commit: 5400ccce473c439885bd6bf2924fd242271bfcab
     apis:
       - path: google/cloud/pubsublite/v1
+        service_config: pubsublite_v1.yaml
     source_roots:
       - .
     preserve_regex: []
