@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from concurrent.futures import Future
+import sys
 from typing import Optional, Mapping, Union
 from uuid import uuid4
 
@@ -43,7 +44,11 @@ from google.cloud.pubsublite.internal.wire.make_publisher import (
     DEFAULT_BATCHING_SETTINGS as WIRE_DEFAULT_BATCHING,
 )
 from google.cloud.pubsublite.types import TopicPath
-from overrides import overrides
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
 
 
 def _get_client_id(enable_idempotence: bool):
@@ -98,7 +103,7 @@ class PublisherClient(PublisherClientInterface, ConstructableFromServiceAccount)
         )
         self._require_started = RequireStarted()
 
-    @overrides
+    @override
     def publish(
         self,
         topic: Union[TopicPath, str],
@@ -111,13 +116,13 @@ class PublisherClient(PublisherClientInterface, ConstructableFromServiceAccount)
             topic=topic, data=data, ordering_key=ordering_key, **attrs
         )
 
-    @overrides
+    @override
     def __enter__(self):
         self._require_started.__enter__()
         self._impl.__enter__()
         return self
 
-    @overrides
+    @override
     def __exit__(self, exc_type, exc_value, traceback):
         self._impl.__exit__(exc_type, exc_value, traceback)
         self._require_started.__exit__(exc_type, exc_value, traceback)
@@ -173,7 +178,7 @@ class AsyncPublisherClient(
         )
         self._require_started = RequireStarted()
 
-    @overrides
+    @override
     async def publish(
         self,
         topic: Union[TopicPath, str],
@@ -186,13 +191,13 @@ class AsyncPublisherClient(
             topic=topic, data=data, ordering_key=ordering_key, **attrs
         )
 
-    @overrides
+    @override
     async def __aenter__(self):
         self._require_started.__enter__()
         await self._impl.__aenter__()
         return self
 
-    @overrides
+    @override
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._impl.__aexit__(exc_type, exc_value, traceback)
         self._require_started.__exit__(exc_type, exc_value, traceback)

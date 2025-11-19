@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from concurrent.futures.thread import ThreadPoolExecutor
+import sys
 from typing import Union, Optional, Set
 from threading import Lock
 
@@ -31,7 +32,11 @@ from google.cloud.pubsublite.types import (
     FlowControlSettings,
     Partition,
 )
-from overrides import overrides
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
 
 
 class MultiplexedSubscriberClient(SubscriberClientInterface):
@@ -49,7 +54,7 @@ class MultiplexedSubscriberClient(SubscriberClientInterface):
         self._lock = Lock()
         self._live_clients = set()
 
-    @overrides
+    @override
     def subscribe(
         self,
         subscription: Union[SubscriptionPath, str],
@@ -84,12 +89,12 @@ class MultiplexedSubscriberClient(SubscriberClientInterface):
             self._live_clients.remove(future)
         self._cancel_streaming_pull_future(future)
 
-    @overrides
+    @override
     def __enter__(self):
         self._executor.__enter__()
         return self
 
-    @overrides
+    @override
     def __exit__(self, exc_type, exc_value, traceback):
         with self._lock:
             live_clients = self._live_clients

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from concurrent.futures import Future
+import sys
 from typing import Callable, Union, Mapping
 
 from google.api_core.exceptions import GoogleAPICallError
@@ -27,7 +28,11 @@ from google.cloud.pubsublite.cloudpubsub.publisher_client_interface import (
     PublisherClientInterface,
 )
 from google.cloud.pubsublite.types import TopicPath
-from overrides import overrides
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
 
 PublisherFactory = Callable[[TopicPath], SinglePublisher]
 
@@ -42,7 +47,7 @@ class MultiplexedPublisherClient(PublisherClientInterface):
             lambda topic: self._create_and_start_publisher(topic)
         )
 
-    @overrides
+    @override
     def publish(
         self,
         topic: Union[TopicPath, str],
@@ -80,11 +85,11 @@ class MultiplexedPublisherClient(PublisherClientInterface):
         except GoogleAPICallError:
             self._multiplexer.try_erase(topic, publisher)
 
-    @overrides
+    @override
     def __enter__(self):
         self._multiplexer.__enter__()
         return self
 
-    @overrides
+    @override
     def __exit__(self, exc_type, exc_value, traceback):
         self._multiplexer.__exit__(exc_type, exc_value, traceback)

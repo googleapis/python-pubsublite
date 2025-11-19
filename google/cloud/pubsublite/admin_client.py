@@ -12,9 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 from typing import Optional, List, Union
 
-from overrides import overrides
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
+
 from google.api_core.client_options import ClientOptions
 from google.api_core.operation import Operation
 from google.auth.credentials import Credentials
@@ -78,39 +83,39 @@ class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
             region,
         )
 
-    @overrides
+    @override
     def region(self) -> CloudRegion:
         return self._impl.region()
 
-    @overrides
+    @override
     def create_topic(self, topic: Topic) -> Topic:
         return self._impl.create_topic(topic)
 
-    @overrides
+    @override
     def get_topic(self, topic_path: TopicPath) -> Topic:
         return self._impl.get_topic(topic_path)
 
-    @overrides
+    @override
     def get_topic_partition_count(self, topic_path: TopicPath) -> int:
         return self._impl.get_topic_partition_count(topic_path)
 
-    @overrides
+    @override
     def list_topics(self, location_path: LocationPath) -> List[Topic]:
         return self._impl.list_topics(location_path)
 
-    @overrides
+    @override
     def update_topic(self, topic: Topic, update_mask: FieldMask) -> Topic:
         return self._impl.update_topic(topic, update_mask)
 
-    @overrides
+    @override
     def delete_topic(self, topic_path: TopicPath):
         return self._impl.delete_topic(topic_path)
 
-    @overrides
+    @override
     def list_topic_subscriptions(self, topic_path: TopicPath) -> List[SubscriptionPath]:
         return self._impl.list_topic_subscriptions(topic_path)
 
-    @overrides
+    @override
     def create_subscription(
         self,
         subscription: Subscription,
@@ -119,21 +124,21 @@ class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
     ) -> Subscription:
         return self._impl.create_subscription(subscription, target, starting_offset)
 
-    @overrides
+    @override
     def get_subscription(self, subscription_path: SubscriptionPath) -> Subscription:
         return self._impl.get_subscription(subscription_path)
 
-    @overrides
+    @override
     def list_subscriptions(self, location_path: LocationPath) -> List[Subscription]:
         return self._impl.list_subscriptions(location_path)
 
-    @overrides
+    @override
     def update_subscription(
         self, subscription: Subscription, update_mask: FieldMask
     ) -> Subscription:
         return self._impl.update_subscription(subscription, update_mask)
 
-    @overrides
+    @override
     def seek_subscription(
         self,
         subscription_path: SubscriptionPath,
@@ -141,33 +146,33 @@ class AdminClient(AdminClientInterface, ConstructableFromServiceAccount):
     ) -> Operation:
         return self._impl.seek_subscription(subscription_path, target)
 
-    @overrides
+    @override
     def delete_subscription(self, subscription_path: SubscriptionPath):
         return self._impl.delete_subscription(subscription_path)
 
-    @overrides
+    @override
     def create_reservation(self, reservation: Reservation) -> Reservation:
         return self._impl.create_reservation(reservation)
 
-    @overrides
+    @override
     def get_reservation(self, reservation_path: ReservationPath) -> Reservation:
         return self._impl.get_reservation(reservation_path)
 
-    @overrides
+    @override
     def list_reservations(self, location_path: LocationPath) -> List[Reservation]:
         return self._impl.list_reservations(location_path)
 
-    @overrides
+    @override
     def update_reservation(
         self, reservation: Reservation, update_mask: FieldMask
     ) -> Reservation:
         return self._impl.update_reservation(reservation, update_mask)
 
-    @overrides
+    @override
     def delete_reservation(self, reservation_path: ReservationPath):
         return self._impl.delete_reservation(reservation_path)
 
-    @overrides
+    @override
     def list_reservation_topics(
         self, reservation_path: ReservationPath
     ) -> List[TopicPath]:

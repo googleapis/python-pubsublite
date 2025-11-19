@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 from typing import (
     Union,
     AsyncIterator,
@@ -35,7 +36,11 @@ from google.cloud.pubsublite.types import (
     FlowControlSettings,
     Partition,
 )
-from overrides import overrides
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
 
 
 async def _iterate_subscriber(
@@ -59,7 +64,7 @@ class MultiplexedAsyncSubscriberClient(AsyncSubscriberClientInterface):
         self._underlying_factory = underlying_factory
         self._live_clients = set()
 
-    @overrides
+    @override
     async def subscribe(
         self,
         subscription: Union[SubscriptionPath, str],
@@ -79,7 +84,7 @@ class MultiplexedAsyncSubscriberClient(AsyncSubscriberClientInterface):
             subscriber, lambda: self._try_remove_client(subscriber)
         )
 
-    @overrides
+    @override
     async def __aenter__(self):
         return self
 
@@ -88,7 +93,7 @@ class MultiplexedAsyncSubscriberClient(AsyncSubscriberClientInterface):
             self._live_clients.remove(client)
             await client.__aexit__(None, None, None)
 
-    @overrides
+    @override
     async def __aexit__(self, exc_type, exc_value, traceback):
         live_clients = self._live_clients
         self._live_clients = set()

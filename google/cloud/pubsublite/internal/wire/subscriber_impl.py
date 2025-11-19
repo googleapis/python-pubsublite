@@ -14,10 +14,15 @@
 
 import asyncio
 from copy import deepcopy
+import sys
 from typing import Optional, List
 
 from google.api_core.exceptions import GoogleAPICallError, FailedPrecondition
-from overrides import overrides
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
 
 from google.cloud.pubsublite.internal.wait_ignore_cancelled import wait_ignore_errors
 from google.cloud.pubsublite.internal.wire.connection import (
@@ -156,7 +161,7 @@ class SubscriberImpl(
         await self._stop_loopers()
         await self._connection.__aexit__(exc_type, exc_val, exc_tb)
 
-    @overrides
+    @override
     async def stop_processing(self, error: GoogleAPICallError):
         await self._stop_loopers()
         if is_reset_signal(error):
@@ -174,7 +179,7 @@ class SubscriberImpl(
             await self._reset_handler.handle_reset()
             self._last_received_offset = None
 
-    @overrides
+    @override
     async def reinitialize(
         self, connection: Connection[SubscribeRequest, SubscribeResponse]
     ):

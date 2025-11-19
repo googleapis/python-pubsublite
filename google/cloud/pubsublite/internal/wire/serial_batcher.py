@@ -15,7 +15,12 @@
 from abc import abstractmethod, ABCMeta
 from typing import Generic, List, NamedTuple
 import asyncio
-from overrides import overrides
+import sys
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from overrides import overrides as override
 
 from google.cloud.pubsublite.internal.wire.connection import Request, Response
 from google.cloud.pubsublite.internal.wire.work_item import WorkItem
@@ -46,7 +51,7 @@ class RequestSizer(Generic[Request], metaclass=ABCMeta):
 
 
 class IgnoredRequestSizer(RequestSizer[Request]):
-    @overrides
+    @override
     def get_size(self, request) -> BatchSize:
         return BatchSize(0, 0)
 
