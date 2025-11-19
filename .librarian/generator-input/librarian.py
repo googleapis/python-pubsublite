@@ -44,7 +44,6 @@ for library in s.get_staging_dirs(default_version):
     s.move(
         [library],
         excludes=[
-            "**/gapic_version.py",  # gapic_version.py will be updated by release please
             "docs/**/*",  # generated GAPIC docs should be ignored
             "scripts/fixup*.py",  # new libraries do not need the keyword fixup script
             "setup.py",
@@ -72,7 +71,8 @@ s.move(
     templated_files,
     excludes=[
         ".coveragerc",
-        ".github/release-please.yml",
+        ".github/**",
+        ".kokoro/**",
         "docs/multiprocessing.rst",
         "docs/index.rst",
         "README.rst",

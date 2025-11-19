@@ -1,0 +1,33 @@
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:8e2c32496077054105bd06c54a59d6a6694287bc053588e24debe6da6920ad91
+libraries:
+  - id: google-cloud-pubsublite
+    version: 1.12.0
+    apis:
+      - path: google/cloud/pubsublite/v1
+    source_roots:
+      - .
+    preserve_regex: []
+    remove_regex:
+      - ^.coveragerc
+      - ^.flake8
+      - ^.pre-commit-config.yaml
+      - ^.trampolinerc
+      - ^.repo-metadata.json
+      - ^LICENSE
+      - ^MANIFEST.in
+      - ^SECURITY.md
+      - ^mypy.ini
+      - ^noxfile.py
+      - ^renovate.json
+      - ^setup.py
+      - ^docs/summary_overview.md
+      - ^google/cloud/pubsublite/gapic_version.py
+      - ^google/cloud/pubsublite/py.typed
+      - ^google/cloud/pubsublite_v1
+      - ^samples/generated_samples
+      - ^testing/constraints-3.9.txt
+      - ^testing/constraints-3.1.*
+      - ^tests/__init__.py
+      - ^tests/unit/__init__.py
+      - ^tests/unit/gapic
+    tag_format: v{version}
