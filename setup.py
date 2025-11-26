@@ -38,7 +38,9 @@ else:
 dependencies = [
     "google-cloud-pubsub >= 2.10.0, <3.0.0",
     "grpcio >= 1.38.1, <2.0.0",
+    "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "grpcio-status >= 1.38.1, <2.0.0",
+    "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "overrides>=6.0.1, <8.0.0",
     "overrides>=7.0.1, <8.0.0; python_version>='3.12'",
     "google-api-core[grpc] >= 1.33.2, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*",
