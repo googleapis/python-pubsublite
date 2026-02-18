@@ -11,7 +11,7 @@
     "distribution_name": "google-cloud-pubsublite",
     "api_id": "pubsublite.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "@googleapis/api-pubsublite",
+    "codeowner_team": "@googleapis/managed-kafka-team",
     "api_shortname": "pubsublite",
     "api_description": "is designed to provide reliable,\nmany-to-many, asynchronous messaging between applications. Publisher\napplications can send messages to a topic and other applications can\nsubscribe to that topic to receive the messages. By decoupling senders and\nreceivers, Google Cloud Pub/Sub allows developers to communicate between\nindependently written applications.\n\nCompared to Google Pub/Sub, Pub/Sub Lite provides partitioned zonal data\nstorage with predefined capacity. Both products present a similar API, but\nPub/Sub Lite has more usage caveats.\n\nSee the [Google Pub/Sub Lite docs](https://cloud.google.com/pubsub/quickstart-console#before-you-begin) for more details on how to activate\nPub/Sub Lite for your project, as well as guidance on how to choose between\nCloud Pub/Sub and Pub/Sub Lite."
 }
