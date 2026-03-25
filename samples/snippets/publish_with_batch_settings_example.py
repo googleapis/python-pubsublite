@@ -49,7 +49,7 @@ def publish_with_batch_settings(
         location = CloudZone(CloudRegion(cloud_region), zone_id)
 
     topic_path = TopicPath(project_number, location, topic_id)
-    batch_setttings = BatchSettings(
+    batch_settings = BatchSettings(
         # 2 MiB. Default to 3 MiB. Must be less than 4 MiB gRPC's per-message limit.
         max_bytes=2 * 1024 * 1024,
         # 100 ms. Default to 50 ms.
@@ -60,7 +60,7 @@ def publish_with_batch_settings(
 
     # PublisherClient() must be used in a `with` block or have __enter__() called before use.
     with PublisherClient(
-        per_partition_batching_settings=batch_setttings
+        per_partition_batching_settings=batch_settings
     ) as publisher_client:
         for message in range(num_messages):
             data = f"{message}"

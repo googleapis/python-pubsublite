@@ -54,7 +54,7 @@ def publish_with_odering_key(
         for message in range(num_messages):
             data = f"{message}"
             # Messages of the same ordering key will always get published to the same partition.
-            # When ordering_key is unset, messsages can get published ot different partitions if
+            # When ordering_key is unset, messages can get published to different partitions if
             # more than one partition exists for the topic.
             api_future = publisher_client.publish(
                 topic_path, data.encode("utf-8"), ordering_key="testing"
