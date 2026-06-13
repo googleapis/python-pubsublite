@@ -90,6 +90,9 @@ setuptools.setup(
     packages=packages,
     python_requires=">=3.8",
     install_requires=dependencies,
+    extras_require={
+        "kafka": ["confluent-kafka >= 2.0.0, < 3.0.0"],
+    },
     include_package_data=True,
     zip_safe=False,
 )
