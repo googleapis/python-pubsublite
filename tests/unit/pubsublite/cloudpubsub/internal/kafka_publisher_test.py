@@ -17,9 +17,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 import asyncio
 
-# Mock confluent_kafka module before it is imported in the code under test
-mock_confluent_kafka = MagicMock()
-sys.modules["confluent_kafka"] = mock_confluent_kafka
+mock_confluent_kafka = None
 
 from google.cloud.pubsublite.cloudpubsub.internal.kafka_publisher import (
     KafkaPublisherClient,
@@ -30,9 +28,9 @@ from google.api_core.exceptions import InternalServerError
 
 
 @pytest.fixture(autouse=True)
-def reset_mock():
-    mock_confluent_kafka.reset_mock()
-    mock_confluent_kafka.Producer = MagicMock()
+def setup_local_mock(confluent_kafka_mock):
+    global mock_confluent_kafka
+    mock_confluent_kafka = confluent_kafka_mock
 
 
 def test_sync_kafka_publisher_client_lifecycle():

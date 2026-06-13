@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional, Mapping, Set, AsyncIterator, Callable
+from typing import Optional, Mapping, Set, AsyncIterator, Callable, Any
 from uuid import uuid4
 
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
+from google.cloud.pubsublite.cloudpubsub.messaging_backend import MessagingBackend
 
 from google.cloud.pubsublite.cloudpubsub.reassignment_handler import (
     ReassignmentHandler,
@@ -189,6 +190,10 @@ def make_async_subscriber(
     credentials: Optional[Credentials] = None,
     client_options: Optional[ClientOptions] = None,
     metadata: Optional[Mapping[str, str]] = None,
+    backend: MessagingBackend = MessagingBackend.PUBSUB_LITE,
+    bootstrap_servers: Optional[str] = None,
+    kafka_topic: Optional[str] = None,
+    kafka_properties: Optional[Mapping[str, Any]] = None,
 ) -> AsyncSingleSubscriber:
     """
     Make a Pub/Sub Lite AsyncSubscriber.
@@ -196,18 +201,42 @@ def make_async_subscriber(
     Args:
       subscription: The subscription to subscribe to.
       transport: The transport type to use.
-      per_partition_flow_control_settings: The flow control settings for each partition subscribed to. Note that these
-        settings apply to each partition individually, not in aggregate.
+      per_partition_flow_control_settings: The flow control settings for each partition subscribed to. Only used for PUBSUB_LITE backend.
       nack_handler: An optional handler for when nack() is called on a Message. The default will fail the client.
       message_transformer: An optional transformer from Pub/Sub Lite messages to Cloud Pub/Sub messages.
       fixed_partitions: A fixed set of partitions to subscribe to. If not present, will instead use auto-assignment.
-      credentials: The credentials to use to connect. GOOGLE_DEFAULT_CREDENTIALS is used if None.
-      client_options: Other options to pass to the client. Note that if you pass any you must set api_endpoint.
+      credentials: The credentials to use to connect. Only used for PUBSUB_LITE backend.
+      client_options: Other options to pass to the client. Only used for PUBSUB_LITE backend.
       metadata: Additional metadata to send with the RPC.
+      backend: The messaging backend to use.
+      bootstrap_servers: The Kafka bootstrap servers. Required if backend is MANAGED_KAFKA.
+      kafka_topic: The Kafka topic name. Required if backend is MANAGED_KAFKA.
+      kafka_properties: Additional configuration properties for the Kafka consumer. Only used if backend is MANAGED_KAFKA.
 
     Returns:
       A new AsyncSubscriber.
     """
+    if backend == MessagingBackend.MANAGED_KAFKA:
+        if not bootstrap_servers:
+            raise ValueError(
+                "bootstrap_servers must be set when backend is MANAGED_KAFKA"
+            )
+        if not kafka_topic:
+            raise ValueError(
+                "kafka_topic must be set when backend is MANAGED_KAFKA"
+            )
+        from google.cloud.pubsublite.cloudpubsub.internal.kafka_subscriber import (
+            KafkaAsyncSingleSubscriber,
+        )
+
+        return KafkaAsyncSingleSubscriber(
+            subscription=subscription,
+            fixed_partitions=fixed_partitions,
+            bootstrap_servers=bootstrap_servers,
+            kafka_topic=kafka_topic,
+            kafka_properties=kafka_properties,
+        )
+
     metadata = merge_metadata(pubsub_context(framework="CLOUD_PUBSUB_SHIM"), metadata)
     if client_options is None:
         client_options = ClientOptions(
