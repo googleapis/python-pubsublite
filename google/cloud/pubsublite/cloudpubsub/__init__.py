@@ -15,6 +15,7 @@
 # flake8: noqa
 from .message_transformer import MessageTransformer
 from .nack_handler import NackHandler
+from .messaging_backend import MessagingBackend
 from .publisher_client import AsyncPublisherClient, PublisherClient
 from .publisher_client_interface import (
     AsyncPublisherClientInterface,
@@ -32,6 +33,7 @@ __all__ = (
     "AsyncSubscriberClient",
     "AsyncSubscriberClientInterface",
     "MessageTransformer",
+    "MessagingBackend",
     "NackHandler",
     "PublisherClient",
     "PublisherClientInterface",

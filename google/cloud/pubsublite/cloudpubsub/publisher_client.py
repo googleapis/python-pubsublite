@@ -13,8 +13,10 @@
 # limitations under the License.
 
 from concurrent.futures import Future
-from typing import Optional, Mapping, Union
+from typing import Optional, Mapping, Union, Any
 from uuid import uuid4
+
+from google.cloud.pubsublite.cloudpubsub.messaging_backend import MessagingBackend
 
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import Credentials
@@ -74,28 +76,48 @@ class PublisherClient(PublisherClientInterface, ConstructableFromServiceAccount)
         transport: str = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         enable_idempotence: bool = False,
+        backend: MessagingBackend = MessagingBackend.PUBSUB_LITE,
+        bootstrap_servers: Optional[str] = None,
+        kafka_properties: Optional[Mapping[str, Any]] = None,
     ):
         """
         Create a new PublisherClient.
 
         Args:
-            per_partition_batching_settings: The settings for publish batching. Apply on a per-partition basis.
-            credentials: If provided, the credentials to use when connecting.
-            transport: The transport to use. Must correspond to an asyncio transport.
-            client_options: The client options to use when connecting. If used, must explicitly set `api_endpoint`.
-            enable_idempotence: Whether idempotence is enabled, where the server will ensure that unique messages within a single publisher session are stored only once.
+            per_partition_batching_settings: The settings for publish batching. Apply on a per-partition basis. Only used for PUBSUB_LITE backend.
+            credentials: If provided, the credentials to use when connecting. Only used for PUBSUB_LITE backend.
+            transport: The transport to use. Must correspond to an asyncio transport. Only used for PUBSUB_LITE backend.
+            client_options: The client options to use when connecting. If used, must explicitly set `api_endpoint`. Only used for PUBSUB_LITE backend.
+            enable_idempotence: Whether idempotence is enabled. Only used for PUBSUB_LITE backend.
+            backend: The messaging backend to use.
+            bootstrap_servers: The Kafka bootstrap servers. Required if backend is MANAGED_KAFKA.
+            kafka_properties: Additional configuration properties for the Kafka producer. Only used if backend is MANAGED_KAFKA.
         """
-        client_id = _get_client_id(enable_idempotence)
-        self._impl = MultiplexedPublisherClient(
-            lambda topic: make_publisher(
-                topic=topic,
-                per_partition_batching_settings=per_partition_batching_settings,
-                credentials=credentials,
-                client_options=client_options,
-                transport=transport,
-                client_id=client_id,
+        if backend == MessagingBackend.MANAGED_KAFKA:
+            if not bootstrap_servers:
+                raise ValueError(
+                    "bootstrap_servers must be set when backend is MANAGED_KAFKA"
+                )
+            from google.cloud.pubsublite.cloudpubsub.internal.kafka_publisher import (
+                KafkaPublisherClient,
             )
-        )
+
+            self._impl = KafkaPublisherClient(
+                bootstrap_servers=bootstrap_servers,
+                kafka_properties=kafka_properties,
+            )
+        else:
+            client_id = _get_client_id(enable_idempotence)
+            self._impl = MultiplexedPublisherClient(
+                lambda topic: make_publisher(
+                    topic=topic,
+                    per_partition_batching_settings=per_partition_batching_settings,
+                    credentials=credentials,
+                    client_options=client_options,
+                    transport=transport,
+                    client_id=client_id,
+                )
+            )
         self._require_started = RequireStarted()
 
     @overrides
@@ -149,28 +171,48 @@ class AsyncPublisherClient(
         transport: str = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         enable_idempotence: bool = False,
+        backend: MessagingBackend = MessagingBackend.PUBSUB_LITE,
+        bootstrap_servers: Optional[str] = None,
+        kafka_properties: Optional[Mapping[str, Any]] = None,
     ):
         """
         Create a new AsyncPublisherClient.
 
         Args:
-            per_partition_batching_settings: The settings for publish batching. Apply on a per-partition basis.
-            credentials: If provided, the credentials to use when connecting.
-            transport: The transport to use. Must correspond to an asyncio transport.
-            client_options: The client options to use when connecting. If used, must explicitly set `api_endpoint`.
-            enable_idempotence: Whether idempotence is enabled, where the server will ensure that unique messages within a single publisher session are stored only once.
+            per_partition_batching_settings: The settings for publish batching. Apply on a per-partition basis. Only used for PUBSUB_LITE backend.
+            credentials: If provided, the credentials to use when connecting. Only used for PUBSUB_LITE backend.
+            transport: The transport to use. Must correspond to an asyncio transport. Only used for PUBSUB_LITE backend.
+            client_options: The client options to use when connecting. If used, must explicitly set `api_endpoint`. Only used for PUBSUB_LITE backend.
+            enable_idempotence: Whether idempotence is enabled. Only used for PUBSUB_LITE backend.
+            backend: The messaging backend to use.
+            bootstrap_servers: The Kafka bootstrap servers. Required if backend is MANAGED_KAFKA.
+            kafka_properties: Additional configuration properties for the Kafka producer. Only used if backend is MANAGED_KAFKA.
         """
-        client_id = _get_client_id(enable_idempotence)
-        self._impl = MultiplexedAsyncPublisherClient(
-            lambda topic: make_async_publisher(
-                topic=topic,
-                per_partition_batching_settings=per_partition_batching_settings,
-                credentials=credentials,
-                client_options=client_options,
-                transport=transport,
-                client_id=client_id,
+        if backend == MessagingBackend.MANAGED_KAFKA:
+            if not bootstrap_servers:
+                raise ValueError(
+                    "bootstrap_servers must be set when backend is MANAGED_KAFKA"
+                )
+            from google.cloud.pubsublite.cloudpubsub.internal.kafka_publisher import (
+                AsyncKafkaPublisherClient,
             )
-        )
+
+            self._impl = AsyncKafkaPublisherClient(
+                bootstrap_servers=bootstrap_servers,
+                kafka_properties=kafka_properties,
+            )
+        else:
+            client_id = _get_client_id(enable_idempotence)
+            self._impl = MultiplexedAsyncPublisherClient(
+                lambda topic: make_async_publisher(
+                    topic=topic,
+                    per_partition_batching_settings=per_partition_batching_settings,
+                    credentials=credentials,
+                    client_options=client_options,
+                    transport=transport,
+                    client_id=client_id,
+                )
+            )
         self._require_started = RequireStarted()
 
     @overrides
