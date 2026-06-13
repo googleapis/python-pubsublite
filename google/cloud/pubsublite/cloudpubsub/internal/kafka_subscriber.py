@@ -16,7 +16,7 @@ import asyncio
 import logging
 import queue
 import threading
-from typing import Mapping, Union, Optional, Any, Set, List
+from typing import Mapping, Optional, Any, Set, List
 
 from google.pubsub_v1 import PubsubMessage
 from google.protobuf.timestamp_pb2 import Timestamp
@@ -42,6 +42,7 @@ def _import_confluent_kafka():
     if confluent_kafka is None:
         try:
             import confluent_kafka as ck
+
             confluent_kafka = ck
         except ImportError:
             raise ImportError(
@@ -160,16 +161,14 @@ class KafkaAsyncSingleSubscriber(AsyncSingleSubscriber):
                     logger.error(f"Kafka consumer error: {msg.error()}")
                     # We should probably fail the subscriber here.
                     # In asyncio, we can propagate exception to the queue.
-                    self._loop.call_soon_threadsafe(
-                        self._queue.put_nowait, msg.error()
-                    )
+                    self._loop.call_soon_threadsafe(self._queue.put_nowait, msg.error())
                     break
 
             # 3. Process message
             try:
                 wrapped_msg = self._convert_message(msg)
                 self._loop.call_soon_threadsafe(self._queue.put_nowait, wrapped_msg)
-            except Exception as e:
+            except Exception:
                 logger.exception("Failed to process consumer record")
 
     def _process_commits(self):
@@ -241,9 +240,7 @@ class KafkaAsyncSingleSubscriber(AsyncSingleSubscriber):
                 if count == 0:
                     pb.attributes[k] = v.decode("utf-8", errors="replace")
                 else:
-                    pb.attributes[f"{k}.{count}"] = v.decode(
-                        "utf-8", errors="replace"
-                    )
+                    pb.attributes[f"{k}.{count}"] = v.decode("utf-8", errors="replace")
                 header_counts[k] = count + 1
 
         # Add Kafka metadata

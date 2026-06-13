@@ -12,19 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-from unittest.mock import MagicMock, patch
-import pytest
 import asyncio
+from unittest.mock import MagicMock, patch
 
-mock_confluent_kafka = None
-
+from google.api_core.exceptions import InternalServerError
 from google.cloud.pubsublite.cloudpubsub.internal.kafka_publisher import (
     KafkaPublisherClient,
     AsyncKafkaPublisherClient,
 )
-from google.cloud.pubsublite.types import TopicPath
-from google.api_core.exceptions import InternalServerError
+import pytest
+
+mock_confluent_kafka = None
 
 
 @pytest.fixture(autouse=True)
@@ -211,9 +209,7 @@ async def test_async_kafka_publish_failure():
     client = AsyncKafkaPublisherClient(bootstrap_servers)
     async with client:
         publish_task = asyncio.create_task(
-            client.publish(
-                topic="projects/p/locations/l/topics/t", data=b"payload"
-            )
+            client.publish(topic="projects/p/locations/l/topics/t", data=b"payload")
         )
 
         await asyncio.sleep(0.01)

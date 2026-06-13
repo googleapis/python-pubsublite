@@ -34,6 +34,7 @@ def _import_confluent_kafka():
     if confluent_kafka is None:
         try:
             import confluent_kafka as ck
+
             confluent_kafka = ck
         except ImportError:
             raise ImportError(
@@ -47,7 +48,9 @@ class KafkaPublisherClient(PublisherClientInterface):
     """A Kafka-based PublisherClient that publishes to Google Managed Kafka."""
 
     def __init__(
-        self, bootstrap_servers: str, kafka_properties: Optional[Mapping[str, Any]] = None
+        self,
+        bootstrap_servers: str,
+        kafka_properties: Optional[Mapping[str, Any]] = None,
     ):
         _import_confluent_kafka()
         config = {
@@ -87,6 +90,7 @@ class KafkaPublisherClient(PublisherClientInterface):
                     from google.cloud.pubsublite.cloudpubsub.message_transforms import (
                         _decode_attribute_event_time_proto,
                     )
+
                     ts = _decode_attribute_event_time_proto(v)
                     event_time_val = f"{ts.seconds}.{ts.nanos:09d}".encode("utf-8")
                     headers.append(("pubsublite.event_time", event_time_val))
@@ -138,7 +142,9 @@ class AsyncKafkaPublisherClient(AsyncPublisherClientInterface):
     """An asynchronous Kafka-based PublisherClient that publishes to Google Managed Kafka."""
 
     def __init__(
-        self, bootstrap_servers: str, kafka_properties: Optional[Mapping[str, Any]] = None
+        self,
+        bootstrap_servers: str,
+        kafka_properties: Optional[Mapping[str, Any]] = None,
     ):
         _import_confluent_kafka()
         config = {
@@ -154,7 +160,9 @@ class AsyncKafkaPublisherClient(AsyncPublisherClientInterface):
         self._producer = confluent_kafka.Producer(config)
         self._running = True
         self._poll_thread = threading.Thread(
-            target=self._poll_loop, name=f"async-kafka-publisher-poll-{id(self)}", daemon=True
+            target=self._poll_loop,
+            name=f"async-kafka-publisher-poll-{id(self)}",
+            daemon=True,
         )
         self._poll_thread.start()
 
@@ -179,6 +187,7 @@ class AsyncKafkaPublisherClient(AsyncPublisherClientInterface):
                     from google.cloud.pubsublite.cloudpubsub.message_transforms import (
                         _decode_attribute_event_time_proto,
                     )
+
                     ts = _decode_attribute_event_time_proto(v)
                     event_time_val = f"{ts.seconds}.{ts.nanos:09d}".encode("utf-8")
                     headers.append(("pubsublite.event_time", event_time_val))

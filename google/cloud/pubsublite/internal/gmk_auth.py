@@ -32,7 +32,10 @@ def _b64_encode(data: str) -> str:
 
 def _extract_email(credentials) -> str:
     # Attempt to extract email from credentials
-    if hasattr(credentials, "service_account_email") and credentials.service_account_email:
+    if (
+        hasattr(credentials, "service_account_email")
+        and credentials.service_account_email
+    ):
         return credentials.service_account_email
     if hasattr(credentials, "signer_email") and credentials.signer_email:
         return credentials.signer_email
@@ -87,7 +90,11 @@ def gcp_oauth_callback(oauth_config: str) -> Tuple[str, float]:
 
     header_b64 = _b64_encode(header_json)
     claims_b64 = _b64_encode(claims_json)
-    token_b64 = base64.urlsafe_b64encode(credentials.token.encode("utf-8")).decode("utf-8").rstrip("=")
+    token_b64 = (
+        base64.urlsafe_b64encode(credentials.token.encode("utf-8"))
+        .decode("utf-8")
+        .rstrip("=")
+    )
 
     kafka_token = f"{header_b64}.{claims_b64}.{token_b64}"
     return kafka_token, float(expiry)

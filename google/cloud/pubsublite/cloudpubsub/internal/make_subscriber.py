@@ -222,9 +222,7 @@ def make_async_subscriber(
                 "bootstrap_servers must be set when backend is MANAGED_KAFKA"
             )
         if not kafka_topic:
-            raise ValueError(
-                "kafka_topic must be set when backend is MANAGED_KAFKA"
-            )
+            raise ValueError("kafka_topic must be set when backend is MANAGED_KAFKA")
         from google.cloud.pubsublite.cloudpubsub.internal.kafka_subscriber import (
             KafkaAsyncSingleSubscriber,
         )

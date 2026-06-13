@@ -12,18 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-from unittest.mock import MagicMock, call
-import pytest
 import asyncio
 from datetime import datetime, timezone
-
-mock_confluent_kafka = None
+from unittest.mock import MagicMock, call
 
 from google.cloud.pubsublite.cloudpubsub.internal.kafka_subscriber import (
     KafkaAsyncSingleSubscriber,
 )
 from google.cloud.pubsublite.types import SubscriptionPath, Partition
+import pytest
+
+mock_confluent_kafka = None
 
 pytestmark = pytest.mark.asyncio
 
@@ -43,7 +42,6 @@ def consumer_mock():
 
 
 class MockMessage:
-
     def __init__(
         self,
         value=b"val",
@@ -107,8 +105,7 @@ async def test_kafka_subscriber_lifecycle_subscribe(consumer_mock):
         assert config["bootstrap.servers"] == bootstrap_servers
         # Derived group ID: slashes replaced by dashes
         assert (
-            config["group.id"]
-            == "projects-p-locations-us-central1-a-subscriptions-s"
+            config["group.id"] == "projects-p-locations-us-central1-a-subscriptions-s"
         )
         assert config["enable.auto.commit"] is False
 
